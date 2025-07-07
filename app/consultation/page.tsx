@@ -1,13 +1,19 @@
-"use client"
+'use client';
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Checkbox } from "@/components/ui/checkbox"
-import { FadeIn, ScaleIn } from "@/components/animations"
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Checkbox } from '@/components/ui/checkbox';
+import { FadeIn, ScaleIn } from '@/components/common/animations';
 import {
   ArrowLeft,
   Phone,
@@ -21,89 +27,93 @@ import {
   Star,
   Award,
   Shield,
-} from "lucide-react"
-import Link from "next/link"
-import Image from "next/image"
-import { motion } from "framer-motion"
-import { useState } from "react"
+} from 'lucide-react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { motion } from 'framer-motion';
+import { useState } from 'react';
 
 export default function ConsultationPage() {
   const [formData, setFormData] = useState({
-    name: "",
-    phone: "",
-    email: "",
-    propertyType: "",
-    budget: "",
-    location: "",
-    timeline: "",
-    message: "",
+    name: '',
+    phone: '',
+    email: '',
+    propertyType: '',
+    budget: '',
+    location: '',
+    timeline: '',
+    message: '',
     services: [] as string[],
-  })
+  });
 
   const consultationServices = [
     {
       icon: Home,
-      title: "Tư vấn mua bán",
-      description: "Hỗ trợ tìm kiếm và đánh giá bất động sản phù hợp",
-      features: ["Phân tích thị trường", "Thẩm định pháp lý", "Đàm phán giá"],
-      color: "text-blue-600",
-      bg: "bg-blue-100 dark:bg-blue-900/30",
+      title: 'Tư vấn mua bán',
+      description: 'Hỗ trợ tìm kiếm và đánh giá bất động sản phù hợp',
+      features: ['Phân tích thị trường', 'Thẩm định pháp lý', 'Đàm phán giá'],
+      color: 'text-blue-600',
+      bg: 'bg-blue-100 dark:bg-blue-900/30',
     },
     {
       icon: DollarSign,
-      title: "Tư vấn đầu tư",
-      description: "Chiến lược đầu tư BDS hiệu quả và sinh lời",
-      features: ["Phân tích ROI", "Dự báo tăng giá", "Quản lý rủi ro"],
-      color: "text-green-600",
-      bg: "bg-green-100 dark:bg-green-900/30",
+      title: 'Tư vấn đầu tư',
+      description: 'Chiến lược đầu tư BDS hiệu quả và sinh lời',
+      features: ['Phân tích ROI', 'Dự báo tăng giá', 'Quản lý rủi ro'],
+      color: 'text-green-600',
+      bg: 'bg-green-100 dark:bg-green-900/30',
     },
     {
       icon: MapPin,
-      title: "Tư vấn vị trí",
-      description: "Đánh giá tiềm năng phát triển khu vực",
-      features: ["Hạ tầng giao thông", "Tiện ích xung quanh", "Quy hoạch tương lai"],
-      color: "text-orange-600",
-      bg: "bg-orange-100 dark:bg-orange-900/30",
+      title: 'Tư vấn vị trí',
+      description: 'Đánh giá tiềm năng phát triển khu vực',
+      features: [
+        'Hạ tầng giao thông',
+        'Tiện ích xung quanh',
+        'Quy hoạch tương lai',
+      ],
+      color: 'text-orange-600',
+      bg: 'bg-orange-100 dark:bg-orange-900/30',
     },
     {
       icon: Shield,
-      title: "Tư vấn pháp lý",
-      description: "Kiểm tra và đảm bảo tính pháp lý của giao dịch",
-      features: ["Thẩm tra hồ sơ", "Hướng dẫn thủ tục", "Bảo vệ quyền lợi"],
-      color: "text-purple-600",
-      bg: "bg-purple-100 dark:bg-purple-900/30",
+      title: 'Tư vấn pháp lý',
+      description: 'Kiểm tra và đảm bảo tính pháp lý của giao dịch',
+      features: ['Thẩm tra hồ sơ', 'Hướng dẫn thủ tục', 'Bảo vệ quyền lợi'],
+      color: 'text-purple-600',
+      bg: 'bg-purple-100 dark:bg-purple-900/30',
     },
-  ]
+  ];
 
   const experts = [
     {
-      name: "Nguyễn Văn Minh",
-      title: "Chuyên gia BDS Quốc tế",
-      experience: "15+ năm",
-      specialties: ["Singapore", "Malaysia", "Australia"],
+      name: 'Nguyễn Văn Minh',
+      title: 'Chuyên gia BDS Quốc tế',
+      experience: '15+ năm',
+      specialties: ['Singapore', 'Malaysia', 'Australia'],
       rating: 4.9,
       reviews: 234,
-      image: "/placeholder.svg?height=100&width=100",
+      image: '/placeholder-2.webp?height=100&width=100',
     },
     {
-      name: "Trần Thị Hương",
-      title: "Chuyên gia BDS Cao cấp",
-      experience: "12+ năm",
-      specialties: ["Vinhomes", "Masterise", "Novaland"],
+      name: 'Trần Thị Hương',
+      title: 'Chuyên gia BDS Cao cấp',
+      experience: '12+ năm',
+      specialties: ['Vinhomes', 'Masterise', 'Novaland'],
       rating: 4.8,
       reviews: 189,
-      image: "/placeholder.svg?height=100&width=100",
+      image: '/placeholder-2.webp?height=100&width=100',
     },
     {
-      name: "Lê Văn Đức",
-      title: "Chuyên gia Đầu tư BDS",
-      experience: "18+ năm",
-      specialties: ["Phân tích thị trường", "ROI", "Rủi ro"],
+      name: 'Lê Văn Đức',
+      title: 'Chuyên gia Đầu tư BDS',
+      experience: '18+ năm',
+      specialties: ['Phân tích thị trường', 'ROI', 'Rủi ro'],
       rating: 4.9,
       reviews: 156,
-      image: "/placeholder.svg?height=100&width=100",
+      image: '/placeholder-2.webp?height=100&width=100',
     },
-  ]
+  ];
 
   return (
     <div className="min-h-screen bg-background">
@@ -111,16 +121,22 @@ export default function ConsultationPage() {
       <section className="py-12 bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-950/20 dark:to-blue-900/20">
         <div className="container mx-auto px-4">
           <FadeIn>
-            <Link href="/" className="inline-flex items-center text-blue-600 hover:text-blue-700 mb-6">
+            <Link
+              href="/"
+              className="inline-flex items-center text-blue-600 hover:text-blue-700 mb-6"
+            >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Quay lại trang chủ
             </Link>
             <Badge className="mb-4 bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
               TƯ VẤN MIỄN PHÍ
             </Badge>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">Tư vấn bất động sản chuyên nghiệp</h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+              Tư vấn bất động sản chuyên nghiệp
+            </h1>
             <p className="text-xl text-muted-foreground max-w-3xl">
-              Nhận tư vấn miễn phí từ đội ngũ chuyên gia hàng đầu với hơn 15 năm kinh nghiệm trong lĩnh vực bất động sản
+              Nhận tư vấn miễn phí từ đội ngũ chuyên gia hàng đầu với hơn 15 năm
+              kinh nghiệm trong lĩnh vực bất động sản
             </p>
           </FadeIn>
         </div>
@@ -130,9 +146,12 @@ export default function ConsultationPage() {
       <section className="py-16">
         <div className="container mx-auto px-4">
           <FadeIn className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Dịch vụ tư vấn</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Dịch vụ tư vấn
+            </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Chúng tôi cung cấp dịch vụ tư vấn toàn diện cho mọi nhu cầu bất động sản
+              Chúng tôi cung cấp dịch vụ tư vấn toàn diện cho mọi nhu cầu bất
+              động sản
             </p>
           </FadeIn>
 
@@ -148,7 +167,9 @@ export default function ConsultationPage() {
                         <service.icon className={`w-8 h-8 ${service.color}`} />
                       </div>
                       <CardTitle className="text-lg">{service.title}</CardTitle>
-                      <p className="text-muted-foreground text-sm">{service.description}</p>
+                      <p className="text-muted-foreground text-sm">
+                        {service.description}
+                      </p>
                     </CardHeader>
                     <CardContent>
                       <ul className="space-y-2">
@@ -176,9 +197,12 @@ export default function ConsultationPage() {
             <FadeIn>
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-2xl">Đăng ký tư vấn miễn phí</CardTitle>
+                  <CardTitle className="text-2xl">
+                    Đăng ký tư vấn miễn phí
+                  </CardTitle>
                   <p className="text-muted-foreground">
-                    Điền thông tin để nhận tư vấn chuyên nghiệp từ đội ngũ chuyên gia
+                    Điền thông tin để nhận tư vấn chuyên nghiệp từ đội ngũ
+                    chuyên gia
                   </p>
                 </CardHeader>
                 <CardContent className="space-y-6">
@@ -188,15 +212,21 @@ export default function ConsultationPage() {
                       <Input
                         placeholder="Nhập họ tên của bạn"
                         value={formData.name}
-                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                        onChange={(e) =>
+                          setFormData({ ...formData, name: e.target.value })
+                        }
                       />
                     </div>
                     <div>
-                      <label className="text-sm font-medium">Số điện thoại *</label>
+                      <label className="text-sm font-medium">
+                        Số điện thoại *
+                      </label>
                       <Input
                         placeholder="Nhập số điện thoại"
                         value={formData.phone}
-                        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                        onChange={(e) =>
+                          setFormData({ ...formData, phone: e.target.value })
+                        }
                       />
                     </div>
                   </div>
@@ -207,16 +237,22 @@ export default function ConsultationPage() {
                       placeholder="Nhập email của bạn"
                       type="email"
                       value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, email: e.target.value })
+                      }
                     />
                   </div>
 
                   <div className="grid md:grid-cols-2 gap-4">
                     <div>
-                      <label className="text-sm font-medium">Loại BDS quan tâm</label>
+                      <label className="text-sm font-medium">
+                        Loại BDS quan tâm
+                      </label>
                       <Select
                         value={formData.propertyType}
-                        onValueChange={(value) => setFormData({ ...formData, propertyType: value })}
+                        onValueChange={(value) =>
+                          setFormData({ ...formData, propertyType: value })
+                        }
                       >
                         <SelectTrigger>
                           <SelectValue placeholder="Chọn loại BDS" />
@@ -226,7 +262,9 @@ export default function ConsultationPage() {
                           <SelectItem value="house">Nhà phố</SelectItem>
                           <SelectItem value="villa">Biệt thự</SelectItem>
                           <SelectItem value="office">Văn phòng</SelectItem>
-                          <SelectItem value="international">BDS Quốc tế</SelectItem>
+                          <SelectItem value="international">
+                            BDS Quốc tế
+                          </SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -234,7 +272,9 @@ export default function ConsultationPage() {
                       <label className="text-sm font-medium">Ngân sách</label>
                       <Select
                         value={formData.budget}
-                        onValueChange={(value) => setFormData({ ...formData, budget: value })}
+                        onValueChange={(value) =>
+                          setFormData({ ...formData, budget: value })
+                        }
                       >
                         <SelectTrigger>
                           <SelectValue placeholder="Chọn mức ngân sách" />
@@ -252,24 +292,34 @@ export default function ConsultationPage() {
 
                   <div className="grid md:grid-cols-2 gap-4">
                     <div>
-                      <label className="text-sm font-medium">Khu vực quan tâm</label>
+                      <label className="text-sm font-medium">
+                        Khu vực quan tâm
+                      </label>
                       <Input
                         placeholder="VD: Quận 7, TP.HCM"
                         value={formData.location}
-                        onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                        onChange={(e) =>
+                          setFormData({ ...formData, location: e.target.value })
+                        }
                       />
                     </div>
                     <div>
-                      <label className="text-sm font-medium">Thời gian mua</label>
+                      <label className="text-sm font-medium">
+                        Thời gian mua
+                      </label>
                       <Select
                         value={formData.timeline}
-                        onValueChange={(value) => setFormData({ ...formData, timeline: value })}
+                        onValueChange={(value) =>
+                          setFormData({ ...formData, timeline: value })
+                        }
                       >
                         <SelectTrigger>
                           <SelectValue placeholder="Chọn thời gian" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="immediate">Ngay lập tức</SelectItem>
+                          <SelectItem value="immediate">
+                            Ngay lập tức
+                          </SelectItem>
                           <SelectItem value="1-3months">1-3 tháng</SelectItem>
                           <SelectItem value="3-6months">3-6 tháng</SelectItem>
                           <SelectItem value="6-12months">6-12 tháng</SelectItem>
@@ -280,10 +330,22 @@ export default function ConsultationPage() {
                   </div>
 
                   <div>
-                    <label className="text-sm font-medium">Dịch vụ cần tư vấn</label>
+                    <label className="text-sm font-medium">
+                      Dịch vụ cần tư vấn
+                    </label>
                     <div className="grid grid-cols-2 gap-3 mt-2">
-                      {["Mua bán", "Đầu tư", "Cho thuê", "Pháp lý", "Thẩm định giá", "Khác"].map((service) => (
-                        <div key={service} className="flex items-center space-x-2">
+                      {[
+                        'Mua bán',
+                        'Đầu tư',
+                        'Cho thuê',
+                        'Pháp lý',
+                        'Thẩm định giá',
+                        'Khác',
+                      ].map((service) => (
+                        <div
+                          key={service}
+                          className="flex items-center space-x-2"
+                        >
                           <Checkbox id={service} />
                           <label htmlFor={service} className="text-sm">
                             {service}
@@ -298,12 +360,20 @@ export default function ConsultationPage() {
                     <Textarea
                       placeholder="Mô tả chi tiết nhu cầu của bạn..."
                       value={formData.message}
-                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, message: e.target.value })
+                      }
                     />
                   </div>
 
-                  <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                    <Button className="w-full bg-blue-600 hover:bg-blue-700" size="lg">
+                  <motion.div
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <Button
+                      className="w-full bg-blue-600 hover:bg-blue-700"
+                      size="lg"
+                    >
                       Đăng ký tư vấn miễn phí
                     </Button>
                   </motion.div>
@@ -327,21 +397,27 @@ export default function ConsultationPage() {
                       <Phone className="w-5 h-5 text-green-600" />
                       <div>
                         <div className="font-semibold">Hotline 24/7</div>
-                        <div className="text-green-600 font-bold">1900 1234</div>
+                        <div className="text-green-600 font-bold">
+                          1900 1234
+                        </div>
                       </div>
                     </div>
                     <div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg">
                       <MessageCircle className="w-5 h-5 text-blue-600" />
                       <div>
                         <div className="font-semibold">Chat trực tuyến</div>
-                        <div className="text-muted-foreground text-sm">Phản hồi trong 5 phút</div>
+                        <div className="text-muted-foreground text-sm">
+                          Phản hồi trong 5 phút
+                        </div>
                       </div>
                     </div>
                     <div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg">
                       <Mail className="w-5 h-5 text-orange-600" />
                       <div>
                         <div className="font-semibold">Email</div>
-                        <div className="text-muted-foreground text-sm">info@iqi.com</div>
+                        <div className="text-muted-foreground text-sm">
+                          info@iqi.com
+                        </div>
                       </div>
                     </div>
                   </CardContent>
@@ -365,7 +441,7 @@ export default function ConsultationPage() {
                         className="flex items-center space-x-3 p-3 bg-muted/30 rounded-lg"
                       >
                         <Image
-                          src={expert.image || "/placeholder.svg"}
+                          src={expert.image || '/placeholder-2.webp'}
                           alt={expert.name}
                           width={50}
                           height={50}
@@ -373,13 +449,19 @@ export default function ConsultationPage() {
                         />
                         <div className="flex-1">
                           <div className="font-semibold">{expert.name}</div>
-                          <div className="text-sm text-muted-foreground">{expert.title}</div>
+                          <div className="text-sm text-muted-foreground">
+                            {expert.title}
+                          </div>
                           <div className="flex items-center space-x-2 mt-1">
                             <div className="flex items-center">
                               <Star className="w-3 h-3 text-yellow-500 fill-current" />
-                              <span className="text-xs ml-1">{expert.rating}</span>
+                              <span className="text-xs ml-1">
+                                {expert.rating}
+                              </span>
                             </div>
-                            <span className="text-xs text-muted-foreground">({expert.reviews} đánh giá)</span>
+                            <span className="text-xs text-muted-foreground">
+                              ({expert.reviews} đánh giá)
+                            </span>
                           </div>
                         </div>
                       </motion.div>
@@ -400,14 +482,19 @@ export default function ConsultationPage() {
                   <CardContent>
                     <div className="space-y-3">
                       {[
-                        "Tiếp nhận thông tin trong 5 phút",
-                        "Phân tích nhu cầu và tư vấn sơ bộ",
-                        "Lên kế hoạch chi tiết và báo giá",
-                        "Thực hiện dịch vụ và theo dõi",
+                        'Tiếp nhận thông tin trong 5 phút',
+                        'Phân tích nhu cầu và tư vấn sơ bộ',
+                        'Lên kế hoạch chi tiết và báo giá',
+                        'Thực hiện dịch vụ và theo dõi',
                       ].map((step, index) => (
-                        <div key={index} className="flex items-center space-x-3">
+                        <div
+                          key={index}
+                          className="flex items-center space-x-3"
+                        >
                           <div className="w-6 h-6 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center">
-                            <span className="text-xs font-bold text-purple-600">{index + 1}</span>
+                            <span className="text-xs font-bold text-purple-600">
+                              {index + 1}
+                            </span>
                           </div>
                           <span className="text-sm">{step}</span>
                         </div>
@@ -421,5 +508,5 @@ export default function ConsultationPage() {
         </div>
       </section>
     </div>
-  )
+  );
 }

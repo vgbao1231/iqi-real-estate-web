@@ -4,48 +4,48 @@
 
 @layer base {
   :root {
-    --background: 255, 255, 255; /* #ffffff */
-    --foreground: 15, 23, 42; /* #0f172a */
-    --card: 255, 255, 255; /* #ffffff */
-    --card-foreground: 15, 23, 42; /* #0f172a */
-    --popover: 255, 255, 255; /* #ffffff */
-    --popover-foreground: 15, 23, 42; /* #0f172a */
-    --primary: 249, 115, 22; /* #f97316 */
-    --primary-foreground: 241, 245, 249; /* #f1f5f9 */
-    --secondary: 226, 232, 240; /* #e2e8f0 */
-    --secondary-foreground: 15, 23, 42; /* #0f172a */
-    --muted: 226, 232, 240; /* #e2e8f0 */
-    --muted-foreground: 100, 116, 139; /* #64748b */
-    --accent: 226, 232, 240; /* #e2e8f0 */
-    --accent-foreground: 15, 23, 42; /* #0f172a */
-    --destructive: 239, 68, 68; /* #ef4444 */
-    --destructive-foreground: 241, 245, 249; /* #f1f5f9 */
-    --border: 229, 231, 235; /* #e5e7eb */
-    --input: 229, 231, 235; /* #e5e7eb */
-    --ring: 249, 115, 22; /* #f97316 */
-    --radius: 0.5rem;
+    --background: 0 0% 100%; /* #ffffff */
+    --foreground: 222.2 47.4% 11.2%; /* #0f172a */
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 47.4% 11.2%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 47.4% 11.2%;
+    --primary: 32.7 94.7% 53.1%; /* #f97316 */
+    --primary-foreground: 210 20% 98%; /* #f1f5f9 */
+    --secondary: 210 36% 94%; /* #e2e8f0 */
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 30 100% 95.9%; /* #fff4ea */
+    --muted-foreground: 215.4 16.3% 46.9%; /* #64748b */
+    --accent: 30 100% 97.1%; /* #fff8f1 */
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%; /* #ef4444 */
+    --destructive-foreground: 210 20% 98%;
+    --border: 214.3 31.8% 91.4%; /* #e5e7eb */
+    --input: 214.3 31.8% 91.4%;
+    --ring: 32.7 94.7% 53.1%;
+    --radius: 0.75rem;
   }
 
   .dark {
-    --background: 38, 38, 38; /* #262626 */
-    --foreground: 241, 245, 249; /* #f1f5f9 */
-    --card: 15, 23, 42; /* #0f172a */
-    --card-foreground: 241, 245, 249; /* #f1f5f9 */
-    --popover: 15, 23, 42; /* #0f172a */
-    --popover-foreground: 241, 245, 249; /* #f1f5f9 */
-    --primary: 249, 115, 22; /* #f97316 */
-    --primary-foreground: 15, 23, 42; /* #0f172a */
-    --secondary: 30, 41, 59; /* #1e293b */
-    --secondary-foreground: 241, 245, 249; /* #f1f5f9 */
-    --muted: 30, 41, 59; /* #1e293b */
-    --muted-foreground: 156, 163, 175; /* #9ca3af */
-    --accent: 30, 41, 59; /* #1e293b */
-    --accent-foreground: 241, 245, 249; /* #f1f5f9 */
-    --destructive: 127, 29, 29; /* #7f1d1d */
-    --destructive-foreground: 241, 245, 249; /* #f1f5f9 */
-    --border: 30, 41, 59; /* #1e293b */
-    --input: 30, 41, 59; /* #1e293b */
-    --ring: 249, 115, 22; /* #f97316 */
+    --background: 0 0% 15%; /* #262626 */
+    --foreground: 210 20% 98%;
+    --card: 0 0% 22.7%; /* #3a3a3a */
+    --card-foreground: 210 20% 98%;
+    --popover: 222.2 47.4% 11.2%;
+    --popover-foreground: 210 20% 98%;
+    --primary: 32.7 94.7% 53.1%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 215.4 25.2% 17.6%; /* #1e293b */
+    --secondary-foreground: 210 20% 98%;
+    --muted: 215.4 25.2% 17.6%; /* #1e293b */
+    --muted-foreground: 216 14.6% 68.2%; /* #a5acb7 */
+    --accent: 215.4 25.2% 17.6%;
+    --accent-foreground: 210 20% 98%;
+    --destructive: 0 63.4% 30.8%; /* #7f1d1d */
+    --destructive-foreground: 210 20% 98%;
+    --border: 40 3.5% 26.3%; /* #44423e */
+    --input: 215.4 25.2% 17.6%;
+    --ring: 32.7 94.7% 53.1%;
   }
 }
 
@@ -59,6 +59,7 @@
 
   html {
     @apply transition-colors duration-300;
+    scroll-behavior: smooth;
   }
 
   ::-webkit-scrollbar {
@@ -66,22 +67,26 @@
   }
 
   ::-webkit-scrollbar-track {
-    @apply bg-muted;
+    background-color: hsl(var(--muted) / 0.2);
   }
 
   ::-webkit-scrollbar-thumb {
-    background-color: rgba(var(--muted-foreground), 0.3);
+    background-color: hsl(var(--muted-foreground) / 0.3);
     border-radius: 9999px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background-color: rgba(var(--muted-foreground), 0.5);
+    background-color: hsl(var(--muted-foreground) / 0.5);
   }
 }
 
 @layer components {
   .center-both {
     @apply flex items-center justify-center;
+  }
+
+  .dark .bg-gradient-to-r {
+    @apply from-gray-900 to-gray-800;
   }
 
   .dark .shadow-lg {

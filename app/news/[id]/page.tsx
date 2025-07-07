@@ -1,10 +1,10 @@
-"use client"
+'use client';
 
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { FadeIn, SlideIn } from "@/components/animations"
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { FadeIn, SlideIn } from '@/components/common/animations';
 import {
   ArrowLeft,
   Calendar,
@@ -18,16 +18,16 @@ import {
   Users,
   Building,
   DollarSign,
-} from "lucide-react"
-import Link from "next/link"
-import Image from "next/image"
-import { motion } from "framer-motion"
+} from 'lucide-react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { motion } from 'framer-motion';
 
 export default function NewsDetailPage({ params }: { params: { id: string } }) {
   // Mock data - trong thực tế sẽ fetch từ API
   const article = {
     id: params.id,
-    title: "Thị trường BDS TP.HCM Q4/2024: Tăng trưởng ổn định 8.5%",
+    title: 'Thị trường BDS TP.HCM Q4/2024: Tăng trưởng ổn định 8.5%',
     content: `
       <p>Thị trường bất động sản TP.HCM trong quý 4/2024 đã ghi nhận mức tăng trưởng ổn định 8.5% so với cùng kỳ năm trước, với phân khúc căn hộ cao cấp dẫn đầu xu hướng tăng giá.</p>
       
@@ -53,41 +53,41 @@ export default function NewsDetailPage({ params }: { params: { id: string } }) {
       
       <p>Tuy nhiên, nhà đầu tư cần thận trọng và lựa chọn dự án có pháp lý rõ ràng, vị trí tốt và chủ đầu tư uy tín để đảm bảo tính thanh khoản và lợi nhuận trong tương lai.</p>
     `,
-    category: "Thị trường",
-    date: "15/12/2024",
-    readTime: "5 phút đọc",
-    views: "2.1K",
+    category: 'Thị trường',
+    date: '15/12/2024',
+    readTime: '5 phút đọc',
+    views: '2.1K',
     likes: 156,
     comments: 23,
-    image: "/placeholder.svg?height=400&width=800",
+    image: '/placeholder-2.webp?height=400&width=800',
     author: {
-      name: "Nguyễn Minh Tuấn",
-      title: "Chuyên gia phân tích BDS",
-      avatar: "/placeholder.svg?height=50&width=50",
-      bio: "15+ năm kinh nghiệm trong lĩnh vực bất động sản, chuyên gia phân tích thị trường tại IQI Vietnam",
+      name: 'Nguyễn Minh Tuấn',
+      title: 'Chuyên gia phân tích BDS',
+      avatar: '/placeholder-2.webp?height=50&width=50',
+      bio: '15+ năm kinh nghiệm trong lĩnh vực bất động sản, chuyên gia phân tích thị trường tại IQI Vietnam',
     },
-    tags: ["Thị trường", "TP.HCM", "Căn hộ", "Đầu tư", "2024"],
+    tags: ['Thị trường', 'TP.HCM', 'Căn hộ', 'Đầu tư', '2024'],
     relatedArticles: [
       {
         id: 2,
-        title: "Luật Đất đai 2024: Những thay đổi quan trọng",
-        image: "/placeholder.svg?height=150&width=200",
-        date: "12/12/2024",
+        title: 'Luật Đất đai 2024: Những thay đổi quan trọng',
+        image: '/placeholder-2.webp?height=150&width=200',
+        date: '12/12/2024',
       },
       {
         id: 3,
-        title: "Xu hướng đầu tư BDS nghỉ dưỡng 2025",
-        image: "/placeholder.svg?height=150&width=200",
-        date: "10/12/2024",
+        title: 'Xu hướng đầu tư BDS nghỉ dưỡng 2025',
+        image: '/placeholder-2.webp?height=150&width=200',
+        date: '10/12/2024',
       },
       {
         id: 4,
-        title: "Lãi suất vay mua nhà giảm: Cơ hội vàng",
-        image: "/placeholder.svg?height=150&width=200",
-        date: "08/12/2024",
+        title: 'Lãi suất vay mua nhà giảm: Cơ hội vàng',
+        image: '/placeholder-2.webp?height=150&width=200',
+        date: '08/12/2024',
       },
     ],
-  }
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -95,12 +95,17 @@ export default function NewsDetailPage({ params }: { params: { id: string } }) {
       <section className="py-8 border-b">
         <div className="container mx-auto px-4">
           <FadeIn>
-            <Link href="/news" className="inline-flex items-center text-green-600 hover:text-green-700 mb-4">
+            <Link
+              href="/news"
+              className="inline-flex items-center text-green-600 hover:text-green-700 mb-4"
+            >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Quay lại tin tức
             </Link>
             <div className="flex items-center space-x-4 text-sm text-muted-foreground">
-              <Badge className="bg-green-100 text-green-800">{article.category}</Badge>
+              <Badge className="bg-green-100 text-green-800">
+                {article.category}
+              </Badge>
               <span className="flex items-center">
                 <Calendar className="w-4 h-4 mr-1" />
                 {article.date}
@@ -125,14 +130,16 @@ export default function NewsDetailPage({ params }: { params: { id: string } }) {
             <article>
               {/* Title */}
               <FadeIn>
-                <h1 className="text-3xl md:text-4xl font-bold mb-6 leading-tight">{article.title}</h1>
+                <h1 className="text-3xl md:text-4xl font-bold mb-6 leading-tight">
+                  {article.title}
+                </h1>
               </FadeIn>
 
               {/* Featured Image */}
               <FadeIn delay={0.2}>
                 <div className="relative mb-8">
                   <Image
-                    src={article.image || "/placeholder.svg"}
+                    src={article.image || '/placeholder-2.webp'}
                     alt={article.title}
                     width={800}
                     height={400}
@@ -195,7 +202,11 @@ export default function NewsDetailPage({ params }: { params: { id: string } }) {
                   <h3 className="text-lg font-semibold mb-4">Tags:</h3>
                   <div className="flex flex-wrap gap-2">
                     {article.tags.map((tag, index) => (
-                      <Badge key={index} variant="secondary" className="hover:bg-green-100 cursor-pointer">
+                      <Badge
+                        key={index}
+                        variant="secondary"
+                        className="hover:bg-green-100 cursor-pointer"
+                      >
                         {tag}
                       </Badge>
                     ))}
@@ -209,13 +220,23 @@ export default function NewsDetailPage({ params }: { params: { id: string } }) {
                   <CardContent className="p-6">
                     <div className="flex items-start space-x-4">
                       <Avatar className="w-16 h-16">
-                        <AvatarImage src={article.author.avatar || "/placeholder.svg"} />
-                        <AvatarFallback>{article.author.name.charAt(0)}</AvatarFallback>
+                        <AvatarImage
+                          src={article.author.avatar || '/placeholder-2.webp'}
+                        />
+                        <AvatarFallback>
+                          {article.author.name.charAt(0)}
+                        </AvatarFallback>
                       </Avatar>
                       <div className="flex-1">
-                        <h4 className="text-lg font-semibold">{article.author.name}</h4>
-                        <p className="text-green-600 font-medium mb-2">{article.author.title}</p>
-                        <p className="text-muted-foreground">{article.author.bio}</p>
+                        <h4 className="text-lg font-semibold">
+                          {article.author.name}
+                        </h4>
+                        <p className="text-green-600 font-medium mb-2">
+                          {article.author.title}
+                        </p>
+                        <p className="text-muted-foreground">
+                          {article.author.bio}
+                        </p>
                       </div>
                     </div>
                   </CardContent>
@@ -231,7 +252,9 @@ export default function NewsDetailPage({ params }: { params: { id: string } }) {
               <SlideIn direction="right">
                 <Card>
                   <CardContent className="p-6">
-                    <h3 className="text-lg font-semibold mb-4">Thống kê thị trường</h3>
+                    <h3 className="text-lg font-semibold mb-4">
+                      Thống kê thị trường
+                    </h3>
                     <div className="space-y-4">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center space-x-2">
@@ -270,12 +293,18 @@ export default function NewsDetailPage({ params }: { params: { id: string } }) {
               <SlideIn direction="right" delay={0.2}>
                 <Card>
                   <CardContent className="p-6">
-                    <h3 className="text-lg font-semibold mb-4">Bài viết liên quan</h3>
+                    <h3 className="text-lg font-semibold mb-4">
+                      Bài viết liên quan
+                    </h3>
                     <div className="space-y-4">
                       {article.relatedArticles.map((related, index) => (
-                        <motion.div key={related.id} whileHover={{ x: 5 }} className="flex space-x-3 cursor-pointer">
+                        <motion.div
+                          key={related.id}
+                          whileHover={{ x: 5 }}
+                          className="flex space-x-3 cursor-pointer"
+                        >
                           <Image
-                            src={related.image || "/placeholder.svg"}
+                            src={related.image || '/placeholder-2.webp'}
                             alt={related.title}
                             width={80}
                             height={60}
@@ -287,7 +316,9 @@ export default function NewsDetailPage({ params }: { params: { id: string } }) {
                                 {related.title}
                               </h4>
                             </Link>
-                            <p className="text-xs text-muted-foreground mt-1">{related.date}</p>
+                            <p className="text-xs text-muted-foreground mt-1">
+                              {related.date}
+                            </p>
                           </div>
                         </motion.div>
                       ))}
@@ -300,9 +331,15 @@ export default function NewsDetailPage({ params }: { params: { id: string } }) {
               <SlideIn direction="right" delay={0.4}>
                 <Card className="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-950/20 dark:to-green-900/20">
                   <CardContent className="p-6 text-center">
-                    <h3 className="text-lg font-semibold mb-2">Nhận tin tức mới</h3>
-                    <p className="text-sm text-muted-foreground mb-4">Đăng ký để nhận thông tin BDS mới nhất</p>
-                    <Button className="w-full bg-green-600 hover:bg-green-700">Đăng ký ngay</Button>
+                    <h3 className="text-lg font-semibold mb-2">
+                      Nhận tin tức mới
+                    </h3>
+                    <p className="text-sm text-muted-foreground mb-4">
+                      Đăng ký để nhận thông tin BDS mới nhất
+                    </p>
+                    <Button className="w-full bg-green-600 hover:bg-green-700">
+                      Đăng ký ngay
+                    </Button>
                   </CardContent>
                 </Card>
               </SlideIn>
@@ -311,5 +348,5 @@ export default function NewsDetailPage({ params }: { params: { id: string } }) {
         </div>
       </div>
     </div>
-  )
+  );
 }

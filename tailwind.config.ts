@@ -1,7 +1,7 @@
 import type { Config } from 'tailwindcss';
 import animatePlugin from 'tailwindcss-animate';
-
-// all in fixtures is set to tailwind v3 as interims solutions
+// @ts-ignore
+import textshadowPlugin from 'tailwindcss-textshadow';
 
 const config: Config = {
   darkMode: ['class'],
@@ -14,55 +14,55 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: 'rgb(var(--background))',
-        foreground: 'rgb(var(--foreground))',
+        background: 'hsl(var(--background) / <alpha-value>)',
+        foreground: 'hsl(var(--foreground))',
         card: {
-          DEFAULT: 'rgb(var(--card))',
-          foreground: 'rgb(var(--card-foreground))',
+          DEFAULT: 'hsl(var(--card))',
+          foreground: 'hsl(var(--card-foreground))',
         },
         popover: {
-          DEFAULT: 'rgb(var(--popover))',
-          foreground: 'rgb(var(--popover-foreground))',
+          DEFAULT: 'hsl(var(--popover))',
+          foreground: 'hsl(var(--popover-foreground))',
         },
         primary: {
-          DEFAULT: 'rgb(var(--primary))',
-          foreground: 'rgb(var(--primary-foreground))',
+          DEFAULT: 'hsl(var(--primary))',
+          foreground: 'hsl(var(--primary-foreground))',
         },
         secondary: {
-          DEFAULT: 'rgb(var(--secondary))',
-          foreground: 'rgb(var(--secondary-foreground))',
+          DEFAULT: 'hsl(var(--secondary))',
+          foreground: 'hsl(var(--secondary-foreground))',
         },
         muted: {
-          DEFAULT: 'rgb(var(--muted))',
-          foreground: 'rgb(var(--muted-foreground))',
+          DEFAULT: 'hsl(var(--muted))',
+          foreground: 'hsl(var(--muted-foreground))',
         },
         accent: {
-          DEFAULT: 'rgb(var(--accent))',
-          foreground: 'rgb(var(--accent-foreground))',
+          DEFAULT: 'hsl(var(--accent))',
+          foreground: 'hsl(var(--accent-foreground))',
         },
         destructive: {
-          DEFAULT: 'rgb(var(--destructive))',
-          foreground: 'rgb(var(--destructive-foreground))',
+          DEFAULT: 'hsl(var(--destructive))',
+          foreground: 'hsl(var(--destructive-foreground))',
         },
-        border: 'rgb(var(--border))',
-        input: 'rgb(var(--input))',
-        ring: 'rgb(var(--ring))',
+        border: 'hsl(var(--border))',
+        input: 'hsl(var(--input))',
+        ring: 'hsl(var(--ring))',
         chart: {
-          '1': 'rgb(var(--chart-1))',
-          '2': 'rgb(var(--chart-2))',
-          '3': 'rgb(var(--chart-3))',
-          '4': 'rgb(var(--chart-4))',
-          '5': 'rgb(var(--chart-5))',
+          '1': 'hsl(var(--chart-1))',
+          '2': 'hsl(var(--chart-2))',
+          '3': 'hsl(var(--chart-3))',
+          '4': 'hsl(var(--chart-4))',
+          '5': 'hsl(var(--chart-5))',
         },
         sidebar: {
-          DEFAULT: 'rgb(var(--sidebar-background))',
-          foreground: 'rgb(var(--sidebar-foreground))',
-          primary: 'rgb(var(--sidebar-primary))',
-          'primary-foreground': 'rgb(var(--sidebar-primary-foreground))',
-          accent: 'rgb(var(--sidebar-accent))',
-          'accent-foreground': 'rgb(var(--sidebar-accent-foreground))',
-          border: 'rgb(var(--sidebar-border))',
-          ring: 'rgb(var(--sidebar-ring))',
+          DEFAULT: 'hsl(var(--sidebar-background))',
+          foreground: 'hsl(var(--sidebar-foreground))',
+          primary: 'hsl(var(--sidebar-primary))',
+          'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
+          accent: 'hsl(var(--sidebar-accent))',
+          'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
+          border: 'hsl(var(--sidebar-border))',
+          ring: 'hsl(var(--sidebar-ring))',
         },
       },
       borderRadius: {
@@ -70,22 +70,17 @@ const config: Config = {
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
       },
+      textShadow: {
+        soft: '2px 2px 6px rgb(36 37 47 / 20%)',
+      },
       keyframes: {
         'accordion-down': {
-          from: {
-            height: '0',
-          },
-          to: {
-            height: 'var(--radix-accordion-content-height)',
-          },
+          from: { height: '0' },
+          to: { height: 'var(--radix-accordion-content-height)' },
         },
         'accordion-up': {
-          from: {
-            height: 'var(--radix-accordion-content-height)',
-          },
-          to: {
-            height: '0',
-          },
+          from: { height: 'var(--radix-accordion-content-height)' },
+          to: { height: '0' },
         },
       },
       animation: {
@@ -94,6 +89,7 @@ const config: Config = {
       },
     },
   },
-  plugins: [animatePlugin],
+  plugins: [animatePlugin, textshadowPlugin],
 };
+
 export default config;
