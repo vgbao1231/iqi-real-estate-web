@@ -28,7 +28,6 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
-import Header from '@/components/layout/header';
 
 export default function InternationalPropertiesPage() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -246,8 +245,6 @@ export default function InternationalPropertiesPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <Header />
       {/* Header */}
       <section className="py-12 bg-gradient-to-r from-blue-400 to-blue-500 text-white">
         <div className="container mx-auto px-4">
