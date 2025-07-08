@@ -209,8 +209,8 @@ export default function TeamPage() {
           <div className="grid md:grid-cols-3 gap-8">
             {leadership.map((leader, index) => (
               <ScaleIn key={leader.id} delay={index * 0.2}>
-                <motion.div whileHover={{ y: -10 }}>
-                  <Card className="text-center h-full">
+                <motion.div whileHover={{ y: -10 }} className="h-full">
+                  <Card className="text-center h-full flex flex-col">
                     <CardHeader>
                       <motion.div whileHover={{ scale: 1.1 }}>
                         <Image
@@ -218,7 +218,7 @@ export default function TeamPage() {
                           alt={leader.name}
                           width={200}
                           height={200}
-                          className="rounded-full mx-auto mb-4 shadow-lg"
+                          className="rounded-full w-32 h-32 object-cover mx-auto mb-4 shadow-lg"
                         />
                       </motion.div>
                       <CardTitle className="text-xl">{leader.name}</CardTitle>
@@ -230,8 +230,8 @@ export default function TeamPage() {
                       </p>
                     </CardHeader>
 
-                    <CardContent>
-                      <p className="text-muted-foreground mb-4 text-sm leading-relaxed">
+                    <CardContent className="flex-1 flex flex-col">
+                      <p className="text-muted-foreground mb-4 text-sm leading-relaxed flex-1">
                         {leader.bio}
                       </p>
 
@@ -360,7 +360,7 @@ export default function TeamPage() {
                           alt={agent.name}
                           width={120}
                           height={120}
-                          className="rounded-full mx-auto mb-4 shadow-md"
+                          className="w-24 h-24 object-cover rounded-full mx-auto mb-4 shadow-md"
                         />
                       </motion.div>
                       <CardTitle className="text-lg">{agent.name}</CardTitle>

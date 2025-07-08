@@ -13,18 +13,21 @@ import {
   TreePalm,
   TrendingUp,
   Users,
+  Menu,
 } from 'lucide-react';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import clsx from 'clsx';
+import { FadeIn } from '../common/animations';
 
 export default function Header() {
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isDark, setIsDark] = useState(true);
-
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
   const navMenus = [
     {
       label: 'Giới thiệu',
@@ -106,6 +109,26 @@ export default function Header() {
     },
   ];
 
+  // Đóng menu khi click ra ngoài
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        mobileMenuRef.current &&
+        !mobileMenuRef.current.contains(event.target as Node)
+      ) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    if (isMobileMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isMobileMenuOpen]);
+
   // Header scroll behavior
   useEffect(() => {
     const handleScroll = () => {
@@ -115,6 +138,7 @@ export default function Header() {
         setIsHeaderVisible(true);
       } else if (currentScrollY > lastScrollY && currentScrollY > 100) {
         setIsHeaderVisible(false);
+        setIsMobileMenuOpen(false);
       }
 
       setLastScrollY(currentScrollY);
@@ -142,6 +166,16 @@ export default function Header() {
     >
       <div className="container mx-auto px-8">
         <div className="flex h-16 items-center justify-between">
+          {/* Hamburger menu for mobile */}
+          <div className="lg:hidden">
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="focus:outline-none"
+            >
+              <Menu />
+            </button>
+          </div>
+
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
             <motion.div
@@ -176,11 +210,11 @@ export default function Header() {
                   <button className="flex items-center space-x-1 group/menu hover:text-orange-500 transition-all duration-300">
                     <span className="relative">
                       {menu.label}
-                      <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-orange-500 to-orange-600 transition-all duration-300 group-hover/menu:w-full"></div>
+                      <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r !from-orange-500 !to-orange-600 transition-all duration-300 group-hover/menu:w-full"></div>
                     </span>
                     <ChevronDown className="w-4 h-4 transition-all duration-300 group-hover/menu:rotate-180" />
                   </button>
-                  <div className="absolute top-full left-0 mt-2 w-72 bg-background border rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                  <div className="absolute top-full left-0 mt-2 w-72 bg-card/95 border rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity duration-300 text-foreground">
                     <div className="py-2">
                       {menu.items.map((item) => (
                         <Link
@@ -191,13 +225,13 @@ export default function Header() {
                           <div className="px-4 py-3">
                             <div className="flex items-start gap-2">
                               {item.icon}
-                              <p className="font-medium text-sm text-gray-800 group-hover/item:text-orange-500 relative">
+                              <p className="font-medium text-sm group-hover/item:text-orange-500 relative">
                                 {item.label}
                                 {/* Underline hiệu ứng cho item.label */}
                                 <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-orange-500 to-orange-600 transition-all duration-300 group-hover/item:w-full"></div>
                               </p>
                             </div>
-                            <p className="text-xs text-gray-500">
+                            <p className="text-xs text-muted-foreground">
                               {item.description}
                             </p>
                           </div>
@@ -213,7 +247,7 @@ export default function Header() {
                   className="hover:text-orange-500 transition-all duration-300 relative group"
                 >
                   {menu.label}
-                  <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-orange-500 to-orange-600 transition-all group-hover:w-full duration-300"></div>
+                  <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r !from-orange-500 !to-orange-600 transition-all group-hover:w-full duration-300"></div>
                 </Link>
               )
             )}
@@ -262,6 +296,59 @@ export default function Header() {
           </div>
         </div>
       </div>
+      {/* Mobile menu */}
+      <AnimatePresence>
+        {isMobileMenuOpen && isHeaderVisible && (
+          <motion.div
+            ref={mobileMenuRef}
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.25 }}
+            className="lg:hidden bg-[#262626]/60 border-t border-border/80 shadow-xl rounded-b-xl overflow-hidden backdrop-blur-md"
+          >
+            <div className="flex flex-col space-y-4 px-5 py-4">
+              {navMenus.map((menu, index) => (
+                <FadeIn key={menu.label} delay={index * 0.1} direction="up">
+                  {menu.items ? (
+                    <div className="mb-1">
+                      <p className="font-semibold text-lg text-white">
+                        {menu.label}
+                      </p>
+                      <div className="flex flex-col ml-4 mt-1 space-y-2">
+                        {menu.items.map((item, idx) => (
+                          <FadeIn
+                            key={item.href}
+                            delay={0.1 + idx * 0.05}
+                            direction="up"
+                          >
+                            <Link
+                              href={item.href}
+                              className="text-lg text-gray-300 hover:text-orange-400 transition-colors duration-300 flex items-center gap-2 pl-1"
+                              onClick={() => setIsMobileMenuOpen(false)}
+                            >
+                              {item.icon}
+                              {item.label}
+                            </Link>
+                          </FadeIn>
+                        ))}
+                      </div>
+                    </div>
+                  ) : (
+                    <Link
+                      href="/careers"
+                      className="font-semibold text-lg text-white hover:text-orange-400 transition-colors duration-200"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      {menu.label}
+                    </Link>
+                  )}
+                </FadeIn>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.header>
   );
 }

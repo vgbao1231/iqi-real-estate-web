@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from '@/components/common/theme-provider';
+import { ReactQueryProvider } from '@/components/providers/react-query-provider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -40,7 +41,7 @@ export default function RootLayout({
           disableTransitionOnChange={false}
           storageKey="iqi-theme"
         >
-          {children}
+          <ReactQueryProvider>{children}</ReactQueryProvider>
         </ThemeProvider>
       </body>
     </html>

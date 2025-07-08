@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   Select,
   SelectContent,
@@ -12,394 +11,342 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { FadeIn, ScaleIn } from '@/components/common/animations';
+import { FadeIn, SlideIn, ScaleIn } from '@/components/common/animations';
 import {
-  ArrowLeft,
-  MapPin,
-  CheckCircle,
-  Building,
-  Calendar,
   Search,
-  Filter,
+  MapPin,
+  Bed,
+  Square,
+  Phone,
+  Mail,
+  Heart,
+  Share2,
+  Star,
+  Building,
   ChevronDown,
-  ChevronLeft,
-  ChevronRight,
+  Filter,
+  Bath,
 } from 'lucide-react';
-import Link from 'next/link';
 import Image from 'next/image';
+import Link from 'next/link';
+import { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
-import { useState, useMemo } from 'react';
+import { Combobox } from '@/components/ui/combobox';
+import { useGetProvinces } from '@/hooks/use-get-provinces';
+import { AreaFilter } from '@/components/ui/area-filter';
+import { PriceFilter } from '@/components/ui/price-filter';
 
-// Properties data organized by city
-type CityKey = 'hcmc' | 'hanoi' | 'danang' | 'nhatrang' | 'cantho';
-
-type Property = {
-  id: number;
-  name: string;
-  location: string;
-  type: string;
-  price: string;
-  priceValue: number;
-  bedrooms: string;
-  area: string;
-  features: string[];
-  image: string;
-  status: string;
-  completion: string;
-  developer: string;
-};
-
-const propertiesByCity: Record<CityKey, Property[]> = {
-  hcmc: [
-    {
-      id: 1,
-      name: 'Vinhomes Grand Park',
-      location: 'Quận 9, TP.HCM',
-      type: 'Căn hộ cao cấp',
-      price: 'Từ 3.2 tỷ',
-      priceValue: 3200000000,
-      bedrooms: '1-4 phòng ngủ',
-      area: '50-120 m²',
-      features: [
-        'Công viên 36ha',
-        'Trường học liên cấp',
-        'Bệnh viện',
-        'Shopping mall',
-      ],
-      image: '/placeholder-2.webp?height=300&width=400',
-      status: 'Đang bán',
-      completion: 'Q4/2024',
-      developer: 'Vingroup',
-    },
-    {
-      id: 2,
-      name: 'Masteri Thảo Điền',
-      location: 'Quận 2, TP.HCM',
-      type: 'Căn hộ view sông',
-      price: 'Từ 4.5 tỷ',
-      priceValue: 4500000000,
-      bedrooms: '1-3 phòng ngủ',
-      area: '45-95 m²',
-      features: ['View sông Sài Gòn', 'Sky bar', 'Hồ bơi tầng 5', 'Gym & Spa'],
-      image: '/placeholder-2.webp?height=300&width=400',
-      status: 'Sắp bàn giao',
-      completion: 'Q1/2025',
-      developer: 'Masterise Homes',
-    },
-    {
-      id: 3,
-      name: 'The Metropole Thủ Thiêm',
-      location: 'Quận 2, TP.HCM',
-      type: 'Căn hộ hạng sang',
-      price: 'Từ 8.5 tỷ',
-      priceValue: 8500000000,
-      bedrooms: '2-4 phòng ngủ',
-      area: '80-180 m²',
-      features: [
-        'Tầm nhìn 360°',
-        'Concierge 24/7',
-        'Wine cellar',
-        'Private elevator',
-      ],
-      image: '/placeholder-2.webp?height=300&width=400',
-      status: 'Đang bán',
-      completion: 'Q2/2025',
-      developer: 'SonKim Land',
-    },
-    {
-      id: 13,
-      name: 'Saigon Royal',
-      location: 'Quận 4, TP.HCM',
-      type: 'Căn hộ cao cấp',
-      price: 'Từ 5.8 tỷ',
-      priceValue: 5800000000,
-      bedrooms: '2-3 phòng ngủ',
-      area: '70-110 m²',
-      features: [
-        'View sông Sài Gòn',
-        'Rooftop garden',
-        'Business center',
-        'Valet parking',
-      ],
-      image: '/placeholder-2.webp?height=300&width=400',
-      status: 'Đang bán',
-      completion: 'Q3/2024',
-      developer: 'Novaland',
-    },
-  ],
-  hanoi: [
-    {
-      id: 4,
-      name: 'Vinhomes Smart City',
-      location: 'Nam Từ Liêm, Hà Nội',
-      type: 'Căn hộ thông minh',
-      price: 'Từ 2.8 tỷ',
-      priceValue: 2800000000,
-      bedrooms: '1-3 phòng ngủ',
-      area: '45-110 m²',
-      features: [
-        'Smart home',
-        'Công viên Nhật Bản',
-        'Trường quốc tế',
-        'Bệnh viện Vinmec',
-      ],
-      image: '/placeholder-2.webp?height=300&width=400',
-      status: 'Đang bán',
-      completion: 'Q3/2024',
-      developer: 'Vingroup',
-    },
-    {
-      id: 5,
-      name: 'The Manor Central Park',
-      location: 'Hoàng Mai, Hà Nội',
-      type: 'Căn hộ cao cấp',
-      price: 'Từ 3.5 tỷ',
-      priceValue: 3500000000,
-      bedrooms: '2-4 phòng ngủ',
-      area: '70-150 m²',
-      features: ['Công viên trung tâm', 'Clubhouse', 'Hồ bơi 4 mùa', 'Khu BBQ'],
-      image: '/placeholder-2.webp?height=300&width=400',
-      status: 'Sắp mở bán',
-      completion: 'Q4/2025',
-      developer: 'Bitexco Group',
-    },
-    {
-      id: 6,
-      name: 'Sunshine Diamond River',
-      location: 'Ciputra, Hà Nội',
-      type: 'Căn hộ view sông',
-      price: 'Từ 4.2 tỷ',
-      priceValue: 4200000000,
-      bedrooms: '2-3 phòng ngủ',
-      area: '65-120 m²',
-      features: [
-        'View sông Hồng',
-        'Marina',
-        'Golf course',
-        'International school',
-      ],
-      image: '/placeholder-2.webp?height=300&width=400',
-      status: 'Đang bán',
-      completion: 'Q1/2025',
-      developer: 'Sunshine Group',
-    },
-  ],
-  danang: [
-    {
-      id: 7,
-      name: 'Monarchy Đà Nẵng',
-      location: 'Ngũ Hành Sơn, Đà Nẵng',
-      type: 'Căn hộ biển',
-      price: 'Từ 2.9 tỷ',
-      priceValue: 2900000000,
-      bedrooms: '1-3 phòng ngủ',
-      area: '50-100 m²',
-      features: [
-        'View biển',
-        'Bãi biển riêng',
-        'Resort facilities',
-        'Golf course',
-      ],
-      image: '/placeholder-2.webp?height=300&width=400',
-      status: 'Đang bán',
-      completion: 'Q2/2024',
-      developer: 'Alphanam Group',
-    },
-    {
-      id: 8,
-      name: 'Premier Sky Residences',
-      location: 'Hải Châu, Đà Nẵng',
-      type: 'Căn hộ cao cấp',
-      price: 'Từ 3.8 tỷ',
-      priceValue: 3800000000,
-      bedrooms: '2-4 phòng ngủ',
-      area: '75-150 m²',
-      features: ['Sky bar', 'Infinity pool', 'Gym & Spa', 'Shopping center'],
-      image: '/placeholder-2.webp?height=300&width=400',
-      status: 'Sắp mở bán',
-      completion: 'Q3/2025',
-      developer: 'Premier Group',
-    },
-  ],
-  nhatrang: [
-    {
-      id: 9,
-      name: 'Scenia Bay Nha Trang',
-      location: 'Vĩnh Nguyên, Nha Trang',
-      type: 'Condotel',
-      price: 'Từ 1.8 tỷ',
-      priceValue: 1800000000,
-      bedrooms: 'Studio-2 phòng ngủ',
-      area: '35-80 m²',
-      features: [
-        'Bãi biển Nha Trang',
-        'Water park',
-        'Casino',
-        'Convention center',
-      ],
-      image: '/placeholder-2.webp?height=300&width=400',
-      status: 'Đang bán',
-      completion: 'Q1/2024',
-      developer: 'Danh Khôi Group',
-    },
-    {
-      id: 10,
-      name: 'Vinpearl Condotel Nha Trang',
-      location: 'Vĩnh Hải, Nha Trang',
-      type: 'Condotel nghỉ dưỡng',
-      price: 'Từ 2.5 tỷ',
-      priceValue: 2500000000,
-      bedrooms: '1-2 phòng ngủ',
-      area: '45-90 m²',
-      features: ['Vinpearl Land', 'Aquarium', 'Cable car', 'Beach club'],
-      image: '/placeholder-2.webp?height=300&width=400',
-      status: 'Đang bán',
-      completion: 'Đã bàn giao',
-      developer: 'Vingroup',
-    },
-  ],
-  cantho: [
-    {
-      id: 11,
-      name: 'Ecopark Cần Thơ',
-      location: 'Ninh Kiều, Cần Thơ',
-      type: 'Căn hộ sinh thái',
-      price: 'Từ 1.5 tỷ',
-      priceValue: 1500000000,
-      bedrooms: '2-3 phòng ngủ',
-      area: '60-100 m²',
-      features: [
-        'Công viên sinh thái',
-        'Sông Hậu',
-        'Chợ nổi',
-        'Trung tâm thương mại',
-      ],
-      image: '/placeholder-2.webp?height=300&width=400',
-      status: 'Sắp mở bán',
-      completion: 'Q4/2024',
-      developer: 'Ecopark Group',
-    },
-    {
-      id: 12,
-      name: 'Vincom Plaza Cần Thơ',
-      location: 'Xuân Khánh, Cần Thơ',
-      type: 'Căn hộ thương mại',
-      price: 'Từ 2.2 tỷ',
-      priceValue: 2200000000,
-      bedrooms: '1-3 phòng ngủ',
-      area: '50-120 m²',
-      features: ['Vincom Mega Mall', 'Cinema', 'Food court', 'Gym & Spa'],
-      image: '/placeholder-2.webp?height=300&width=400',
-      status: 'Đang bán',
-      completion: 'Q2/2025',
-      developer: 'Vingroup',
-    },
-  ],
-};
-
-const cities = [
+// Properties data
+const properties = [
   {
-    value: 'hcmc',
-    label: 'TP. Hồ Chí Minh',
-    count: propertiesByCity.hcmc.length,
-  },
-  { value: 'hanoi', label: 'Hà Nội', count: propertiesByCity.hanoi.length },
-  {
-    value: 'danang',
-    label: 'Đà Nẵng',
-    count: propertiesByCity.danang.length,
+    id: 1,
+    name: 'Vinhomes Grand Park',
+    location: 'TP.Thủ Đức, TP.HCM',
+    city: 'thanh_pho_ho_chi_minh',
+    district: 'thanh_pho_thu_duc',
+    address: 'Nguyễn Xiển, Long Thạnh Mỹ, TP.Thủ Đức, TP.HCM',
+    price: 'Từ 3.2 tỷ',
+    priceValue: 3200000000,
+    pricePerSqm: '45 triệu/m²',
+    bedrooms: 2,
+    bathrooms: 2,
+    area: 75,
+    type: 'Căn hộ cao cấp',
+    status: 'ready',
+    developer: 'Vingroup',
+    rating: 4.8,
+    reviews: 234,
+    images: ['/placeholder-2.webp'],
+    features: ['Công viên 36ha', 'Trường học liên cấp', 'Bệnh viện Vinmec'],
+    description:
+      'Khu đô thị sinh thái thông minh với không gian xanh rộng lớn, tiện ích đầy đủ và vị trí thuận lợi.',
+    agent: {
+      name: 'Nguyễn Văn An',
+      phone: '0901 234 567',
+      email: 'an.nguyen@iqi.com',
+      avatar: '/placeholder-2.webp',
+    },
   },
   {
-    value: 'nhatrang',
-    label: 'Nha Trang',
-    count: propertiesByCity.nhatrang.length,
+    id: 2,
+    name: 'The Empire Vinhomes Ocean Park 2',
+    location: 'Gia Lâm, Hà Nội',
+    city: 'thanh_pho_ha_noi',
+    district: 'huyen_gia_lam',
+    address: 'Lý Thánh Tông, Gia Lâm, Hà Nội',
+    price: 'Từ 4.0 tỷ',
+    priceValue: 4000000000,
+    pricePerSqm: '50 triệu/m²',
+    bedrooms: 4,
+    bathrooms: 3,
+    area: 120,
+    type: 'Biệt thự',
+    status: 'handover',
+    developer: 'Vingroup',
+    rating: 4.7,
+    reviews: 198,
+    images: ['/placeholder-2.webp'],
+    features: ['Biển hồ nhân tạo', 'Công viên nước', 'Tổ hợp tiện ích'],
+    description:
+      'Tổ hợp đô thị biển hồ cao cấp với không gian sống xanh và chuỗi tiện ích đẳng cấp quốc tế.',
+    agent: {
+      name: 'Trần Thị Bình',
+      phone: '0902 345 678',
+      email: 'binh.tran@iqi.com',
+      avatar: '/placeholder-2.webp',
+    },
   },
   {
-    value: 'cantho',
-    label: 'Cần Thơ',
-    count: propertiesByCity.cantho.length,
+    id: 3,
+    name: 'Sun Grand City An Thới',
+    location: 'Phú Quốc, Kiên Giang',
+    city: 'tinh_kien_giang',
+    district: 'thanh_pho_phu_quoc',
+    address: 'Thị trấn An Thới, Phú Quốc, Kiên Giang',
+    price: 'Từ 6.5 tỷ',
+    priceValue: 6500000000,
+    pricePerSqm: '70 triệu/m²',
+    bedrooms: 3,
+    bathrooms: 3,
+    area: 90,
+    type: 'Shophouse',
+    status: 'selling',
+    developer: 'Sun Group',
+    rating: 4.9,
+    reviews: 145,
+    images: ['/placeholder-2.webp'],
+    features: ['Phố thương mại', 'Gần biển', 'Hạ tầng đồng bộ'],
+    description:
+      'Khu phố thương mại hiện đại, vị trí đắc địa gần biển, tiềm năng khai thác kinh doanh du lịch.',
+    agent: {
+      name: 'Lê Minh Châu',
+      phone: '0903 456 789',
+      email: 'chau.le@iqi.com',
+      avatar: '/placeholder-2.webp',
+    },
   },
-];
-
-const priceRanges = [
-  { value: 'all', label: 'Tất cả mức giá' },
-  { value: 'under2', label: 'Dưới 2 tỷ' },
-  { value: '2to4', label: '2 - 4 tỷ' },
-  { value: '4to6', label: '4 - 6 tỷ' },
-  { value: 'above6', label: 'Trên 6 tỷ' },
-];
-
-const propertyTypes = [
-  { value: 'all', label: 'Tất cả loại hình' },
-  { value: 'apartment', label: 'Căn hộ' },
-  { value: 'villa', label: 'Biệt thự' },
-  { value: 'condotel', label: 'Condotel' },
+  {
+    id: 4,
+    name: 'Eco Green Saigon',
+    location: 'Quận 7, TP.HCM',
+    city: 'thanh_pho_ho_chi_minh',
+    district: 'quan_7',
+    address: 'Nguyễn Văn Linh, Quận 7, TP.HCM',
+    price: 'Từ 3.5 tỷ',
+    priceValue: 3500000000,
+    pricePerSqm: '48 triệu/m²',
+    bedrooms: 2,
+    bathrooms: 2,
+    area: 80,
+    type: 'Căn hộ cao cấp',
+    status: 'ready',
+    developer: 'Xuân Mai Corp',
+    rating: 4.6,
+    reviews: 176,
+    images: ['/placeholder-2.webp'],
+    features: ['Công viên nội khu', 'Trung tâm thương mại', 'Hồ bơi'],
+    description:
+      'Dự án cao cấp với thiết kế xanh, nằm gần trung tâm và kết nối thuận tiện đến các quận lân cận.',
+    agent: {
+      name: 'Phạm Văn Đức',
+      phone: '0904 567 890',
+      email: 'duc.pham@iqi.com',
+      avatar: '/placeholder-2.webp',
+    },
+  },
+  {
+    id: 5,
+    name: 'Lạc Hồng Lotus',
+    location: 'TP.Bắc Ninh, Bắc Ninh',
+    city: 'tinh_bac_ninh',
+    district: 'thanh_pho_bac_ninh',
+    address: 'Phường Võ Cường, TP.Bắc Ninh, Bắc Ninh',
+    price: 'Từ 1.9 tỷ',
+    priceValue: 1900000000,
+    pricePerSqm: '30 triệu/m²',
+    bedrooms: 1,
+    bathrooms: 1,
+    area: 60,
+    type: 'Căn hộ',
+    status: 'upcoming',
+    developer: 'Lạc Hồng Group',
+    rating: 4.3,
+    reviews: 89,
+    images: ['/placeholder-2.webp'],
+    features: ['Gần khu công nghiệp', 'Trường học', 'Chợ dân sinh'],
+    description:
+      'Dự án hướng đến cư dân trẻ làm việc tại các khu công nghiệp Bắc Ninh với giá hợp lý và tiện ích đầy đủ.',
+    agent: {
+      name: 'Đào Ngọc Minh',
+      phone: '0912 456 789',
+      email: 'minh.dao@iqi.com',
+      avatar: '/placeholder-2.webp',
+    },
+  },
 ];
 
 export default function VietnamPropertiesPage() {
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedPriceRange, setPriceRange] = useState('all');
+  const [selectedCity, setSelectedCity] = useState('all');
+  const [selectedDistrict, setSelectedDistrict] = useState('all');
+  const [priceFrom, setPriceFrom] = useState('');
+  const [priceTo, setPriceTo] = useState('');
+  const [areaFrom, setAreaFrom] = useState('');
+  const [areaTo, setAreaTo] = useState('');
+  const [selectedBedrooms, setSelectedBedrooms] = useState('all');
+  const [selectedBathrooms, setSelectedBathrooms] = useState('all');
   const [selectedType, setSelectedType] = useState('all');
+  const [selectedStatus, setSelectedStatus] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
-  const [showFilters, setShowFilters] = useState(false);
-  const [activeTab, setActiveTab] = useState<CityKey>('hcmc');
+  const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
   const itemsPerPage = 6;
+  const { data = [] } = useGetProvinces();
 
-  // Get current city properties
-  const currentProperties = useMemo(
-    () => propertiesByCity[activeTab] || [],
-    [activeTab]
-  );
+  // Provinces and districts data
+  const provinces = [
+    { value: 'all', label: 'Tất cả thành phố' },
+    ...data.map((p: { codename: string; name: string }) => ({
+      value: p.codename,
+      label: p.name,
+    })),
+  ];
+
+  const districts = {
+    all: [{ value: 'all', label: 'Tất cả khu vực' }],
+    ...Object.fromEntries(
+      data.map(
+        (p: {
+          codename: string;
+          name: string;
+          districts: { codename: string; name: string }[];
+        }) => [
+          p.codename,
+          [
+            { value: 'all', label: 'Tất cả quận/huyện' },
+            ...p.districts.map((d: { codename: string; name: string }) => ({
+              value: d.codename,
+              label: d.name,
+            })),
+          ],
+        ]
+      )
+    ),
+  };
+
+  const bedroomOptions = [
+    { value: 'all', label: 'Tất cả' },
+    { value: '1', label: '1 phòng' },
+    { value: '2', label: '2 phòng' },
+    { value: '3', label: '3 phòng' },
+    { value: '4+', label: '4+ phòng' },
+  ];
+
+  const bathroomOptions = [
+    { value: 'all', label: 'Tất cả' },
+    { value: '1', label: '1 phòng' },
+    { value: '2', label: '2 phòng' },
+    { value: '3', label: '3 phòng' },
+    { value: '4+', label: '4+ phòng' },
+  ];
+
+  const propertyTypes = [
+    { value: 'all', label: 'Tất cả loại hình' },
+    { value: 'apartment', label: 'Căn hộ' },
+    { value: 'villa', label: 'Villa' },
+    { value: 'townhouse', label: 'Nhà phố' },
+    { value: 'office', label: 'Văn phòng' },
+  ];
+
+  const statusOptions = [
+    { value: 'all', label: 'Tất cả trạng thái' },
+    { value: 'selling', label: 'Đang bán' },
+    { value: 'ready', label: 'Sẵn sàng' },
+    { value: 'upcoming', label: 'Sắp mở bán' },
+    { value: 'handover', label: 'Sắp bàn giao' },
+  ];
 
   // Filter logic
   const filteredProperties = useMemo(() => {
-    return currentProperties.filter((property) => {
+    return properties.filter((property) => {
       const matchesSearch =
         property.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         property.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        property.address.toLowerCase().includes(searchTerm.toLowerCase()) ||
         property.developer.toLowerCase().includes(searchTerm.toLowerCase());
 
+      const matchesCity =
+        selectedCity === 'all' || property.city === selectedCity;
+      const matchesDistrict =
+        selectedDistrict === 'all' || property.district === selectedDistrict;
+
       const matchesPrice =
-        selectedPriceRange === 'all' ||
-        (() => {
-          switch (selectedPriceRange) {
-            case 'under2':
-              return property.priceValue < 2000000000;
-            case '2to4':
-              return (
-                property.priceValue >= 2000000000 &&
-                property.priceValue < 4000000000
-              );
-            case '4to6':
-              return (
-                property.priceValue >= 4000000000 &&
-                property.priceValue < 6000000000
-              );
-            case 'above6':
-              return property.priceValue >= 6000000000;
-            default:
-              return true;
-          }
-        })();
+        (!priceFrom ||
+          property.priceValue >= Number.parseFloat(priceFrom) * 1000000000) &&
+        (!priceTo ||
+          property.priceValue <= Number.parseFloat(priceTo) * 1000000000);
+
+      const matchesArea =
+        (!areaFrom || property.area >= Number.parseFloat(areaFrom)) &&
+        (!areaTo || property.area <= Number.parseFloat(areaTo));
+
+      const matchesBedrooms =
+        selectedBedrooms === 'all' ||
+        (selectedBedrooms === '4+'
+          ? property.bedrooms >= 4
+          : property.bedrooms === Number.parseInt(selectedBedrooms));
+
+      const matchesBathrooms =
+        selectedBathrooms === 'all' ||
+        (selectedBathrooms === '4+'
+          ? property.bathrooms >= 4
+          : property.bathrooms === Number.parseInt(selectedBathrooms));
 
       const matchesType =
         selectedType === 'all' ||
+        property.type.toLowerCase().includes(selectedType.toLowerCase());
+
+      const matchesStatus =
+        selectedStatus === 'all' ||
         (() => {
-          switch (selectedType) {
-            case 'apartment':
-              return property.type.toLowerCase().includes('căn hộ');
-            case 'villa':
-              return property.type.toLowerCase().includes('biệt thự');
-            case 'condotel':
-              return property.type.toLowerCase().includes('condotel');
+          switch (selectedStatus) {
+            case 'selling':
+              return property.status === 'Đang bán';
+            case 'ready':
+              return property.status === 'Sẵn sàng';
+            case 'upcoming':
+              return property.status === 'Sắp mở bán';
+            case 'handover':
+              return property.status === 'Sắp bàn giao';
             default:
               return true;
           }
         })();
 
-      return matchesSearch && matchesPrice && matchesType;
+      return (
+        matchesSearch &&
+        matchesCity &&
+        matchesDistrict &&
+        matchesPrice &&
+        matchesArea &&
+        matchesBedrooms &&
+        matchesBathrooms &&
+        matchesType &&
+        matchesStatus
+      );
     });
-  }, [currentProperties, searchTerm, selectedPriceRange, selectedType]);
+  }, [
+    searchTerm,
+    selectedCity,
+    selectedDistrict,
+    priceFrom,
+    priceTo,
+    areaFrom,
+    areaTo,
+    selectedBedrooms,
+    selectedBathrooms,
+    selectedType,
+    selectedStatus,
+  ]);
 
   // Pagination logic
   const totalPages = Math.ceil(filteredProperties.length / itemsPerPage);
@@ -409,76 +356,76 @@ export default function VietnamPropertiesPage() {
     startIndex + itemsPerPage
   );
 
-  const marketInsights = [
-    {
-      city: 'TP. Hồ Chí Minh',
-      growth: '+8.5%',
-      avgPrice: '65 triệu/m²',
-      hotDistricts: ['Quận 1', 'Quận 2', 'Quận 7', 'Quận 9'],
-      trend: 'Tăng',
-      projects: propertiesByCity.hcmc.length,
-    },
-    {
-      city: 'Hà Nội',
-      growth: '+6.2%',
-      avgPrice: '45 triệu/m²',
-      hotDistricts: ['Ba Đình', 'Hoàn Kiếm', 'Cầu Giấy', 'Nam Từ Liêm'],
-      trend: 'Ổn định',
-      projects: propertiesByCity.hanoi.length,
-    },
-    {
-      city: 'Đà Nẵng',
-      growth: '+7.8%',
-      avgPrice: '35 triệu/m²',
-      hotDistricts: ['Hải Châu', 'Thanh Khê', 'Ngũ Hành Sơn', 'Sơn Trà'],
-      trend: 'Tăng',
-      projects: propertiesByCity.danang.length,
-    },
-    {
-      city: 'Nha Trang',
-      growth: '+9.2%',
-      avgPrice: '28 triệu/m²',
-      hotDistricts: ['Vĩnh Hải', 'Vĩnh Nguyên', 'Phước Long', 'Lộc Thọ'],
-      trend: 'Tăng mạnh',
-      projects: propertiesByCity.nhatrang.length,
-    },
-  ];
+  // Reset district when city changes
+  const handleCityChange = (city: string) => {
+    setSelectedCity(city);
+    setSelectedDistrict('all');
+    setCurrentPage(1);
+  };
 
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <section className="py-12 bg-gradient-to-r bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300">
+      <section className="py-12 bg-gradient-to-r from-orange-400 to-orange-600 text-white">
         <div className="container mx-auto px-4">
           <FadeIn>
-            <Link
-              href="/"
-              className="inline-flex items-center text-blue-600 hover:text-blue-700 mb-6"
-            >
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Quay lại trang chủ
-            </Link>
-            <Badge className="mb-4 bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
-              BẤT ĐỘNG SẢN VIỆT NAM
-            </Badge>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Bất động sản Việt Nam
-            </h1>
-            <p className="text-xl text-muted-foreground max-w-3xl">
-              Khám phá những dự án bất động sản cao cấp tại các thành phố lớn
-              của Việt Nam với vị trí đắc địa, tiện ích hoàn hảo và chất lượng
-              vượt trội.
-            </p>
+            <div className="text-center">
+              <h1 className="text-4xl md:text-5xl font-bold mb-4">
+                Bất động sản TP. Hồ Chí Minh
+              </h1>
+              <p className="text-xl opacity-90 mb-8">
+                Khám phá những dự án bất động sản hàng đầu tại thành phố năng
+                động nhất Việt Nam
+              </p>
+              <div className="flex items-center justify-center space-x-8 text-sm">
+                <div className="flex items-center space-x-2">
+                  <Building className="w-5 h-5" />
+                  <span>{properties.length} dự án</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <MapPin className="w-5 h-5" />
+                  <span>24 quận huyện</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Star className="w-5 h-5" />
+                  <span>Đánh giá 4.6/5</span>
+                </div>
+              </div>
+            </div>
           </FadeIn>
         </div>
       </section>
 
-      {/* Search and Filter Section */}
-      <section className="py-8 bg-muted/30">
+      {/* Search and Filter */}
+      <section className="py-10 px-6">
         <div className="container mx-auto px-4">
           <FadeIn>
-            <div className="bg-white dark:bg-gray-900 rounded-lg p-6 shadow-sm">
-              {/* Search Bar */}
+            <div className="bg-card rounded-lg shadow-sm">
+              {/* Basic Filters */}
               <div className="flex flex-col lg:flex-row gap-4 mb-4">
+                <div>
+                  <Combobox
+                    options={provinces}
+                    value={selectedCity}
+                    onValueChange={handleCityChange}
+                    placeholder="Chọn thành phố"
+                    searchPlaceholder="Tìm thành phố..."
+                    emptyText="Không tìm thấy thành phố"
+                  />
+                </div>
+                <div>
+                  <Combobox
+                    options={
+                      districts[selectedCity as keyof typeof districts] ||
+                      districts.all
+                    }
+                    value={selectedDistrict}
+                    onValueChange={setSelectedDistrict}
+                    placeholder="Chọn khu vực"
+                    searchPlaceholder="Tìm quận/huyện..."
+                    emptyText="Không tìm thấy khu vực"
+                  />
+                </div>
                 <div className="flex-1">
                   <div className="relative">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
@@ -492,64 +439,102 @@ export default function VietnamPropertiesPage() {
                 </div>
                 <Button
                   variant="outline"
-                  onClick={() => setShowFilters(!showFilters)}
+                  onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
                   className="lg:w-auto"
                 >
                   <Filter className="w-4 h-4 mr-2" />
-                  Bộ lọc
+                  Lọc nâng cao
                   <ChevronDown
-                    className={`w-4 h-4 ml-2 transition-transform ${showFilters ? 'rotate-180' : ''}`}
+                    className={`w-4 h-4 ml-2 transition-transform ${showAdvancedFilters ? 'rotate-180' : ''}`}
                   />
                 </Button>
               </div>
 
-              {/* Filters */}
-              {showFilters && (
+              {/* Advanced Filters */}
+              {showAdvancedFilters && (
                 <motion.div
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: 'auto' }}
                   exit={{ opacity: 0, height: 0 }}
-                  className="grid md:grid-cols-2 gap-4 pt-4 border-t"
+                  className="space-y-4 pt-4 border-t"
                 >
-                  <div>
-                    <label className="text-sm font-medium mb-2 block">
-                      Mức giá
-                    </label>
-                    <Select
-                      value={selectedPriceRange}
-                      onValueChange={setPriceRange}
-                    >
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {priceRanges.map((range) => (
-                          <SelectItem key={range.value} value={range.value}>
-                            {range.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium mb-2 block">
-                      Loại hình
-                    </label>
-                    <Select
-                      value={selectedType}
-                      onValueChange={setSelectedType}
-                    >
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {propertyTypes.map((type) => (
-                          <SelectItem key={type.value} value={type.value}>
-                            {type.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                  <div className="flex flex-wrap gap-4 mb-4">
+                    {[
+                      {
+                        label: 'Số phòng ngủ',
+                        value: selectedBedrooms,
+                        onChange: setSelectedBedrooms,
+                        options: bedroomOptions,
+                        placeholder: 'Chọn số phòng ngủ',
+                      },
+                      {
+                        label: 'Số phòng tắm',
+                        value: selectedBathrooms,
+                        onChange: setSelectedBathrooms,
+                        options: bathroomOptions,
+                        placeholder: 'Chọn số phòng tắm',
+                      },
+                      {
+                        label: 'Loại hình',
+                        value: selectedType,
+                        onChange: setSelectedType,
+                        options: propertyTypes,
+                        placeholder: 'Chọn loại hình',
+                      },
+                      {
+                        label: 'Trạng thái',
+                        value: selectedStatus,
+                        onChange: setSelectedStatus,
+                        options: statusOptions,
+                        placeholder: 'Chọn trạng thái',
+                      },
+                    ].map((filter) => (
+                      <div key={filter.label} className="flex-1 min-w-[200px]">
+                        <label className="text-sm font-medium mb-2 block">
+                          {filter.label}
+                        </label>
+                        <Select
+                          value={filter.value}
+                          onValueChange={filter.onChange}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder={filter.placeholder} />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {filter.options.map((opt) => (
+                              <SelectItem key={opt.value} value={opt.value}>
+                                {opt.label}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    ))}
+                    <div className="flex-1 min-w-[200px]">
+                      <label className="text-sm font-medium mb-2 block">
+                        Khoảng giá
+                      </label>
+                      <PriceFilter
+                        fromValue={priceFrom}
+                        toValue={priceTo}
+                        onFromChange={setPriceFrom}
+                        onToChange={setPriceTo}
+                        unit="tỷ VNĐ"
+                      />
+                    </div>
+
+                    <div className="flex-1 min-w-[200px]">
+                      <label className="text-sm font-medium mb-2 block">
+                        Khoảng diện tích
+                      </label>
+                      <AreaFilter
+                        fromValue={areaFrom}
+                        toValue={areaTo}
+                        onFromChange={setAreaFrom}
+                        onToChange={setAreaTo}
+                        unit="m²"
+                      />
+                    </div>
                   </div>
                 </motion.div>
               )}
@@ -565,15 +550,31 @@ export default function VietnamPropertiesPage() {
                   trong tổng số {filteredProperties.length} dự án
                 </span>
                 {(searchTerm ||
-                  selectedPriceRange !== 'all' ||
-                  selectedType !== 'all') && (
+                  selectedCity !== 'all' ||
+                  selectedDistrict !== 'all' ||
+                  priceFrom ||
+                  priceTo ||
+                  areaFrom ||
+                  areaTo ||
+                  selectedBedrooms !== 'all' ||
+                  selectedBathrooms !== 'all' ||
+                  selectedType !== 'all' ||
+                  selectedStatus !== 'all') && (
                   <Button
                     variant="ghost"
                     size="sm"
                     onClick={() => {
                       setSearchTerm('');
-                      setPriceRange('all');
+                      setSelectedCity('all');
+                      setSelectedDistrict('all');
+                      setPriceFrom('');
+                      setPriceTo('');
+                      setAreaFrom('');
+                      setAreaTo('');
+                      setSelectedBedrooms('all');
+                      setSelectedBathrooms('all');
                       setSelectedType('all');
+                      setSelectedStatus('all');
                       setCurrentPage(1);
                     }}
                   >
@@ -586,287 +587,316 @@ export default function VietnamPropertiesPage() {
         </div>
       </section>
 
-      {/* Properties by City - Tabs */}
-      <section className="py-16">
-        <div className="container mx-auto px-4">
-          <FadeIn className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Dự án theo thành phố
-            </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Những dự án bất động sản được lựa chọn kỹ lưỡng tại các thành phố
-              lớn
-            </p>
-          </FadeIn>
+      <div className="container mx-auto px-4 pb-8">
+        <div className="grid lg:grid-cols-4 gap-8">
+          {/* Main Content */}
+          <div className="lg:col-span-3 space-y-6">
+            {/* Results */}
+            <FadeIn delay={0.2}>
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold">
+                  {filteredProperties.length} dự án được tìm thấy
+                </h2>
+                <div className="text-sm text-muted-foreground">
+                  Cập nhật: {new Date().toLocaleDateString('vi-VN')}
+                </div>
+              </div>
+            </FadeIn>
 
-          <Tabs
-            value={activeTab}
-            onValueChange={(value) => setActiveTab(value as CityKey)}
-            className="w-full"
-          >
-            <TabsList className="grid w-full grid-cols-2 lg:grid-cols-5 max-w-4xl mx-auto mb-8">
-              {cities.map((city) => (
-                <TabsTrigger
-                  key={city.value}
-                  value={city.value}
-                  className="flex flex-col gap-1"
-                >
-                  <span>{city.label}</span>
-                  <Badge variant="secondary" className="text-xs">
-                    {city.count}
-                  </Badge>
-                </TabsTrigger>
-              ))}
-            </TabsList>
+            {/* Properties List */}
+            <div className="space-y-6">
+              {filteredProperties.map((property, index) => (
+                <ScaleIn key={property.id} delay={index * 0.1}>
+                  <Card className="overflow-hidden hover:shadow-lg transition-all duration-300 border-border">
+                    <CardContent className="p-0">
+                      <div className="grid md:grid-cols-5 gap-0">
+                        {/* Image */}
+                        <div className="md:col-span-2 relative">
+                          <div className="relative h-64 md:h-full">
+                            <Image
+                              src={property.images[0] || '/placeholder-2.webp'}
+                              alt={property.name}
+                              fill
+                              className="object-cover"
+                            />
+                            <div className="absolute top-4 left-4 flex space-x-2">
+                              <Badge className="bg-orange-600 hover:bg-orange-700">
+                                {property.status}
+                              </Badge>
+                              <Badge
+                                variant="outline"
+                                className="bg-white/90 text-gray-900"
+                              >
+                                {property.type}
+                              </Badge>
+                            </div>
+                            <div className="absolute top-4 right-4 flex space-x-2">
+                              <Button
+                                variant="secondary"
+                                size="sm"
+                                className="h-8 w-8 p-0"
+                              >
+                                <Heart className="w-4 h-4" />
+                              </Button>
+                              <Button
+                                variant="secondary"
+                                size="sm"
+                                className="h-8 w-8 p-0"
+                              >
+                                <Share2 className="w-4 h-4" />
+                              </Button>
+                            </div>
+                            <div className="absolute bottom-4 left-4">
+                              <Badge
+                                variant="outline"
+                                className="bg-black/70 text-white border-white/20"
+                              >
+                                {property.images.length} ảnh
+                              </Badge>
+                            </div>
+                          </div>
+                        </div>
 
-            {cities.map((city) => (
-              <TabsContent key={city.value} value={city.value}>
-                {paginatedProperties.length > 0 ? (
-                  <>
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-                      {paginatedProperties.map((property, index) => (
-                        <ScaleIn key={property.id} delay={index * 0.1}>
-                          <motion.div whileHover={{ y: -10 }}>
-                            <Card className="overflow-hidden h-full">
-                              <div className="relative">
-                                <motion.div whileHover={{ scale: 1.1 }}>
-                                  <Image
-                                    src={
-                                      property.image || '/placeholder-2.webp'
-                                    }
-                                    alt={property.name}
-                                    width={400}
-                                    height={300}
-                                    className="w-full h-48 object-cover"
-                                  />
-                                </motion.div>
-                                <div className="absolute top-4 left-4">
-                                  <Badge className="bg-white/90 text-gray-900">
-                                    {property.developer}
-                                  </Badge>
-                                </div>
-                                <div className="absolute top-4 right-4">
-                                  <Badge
-                                    variant={
-                                      property.status === 'Đang bán'
-                                        ? 'default'
-                                        : 'secondary'
-                                    }
-                                    className={
-                                      property.status === 'Đang bán'
-                                        ? 'bg-green-600'
-                                        : ''
-                                    }
-                                  >
-                                    {property.status}
-                                  </Badge>
+                        {/* Content */}
+                        <div className="md:col-span-2 p-6">
+                          <div className="space-y-4">
+                            <div>
+                              <div className="flex items-start justify-between mb-2">
+                                <h3 className="text-xl font-bold line-clamp-1">
+                                  {property.name}
+                                </h3>
+                                <div className="flex items-center space-x-1 ml-2">
+                                  <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                                  <span className="text-sm font-medium">
+                                    {property.rating}
+                                  </span>
+                                  <span className="text-xs text-muted-foreground">
+                                    ({property.reviews})
+                                  </span>
                                 </div>
                               </div>
+                              <p className="text-muted-foreground flex items-center">
+                                <MapPin className="w-4 h-4 mr-1 text-orange-600" />
+                                {property.address}
+                              </p>
+                            </div>
 
-                              <CardHeader>
-                                <div className="flex justify-between items-start">
-                                  <div>
-                                    <CardTitle className="text-lg mb-2">
-                                      {property.name}
-                                    </CardTitle>
-                                    <p className="text-muted-foreground flex items-center text-sm">
-                                      <MapPin className="w-4 h-4 mr-1" />
-                                      {property.location}
-                                    </p>
-                                  </div>
-                                  <div className="text-right">
-                                    <div className="text-xl font-bold text-blue-600">
-                                      {property.price}
-                                    </div>
-                                    <div className="text-xs text-muted-foreground flex items-center">
-                                      <Calendar className="w-3 h-3 mr-1" />
-                                      {property.completion}
-                                    </div>
-                                  </div>
-                                </div>
-                              </CardHeader>
+                            <div className="text-2xl font-bold text-orange-600">
+                              {property.price}
+                              <span className="text-sm font-normal text-muted-foreground ml-2">
+                                ({property.pricePerSqm})
+                              </span>
+                            </div>
 
-                              <CardContent>
-                                <div className="space-y-4">
-                                  <div className="grid grid-cols-2 gap-4 text-sm">
-                                    <div>
-                                      <span className="text-muted-foreground">
-                                        Loại hình:
-                                      </span>
-                                      <div className="font-semibold">
-                                        {property.type}
-                                      </div>
-                                    </div>
-                                    <div>
-                                      <span className="text-muted-foreground">
-                                        Phòng ngủ:
-                                      </span>
-                                      <div className="font-semibold">
-                                        {property.bedrooms}
-                                      </div>
-                                    </div>
-                                    <div className="col-span-2">
-                                      <span className="text-muted-foreground">
-                                        Diện tích:
-                                      </span>
-                                      <div className="font-semibold">
-                                        {property.area}
-                                      </div>
-                                    </div>
-                                  </div>
+                            <div className="grid grid-cols-3 gap-4 text-sm">
+                              <div className="flex items-center space-x-2">
+                                <Bed className="w-4 h-4 text-muted-foreground" />
+                                <span>{property.bedrooms} PN</span>
+                              </div>
+                              <div className="flex items-center space-x-2">
+                                <Bath className="w-4 h-4 text-muted-foreground" />
+                                <span>{property.bathrooms} PT</span>
+                              </div>
+                              <div className="flex items-center space-x-2">
+                                <Square className="w-4 h-4 text-muted-foreground" />
+                                <span>{property.area}m²</span>
+                              </div>
+                            </div>
 
-                                  <div>
-                                    <h4 className="font-semibold mb-2 text-sm">
-                                      Tiện ích nổi bật:
-                                    </h4>
-                                    <div className="grid grid-cols-1 gap-1">
-                                      {property.features
-                                        .slice(0, 4)
-                                        .map((feature, idx) => (
-                                          <div
-                                            key={idx}
-                                            className="flex items-center text-xs text-muted-foreground"
-                                          >
-                                            <CheckCircle className="w-3 h-3 mr-1 text-green-600 flex-shrink-0" />
-                                            {feature}
-                                          </div>
-                                        ))}
-                                    </div>
-                                  </div>
+                            <p className="text-muted-foreground text-sm line-clamp-2">
+                              {property.description}
+                            </p>
 
-                                  <div className="flex gap-2 pt-4">
-                                    <motion.div
-                                      whileHover={{ scale: 1.05 }}
-                                      whileTap={{ scale: 0.95 }}
-                                      className="flex-1"
-                                    >
-                                      <Link
-                                        href={`/products/vietnam/${property.id}`}
-                                      >
-                                        <Button className="w-full bg-blue-600 hover:bg-blue-700 text-sm">
-                                          Xem chi tiết
-                                        </Button>
-                                      </Link>
-                                    </motion.div>
-                                    <motion.div
-                                      whileHover={{ scale: 1.05 }}
-                                      whileTap={{ scale: 0.95 }}
-                                    >
-                                      <Button variant="outline" size="sm">
-                                        Liên hệ
-                                      </Button>
-                                    </motion.div>
-                                  </div>
-                                </div>
-                              </CardContent>
-                            </Card>
-                          </motion.div>
-                        </ScaleIn>
-                      ))}
-                    </div>
+                            <div className="flex flex-wrap gap-2">
+                              {property.features
+                                .slice(0, 3)
+                                .map((feature, idx) => (
+                                  <Badge
+                                    key={idx}
+                                    variant="outline"
+                                    className="text-xs border-border text-orange-700 dark:text-orange-300"
+                                  >
+                                    {feature}
+                                  </Badge>
+                                ))}
+                              {property.features.length > 3 && (
+                                <Badge
+                                  variant="outline"
+                                  className="text-xs border-border text-orange-700 dark:text-orange-300"
+                                >
+                                  +{property.features.length - 3} tiện ích
+                                </Badge>
+                              )}
+                            </div>
 
-                    {/* Pagination */}
-                    {totalPages > 1 && (
-                      <FadeIn>
-                        <div className="flex items-center justify-center space-x-2">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() =>
-                              setCurrentPage((prev) => Math.max(prev - 1, 1))
-                            }
-                            disabled={currentPage === 1}
-                          >
-                            <ChevronLeft className="w-4 h-4" />
-                            Trước
-                          </Button>
-
-                          <div className="flex space-x-1">
-                            {Array.from(
-                              { length: totalPages },
-                              (_, i) => i + 1
-                            ).map((page) => (
-                              <Button
-                                key={page}
-                                variant={
-                                  currentPage === page ? 'default' : 'outline'
-                                }
-                                size="sm"
-                                onClick={() => setCurrentPage(page)}
-                                className="w-10"
-                              >
-                                {page}
-                              </Button>
-                            ))}
+                            <div className="flex items-center justify-between pt-2">
+                              <div className="text-sm text-muted-foreground">
+                                <span className="font-medium">
+                                  {property.developer}
+                                </span>
+                              </div>
+                              <Link href={`/products/hcmc/${property.id}`}>
+                                <Button className="bg-orange-600 hover:bg-orange-700">
+                                  Xem chi tiết
+                                </Button>
+                              </Link>
+                            </div>
                           </div>
-
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() =>
-                              setCurrentPage((prev) =>
-                                Math.min(prev + 1, totalPages)
-                              )
-                            }
-                            disabled={currentPage === totalPages}
-                          >
-                            Sau
-                            <ChevronRight className="w-4 h-4" />
-                          </Button>
                         </div>
-                      </FadeIn>
-                    )}
-                  </>
-                ) : (
-                  <div className="text-center py-12">
-                    <Building className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
-                    <h3 className="text-xl font-semibold mb-2">
-                      Không tìm thấy dự án
-                    </h3>
-                    <p className="text-muted-foreground mb-4">
-                      Thử thay đổi bộ lọc hoặc từ khóa tìm kiếm
-                    </p>
-                    <Button
-                      variant="outline"
-                      onClick={() => {
-                        setSearchTerm('');
-                        setPriceRange('all');
-                        setSelectedType('all');
-                        setCurrentPage(1);
-                      }}
-                    >
-                      Xóa bộ lọc
-                    </Button>
-                  </div>
-                )}
-              </TabsContent>
-            ))}
-          </Tabs>
-        </div>
-      </section>
 
-      {/* Contact CTA */}
-      <section className="py-16 bg-gradient-to-r from-blue-600 to-blue-500 text-white">
-        <div className="container mx-auto px-4 text-center">
-          <FadeIn>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Tìm hiểu thêm về dự án
-            </h2>
-            <p className="text-xl mb-8 max-w-2xl mx-auto opacity-90">
-              Liên hệ với chuyên gia của chúng tôi để được tư vấn chi tiết về
-              các dự án phù hợp nhất
-            </p>
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Button
-                size="lg"
-                className="bg-white text-blue-600 hover:bg-gray-100"
-              >
-                Tư vấn miễn phí ngay
-              </Button>
-            </motion.div>
-          </FadeIn>
+                        {/* Agent Info */}
+                        <div className="md:col-span-1 bg-muted/50 p-6 flex flex-col justify-center">
+                          <div className="text-center space-y-4">
+                            <div>
+                              <Image
+                                src={
+                                  property.agent.avatar || '/placeholder-2.webp'
+                                }
+                                alt={property.agent.name}
+                                width={60}
+                                height={60}
+                                className="w-16 h-16 object-cover rounded-full mx-auto mb-2"
+                              />
+                              <h4 className="font-semibold text-sm">
+                                {property.agent.name}
+                              </h4>
+                              <p className="text-xs text-muted-foreground">
+                                Chuyên viên tư vấn
+                              </p>
+                            </div>
+                            <div className="space-y-2">
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="w-full text-xs bg-transparent"
+                              >
+                                <Phone className="w-3 h-3 mr-2" />
+                                {property.agent.phone}
+                              </Button>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="w-full text-xs bg-transparent"
+                              >
+                                <Mail className="w-3 h-3 mr-2" />
+                                Email
+                              </Button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </ScaleIn>
+              ))}
+            </div>
+          </div>
+
+          {/* Sidebar */}
+          <div className="space-y-6">
+            {/* Contact Form */}
+            <SlideIn direction="right">
+              <Card className="bg-card border-border sticky top-8">
+                <CardHeader>
+                  <CardTitle>Gửi yêu cầu tư vấn</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <Input placeholder="Họ và tên" />
+                  <Input placeholder="Email" type="email" />
+                  <Input placeholder="Số điện thoại" />
+                  <textarea
+                    placeholder="Tôi muốn được tư vấn về..."
+                    className="w-full p-3 border border-input rounded-md bg-background resize-none"
+                    rows={4}
+                  />
+                  <div className="flex items-start space-x-2">
+                    <input type="checkbox" className="mt-1" />
+                    <p className="text-xs text-muted-foreground">
+                      Tôi đồng ý chia sẻ thông tin để nhận tư vấn.
+                      <a
+                        href="#"
+                        className="text-orange-600 hover:underline ml-1"
+                      >
+                        Chính sách bảo mật
+                      </a>
+                    </p>
+                  </div>
+                  <Button className="w-full bg-orange-600 hover:bg-orange-700">
+                    Gửi yêu cầu
+                  </Button>
+                </CardContent>
+              </Card>
+            </SlideIn>
+
+            {/* Quick Stats */}
+            <SlideIn direction="right" delay={0.2}>
+              <Card className="border-border">
+                <CardHeader>
+                  <CardTitle className="text-orange-600">
+                    Thống kê thị trường
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">
+                      Giá trung bình:
+                    </span>
+                    <span className="font-semibold">52 triệu/m²</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Tăng trưởng:</span>
+                    <span className="font-semibold text-green-600">+8.5%</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Dự án mới:</span>
+                    <span className="font-semibold">24 dự án</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Sắp bàn giao:</span>
+                    <span className="font-semibold">12 dự án</span>
+                  </div>
+                </CardContent>
+              </Card>
+            </SlideIn>
+
+            {/* Popular Areas */}
+            <SlideIn direction="right" delay={0.4}>
+              <Card className="border-border">
+                <CardHeader>
+                  <CardTitle className="text-orange-600">
+                    Khu vực phổ biến
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  {[
+                    { area: 'Quận 2', projects: 15, avgPrice: '65 tr/m²' },
+                    { area: 'Quận 7', projects: 12, avgPrice: '48 tr/m²' },
+                    { area: 'Quận 9', projects: 18, avgPrice: '42 tr/m²' },
+                    { area: 'Thủ Đức', projects: 21, avgPrice: '38 tr/m²' },
+                  ].map((area, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center justify-between p-3 bg-orange-50 dark:bg-orange-900/20 rounded-lg"
+                    >
+                      <div>
+                        <div className="font-semibold">{area.area}</div>
+                        <div className="text-sm text-muted-foreground">
+                          {area.projects} dự án
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className="font-semibold text-orange-600">
+                          {area.avgPrice}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </CardContent>
+              </Card>
+            </SlideIn>
+          </div>
         </div>
-      </section>
+      </div>
     </div>
   );
 }
