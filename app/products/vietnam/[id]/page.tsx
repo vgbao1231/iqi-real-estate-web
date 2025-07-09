@@ -26,7 +26,7 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 
-export default function HCMCPropertyDetailPage({
+export default function VietNamPropertyDetailPage({
   params,
 }: {
   params: { id: string };
@@ -172,11 +172,11 @@ export default function HCMCPropertyDetailPage({
         <div className="container mx-auto px-4">
           <FadeIn>
             <Link
-              href="/products/hcmc"
+              href="/products/vietnam"
               className="inline-flex items-center text-orange-600 hover:text-orange-700 mb-4"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
-              Quay lại danh sách TP.HCM
+              Quay lại danh sách BĐS Việt Nam
             </Link>
             <div className="flex flex-col md:flex-row md:items-center md:justify-between">
               <div>

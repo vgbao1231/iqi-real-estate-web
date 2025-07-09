@@ -266,7 +266,7 @@ export default function AboutPage() {
                           alt={member.name}
                           width={200}
                           height={200}
-                          className="rounded-full mx-auto mb-4"
+                          className="w-40 h-40 rounded-full mx-auto mb-4"
                         />
                       </motion.div>
                       <CardTitle className="text-xl">{member.name}</CardTitle>

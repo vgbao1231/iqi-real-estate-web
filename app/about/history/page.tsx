@@ -19,6 +19,7 @@ import {
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import clsx from 'clsx';
 
 export default function HistoryPage() {
   const milestones = [
@@ -125,13 +126,13 @@ export default function HistoryPage() {
       <section className="py-12 bg-gradient-to-r from-orange-50 to-orange-100 dark:from-orange-950/20 dark:to-orange-900/20">
         <div className="container mx-auto px-4">
           <FadeIn>
-            <div className="flex gap-1 mb-6">
+            <div className="flex gap-2 mb-6">
               <Link
-                href="/about"
+                href="/"
                 className="inline-flex items-center text-orange-600 hover:text-orange-700"
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
-                Quay lại trang giới thiệu
+                Quay lại
               </Link>
               <Badge className="bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300">
                 LỊCH SỬ PHÁT TRIỂN
@@ -148,10 +149,9 @@ export default function HistoryPage() {
           </FadeIn>
         </div>
       </section>
-
       {/* Timeline */}
-      <section className="p-16">
-        <div className="container mx-auto px-4">
+      <section className="px-6 py-12">
+        <div className="container mx-auto">
           <FadeIn className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
               Các cột mốc quan trọng
@@ -163,30 +163,48 @@ export default function HistoryPage() {
 
           <div className="relative">
             {/* Timeline line */}
-            <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gradient-to-b from-orange-200 via-orange-300 to-orange-400 dark:from-orange-800 dark:via-orange-700 dark:to-orange-600"></div>
+            <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gradient-to-b from-orange-200 via-orange-300 to-orange-400 dark:from-orange-800 dark:via-orange-700 dark:to-orange-600"></div>
 
             <div className="space-y-12">
               {milestones.map((milestone, index) => (
                 <SlideIn key={index} direction="up" delay={index * 0.1}>
                   <div
-                    className={`flex items-center ${index % 2 === 0 ? 'flex-row' : 'flex-row-reverse'}`}
+                    className={clsx(
+                      'flex flex-col items-center md:items-stretch',
+                      index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
+                    )}
                   >
+                    {/* Nội dung bên */}
                     <div
-                      className={`w-1/2 ${index % 2 === 0 ? 'pr-8 text-right' : 'pl-8 text-left'}`}
+                      className={clsx(
+                        'w-full md:w-1/2 text-center md:text-inherit order-2 md:order-1',
+                        index % 2 === 0
+                          ? 'md:pr-8 md:text-right'
+                          : 'md:pl-8 md:text-left'
+                      )}
                     >
                       <motion.div whileHover={{ scale: 1.02 }}>
                         <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300">
                           <CardHeader>
                             <div
-                              className={`flex items-center ${index % 2 === 0 ? 'justify-end' : 'justify-start'} mb-2`}
+                              className={clsx(
+                                'flex items-center mb-2 justify-center md:flex-row',
+                                index % 2 === 0
+                                  ? 'md:justify-end'
+                                  : 'md:justify-start'
+                              )}
                             >
                               <Badge
-                                className={`
-                                ${milestone.color === 'blue' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300' : ''}
-                                ${milestone.color === 'green' ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300' : ''}
-                                ${milestone.color === 'orange' ? 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300' : ''}
-                                ${milestone.color === 'purple' ? 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300' : ''}
-                              `}
+                                className={clsx(
+                                  milestone.color === 'blue' &&
+                                    'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300',
+                                  milestone.color === 'green' &&
+                                    'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300',
+                                  milestone.color === 'orange' &&
+                                    'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300',
+                                  milestone.color === 'purple' &&
+                                    'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300'
+                                )}
                               >
                                 {milestone.year}
                               </Badge>
@@ -196,30 +214,44 @@ export default function HistoryPage() {
                             </CardTitle>
                           </CardHeader>
                           <CardContent>
-                            <p className="text-muted-foreground">
-                              {milestone.description}
-                            </p>
+                            {Array.isArray(milestone.description) ? (
+                              <ul className="text-muted-foreground list-none pl-0 space-y-1">
+                                {milestone.description.map((desc, i) => (
+                                  <li key={i}>– {desc}</li>
+                                ))}
+                              </ul>
+                            ) : (
+                              <p className="text-muted-foreground">
+                                {milestone.description}
+                              </p>
+                            )}
                           </CardContent>
                         </Card>
                       </motion.div>
                     </div>
 
                     {/* Timeline dot */}
-                    <div className="relative z-10">
+                    <div className="relative z-10 order-1 md:order-2 center-both">
                       <motion.div
                         whileHover={{ scale: 1.2 }}
-                        className={`w-16 h-16 rounded-full flex items-center justify-center shadow-lg
-                          ${milestone.color === 'blue' ? 'bg-gradient-to-r from-blue-400 to-blue-500' : ''}
-                          ${milestone.color === 'green' ? 'bg-gradient-to-r from-green-400 to-green-500' : ''}
-                          ${milestone.color === 'orange' ? 'bg-gradient-to-r from-orange-400 to-orange-500' : ''}
-                          ${milestone.color === 'purple' ? 'bg-gradient-to-r from-purple-400 to-purple-500' : ''}
-                        `}
+                        className={clsx(
+                          'w-16 h-16 rounded-full flex items-center justify-center shadow-lg mx-auto',
+                          milestone.color === 'blue' &&
+                            'bg-gradient-to-r from-blue-400 to-blue-500',
+                          milestone.color === 'green' &&
+                            'bg-gradient-to-r from-green-400 to-green-500',
+                          milestone.color === 'orange' &&
+                            'bg-gradient-to-r from-orange-400 to-orange-500',
+                          milestone.color === 'purple' &&
+                            'bg-gradient-to-r from-purple-400 to-purple-500'
+                        )}
                       >
                         <milestone.icon className="w-8 h-8 text-white" />
                       </motion.div>
                     </div>
 
-                    <div className="w-1/2"></div>
+                    {/* Cột phụ bên phải (ẩn trên mobile) */}
+                    <div className="w-full md:w-1/2 hidden md:block order-3"></div>
                   </div>
                 </SlideIn>
               ))}
@@ -227,33 +259,32 @@ export default function HistoryPage() {
           </div>
         </div>
       </section>
-
       {/* Achievements */}
-      <section className="p-16 bg-muted/30">
+      <section className="p-2 py-6 md:p-16 bg-muted/30">
         <div className="container mx-auto px-4">
-          <FadeIn className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+          <FadeIn className="text-center mb-8 md:mb-12">
+            <h2 className="text-2xl md:text-4xl font-bold mb-3 md:mb-4">
               Giải thưởng & Thành tựu
             </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+            <p className="text-base md:text-xl text-muted-foreground max-w-2xl mx-auto">
               Những giải thưởng và sự công nhận từ các tổ chức uy tín trong và
               ngoài nước
             </p>
           </FadeIn>
 
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
             {achievements.map((achievement, index) => (
               <ScaleIn key={index} delay={index * 0.2}>
                 <motion.div whileHover={{ y: -5 }}>
                   <Card className="h-full border-0 shadow-lg hover:shadow-xl transition-all duration-300">
                     <CardHeader>
-                      <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center justify-between flex-wrap gap-2 mb-2">
                         <Badge className="bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300">
                           {achievement.year}
                         </Badge>
                         <Award className="w-6 h-6 text-orange-600" />
                       </div>
-                      <CardTitle className="text-xl">
+                      <CardTitle className="text-lg md:text-xl">
                         {achievement.title}
                       </CardTitle>
                       <p className="text-sm text-muted-foreground font-medium">
@@ -261,7 +292,7 @@ export default function HistoryPage() {
                       </p>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-muted-foreground">
+                      <p className="text-sm md:text-base text-muted-foreground">
                         {achievement.description}
                       </p>
                     </CardContent>
@@ -274,7 +305,7 @@ export default function HistoryPage() {
       </section>
 
       {/* Vision for Future */}
-      <section className="p-16">
+      <section className="p-2 py-6 md:p-16">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <SlideIn direction="left">
@@ -328,9 +359,8 @@ export default function HistoryPage() {
           </div>
         </div>
       </section>
-
       {/* Stats Evolution */}
-      <section className="p-16 bg-muted/30">
+      <section className="p-2 py-6 md:p-16 bg-muted/30">
         <div className="container mx-auto px-4">
           <FadeIn className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
@@ -395,9 +425,8 @@ export default function HistoryPage() {
           </div>
         </div>
       </section>
-
       {/* Contact CTA */}
-      <section className="p-16 bg-gradient-to-r from-orange-600 to-orange-500 text-white">
+      <section className="p-2 py-6 md:p-16 bg-gradient-to-r from-orange-600 to-orange-500 text-white">
         <div className="container mx-auto px-4 text-center">
           <FadeIn>
             <h2 className="text-3xl md:text-4xl font-bold mb-4">

@@ -371,11 +371,11 @@ export default function VietnamPropertiesPage() {
           <FadeIn>
             <div className="text-center">
               <h1 className="text-4xl md:text-5xl font-bold mb-4">
-                Bất động sản TP. Hồ Chí Minh
+                Bất động sản Việt Nam
               </h1>
               <p className="text-xl opacity-90 mb-8">
-                Khám phá những dự án bất động sản hàng đầu tại thành phố năng
-                động nhất Việt Nam
+                Khám phá những dự án bất động sản hàng đầu trên khắp Việt Nam
+                với đa dạng loại hình và mức giá phù hợp.
               </p>
               <div className="flex items-center justify-center space-x-8 text-sm">
                 <div className="flex items-center space-x-2">
@@ -384,7 +384,7 @@ export default function VietnamPropertiesPage() {
                 </div>
                 <div className="flex items-center space-x-2">
                   <MapPin className="w-5 h-5" />
-                  <span>24 quận huyện</span>
+                  <span>24 tỉnh thành</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <Star className="w-5 h-5" />
@@ -400,189 +400,198 @@ export default function VietnamPropertiesPage() {
       <section className="py-10 px-6">
         <div className="container mx-auto px-4">
           <FadeIn>
-            <div className="bg-card rounded-lg shadow-sm">
-              {/* Basic Filters */}
-              <div className="flex flex-col lg:flex-row gap-4 mb-4">
-                <div>
-                  <Combobox
-                    options={provinces}
-                    value={selectedCity}
-                    onValueChange={handleCityChange}
-                    placeholder="Chọn thành phố"
-                    searchPlaceholder="Tìm thành phố..."
-                    emptyText="Không tìm thấy thành phố"
-                  />
-                </div>
-                <div>
-                  <Combobox
-                    options={
-                      districts[selectedCity as keyof typeof districts] ||
-                      districts.all
-                    }
-                    value={selectedDistrict}
-                    onValueChange={setSelectedDistrict}
-                    placeholder="Chọn khu vực"
-                    searchPlaceholder="Tìm quận/huyện..."
-                    emptyText="Không tìm thấy khu vực"
-                  />
-                </div>
-                <div className="flex-1">
-                  <div className="relative">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
-                    <Input
-                      placeholder="Tìm kiếm theo tên dự án, vị trí, chủ đầu tư..."
-                      className="pl-10"
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                    />
-                  </div>
-                </div>
-                <Button
-                  variant="outline"
-                  onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
-                  className="lg:w-auto"
-                >
-                  <Filter className="w-4 h-4 mr-2" />
-                  Lọc nâng cao
-                  <ChevronDown
-                    className={`w-4 h-4 ml-2 transition-transform ${showAdvancedFilters ? 'rotate-180' : ''}`}
-                  />
-                </Button>
-              </div>
-
-              {/* Advanced Filters */}
-              {showAdvancedFilters && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
-                  exit={{ opacity: 0, height: 0 }}
-                  className="space-y-4 pt-4 border-t"
-                >
-                  <div className="flex flex-wrap gap-4 mb-4">
-                    {[
-                      {
-                        label: 'Số phòng ngủ',
-                        value: selectedBedrooms,
-                        onChange: setSelectedBedrooms,
-                        options: bedroomOptions,
-                        placeholder: 'Chọn số phòng ngủ',
-                      },
-                      {
-                        label: 'Số phòng tắm',
-                        value: selectedBathrooms,
-                        onChange: setSelectedBathrooms,
-                        options: bathroomOptions,
-                        placeholder: 'Chọn số phòng tắm',
-                      },
-                      {
-                        label: 'Loại hình',
-                        value: selectedType,
-                        onChange: setSelectedType,
-                        options: propertyTypes,
-                        placeholder: 'Chọn loại hình',
-                      },
-                      {
-                        label: 'Trạng thái',
-                        value: selectedStatus,
-                        onChange: setSelectedStatus,
-                        options: statusOptions,
-                        placeholder: 'Chọn trạng thái',
-                      },
-                    ].map((filter) => (
-                      <div key={filter.label} className="flex-1 min-w-[200px]">
-                        <label className="text-sm font-medium mb-2 block">
-                          {filter.label}
-                        </label>
-                        <Select
-                          value={filter.value}
-                          onValueChange={filter.onChange}
-                        >
-                          <SelectTrigger>
-                            <SelectValue placeholder={filter.placeholder} />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {filter.options.map((opt) => (
-                              <SelectItem key={opt.value} value={opt.value}>
-                                {opt.label}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
+            <Card className="border-border shadow-lg mb-6">
+              <CardContent className="p-6">
+                <div className="bg-card rounded-lg shadow-sm">
+                  {/* Basic Filters */}
+                  <div className="flex flex-col lg:flex-row gap-4 mb-4">
+                    <div>
+                      <Combobox
+                        options={provinces}
+                        value={selectedCity}
+                        onValueChange={handleCityChange}
+                        placeholder="Chọn thành phố"
+                        searchPlaceholder="Tìm thành phố..."
+                        emptyText="Không tìm thấy thành phố"
+                      />
+                    </div>
+                    <div>
+                      <Combobox
+                        options={
+                          districts[selectedCity as keyof typeof districts] ||
+                          districts.all
+                        }
+                        value={selectedDistrict}
+                        onValueChange={setSelectedDistrict}
+                        placeholder="Chọn khu vực"
+                        searchPlaceholder="Tìm quận/huyện..."
+                        emptyText="Không tìm thấy khu vực"
+                      />
+                    </div>
+                    <div className="flex-1">
+                      <div className="relative">
+                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+                        <Input
+                          placeholder="Tìm kiếm theo tên dự án, vị trí, chủ đầu tư..."
+                          className="pl-10"
+                          value={searchTerm}
+                          onChange={(e) => setSearchTerm(e.target.value)}
+                        />
                       </div>
-                    ))}
-                    <div className="flex-1 min-w-[200px]">
-                      <label className="text-sm font-medium mb-2 block">
-                        Khoảng giá
-                      </label>
-                      <PriceFilter
-                        fromValue={priceFrom}
-                        toValue={priceTo}
-                        onFromChange={setPriceFrom}
-                        onToChange={setPriceTo}
-                        unit="tỷ VNĐ"
-                      />
                     </div>
-
-                    <div className="flex-1 min-w-[200px]">
-                      <label className="text-sm font-medium mb-2 block">
-                        Khoảng diện tích
-                      </label>
-                      <AreaFilter
-                        fromValue={areaFrom}
-                        toValue={areaTo}
-                        onFromChange={setAreaFrom}
-                        onToChange={setAreaTo}
-                        unit="m²"
+                    <Button
+                      variant="outline"
+                      onClick={() =>
+                        setShowAdvancedFilters(!showAdvancedFilters)
+                      }
+                      className="lg:w-auto"
+                    >
+                      <Filter className="w-4 h-4 mr-2" />
+                      Lọc nâng cao
+                      <ChevronDown
+                        className={`w-4 h-4 ml-2 transition-transform ${showAdvancedFilters ? 'rotate-180' : ''}`}
                       />
-                    </div>
+                    </Button>
                   </div>
-                </motion.div>
-              )}
 
-              {/* Results Summary */}
-              <div className="flex items-center justify-between mt-4 pt-4 border-t text-sm text-muted-foreground">
-                <span>
-                  Hiển thị {startIndex + 1}-
-                  {Math.min(
-                    startIndex + itemsPerPage,
-                    filteredProperties.length
-                  )}{' '}
-                  trong tổng số {filteredProperties.length} dự án
-                </span>
-                {(searchTerm ||
-                  selectedCity !== 'all' ||
-                  selectedDistrict !== 'all' ||
-                  priceFrom ||
-                  priceTo ||
-                  areaFrom ||
-                  areaTo ||
-                  selectedBedrooms !== 'all' ||
-                  selectedBathrooms !== 'all' ||
-                  selectedType !== 'all' ||
-                  selectedStatus !== 'all') && (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => {
-                      setSearchTerm('');
-                      setSelectedCity('all');
-                      setSelectedDistrict('all');
-                      setPriceFrom('');
-                      setPriceTo('');
-                      setAreaFrom('');
-                      setAreaTo('');
-                      setSelectedBedrooms('all');
-                      setSelectedBathrooms('all');
-                      setSelectedType('all');
-                      setSelectedStatus('all');
-                      setCurrentPage(1);
-                    }}
-                  >
-                    Xóa bộ lọc
-                  </Button>
-                )}
-              </div>
-            </div>
+                  {/* Advanced Filters */}
+                  {showAdvancedFilters && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      className="space-y-4 pt-4 border-t"
+                    >
+                      <div className="flex flex-wrap gap-4 mb-4">
+                        {[
+                          {
+                            label: 'Số phòng ngủ',
+                            value: selectedBedrooms,
+                            onChange: setSelectedBedrooms,
+                            options: bedroomOptions,
+                            placeholder: 'Chọn số phòng ngủ',
+                          },
+                          {
+                            label: 'Số phòng tắm',
+                            value: selectedBathrooms,
+                            onChange: setSelectedBathrooms,
+                            options: bathroomOptions,
+                            placeholder: 'Chọn số phòng tắm',
+                          },
+                          {
+                            label: 'Loại hình',
+                            value: selectedType,
+                            onChange: setSelectedType,
+                            options: propertyTypes,
+                            placeholder: 'Chọn loại hình',
+                          },
+                          {
+                            label: 'Trạng thái',
+                            value: selectedStatus,
+                            onChange: setSelectedStatus,
+                            options: statusOptions,
+                            placeholder: 'Chọn trạng thái',
+                          },
+                        ].map((filter) => (
+                          <div
+                            key={filter.label}
+                            className="flex-1 min-w-[200px]"
+                          >
+                            <label className="text-sm font-medium mb-2 block">
+                              {filter.label}
+                            </label>
+                            <Select
+                              value={filter.value}
+                              onValueChange={filter.onChange}
+                            >
+                              <SelectTrigger>
+                                <SelectValue placeholder={filter.placeholder} />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {filter.options.map((opt) => (
+                                  <SelectItem key={opt.value} value={opt.value}>
+                                    {opt.label}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                          </div>
+                        ))}
+                        <div className="flex-1 min-w-[200px]">
+                          <label className="text-sm font-medium mb-2 block">
+                            Khoảng giá
+                          </label>
+                          <PriceFilter
+                            fromValue={priceFrom}
+                            toValue={priceTo}
+                            onFromChange={setPriceFrom}
+                            onToChange={setPriceTo}
+                            unit="tỷ VNĐ"
+                          />
+                        </div>
+
+                        <div className="flex-1 min-w-[200px]">
+                          <label className="text-sm font-medium mb-2 block">
+                            Khoảng diện tích
+                          </label>
+                          <AreaFilter
+                            fromValue={areaFrom}
+                            toValue={areaTo}
+                            onFromChange={setAreaFrom}
+                            onToChange={setAreaTo}
+                            unit="m²"
+                          />
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {/* Results Summary */}
+                  <div className="flex items-center justify-between mt-4 pt-4 border-t text-sm text-muted-foreground">
+                    <span>
+                      Hiển thị {startIndex + 1}-
+                      {Math.min(
+                        startIndex + itemsPerPage,
+                        filteredProperties.length
+                      )}{' '}
+                      trong tổng số {filteredProperties.length} dự án
+                    </span>
+                    {(searchTerm ||
+                      selectedCity !== 'all' ||
+                      selectedDistrict !== 'all' ||
+                      priceFrom ||
+                      priceTo ||
+                      areaFrom ||
+                      areaTo ||
+                      selectedBedrooms !== 'all' ||
+                      selectedBathrooms !== 'all' ||
+                      selectedType !== 'all' ||
+                      selectedStatus !== 'all') && (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => {
+                          setSearchTerm('');
+                          setSelectedCity('all');
+                          setSelectedDistrict('all');
+                          setPriceFrom('');
+                          setPriceTo('');
+                          setAreaFrom('');
+                          setAreaTo('');
+                          setSelectedBedrooms('all');
+                          setSelectedBathrooms('all');
+                          setSelectedType('all');
+                          setSelectedStatus('all');
+                          setCurrentPage(1);
+                        }}
+                      >
+                        Xóa bộ lọc
+                      </Button>
+                    )}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </FadeIn>
         </div>
       </section>
@@ -735,7 +744,7 @@ export default function VietnamPropertiesPage() {
                                   {property.developer}
                                 </span>
                               </div>
-                              <Link href={`/products/hcmc/${property.id}`}>
+                              <Link href={`/products/vietnam/${property.id}`}>
                                 <Button className="bg-orange-600 hover:bg-orange-700">
                                   Xem chi tiết
                                 </Button>

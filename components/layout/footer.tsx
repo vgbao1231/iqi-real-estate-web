@@ -54,18 +54,10 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/products/hcmc"
+                  href="/products/vietnam"
                   className="text-muted-foreground hover:text-orange-600 transition-colors"
                 >
-                  Tp.HCM
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/products/hanoi"
-                  className="text-muted-foreground hover:text-orange-600 transition-colors"
-                >
-                  Hà Nội
+                  Việt Nam
                 </Link>
               </li>
               <li>

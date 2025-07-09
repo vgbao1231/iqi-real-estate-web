@@ -356,162 +356,171 @@ export default function ResortPropertiesPage() {
       <section className="py-10 px-6">
         <div className="container mx-auto px-4">
           <FadeIn>
-            <div className="bg-card rounded-lg shadow-sm">
-              {/* Basic Filters */}
-              <div className="flex flex-col lg:flex-row gap-4 mb-4">
-                <div className="min-w-[150px]">
-                  <Select value={priceRange} onValueChange={setPriceRange}>
-                    <SelectTrigger className="border-teal-200 dark:border-teal-800">
-                      <SelectValue placeholder="Khoảng giá" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">Tất cả mức giá</SelectItem>
-                      <SelectItem value="under-8">Dưới 8 tỷ</SelectItem>
-                      <SelectItem value="8-15">8 - 15 tỷ</SelectItem>
-                      <SelectItem value="over-15">Trên 15 tỷ</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+            <Card className="border-border shadow-lg mb-6">
+              <CardContent className="p-6">
+                <div className="bg-card rounded-lg shadow-sm">
+                  {/* Basic Filters */}
+                  <div className="flex flex-col lg:flex-row gap-4 mb-4">
+                    <div className="min-w-[150px]">
+                      <Select value={priceRange} onValueChange={setPriceRange}>
+                        <SelectTrigger className="border-teal-200 dark:border-teal-800">
+                          <SelectValue placeholder="Khoảng giá" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="all">Tất cả mức giá</SelectItem>
+                          <SelectItem value="under-8">Dưới 8 tỷ</SelectItem>
+                          <SelectItem value="8-15">8 - 15 tỷ</SelectItem>
+                          <SelectItem value="over-15">Trên 15 tỷ</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
 
-                <div className="min-w-[150px]">
-                  <AreaFilter
-                    fromValue={areaFrom}
-                    toValue={areaTo}
-                    onFromChange={setAreaFrom}
-                    onToChange={setAreaTo}
-                    unit="m²"
-                  />
-                </div>
-                <div className="flex-1">
-                  <div className="relative">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
-                    <Input
-                      placeholder="Tìm kiếm theo tên dự án, vị trí, chủ đầu tư..."
-                      className="pl-10"
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                    />
-                  </div>
-                </div>
-                <Button
-                  variant="outline"
-                  onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
-                  className="lg:w-auto"
-                >
-                  <Filter className="w-4 h-4 mr-2" />
-                  Lọc nâng cao
-                  <ChevronDown
-                    className={`w-4 h-4 ml-2 transition-transform ${showAdvancedFilters ? 'rotate-180' : ''}`}
-                  />
-                </Button>
-              </div>
-
-              {/* Advanced Filters */}
-              {showAdvancedFilters && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
-                  exit={{ opacity: 0, height: 0 }}
-                  className="space-y-4 pt-4 border-t"
-                >
-                  <div className="flex flex-wrap gap-4 mb-4">
-                    {[
-                      {
-                        label: 'Số phòng ngủ',
-                        value: selectedBedrooms,
-                        onChange: setSelectedBedrooms,
-                        options: bedroomOptions,
-                        placeholder: 'Chọn số phòng ngủ',
-                      },
-                      {
-                        label: 'Số phòng tắm',
-                        value: selectedBathrooms,
-                        onChange: setSelectedBathrooms,
-                        options: bathroomOptions,
-                        placeholder: 'Chọn số phòng tắm',
-                      },
-                      {
-                        label: 'Loại hình',
-                        value: selectedType,
-                        onChange: setSelectedType,
-                        options: propertyTypes,
-                        placeholder: 'Chọn loại hình',
-                      },
-                      {
-                        label: 'Trạng thái',
-                        value: selectedStatus,
-                        onChange: setSelectedStatus,
-                        options: statusOptions,
-                        placeholder: 'Chọn trạng thái',
-                      },
-                    ].map((filter) => (
-                      <div key={filter.label} className="flex-1 min-w-[200px]">
-                        <label className="text-sm font-medium mb-2 block">
-                          {filter.label}
-                        </label>
-                        <Select
-                          value={filter.value}
-                          onValueChange={filter.onChange}
-                        >
-                          <SelectTrigger>
-                            <SelectValue placeholder={filter.placeholder} />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {filter.options.map((opt) => (
-                              <SelectItem key={opt.value} value={opt.value}>
-                                {opt.label}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
+                    <div className="min-w-[150px]">
+                      <AreaFilter
+                        fromValue={areaFrom}
+                        toValue={areaTo}
+                        onFromChange={setAreaFrom}
+                        onToChange={setAreaTo}
+                        unit="m²"
+                      />
+                    </div>
+                    <div className="flex-1">
+                      <div className="relative">
+                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+                        <Input
+                          placeholder="Tìm kiếm theo tên dự án, vị trí, chủ đầu tư..."
+                          className="pl-10"
+                          value={searchTerm}
+                          onChange={(e) => setSearchTerm(e.target.value)}
+                        />
                       </div>
-                    ))}
+                    </div>
+                    <Button
+                      variant="outline"
+                      onClick={() =>
+                        setShowAdvancedFilters(!showAdvancedFilters)
+                      }
+                      className="lg:w-auto"
+                    >
+                      <Filter className="w-4 h-4 mr-2" />
+                      Lọc nâng cao
+                      <ChevronDown
+                        className={`w-4 h-4 ml-2 transition-transform ${showAdvancedFilters ? 'rotate-180' : ''}`}
+                      />
+                    </Button>
                   </div>
-                </motion.div>
-              )}
 
-              {/* Results Summary */}
-              <div className="flex items-center justify-between mt-4 pt-4 border-t text-sm text-muted-foreground">
-                <span>
-                  Hiển thị {startIndex + 1}-
-                  {Math.min(
-                    startIndex + itemsPerPage,
-                    filteredProperties.length
-                  )}{' '}
-                  trong tổng số {filteredProperties.length} dự án
-                </span>
-                {(searchTerm ||
-                  selectedCity !== 'all' ||
-                  selectedDistrict !== 'all' ||
-                  priceRange ||
-                  areaFrom ||
-                  areaTo ||
-                  selectedBedrooms !== 'all' ||
-                  selectedBathrooms !== 'all' ||
-                  selectedType !== 'all' ||
-                  selectedStatus !== 'all') && (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => {
-                      setSearchTerm('');
-                      setSelectedCity('all');
-                      setSelectedDistrict('all');
-                      setPriceRange('');
-                      setAreaFrom('');
-                      setAreaTo('');
-                      setSelectedBedrooms('all');
-                      setSelectedBathrooms('all');
-                      setSelectedType('all');
-                      setSelectedStatus('all');
-                      setCurrentPage(1);
-                    }}
-                  >
-                    Xóa bộ lọc
-                  </Button>
-                )}
-              </div>
-            </div>
+                  {/* Advanced Filters */}
+                  {showAdvancedFilters && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      className="space-y-4 pt-4 border-t"
+                    >
+                      <div className="flex flex-wrap gap-4 mb-4">
+                        {[
+                          {
+                            label: 'Số phòng ngủ',
+                            value: selectedBedrooms,
+                            onChange: setSelectedBedrooms,
+                            options: bedroomOptions,
+                            placeholder: 'Chọn số phòng ngủ',
+                          },
+                          {
+                            label: 'Số phòng tắm',
+                            value: selectedBathrooms,
+                            onChange: setSelectedBathrooms,
+                            options: bathroomOptions,
+                            placeholder: 'Chọn số phòng tắm',
+                          },
+                          {
+                            label: 'Loại hình',
+                            value: selectedType,
+                            onChange: setSelectedType,
+                            options: propertyTypes,
+                            placeholder: 'Chọn loại hình',
+                          },
+                          {
+                            label: 'Trạng thái',
+                            value: selectedStatus,
+                            onChange: setSelectedStatus,
+                            options: statusOptions,
+                            placeholder: 'Chọn trạng thái',
+                          },
+                        ].map((filter) => (
+                          <div
+                            key={filter.label}
+                            className="flex-1 min-w-[200px]"
+                          >
+                            <label className="text-sm font-medium mb-2 block">
+                              {filter.label}
+                            </label>
+                            <Select
+                              value={filter.value}
+                              onValueChange={filter.onChange}
+                            >
+                              <SelectTrigger>
+                                <SelectValue placeholder={filter.placeholder} />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {filter.options.map((opt) => (
+                                  <SelectItem key={opt.value} value={opt.value}>
+                                    {opt.label}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                          </div>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {/* Results Summary */}
+                  <div className="flex items-center justify-between mt-4 pt-4 border-t text-sm text-muted-foreground">
+                    <span>
+                      Hiển thị {startIndex + 1}-
+                      {Math.min(
+                        startIndex + itemsPerPage,
+                        filteredProperties.length
+                      )}{' '}
+                      trong tổng số {filteredProperties.length} dự án
+                    </span>
+                    {(searchTerm ||
+                      selectedCity !== 'all' ||
+                      selectedDistrict !== 'all' ||
+                      priceRange ||
+                      areaFrom ||
+                      areaTo ||
+                      selectedBedrooms !== 'all' ||
+                      selectedBathrooms !== 'all' ||
+                      selectedType !== 'all' ||
+                      selectedStatus !== 'all') && (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => {
+                          setSearchTerm('');
+                          setSelectedCity('all');
+                          setSelectedDistrict('all');
+                          setPriceRange('');
+                          setAreaFrom('');
+                          setAreaTo('');
+                          setSelectedBedrooms('all');
+                          setSelectedBathrooms('all');
+                          setSelectedType('all');
+                          setSelectedStatus('all');
+                          setCurrentPage(1);
+                        }}
+                      >
+                        Xóa bộ lọc
+                      </Button>
+                    )}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </FadeIn>
         </div>
       </section>
