@@ -32,32 +32,32 @@ import { AnimatePresence, motion } from 'framer-motion';
 
 const property = {
   id: 1,
-  name: 'The Beverly Hills Residences',
-  slug: 'beverly-hills-residences',
-  country: 'USA',
-  address: '123 Rodeo Drive, Beverly Hills, CA 90210',
-  city: 'Los Angeles',
-  district: 'Beverly Hills',
-  price: 4500000,
-  pricePerSqm: 12000,
+  name: 'Sunset Paradise Resort Villas',
+  slug: 'sunset-paradise-resort',
+  country: 'Vietnam',
+  address: 'Khu nghỉ dưỡng Bãi Dài, Cam Ranh, Khánh Hòa',
+  city: 'Cam Ranh',
+  district: 'Bãi Dài',
+  price: 5200000,
+  pricePerSqm: 10500,
   currency: 'USD',
-  minPrice: 4500000,
+  minPrice: 5200000,
   maxPrice: 9800000,
-  landArea: 250,
-  minBuildUp: 15,
-  maxBuildUp: 30,
+  landArea: 300,
+  minBuildUp: 20,
+  maxBuildUp: 35,
   minBedroom: 3,
   maxBedroom: 6,
   minBathroom: 3,
   maxBathroom: 5,
-  propertyType: 'villa',
-  propertyGroup: 'international',
+  propertyType: 'resort villa',
+  propertyGroup: 'resort',
   status: 'Available',
   occupancyStatus: 'Ready',
-  tenure: 'Freehold',
-  phase: 'Phase 1',
+  tenure: 'Lâu dài',
+  phase: 'Giai đoạn 1',
   isFeatured: true,
-  isExclusive: false,
+  isExclusive: true,
   enableLiveSales: true,
   visibleOnWeb: true,
   image: '/placeholder-2.webp?height=300&width=400',
@@ -66,32 +66,32 @@ const property = {
     '/placeholder-2.webp?height=300&width=400',
     '/placeholder-2.webp?height=300&width=400',
   ],
-  developer: 'Sunset Global Properties',
-  completion: 'Q1/2025',
-  listedOn: '2024-01-15',
+  developer: 'Resort Group Vietnam',
+  completion: 'Q4/2025',
+  listedOn: '2024-03-01',
   amenities: [
-    'Infinity pool',
-    'Private cinema',
-    'Home gym',
-    'Wine cellar',
-    '24/7 security',
+    'Hồ bơi tràn bờ hướng biển',
+    'Spa cao cấp',
+    'Nhà hàng 5 sao',
+    'Xe điện nội khu',
+    'Dịch vụ lễ tân 24/7',
   ],
   features: [
-    'Panoramic city views',
-    'Smart home automation',
-    'Luxury interior design',
+    'View biển trực diện',
+    'Thiết kế chuẩn resort quốc tế',
+    'Vận hành bởi thương hiệu nghỉ dưỡng quốc tế',
   ],
   description:
-    'A prestigious villa project in the heart of Beverly Hills, offering unmatched luxury and privacy.',
-  views: 2341,
-  coordinates: { lat: 34.0736, lng: -118.4004 },
+    'Khu biệt thự nghỉ dưỡng đẳng cấp tại Bãi Dài Cam Ranh, sở hữu vị trí đắc địa ven biển và tiện ích 5 sao chuẩn quốc tế.',
+  views: 3210,
+  coordinates: { lat: 11.9823, lng: 109.2193 },
   measurementUnit: 'sqm',
   createdAt: '12/01/2025',
   updatedAt: '12/07/2025',
   createdBy: 'admin',
 };
 
-export default function VietNamPropertyDetailPage() {
+export default function ResortPropertyDetailPage() {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [showAllImages, setShowAllImages] = useState(false);
   const [dialogCurrentImageIndex, setDialogCurrentImageIndex] = useState(0);
@@ -137,8 +137,8 @@ export default function VietNamPropertyDetailPage() {
             {/* Navigation */}
             <div className="absolute top-6 left-6 z-10">
               <Link
-                href="/products/international"
-                className="inline-flex items-center text-white hover:text-blue-200 transition-colors bg-black/30 backdrop-blur-sm px-4 py-2 rounded-lg"
+                href="/products/resort"
+                className="inline-flex items-center text-white hover:text-teal-200 transition-colors bg-black/30 backdrop-blur-sm px-4 py-2 rounded-lg"
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Quay lại danh sách
@@ -169,7 +169,7 @@ export default function VietNamPropertyDetailPage() {
                     </Badge>
                   )}
                   {property.isExclusive && (
-                    <Badge className="bg-gradient-to-r !from-blue-500 !to-blue-600 text-white border-0">
+                    <Badge className="bg-gradient-to-r !from-teal-500 !to-teal-600 text-white border-0">
                       Độc quyền
                     </Badge>
                   )}
@@ -186,20 +186,20 @@ export default function VietNamPropertyDetailPage() {
 
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
                   <div>
-                    <div className="text-2xl font-bold text-blue-200">
+                    <div className="text-2xl font-bold text-teal-200">
                       Từ {formatVnCurrencyShort(property.minPrice)}
                     </div>
                     <div className="text-white/80">Giá</div>
                   </div>
                   <div>
-                    <div className="text-2xl font-bold text-blue-200">
+                    <div className="text-2xl font-bold text-teal-200">
                       {property.landArea}
                       {property.measurementUnit === 'sqm' ? 'm²' : 'ft²'}
                     </div>
                     <div className="text-white/80">Diện tích</div>
                   </div>
                   <div>
-                    <div className="text-2xl font-bold text-blue-200">
+                    <div className="text-2xl font-bold text-teal-200">
                       {property.minBedroom}-{property.maxBedroom}
                     </div>
                     <div className="text-white/80">Phòng ngủ</div>
@@ -456,7 +456,7 @@ export default function VietNamPropertyDetailPage() {
                 whileHover={{ scale: 1.05 }}
                 className={`flex-shrink-0 cursor-pointer border-2 rounded-lg overflow-hidden ${
                   dialogCurrentImageIndex === index
-                    ? 'border-blue-600'
+                    ? 'border-teal-600'
                     : 'border-transparent'
                 }`}
                 onClick={() => {

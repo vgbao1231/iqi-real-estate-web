@@ -37,7 +37,7 @@
     --primary-foreground: 222.2 47.4% 11.2%; /* #0f172a */
     --secondary: 215.4 25.2% 17.6%; /* #1e293b */
     --secondary-foreground: 210 20% 98%; /* #f1f5f9 */
-    --muted: 217.2 32.6% 17.5%; /* #1d222b */
+    --muted: 0 0% 20%; /* #333333 */
     --muted-foreground: 216 14.6% 68.2%; /* #a5acb7 */
     --accent: 215.4 25.2% 17.6%; /* #1e293b */
     --accent-foreground: 210 20% 98%; /* #f1f5f9 */
@@ -86,7 +86,7 @@
   }
 
   .dark .bg-gradient-to-r {
-    @apply from-gray-900 to-gray-800;
+    @apply from-[#222222] to-[#242424];
   }
 
   .dark .shadow-lg {

@@ -1,25 +1,22 @@
 'use client';
 
 import type React from 'react';
-
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
-import { FadeIn, ScaleIn } from '@/components/common/animations';
 import {
   Eye,
   EyeOff,
+  Globe,
+  MessageCircle,
+  HelpCircle,
   Lock,
   Mail,
-  Shield,
-  Building,
-  ArrowRight,
 } from 'lucide-react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
+import Image from 'next/image';
 
 export default function AdminLoginPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -36,206 +33,284 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex items-center justify-center p-4">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-5">
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fillRule='evenodd'%3E%3Cg fill='%23000000' fillOpacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-          }}
-        />
+    <div className="min-h-screen flex">
+      {/* Left Side - Illustration */}
+      <div className="hidden lg:flex lg:w-1/3 bg-gradient-to-br from-[#e5712f] to-[#f03864] relative overflow-hidden">
+        {/* Content */}
+        <div className="relative z-10 flex flex-col px-8 py-16">
+          {/* Logo */}
+          <div className="flex items-center space-x-3 mb-8">
+            <Image
+              src="/logo-detail-light.png"
+              alt="logo-detail"
+              width={100}
+              height={100}
+            />
+          </div>
+
+          {/* Main Text */}
+          <h5 className="text-2xl lg:text-4xl font-semibold text-white leading-tight flex-1">
+            Trao quyền cho các đại lý IQI, hợp lý hóa quy trình bất động sản
+          </h5>
+
+          {/* Illustration Area */}
+          <div className="relative">
+            {/* Floating Elements */}
+            <motion.div
+              animate={{
+                y: [0, -20, 0],
+                rotate: [0, 10, 0],
+              }}
+              transition={{
+                duration: 3.5,
+                repeat: Number.POSITIVE_INFINITY,
+                ease: 'easeInOut',
+              }}
+              className="absolute top-0 left-0 w-16 h-16 bg-yellow-300 rounded-2xl flex items-center justify-center shadow-lg"
+            >
+              <span className="text-2xl">📊</span>
+            </motion.div>
+
+            <motion.div
+              animate={{
+                y: [0, 20, 0],
+                rotate: [0, -10, 0],
+              }}
+              transition={{
+                duration: 4,
+                repeat: Number.POSITIVE_INFINITY,
+                ease: 'easeInOut',
+                delay: 1,
+              }}
+              className="absolute top-4 right-0 w-14 h-14 bg-blue-400 rounded-xl flex items-center justify-center shadow-lg"
+            >
+              <span className="text-2xl">🏘️</span>
+            </motion.div>
+
+            <motion.div
+              animate={{
+                y: [0, -12, 0],
+                x: [0, 5, 0],
+              }}
+              transition={{
+                duration: 4,
+                repeat: Number.POSITIVE_INFINITY,
+                ease: 'easeInOut',
+                delay: 2,
+              }}
+              className="absolute bottom-0 left-4 w-12 h-12 bg-green-400 rounded-lg flex items-center justify-center shadow-lg"
+            >
+              <span className="text-lg">🚀</span>
+            </motion.div>
+
+            {/* Main Character */}
+            <div className="flex justify-center mt-16">
+              <motion.div
+                animate={{
+                  y: [0, -5, 0],
+                }}
+                transition={{
+                  duration: 3,
+                  repeat: Number.POSITIVE_INFINITY,
+                  ease: 'easeInOut',
+                }}
+                className="w-32 h-32 bg-gradient-to-br from-yellow-400 to-orange-400 rounded-full flex items-center justify-center shadow-2xl"
+              >
+                <span className="text-6xl">🐯</span>
+              </motion.div>
+            </div>
+
+            {/* Additional floating elements */}
+            <motion.div
+              animate={{
+                rotate: [0, 360, 0],
+                y: [0, 8, 0],
+              }}
+              transition={{
+                duration: 15,
+                repeat: Number.POSITIVE_INFINITY,
+                ease: 'linear',
+              }}
+              className="absolute bottom-0 right-8 w-12 h-12 bg-purple-400 rounded-full flex items-center justify-center shadow-lg"
+            >
+              <span className="text-2xl">⭐</span>
+            </motion.div>
+          </div>
+        </div>
       </div>
 
-      {/* Floating Elements */}
-      <motion.div
-        animate={{
-          y: [0, -20, 0],
-          rotate: [0, 5, 0],
-        }}
-        transition={{
-          duration: 6,
-          repeat: Number.POSITIVE_INFINITY,
-          ease: 'easeInOut',
-        }}
-        className="absolute top-20 left-20 w-16 h-16 bg-orange-200/30 rounded-full blur-xl"
-      />
-      <motion.div
-        animate={{
-          y: [0, 20, 0],
-          rotate: [0, -5, 0],
-        }}
-        transition={{
-          duration: 8,
-          repeat: Number.POSITIVE_INFINITY,
-          ease: 'easeInOut',
-          delay: 2,
-        }}
-        className="absolute bottom-20 right-20 w-20 h-20 bg-blue-200/30 rounded-full blur-xl"
-      />
-
-      <div className="w-full max-w-md relative z-10">
-        <FadeIn>
-          {/* Logo & Header */}
-          <div className="text-center mb-8">
-            <motion.div
-              whileHover={{ scale: 1.1, rotate: 5 }}
-              className="w-16 h-16 bg-gradient-to-r from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg"
-            >
-              <Building className="w-8 h-8 text-white" />
-            </motion.div>
-            <h1 className="text-3xl font-bold mb-2">IQI Admin Portal</h1>
-            <p className="text-muted-foreground">
-              Đăng nhập để quản lý hệ thống
-            </p>
-          </div>
-        </FadeIn>
-
-        <ScaleIn delay={0.2}>
-          <Card className="shadow-2xl border-0 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm">
-            <CardHeader className="space-y-1 pb-6">
-              <CardTitle className="text-2xl text-center flex items-center justify-center">
-                <Shield className="w-5 h-5 mr-2 text-orange-600" />
-                Đăng nhập
-              </CardTitle>
-              <p className="text-center text-muted-foreground">
-                Nhập thông tin đăng nhập của bạn
-              </p>
-            </CardHeader>
-            <CardContent>
-              <form onSubmit={handleLogin} className="space-y-6">
-                <div className="space-y-4">
-                  <div>
-                    <label className="text-sm font-medium">Email</label>
-                    <div className="relative">
-                      <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
-                      <Input
-                        type="email"
-                        placeholder="admin@iqi.com"
-                        className="pl-10"
-                        value={formData.email}
-                        onChange={(e) =>
-                          setFormData({ ...formData, email: e.target.value })
-                        }
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="text-sm font-medium">Mật khẩu</label>
-                    <div className="relative">
-                      <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
-                      <Input
-                        type={showPassword ? 'text' : 'password'}
-                        placeholder="••••••••"
-                        className="pl-10 pr-10"
-                        value={formData.password}
-                        onChange={(e) =>
-                          setFormData({ ...formData, password: e.target.value })
-                        }
-                        required
-                      />
-                      <button
-                        type="button"
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                      >
-                        {showPassword ? (
-                          <EyeOff className="w-4 h-4" />
-                        ) : (
-                          <Eye className="w-4 h-4" />
-                        )}
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
-                    <Checkbox
-                      id="remember"
-                      checked={formData.rememberMe}
-                      onCheckedChange={(checked) =>
-                        setFormData({
-                          ...formData,
-                          rememberMe: checked as boolean,
-                        })
-                      }
-                    />
-                    <label htmlFor="remember" className="text-sm">
-                      Ghi nhớ đăng nhập
-                    </label>
-                  </div>
-                  <Link
-                    href="/admin/forgot-password"
-                    className="text-sm text-orange-600 hover:text-orange-700"
-                  >
-                    Quên mật khẩu?
-                  </Link>
-                </div>
-
-                <motion.div
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <Button
-                    type="submit"
-                    className="w-full bg-orange-600 hover:bg-orange-700"
-                    size="lg"
-                  >
-                    Đăng nhập
-                    <ArrowRight className="w-4 h-4 ml-2" />
-                  </Button>
-                </motion.div>
-              </form>
-
-              {/* Demo Accounts */}
-              <div className="mt-6 p-4 bg-muted/50 rounded-lg">
-                <h4 className="text-sm font-semibold mb-2">Demo Accounts:</h4>
-                <div className="space-y-2 text-xs">
-                  <div className="flex justify-between">
-                    <span>Admin:</span>
-                    <span className="font-mono">admin@iqi.com / admin123</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Manager:</span>
-                    <span className="font-mono">
-                      manager@iqi.com / manager123
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Staff:</span>
-                    <span className="font-mono">staff@iqi.com / staff123</span>
-                  </div>
-                </div>
+      {/* Right Side - Login Form */}
+      <div className="w-full flex flex-col bg-white">
+        {/* Header */}
+        <div className="flex justify-between items-center p-6">
+          <div className="lg:hidden">
+            <div className="flex items-center space-x-2">
+              <div className="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-sm">IQI</span>
               </div>
-            </CardContent>
-          </Card>
-        </ScaleIn>
-
-        {/* Footer */}
-        <FadeIn delay={0.4}>
-          <div className="text-center mt-8">
-            <p className="text-sm text-muted-foreground">
-              Cần hỗ trợ?{' '}
-              <Link
-                href="/contact"
-                className="text-orange-600 hover:text-orange-700"
-              >
-                Liên hệ IT Support
-              </Link>
-            </p>
-            <div className="flex items-center justify-center space-x-4 mt-4">
-              <Badge variant="outline" className="text-xs">
-                v2.1.0
-              </Badge>
-              <Badge variant="outline" className="text-xs">
-                Secure
-              </Badge>
             </div>
           </div>
-        </FadeIn>
+          <div className="flex items-center space-x-2 text-sm text-gray-600">
+            <Globe className="w-4 h-4" />
+            <span>VI</span>
+          </div>
+        </div>
+
+        {/* Main Content */}
+        <div className="flex-1 flex items-center justify-center px-6">
+          <div className="w-full max-w-lg">
+            {/* Logo and Title */}
+            <div className="text-center mb-8 center-both flex-col">
+              <Image
+                src="/logo-detail-dark.png"
+                alt="logo-detail"
+                width={100}
+                height={100}
+              />
+              <h1 className="text-2xl font-semibold text-gray-900 mb-2">
+                Đăng nhập vào IQI ATLAS
+              </h1>
+            </div>
+
+            {/* Login Form */}
+            <form onSubmit={handleLogin} className="space-y-6">
+              <div>
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
+                  Email
+                </label>
+                <div className="relative">
+                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+                  <Input
+                    type="email"
+                    placeholder="admin@iqi.com"
+                    className="pl-10 placeholder:text-muted-foreground"
+                    value={formData.email}
+                    onChange={(e) =>
+                      setFormData({ ...formData, email: e.target.value })
+                    }
+                    required
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
+                  Mật khẩu
+                </label>
+                <div className="relative">
+                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+                  <Input
+                    type={showPassword ? 'text' : 'password'}
+                    placeholder="••••••••"
+                    className="pl-10 pr-10 placeholder:text-muted-foreground"
+                    value={formData.password}
+                    onChange={(e) =>
+                      setFormData({ ...formData, password: e.target.value })
+                    }
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                  >
+                    {showPassword ? (
+                      <EyeOff className="w-4 h-4" />
+                    ) : (
+                      <Eye className="w-4 h-4" />
+                    )}
+                  </button>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="remember"
+                    checked={formData.rememberMe}
+                    onCheckedChange={(checked) =>
+                      setFormData({
+                        ...formData,
+                        rememberMe: checked as boolean,
+                      })
+                    }
+                  />
+                  <label htmlFor="remember" className="text-sm text-gray-600">
+                    Ghi nhớ tôi
+                  </label>
+                </div>
+                <Link
+                  href="/admin/forgot-password"
+                  className="text-sm text-blue-600 hover:text-blue-700"
+                >
+                  Quên mật khẩu?
+                </Link>
+              </div>
+
+              <Button
+                type="submit"
+                className="w-full h-12 bg-orange-500 hover:bg-orange-600 text-white font-medium rounded-lg transition-colors"
+              >
+                ĐĂNG NHẬP
+              </Button>
+            </form>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="px-6 py-6 border-t border-gray-100">
+          <div className="text-center text-xs text-gray-500 space-y-1">
+            <div className="font-medium">IQI Holdings Sdn Bhd (1018842-U)</div>
+            <div>
+              26th -28th Floor, Tower D, Millierz Square, No. 357, Jalan Kelang
+              Lama, 58000 Kuala Lumpur, Malaysia.
+            </div>
+            <div>T: +60374506655</div>
+            <div className="flex justify-center space-x-4 mt-3">
+              <Link
+                href="/terms"
+                className="underline hover:font-semibold transition-all"
+              >
+                Điều khoản sử dụng
+              </Link>
+              <span>•</span>
+              <Link
+                href="/privacy"
+                className="underline hover:font-semibold transition-all"
+              >
+                Chính sách bảo mật
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        {/* Support Chat Button */}
+        <div className="fixed bottom-6 right-6">
+          <motion.button
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            className="w-12 h-12 bg-orange-500 hover:bg-orange-600 text-white rounded-full shadow-lg flex items-center justify-center"
+          >
+            <MessageCircle className="w-6 h-6" />
+          </motion.button>
+        </div>
+
+        {/* Help Button */}
+        <div className="fixed bottom-6 right-20">
+          <motion.button
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            className="w-12 h-12 bg-gray-600 hover:bg-gray-700 text-white rounded-full shadow-lg flex items-center justify-center"
+          >
+            <HelpCircle className="w-6 h-6" />
+          </motion.button>
+        </div>
       </div>
     </div>
   );

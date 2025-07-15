@@ -39,7 +39,7 @@ export function PriceFilter({
     if (toValue) {
       return `Đến ${toValue} ${unit}`;
     }
-    return 'Khoảng giá';
+    return <p className="font-normal">Khoảng giá</p>;
   };
 
   return (

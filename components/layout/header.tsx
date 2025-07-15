@@ -225,11 +225,13 @@ export default function Header() {
                           <div className="px-4 py-3">
                             <div className="flex items-start gap-2">
                               {item.icon}
-                              <p className="font-medium text-sm group-hover/item:text-orange-500 relative">
-                                {item.label}
+                              <div className="relative">
+                                <p className="font-medium text-sm group-hover/item:text-orange-500">
+                                  {item.label}
+                                </p>
                                 {/* Underline hiệu ứng cho item.label */}
                                 <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-orange-500 to-orange-600 transition-all duration-300 group-hover/item:w-full"></div>
-                              </p>
+                              </div>
                             </div>
                             <p className="text-xs text-muted-foreground">
                               {item.description}

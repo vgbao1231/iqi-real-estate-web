@@ -1,9 +1,10 @@
-import type React from 'react';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import { ThemeProvider } from '@/components/common/theme-provider';
 import { ReactQueryProvider } from '@/components/providers/react-query-provider';
+import LayoutWrapper from '@/components/layout/layout-wrapper';
+import React from 'react';
+import 'leaflet/dist/leaflet.css';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -40,15 +41,9 @@ export default function RootLayout({
         />
       </head>
       <body className={inter.className} suppressHydrationWarning>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
-          enableSystem
-          disableTransitionOnChange={false}
-          storageKey="iqi-theme"
-        >
+        <LayoutWrapper>
           <ReactQueryProvider>{children}</ReactQueryProvider>
-        </ThemeProvider>
+        </LayoutWrapper>
       </body>
     </html>
   );
