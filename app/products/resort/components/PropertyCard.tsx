@@ -22,7 +22,7 @@ export const PropertyCard = ({ property, index }: any) => (
     <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 group border-0 shadow-md h-full flex flex-col">
       <div className="relative">
         <Image
-          src={property.image || '/placeholder.svg'}
+          src={property.image || '/placeholder-2.webp'}
           alt={property.name}
           width={400}
           height={280}

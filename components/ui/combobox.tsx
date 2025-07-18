@@ -20,7 +20,7 @@ import {
 } from '@/components/ui/popover';
 
 interface ComboboxProps {
-  options: { value: string; label: string }[];
+  options: { value: string; label: React.ReactNode }[];
   value: string;
   onValueChange: (value: string) => void;
   placeholder?: string;

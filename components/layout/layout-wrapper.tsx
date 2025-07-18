@@ -14,7 +14,7 @@ export default function LayoutWrapper({
 
   if (isAdmin) {
     // Không dùng theme, force light mode
-    return <div className="bg-white text-black">{children}</div>;
+    return <div>{children}</div>;
   }
 
   return (

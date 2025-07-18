@@ -10,29 +10,25 @@ import {
   Users,
   Newspaper,
   Globe,
-  BarChart3,
   Settings,
   Bell,
   LogOut,
   Menu,
   X,
   Home,
-  FileText,
-  MessageSquare,
-  Calendar,
-  DollarSign,
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { cn } from '@/lib/utils';
 
 interface AdminLayoutProps {
   children: React.ReactNode;
 }
 
 export default function AdminLayout({ children }: AdminLayoutProps) {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
   const pathname = usePathname();
 
   if (pathname === '/admin/login') {
@@ -48,68 +44,32 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     },
     {
       name: 'Nhân sự',
-      href: '/admin/dashboard/staff',
+      href: '/admin/staff',
       icon: Users,
-      current: pathname.startsWith('/admin/dashboard/staff'),
-      badge: '156',
+      current: pathname.startsWith('/admin/staff'),
     },
     {
       name: 'Dự án',
-      href: '/admin/dashboard/properties',
+      href: '/admin/properties',
       icon: Building,
-      current: pathname.startsWith('/admin/dashboard/properties'),
-      badge: '1,247',
+      current: pathname.startsWith('/admin/properties'),
     },
     {
       name: 'Đối tác',
-      href: '/admin/dashboard/partners',
+      href: '/admin/partners',
       icon: Globe,
-      current: pathname.startsWith('/admin/dashboard/partners'),
-      badge: '48',
+      current: pathname.startsWith('/admin/partners'),
     },
     {
       name: 'Tin tức',
-      href: '/admin/dashboard/news',
+      href: '/admin/news',
       icon: Newspaper,
-      current: pathname.startsWith('/admin/dashboard/news'),
-      badge: '89',
-    },
-    {
-      name: 'Báo cáo',
-      href: '/admin/dashboard/reports',
-      icon: BarChart3,
-      current: pathname.startsWith('/admin/dashboard/reports'),
-    },
-    {
-      name: 'Tài chính',
-      href: '/admin/dashboard/finance',
-      icon: DollarSign,
-      current: pathname.startsWith('/admin/dashboard/finance'),
-    },
-    {
-      name: 'Lịch hẹn',
-      href: '/admin/dashboard/appointments',
-      icon: Calendar,
-      current: pathname.startsWith('/admin/dashboard/appointments'),
-      badge: '12',
-    },
-    {
-      name: 'Tin nhắn',
-      href: '/admin/dashboard/messages',
-      icon: MessageSquare,
-      current: pathname.startsWith('/admin/dashboard/messages'),
-      badge: '5',
-    },
-    {
-      name: 'Nội dung',
-      href: '/admin/dashboard/content',
-      icon: FileText,
-      current: pathname.startsWith('/admin/dashboard/content'),
+      current: pathname.startsWith('/admin/news'),
     },
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-background light">
       {/* Mobile sidebar backdrop */}
       <AnimatePresence>
         {sidebarOpen && (
@@ -127,10 +87,13 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
 
       {/* Sidebar */}
       <div
-        className={`fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-gray-800 shadow-lg transform transition-transform duration-300 ease-in-out lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
+        className={cn(
+          'fixed inset-y-0 left-0 z-50 w-64 bg-card shadow-lg transform transition-transform duration-300 ease-in-out',
+          sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+        )}
       >
         {/* Logo */}
-        <div className="flex items-center justify-between h-16 px-6 border-b border-gray-200 dark:border-gray-700">
+        <div className="flex items-center justify-between h-16 px-6 border-b border-border">
           <Link href="/admin/dashboard" className="flex items-center space-x-2">
             <div className="w-8 h-8 bg-gradient-to-r from-orange-500 to-orange-600 rounded-lg flex items-center justify-center">
               <Building className="w-4 h-4 text-white" />
@@ -160,23 +123,17 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                   ? 'bg-orange-100 text-orange-700 dark:bg-orange-900/20 dark:text-orange-400'
                   : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700'
               }`}
-              onClick={() => setSidebarOpen(false)}
             >
               <div className="flex items-center">
                 <item.icon className="w-5 h-5 mr-3" />
                 {item.name}
               </div>
-              {item.badge && (
-                <Badge variant="secondary" className="text-xs">
-                  {item.badge}
-                </Badge>
-              )}
             </Link>
           ))}
         </nav>
 
         {/* Settings */}
-        <div className="p-4 border-t border-gray-200 dark:border-gray-700">
+        <div className="p-4 border-t border-border">
           <Link
             href="/admin/settings"
             className="flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
@@ -188,23 +145,27 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       </div>
 
       {/* Main content */}
-      <div className="lg:pl-64">
+      <div
+        className={cn(
+          'transition-all duration-300',
+          sidebarOpen ? 'pl-64' : 'pl-0'
+        )}
+      >
         {/* Top header */}
-        <header className="sticky top-0 z-30 bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
+        <header className="sticky top-0 z-30 bg-card shadow-sm border-b border-border">
           <div className="flex items-center justify-between h-16 px-4 sm:px-6">
             {/* Mobile menu button */}
             <Button
               variant="ghost"
               size="sm"
-              className="lg:hidden"
-              onClick={() => setSidebarOpen(true)}
+              onClick={() => setSidebarOpen((p) => !p)}
             >
-              <Menu className="w-5 h-5" />
+              <Menu className="w-5 h-5 text-foreground" />
             </Button>
 
             {/* Page title - will be overridden by individual pages */}
             <div className="flex-1 lg:flex-none">
-              <h1 className="text-lg font-semibold text-gray-900 dark:text-white lg:hidden">
+              <h1 className="text-lg font-semibold text-foreground lg:hidden">
                 Admin Dashboard
               </h1>
             </div>
@@ -213,7 +174,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
             <div className="flex items-center space-x-4">
               {/* Notifications */}
               <Button variant="ghost" size="sm" className="relative">
-                <Bell className="w-5 h-5" />
+                <Bell className="w-5 h-5 text-foreground" />
                 <Badge className="absolute -top-1 -right-1 w-5 h-5 p-0 flex items-center justify-center bg-red-600 text-white text-xs">
                   3
                 </Badge>
@@ -237,14 +198,14 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
 
               {/* Logout */}
               <Button variant="ghost" size="sm">
-                <LogOut className="w-4 h-4" />
+                <LogOut className="w-4 h-4 text-foreground" />
               </Button>
             </div>
           </div>
         </header>
 
         {/* Page content */}
-        <main className="flex-1">{children}</main>
+        <main className="flex-1 p-8 text-foreground">{children}</main>
       </div>
     </div>
   );

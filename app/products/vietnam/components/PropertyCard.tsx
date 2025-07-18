@@ -19,10 +19,10 @@ import Link from 'next/link';
 import { formatVnCurrencyShort } from '@/lib/utils';
 export const PropertyCard = ({ property, index }: any) => (
   <ScaleIn key={property.id} delay={index * 0.1}>
-    <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 group border-0 shadow-md h-full flex flex-col">
+    <Card className="overflow-hidden hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group border-0 shadow-md h-full flex flex-col">
       <div className="relative">
         <Image
-          src={property.image || '/placeholder.svg'}
+          src={property.image || '/placeholder-2.webp'}
           alt={property.name}
           width={400}
           height={280}
