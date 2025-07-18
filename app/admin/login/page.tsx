@@ -84,7 +84,7 @@ export default function AdminLoginPage() {
               }}
               className="absolute top-4 right-0 w-14 h-14 bg-blue-400 rounded-xl flex items-center justify-center shadow-lg"
             >
-              <span className="text-2xl">🏘️</span>
+              <span className="text-2xl">🏢</span>
             </motion.div>
 
             <motion.div
@@ -186,7 +186,7 @@ export default function AdminLoginPage() {
                   <Input
                     type="email"
                     placeholder="admin@iqi.com"
-                    className="pl-10 placeholder:text-muted-foreground"
+                    className="pl-10 placeholder:text-gray-400"
                     value={formData.email}
                     onChange={(e) =>
                       setFormData({ ...formData, email: e.target.value })
@@ -208,7 +208,7 @@ export default function AdminLoginPage() {
                   <Input
                     type={showPassword ? 'text' : 'password'}
                     placeholder="••••••••"
-                    className="pl-10 pr-10 placeholder:text-muted-foreground"
+                    className="pl-10 pr-10 placeholder:text-gray-400"
                     value={formData.password}
                     onChange={(e) =>
                       setFormData({ ...formData, password: e.target.value })
