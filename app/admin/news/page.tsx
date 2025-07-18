@@ -36,8 +36,6 @@ import {
   Download,
   Clock,
   TrendingUp,
-  MessageSquare,
-  Heart,
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useState, useMemo } from 'react';
@@ -694,20 +692,10 @@ export default function NewsManagementPage() {
 
                           {news.status === 'published' && (
                             <div className="flex items-center justify-between text-xs pt-2 border-t">
-                              <div className="flex items-center space-x-4">
-                                <span className="flex items-center space-x-1">
-                                  <Eye className="w-3 h-3" />
-                                  <span>{news.views}</span>
-                                </span>
-                                <span className="flex items-center space-x-1">
-                                  <Heart className="w-3 h-3" />
-                                  <span>{news.likes}</span>
-                                </span>
-                                <span className="flex items-center space-x-1">
-                                  <MessageSquare className="w-3 h-3" />
-                                  <span>{news.comments}</span>
-                                </span>
-                              </div>
+                              <span className="flex items-center space-x-1">
+                                <Eye className="w-3 h-3" />
+                                <span>{news.views}</span>
+                              </span>
                               <Link href={`/news/${news.slug}`}>
                                 <Button variant="ghost" size="sm">
                                   <Eye className="w-3 h-3 mr-1" />

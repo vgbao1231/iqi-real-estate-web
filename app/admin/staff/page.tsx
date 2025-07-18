@@ -502,7 +502,7 @@ export default function StaffManagementPage() {
       <FadeIn delay={0.3}>
         {paginatedStaff.length > 0 ? (
           <>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-y-6 gap-x-8">
               {paginatedStaff.map((staff: any, index) => (
                 <ScaleIn key={staff.id} delay={index * 0.05}>
                   <motion.div whileHover={{ y: -5 }}>
@@ -599,51 +599,6 @@ export default function StaffManagementPage() {
                               )}
                             </div>
                           </div>
-
-                          {staff.department === 'sales' && (
-                            <div className="pt-2 border-t">
-                              <div className="grid grid-cols-2 gap-2 text-xs">
-                                <div>
-                                  <span className="text-muted-foreground">
-                                    Deals:
-                                  </span>
-                                  <div className="font-semibold text-blue-600">
-                                    {staff.deals}
-                                  </div>
-                                </div>
-                                <div>
-                                  <span className="text-muted-foreground">
-                                    Doanh thu:
-                                  </span>
-                                  <div className="font-semibold text-green-600">
-                                    {staff.revenue}
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="mt-2">
-                                <div className="flex items-center justify-between text-xs mb-1">
-                                  <span className="text-muted-foreground">
-                                    Hiệu suất
-                                  </span>
-                                  <span className="font-semibold">
-                                    {staff.performance}%
-                                  </span>
-                                </div>
-                                <div className="w-full bg-gray-200 rounded-full h-1.5">
-                                  <div
-                                    className={`h-1.5 rounded-full ${
-                                      staff.performance >= 90
-                                        ? 'bg-green-600'
-                                        : staff.performance >= 80
-                                          ? 'bg-yellow-600'
-                                          : 'bg-red-600'
-                                    }`}
-                                    style={{ width: `${staff.performance}%` }}
-                                  ></div>
-                                </div>
-                              </div>
-                            </div>
-                          )}
                         </div>
                       </CardContent>
                     </Card>
