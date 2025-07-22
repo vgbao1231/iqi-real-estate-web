@@ -1,77 +1,102 @@
 'use client';
 
-import { Separator } from '@/components/ui/separator';
-import { Info, Camera } from 'lucide-react';
+import { forwardRef } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselPrevious,
-  CarouselNext,
-} from '@/components/ui/carousel';
+import { formatVnCurrencyShort } from '@/lib/utils';
 
-export default function Introduction({ property }: any) {
-  return (
-    <section id="introduction" className="max-w-7xl mx-auto px-4">
-      <h3 className="text-2xl font-bold flex items-center text-blue-700 dark:text-blue-500">
-        <Info className="w-6 h-6 mr-3" />
-        Giới thiệu dự án
-      </h3>
-      <div className="grid md:grid-cols-2 gap-8 items-center">
-        <motion.div
-          initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.1 }}
-          className="relative h-[60vh] w-full rounded-lg overflow-hidden"
-        >
+const Introduction = forwardRef<HTMLElement, { property: any }>(
+  ({ property }, ref) => {
+    return (
+      <section ref={ref} id="introduction" className="relative min-h-screen">
+        <div className="absolute inset-0">
           <Image
-            src={property.introductionMainImage || '/placeholder-2.webp'}
-            alt="Giới thiệu chính"
+            src={property.introductionMainImage || '/placeholder.svg'}
+            alt={`${property.name} Introduction`}
             fill
             className="object-cover"
+            priority
           />
-        </motion.div>
-        <motion.p
-          initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.2 }}
-          className="text-lg leading-relaxed whitespace-pre-line text-muted-foreground"
-        >
-          {property.introductionText}
-        </motion.p>
-      </div>
+          <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/30 to-black/10"></div>
+        </div>
 
-      <Separator className="my-8" />
+        <div className="relative z-10 max-w-7xl mx-auto px-4 py-20 min-h-screen flex items-center">
+          <div className="w-full text-white">
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="max-w-4xl"
+            >
+              <div className="mb-8">
+                <h2 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-400">
+                    {property.name}
+                  </span>
+                </h2>
+                <p className="text-2xl text-blue-100 mb-8">
+                  {property.propertyType} tại {property.city}
+                </p>
+              </div>
 
-      <h4 className="text-xl font-bold mb-4 flex items-center text-foreground">
-        <Camera className="w-5 h-5 mr-2" />
-        Hình ảnh tổng quan
-      </h4>
-      <Carousel className="w-full">
-        <CarouselContent className="-ml-2">
-          {property.introductionGallery.map((img: any, idx: any) => (
-            <CarouselItem key={idx} className="pl-2 md:basis-1/2 lg:basis-1/3">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: idx * 0.1 + 0.3 }}
-                className="relative h-[50vh] w-full rounded-lg overflow-hidden"
-              >
-                <Image
-                  src={img || '/placeholder-2.webp'}
-                  alt={`Giới thiệu ảnh ${idx + 1}`}
-                  fill
-                  className="object-cover"
-                />
-              </motion.div>
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
-      </Carousel>
-    </section>
-  );
-}
+              <div className="space-y-6 text-lg leading-relaxed mb-12">
+                {property.introductionText
+                  ?.split('\n\n')
+                  .map((paragraph: string, index: number) => (
+                    <p key={index} className="text-gray-200">
+                      {paragraph.trim()}
+                    </p>
+                  ))}
+              </div>
+
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
+                {[
+                  {
+                    value: formatVnCurrencyShort(property.minPrice),
+                    label: 'Giá từ',
+                    color: 'text-green-400',
+                  },
+                  {
+                    value: `${property.landArea}${
+                      property.measurementUnit === 'sqm' ? 'm²' : 'ft²'
+                    }`,
+                    label: 'Diện tích',
+                    color: 'text-yellow-400',
+                  },
+                  {
+                    value: `${property.minBedroom}-${property.maxBedroom}`,
+                    label: 'Phòng ngủ',
+                    color: 'text-blue-400',
+                  },
+                  {
+                    value: `${property.minBathroom}-${property.maxBathroom}`,
+                    label: 'Phòng tắm',
+                    color: 'text-purple-400',
+                  },
+                ].map((item, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 + i * 0.1 }}
+                    viewport={{ once: true }}
+                    className="text-center p-6 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20"
+                  >
+                    <div className={`text-3xl font-bold mb-2 ${item.color}`}>
+                      {item.value}
+                    </div>
+                    <div className="text-sm text-gray-300">{item.label}</div>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+);
+
+Introduction.displayName = 'Introduction';
+export default Introduction;

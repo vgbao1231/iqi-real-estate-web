@@ -73,16 +73,18 @@ export default function CareersPage() {
       <section className="py-12 bg-gradient-to-r from-purple-50 to-purple-100 dark:from-purple-950/20 dark:to-purple-900/20">
         <div className="container mx-auto px-4">
           <FadeIn>
-            <Link
-              href="/"
-              className="inline-flex items-center text-purple-600 hover:text-purple-700 mb-6"
-            >
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Quay lại trang chủ
-            </Link>
-            <Badge className="mb-4 bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300">
-              Cơ HỘI NGHỀ NGHIỆP
-            </Badge>
+            <div className="flex items-center gap-2 mb-4">
+              <Link
+                href="/"
+                className="inline-flex items-center text-purple-600 hover:text-purple-700"
+              >
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Quay lại trang chủ
+              </Link>
+              <Badge className="bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300">
+                CƠ HỘI NGHỀ NGHIỆP
+              </Badge>
+            </div>
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
               Tham gia đội ngũ IQI Vietnam
             </h1>

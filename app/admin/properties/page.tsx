@@ -16,16 +16,16 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Search, Plus, Edit, Trash2, Eye, Building2 } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
-import { ProjectForm } from './components/ProjectForm';
+import { PropertyForm } from './components/PropertyForm';
 
-export default function AdminProjectsPage() {
+export default function AdminPropertysPage() {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState('');
   const [showForm, setShowForm] = useState(false);
-  const [editingProject, setEditingProject] = useState<any | null>(null);
+  const [editingProperty, setEditingProperty] = useState<any | null>(null);
 
-  // Mock project data (replace with actual data fetching in a real app)
-  const [projects, setProjects] = useState([
+  // Mock property data (replace with actual data fetching in a real app)
+  const [properties, setPropertys] = useState([
     {
       id: '1',
       category: 'vietnam',
@@ -133,55 +133,55 @@ export default function AdminProjectsPage() {
     },
   ]);
 
-  const filteredProjects = useMemo(() => {
-    return projects.filter(
-      (project) =>
-        project.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        project.address.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        project.developer.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredPropertys = useMemo(() => {
+    return properties.filter(
+      (property) =>
+        property.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        property.address.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        property.developer.toLowerCase().includes(searchTerm.toLowerCase())
     );
-  }, [projects, searchTerm]);
+  }, [properties, searchTerm]);
 
-  const handleAddProjectClick = () => {
-    setEditingProject(null); // Clear any previous editing data
+  const handleAddPropertyClick = () => {
+    setEditingProperty(null); // Clear any previous editing data
     setShowForm(true);
   };
 
-  const handleEditProjectClick = (id: string) => {
-    const projectToEdit = projects.find((p) => p.id === id);
+  const handleEditPropertyClick = (id: string) => {
+    const projectToEdit = properties.find((p) => p.id === id);
     if (projectToEdit) {
-      setEditingProject(projectToEdit);
+      setEditingProperty(projectToEdit);
       setShowForm(true);
     }
   };
 
   const handleCancelForm = () => {
     setShowForm(false);
-    setEditingProject(null);
+    setEditingProperty(null);
   };
 
-  const handleSubmitFormSuccess = (updatedProject: any) => {
-    if (updatedProject.id) {
-      // Update existing project
-      setProjects((prev) =>
+  const handleSubmitFormSuccess = (updatedProperty: any) => {
+    if (updatedProperty.id) {
+      // Update existing property
+      setPropertys((prev) =>
         prev.map((p) =>
-          p.id === updatedProject.id ? { ...updatedProject, id: p.id } : p
+          p.id === updatedProperty.id ? { ...updatedProperty, id: p.id } : p
         )
       );
     } else {
-      // Add new project (assign a new ID for mock data)
-      setProjects((prev) => [
-        { ...updatedProject, id: Date.now().toString() },
+      // Add new property (assign a new ID for mock data)
+      setPropertys((prev) => [
+        { ...updatedProperty, id: Date.now().toString() },
         ...prev,
       ]);
     }
     setShowForm(false);
-    setEditingProject(null);
+    setEditingProperty(null);
   };
 
   const handleDelete = (id: string) => {
     if (window.confirm('Bạn có chắc chắn muốn xóa dự án này?')) {
-      setProjects((prev) => prev.filter((p) => p.id !== id));
+      setPropertys((prev) => prev.filter((p) => p.id !== id));
       toast({
         title: 'Dự án đã xóa!',
         description: 'Dự án đã được xóa thành công.',
@@ -206,8 +206,8 @@ export default function AdminProjectsPage() {
   return (
     <div className="space-y-6">
       {showForm ? (
-        <ProjectForm
-          initialData={editingProject}
+        <PropertyForm
+          initialData={editingProperty}
           onCancel={handleCancelForm}
           onSubmitSuccess={handleSubmitFormSuccess}
         />
@@ -215,7 +215,7 @@ export default function AdminProjectsPage() {
         <>
           <div className="flex justify-between items-center">
             <h1 className="text-3xl font-bold">Quản lý dự án Bất động sản</h1>
-            <Button onClick={handleAddProjectClick}>
+            <Button onClick={handleAddPropertyClick}>
               <Plus className="mr-2 h-4 w-4" />
               Thêm dự án mới
             </Button>
@@ -251,7 +251,7 @@ export default function AdminProjectsPage() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {filteredProjects.length === 0 ? (
+                  {filteredPropertys.length === 0 ? (
                     <TableRow>
                       <TableCell
                         colSpan={6}
@@ -261,27 +261,27 @@ export default function AdminProjectsPage() {
                       </TableCell>
                     </TableRow>
                   ) : (
-                    filteredProjects.map((project) => (
-                      <TableRow key={project.id}>
+                    filteredPropertys.map((property) => (
+                      <TableRow key={property.id}>
                         <TableCell className="font-medium">
-                          {project.name}
+                          {property.name}
                         </TableCell>
                         <TableCell>
                           <Badge variant="secondary">
-                            {getCategoryLabel(project.category)}
+                            {getCategoryLabel(property.category)}
                           </Badge>
                         </TableCell>
-                        <TableCell>{project.address}</TableCell>
-                        <TableCell>{project.developer}</TableCell>
+                        <TableCell>{property.address}</TableCell>
+                        <TableCell>{property.developer}</TableCell>
                         <TableCell>
                           <Badge
                             className={
-                              project.visibleOnWeb
+                              property.visibleOnWeb
                                 ? 'bg-green-500 hover:bg-green-600'
                                 : 'bg-gray-500 hover:bg-gray-600'
                             }
                           >
-                            {project.visibleOnWeb ? 'Hiển thị' : 'Ẩn'}
+                            {property.visibleOnWeb ? 'Hiển thị' : 'Ẩn'}
                           </Badge>
                         </TableCell>
                         <TableCell className="text-right">
@@ -290,7 +290,7 @@ export default function AdminProjectsPage() {
                               variant="outline"
                               size="icon"
                               onClick={() =>
-                                router.push(`/products/vietnam/${project.id}`)
+                                router.push(`/products/vietnam/${property.id}`)
                               }
                             >
                               <Eye className="h-4 w-4" />
@@ -299,7 +299,9 @@ export default function AdminProjectsPage() {
                             <Button
                               variant="outline"
                               size="icon"
-                              onClick={() => handleEditProjectClick(project.id)}
+                              onClick={() =>
+                                handleEditPropertyClick(property.id)
+                              }
                             >
                               <Edit className="h-4 w-4" />
                               <span className="sr-only">Sửa</span>
@@ -307,7 +309,7 @@ export default function AdminProjectsPage() {
                             <Button
                               variant="destructive"
                               size="icon"
-                              onClick={() => handleDelete(project.id)}
+                              onClick={() => handleDelete(property.id)}
                             >
                               <Trash2 className="h-4 w-4" />
                               <span className="sr-only">Xóa</span>

@@ -1,97 +1,142 @@
 'use client';
 
-import { Separator } from '@/components/ui/separator';
+import { Badge } from '@/components/ui/badge';
+import { ClipboardList } from 'lucide-react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { ClipboardList } from 'lucide-react';
+import { forwardRef } from 'react';
 import { formatVnCurrencyShort } from '@/lib/utils';
 
-export default function Overview({ property }: any) {
-  return (
-    <section id="general-overview" className="max-w-7xl mx-auto px-4 space-y-8">
-      <h3 className="text-2xl font-bold mb-4 flex items-center text-green-600">
-        <ClipboardList className="w-6 h-6 mr-3" />
-        Thông tin tổng quan dự án
-      </h3>
-      <div className="grid md:grid-cols-2 gap-8 items-center">
-        <motion.div
-          initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.1 }}
-          className="relative h-[60vh] w-full rounded-lg overflow-hidden"
-        >
+const Overview = forwardRef<HTMLElement, { property: any }>(
+  ({ property }, ref) => {
+    const leftColumn = [
+      { label: 'Tên dự án', value: property.name },
+      { label: 'Chủ đầu tư', value: property.developer },
+      { label: 'Nhóm sản phẩm', value: property.propertyGroup },
+      { label: 'Diện tích', value: `${property.landArea} m²` },
+      {
+        label: 'Phòng ngủ',
+        value: `${property.minBedroom} - ${property.maxBedroom} phòng`,
+      },
+      { label: 'Thời gian bàn giao', value: property.handoverDate },
+      { label: 'Giai đoạn', value: property.phase },
+      {
+        label: 'Giá từ',
+        value: `Từ ${formatVnCurrencyShort(property.minPrice)}`,
+        className: 'text-yellow-400',
+      },
+      {
+        label: 'Trạng thái',
+        value: <Badge>{property.status}</Badge>,
+        isLast: true,
+      },
+    ];
+
+    const rightColumn = [
+      { label: 'Địa chỉ', value: property.address },
+      { label: 'Loại hình', value: property.propertyType },
+      { label: 'Tổng số căn/sản phẩm', value: property.totalUnits },
+      { label: 'Diện tích đất', value: `${property.landArea} m²` },
+      {
+        label: 'Phòng tắm',
+        value: `${property.minBathroom} - ${property.maxBathroom} phòng`,
+      },
+      { label: 'Tình trạng sở hữu', value: property.tenure },
+      { label: 'Tình trạng pháp lý', value: property.legalStatus },
+      { label: 'Đơn vị tiền tệ', value: property.currency },
+      {
+        label: 'Lượt xem',
+        value: property.views.toLocaleString(),
+        className: 'text-blue-400',
+        isLast: true,
+      },
+    ];
+
+    return (
+      <section
+        ref={ref}
+        id="general-overview"
+        className="relative min-h-screen"
+      >
+        <div className="absolute inset-0">
           <Image
-            src={property.overviewImage || '/placeholder-2.webp'}
-            alt="Tổng quan dự án"
+            src={property.overviewImage || '/placeholder.svg'}
+            alt="Project Overview"
             fill
             className="object-cover"
+            priority
           />
-        </motion.div>
-        <motion.p
-          initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.2 }}
-          className="text-lg leading-relaxed whitespace-pre-line text-muted-foreground"
-        >
-          {property.overviewSummary}
-        </motion.p>
-      </div>
+          <div className="absolute inset-0 bg-gradient-to-l from-black/60 via-black/40 to-black/20"></div>
+        </div>
 
-      <Separator className="my-8" />
+        <div className="relative z-10 max-w-7xl mx-auto px-4 py-20 min-h-screen flex items-center">
+          <div className="w-full text-white">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
+            >
+              <Badge className="bg-red-500/20 hover:bg-red-500/30 text-red-300 border-red-400/30 mb-6">
+                <ClipboardList className="w-4 h-4 mr-2" />
+                Thông tin chi tiết
+              </Badge>
+              <h2 className="text-5xl md:text-6xl font-bold mb-4 py-2 text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-pink-400">
+                Tổng Quan Dự Án
+              </h2>
+              <p className="text-xl text-gray-200 max-w-3xl mx-auto leading-relaxed">
+                {property.overviewSummary.trim()}
+              </p>
+            </motion.div>
 
-      <h4 className="text-xl font-bold mb-4 flex items-center">
-        <ClipboardList className="w-5 h-5 mr-2" />
-        Chi tiết kỹ thuật
-      </h4>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
-        {[
-          { label: 'Tên dự án', value: property.name },
-          { label: 'Địa chỉ', value: property.address },
-          { label: 'Chủ đầu tư', value: property.developer },
-          { label: 'Loại hình', value: property.propertyType },
-          { label: 'Nhóm sản phẩm', value: property.propertyGroup },
-          { label: 'Tổng số căn/sản phẩm', value: property.totalUnits },
-          {
-            label: 'Diện tích',
-            value: `${property.minBuildUp} - ${property.maxBuildUp} ${property.measurementUnit}`,
-          },
-          {
-            label: 'Diện tích đất',
-            value: `${property.landArea} ${property.measurementUnit}`,
-          },
-          {
-            label: 'Phòng ngủ',
-            value: `${property.minBedroom} - ${property.maxBedroom} phòng`,
-          },
-          {
-            label: 'Phòng tắm',
-            value: `${property.minBathroom} - ${property.maxBathroom} phòng`,
-          },
-          { label: 'Thời gian bàn giao', value: property.handoverDate },
-          { label: 'Tình trạng sở hữu', value: property.tenure },
-          { label: 'Giai đoạn', value: property.phase },
-          { label: 'Tình trạng pháp lý', value: property.legalStatus },
-          {
-            label: 'Giá từ',
-            value: `Từ ${formatVnCurrencyShort(property.minPrice)}`,
-          },
-          { label: 'Đơn vị tiền tệ', value: property.currency },
-          { label: 'Trạng thái', value: property.status, badge: true },
-        ].map((item, index) => (
-          <motion.div
-            key={index}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.03 + 0.3 }}
-            className="flex justify-between items-center py-2 border-b border-border last:border-b-0"
-          >
-            <span className="font-medium text-muted-foreground">
-              {item.label}
-            </span>
-            <span className="font-medium text-foreground">{item.value}</span>
-          </motion.div>
-        ))}
-      </div>
-    </section>
-  );
-}
+            {/* Detailed Information Table */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              viewport={{ once: true }}
+              className="bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 overflow-hidden"
+            >
+              <div className="p-8">
+                <h3 className="text-2xl font-bold text-center mb-8 flex items-center justify-center">
+                  <ClipboardList className="w-6 h-6 mr-3" />
+                  Chi tiết kỹ thuật
+                </h3>
+
+                <div className="grid md:grid-cols-2 gap-x-12 gap-y-6">
+                  {[leftColumn, rightColumn].map((column, colIdx) => (
+                    <div key={colIdx}>
+                      {column.map(
+                        ({ label, value, className, isLast }, idx) => (
+                          <div
+                            key={idx}
+                            className={`flex justify-between items-center py-3 ${
+                              isLast ? '' : 'border-b border-white/20'
+                            }`}
+                          >
+                            <span className="text-gray-300 font-medium">
+                              {label}
+                            </span>
+                            <span
+                              className={`font-semibold text-right ${className || ''}`}
+                            >
+                              {value}
+                            </span>
+                          </div>
+                        )
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+);
+
+Overview.displayName = 'Overview';
+export default Overview;

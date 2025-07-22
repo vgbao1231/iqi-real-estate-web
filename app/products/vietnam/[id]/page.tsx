@@ -1,19 +1,24 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+  CarouselApi,
+} from '@/components/ui/carousel';
 import {
   ArrowLeft,
   MapPin,
   Info,
   Home,
   Camera,
-  ChevronLeft,
-  ChevronRight,
   LayoutGrid,
   ClipboardList,
-  Handshake,
   Ruler,
   Bed,
   Bath,
@@ -41,16 +46,16 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { FadeIn } from '@/components/common/animations';
 import Introduction from './sections/Introduction';
 import Overview from './sections/Overview';
-import { formatVnCurrencyShort } from '@/lib/utils';
-import Contact from '@/components/sections/contact';
 import Amenities from './sections/Amenities';
 import FloorPlan from './sections/FloorPlan';
 import Product from './sections/Product';
 import Location from './sections/Location';
+import Policies from './sections/Policies';
+import Contact from './sections/Contact';
 
 /* -------------------------------------------------------------------------- */
 /*                         DUMMY PROPERTY – STATIC DATA                       */
@@ -382,67 +387,136 @@ export default function VietnamProductDetailPage() {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [showAllImages, setShowAllImages] = useState(false);
   const [dialogCurrentImageIndex, setDialogCurrentImageIndex] = useState(0);
-  const [direction, setDirection] = useState(0); // 1 for next, -1 for prev
+  const [carouselApi, setCarouselApi] = useState<CarouselApi>();
   const [activeSection, setActiveSection] = useState('introduction'); // State to manage active section
+  // Refs for each section
+  const introductionRef = useRef<HTMLElement>(null);
+  const generalOverviewRef = useRef<HTMLElement>(null);
+  const amenitiesRef = useRef<HTMLElement>(null);
+  const locationRef = useRef<HTMLElement>(null);
+  const floorplansRef = useRef<HTMLElement>(null);
+  const productsRef = useRef<HTMLElement>(null);
+  const policiesRef = useRef<HTMLElement>(null);
+  const contactRef = useRef<HTMLElement>(null);
 
   const handleOpenImageDialog = () => {
     setDialogCurrentImageIndex(activeImageIndex);
     setShowAllImages(true);
   };
 
-  const handlePrevImage = () => {
-    setDirection(-1);
-    setDialogCurrentImageIndex((i) =>
-      i === 0 ? property.images.length - 1 : i - 1
-    );
-  };
-  const handleNextImage = () => {
-    setDirection(1);
-    setDialogCurrentImageIndex((i) =>
-      i === property.images.length - 1 ? 0 : i + 1
-    );
-  };
-
-  const variants = {
-    enter: (dir: number) => ({ x: dir > 0 ? 1000 : -1000, opacity: 0 }),
-    center: { zIndex: 1, x: 0, opacity: 1 },
-    exit: (dir: number) => ({
-      zIndex: 0,
-      x: dir < 0 ? 1000 : -1000,
-      opacity: 0,
-    }),
-  };
-
-  const sections = [
-    {
-      id: 'introduction',
-      content: <Introduction property={property} />,
-    },
-    {
-      id: 'general-overview',
-      content: <Overview property={property} />,
-    },
-    {
-      id: 'amenities',
-      content: <Amenities property={property} />,
-    },
-    {
-      id: 'location',
-      content: <Location property={property} />,
-    },
-    {
-      id: 'floorplans',
-      content: <FloorPlan property={property} />,
-    },
-    {
-      id: 'products',
-      content: <Product property={property} />,
-    },
-  ];
+  const sections = useMemo(
+    () => [
+      {
+        id: 'introduction',
+        content: <Introduction property={property} ref={introductionRef} />,
+        label: 'Giới thiệu',
+        icon: Info,
+        ref: introductionRef,
+      },
+      {
+        id: 'general-overview',
+        content: <Overview property={property} ref={generalOverviewRef} />,
+        label: 'Tổng quan',
+        icon: ClipboardList,
+        ref: generalOverviewRef,
+      },
+      {
+        id: 'amenities',
+        content: <Amenities property={property} ref={amenitiesRef} />,
+        label: 'Tiện ích',
+        icon: Star,
+        ref: amenitiesRef,
+      },
+      {
+        id: 'location',
+        content: <Location property={property} ref={locationRef} />,
+        label: 'Vị trí',
+        icon: MapPin,
+        ref: locationRef,
+      },
+      {
+        id: 'floorplans',
+        content: <FloorPlan property={property} ref={floorplansRef} />,
+        label: 'Mặt bằng',
+        icon: LayoutGrid,
+        ref: floorplansRef,
+      },
+      {
+        id: 'products',
+        content: <Product property={property} ref={productsRef} />,
+        label: 'Sản phẩm',
+        icon: Home,
+        ref: productsRef,
+      },
+      {
+        id: 'policies',
+        content: <Policies property={property} ref={policiesRef} />,
+        label: 'Chính sách',
+        icon: Home,
+        ref: policiesRef,
+      },
+      {
+        id: 'contact',
+        content: <Contact property={property} ref={contactRef} />,
+        label: 'Liên hệ',
+        icon: Home,
+        ref: contactRef,
+      },
+    ],
+    []
+  );
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [activeSection]);
+    if (!carouselApi) return;
+
+    const onSelect = () => {
+      const index = carouselApi.selectedScrollSnap();
+      setDialogCurrentImageIndex(index);
+    };
+
+    onSelect();
+    carouselApi.on('select', onSelect);
+    carouselApi.on('reInit', onSelect);
+
+    return () => {
+      carouselApi.off('select', onSelect);
+      carouselApi.off('reInit', onSelect);
+    };
+  }, [carouselApi]);
+
+  // Update active section based on scroll position
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      const offset = 120; // Điều chỉnh theo chiều cao header
+      let currentSectionId = sections[0].id;
+
+      for (const section of sections) {
+        const el = section.ref.current;
+        if (el) {
+          const top = el.getBoundingClientRect().top + scrollY - offset;
+          if (scrollY >= top) {
+            currentSectionId = section.id;
+          }
+        }
+      }
+
+      // Nếu cuộn gần cuối trang thì luôn active section cuối
+      const nearBottom =
+        window.innerHeight + scrollY >= document.body.offsetHeight - 50;
+
+      if (nearBottom) {
+        currentSectionId = sections[sections.length - 1].id;
+      }
+
+      setActiveSection(currentSectionId);
+    };
+
+    handleScroll();
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [sections]);
 
   /* ============================== RENDER ============================== */
   return (
@@ -460,30 +534,23 @@ export default function VietnamProductDetailPage() {
           </Link>
 
           <nav className="flex flex-grow justify-center space-x-6">
-            {[
-              { id: 'introduction', label: 'Giới thiệu', icon: Info },
-              {
-                id: 'general-overview',
-                label: 'Tổng quan',
-                icon: ClipboardList,
-              },
-              { id: 'amenities', label: 'Tiện ích', icon: Star },
-              { id: 'location', label: 'Vị trí', icon: MapPin },
-              { id: 'floorplans', label: 'Mặt bằng', icon: LayoutGrid },
-              { id: 'products', label: 'Sản phẩm', icon: Home },
-            ].map((item) => {
+            {sections.map((item) => {
               const Icon = item.icon;
               const isActive = activeSection === item.id;
               return (
-                <Button
+                <a
+                  href={`#${item.id}`}
                   key={item.id}
-                  variant="ghost"
-                  className={`text-white hover:text-white hover:font-bold hover:bg-background/20 ${isActive ? 'bg-background/20 font-bold' : ''}`}
                   onClick={() => setActiveSection(item.id)}
                 >
-                  <Icon className="mr-2 h-4 w-4" />
-                  {item.label}
-                </Button>
+                  <Button
+                    variant="ghost"
+                    className={`text-white hover:text-white hover:font-bold hover:bg-background/20 ${isActive ? 'bg-background/20 font-bold' : ''}`}
+                  >
+                    <Icon className="mr-2 h-4 w-4" />
+                    {item.label}
+                  </Button>
+                </a>
               );
             })}
           </nav>
@@ -496,7 +563,7 @@ export default function VietnamProductDetailPage() {
       <FadeIn>
         <div className="relative">
           {/* Image Gallery */}
-          <div className="relative h-[70vh] overflow-hidden">
+          <div className="relative h-[80vh] overflow-hidden">
             <Image
               src={property.images[activeImageIndex] || '/placeholder-2.webp'}
               alt={property.name}
@@ -506,7 +573,7 @@ export default function VietnamProductDetailPage() {
             />
 
             {/* Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/10" />
 
             {/* Property Info Overlay */}
             <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
@@ -526,7 +593,7 @@ export default function VietnamProductDetailPage() {
                   )}
                 </div>
 
-                <h1 className="text-4xl md:text-5xl font-bold mb-4">
+                <h1 className="text-4xl md:text-5xl font-bold mb-4 text-shadow-xl">
                   {property.name}
                 </h1>
 
@@ -535,7 +602,7 @@ export default function VietnamProductDetailPage() {
                   {property.address}
                 </div>
 
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                {/* <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
                   <div>
                     <div className="text-2xl font-bold text-green-200">
                       Từ {formatVnCurrencyShort(property.minPrice)}
@@ -555,6 +622,41 @@ export default function VietnamProductDetailPage() {
                     </div>
                     <div className="text-white/80">Phòng ngủ</div>
                   </div>
+                  <div>
+                    <div className="text-2xl font-bold text-green-200">
+                      {property.minBathroom}-{property.maxBathroom}
+                    </div>
+                    <div className="text-white/80">Phòng tắm</div>
+                  </div>
+                </div> */}
+                <div className="flex items-center gap-2">
+                  {property.images.slice(0, 5).map((image: any, index: any) => (
+                    <button
+                      key={index}
+                      onClick={() => setActiveImageIndex(index)}
+                      className={`w-16 h-12 rounded-md overflow-hidden border transition-all ${
+                        activeImageIndex === index
+                          ? 'border-white'
+                          : 'border-white/50'
+                      }`}
+                    >
+                      <Image
+                        src={image || '/placeholder-2.webp'}
+                        alt={`${property.name} ${index + 1}`}
+                        width={64}
+                        height={48}
+                        className="w-full h-full object-cover"
+                      />
+                    </button>
+                  ))}
+                  {property.images.length > 5 && (
+                    <button
+                      onClick={handleOpenImageDialog}
+                      className="w-16 h-12 rounded-md bg-black/50 backdrop-blur-sm flex items-center justify-center text-white text-xs font-medium border-2 border-white/50"
+                    >
+                      +{property.images.length - 5}
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
@@ -562,33 +664,6 @@ export default function VietnamProductDetailPage() {
 
           {/* Image Thumbnails */}
           <div className="absolute bottom-6 right-8 center-both gap-2 z-10">
-            {property.images.slice(0, 3).map((image: any, index: any) => (
-              <button
-                key={index}
-                onClick={() => setActiveImageIndex(index)}
-                className={`w-16 h-12 rounded-md overflow-hidden border transition-all ${
-                  activeImageIndex === index
-                    ? 'border-white'
-                    : 'border-white/50'
-                }`}
-              >
-                <Image
-                  src={image || '/placeholder-2.webp'}
-                  alt={`${property.name} ${index + 1}`}
-                  width={64}
-                  height={48}
-                  className="w-full h-full object-cover"
-                />
-              </button>
-            ))}
-            {property.images.length > 3 && (
-              <button
-                onClick={handleOpenImageDialog}
-                className="w-16 h-12 rounded-md bg-black/50 backdrop-blur-sm flex items-center justify-center text-white text-xs font-medium border-2 border-white/50"
-              >
-                +{property.images.length - 3}
-              </button>
-            )}
             {/* Image Counter */}
             <Button
               variant="secondary"
@@ -605,51 +680,11 @@ export default function VietnamProductDetailPage() {
       {/* ----------------------------------------------------------------------- */}
       {/* Conditional sections                                                    */}
       {/* ----------------------------------------------------------------------- */}
-      <div className="py-12">
-        {sections.map(
-          (section) =>
-            activeSection === section.id && (
-              <section
-                key={section.id}
-                id={section.id}
-                className="mx-auto max-w-7xl space-y-8 px-4"
-              >
-                {section.content}
-              </section>
-            )
-        )}
+      <div>
+        {sections.map((section) => (
+          <Fragment key={section.id}>{section.content}</Fragment>
+        ))}
       </div>
-
-      {/* ----------------------------------------------------------------------- */}
-      {/* Always-visible blocks                                                    */}
-      {/* ----------------------------------------------------------------------- */}
-      <FadeIn delay={0.7}>
-        <section id="policies" className="w-full bg-background py-12">
-          <div className="mx-auto max-w-7xl space-y-8 px-4">
-            <h3 className="mb-4 flex items-center text-2xl font-bold text-orange-600 ">
-              <Handshake className="mr-3 h-6 w-6" />
-              Chính sách & Ưu đãi
-            </h3>
-            {property.policies.map((p) => (
-              <div
-                key={p.title}
-                className="rounded-lg border-l-4 border-orange-600 p-6 bg-card shadow-md"
-              >
-                <h4 className="mb-2 text-lg font-semibold text-orange-600">
-                  {p.title}
-                </h4>
-                <p className="leading-relaxed text-muted-foreground">
-                  {p.description}
-                </p>
-              </div>
-            ))}
-          </div>
-        </section>
-      </FadeIn>
-
-      <FadeIn delay={0.8}>
-        <Contact />
-      </FadeIn>
 
       {/* ----------------------------------------------------------------------- */}
       {/* Image dialog                                                             */}
@@ -659,79 +694,38 @@ export default function VietnamProductDetailPage() {
           <DialogHeader>
             <DialogTitle>Tất cả hình ảnh của {property.name}</DialogTitle>
           </DialogHeader>
-          <div className="relative mb-4 h-[60vh] w-full overflow-hidden">
-            <AnimatePresence initial={false} custom={direction}>
-              <motion.div
-                key={dialogCurrentImageIndex}
-                custom={direction}
-                variants={variants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                transition={{
-                  x: { type: 'spring', stiffness: 300, damping: 30 },
-                  opacity: { duration: 0.2 },
-                }}
-                className="absolute inset-0 flex items-center justify-center"
-              >
-                <Image
-                  src={
-                    property.images[dialogCurrentImageIndex] ||
-                    '/placeholder-2.webp'
-                  }
-                  alt={`${property.name} – Image ${dialogCurrentImageIndex + 1}`}
-                  fill
-                  className="rounded-lg object-contain"
-                />
-              </motion.div>
-            </AnimatePresence>
-
-            <Button
-              variant="ghost"
-              size="icon"
-              className="absolute left-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-black/50 text-white hover:bg-black/70"
-              onClick={handlePrevImage}
+          <div className="relative mb-4 h-[60vh] w-full overflow-hidden rounded-lg">
+            <Carousel
+              className="w-full"
+              setApi={setCarouselApi}
+              opts={{ loop: true }}
             >
-              <ChevronLeft className="h-6 w-6" />
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="absolute right-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-black/50 text-white hover:bg-black/70"
-              onClick={handleNextImage}
-            >
-              <ChevronRight className="h-6 w-6" />
-            </Button>
+              <CarouselContent className="-ml-2">
+                {property.images.map((img: any, idx: number) => (
+                  <CarouselItem key={idx} className="pl-2">
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: idx * 0.08 + 0.4 }}
+                      className="relative h-[60vh] w-full rounded-lg overflow-hidden"
+                    >
+                      <Image
+                        src={img || '/placeholder-2.webp'}
+                        alt={`Ảnh ${idx + 1}`}
+                        fill
+                        className="object-cover"
+                      />
+                    </motion.div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="left-4 rounded-sm text-white border-border bg-black/20 backdrop-blur-sm hover:bg-black/25" />
+              <CarouselNext className="right-4 rounded-sm text-white border-border bg-black/20 backdrop-blur-sm hover:bg-black/25" />
+            </Carousel>
 
             <Badge className="absolute bottom-2 right-2 z-10 bg-black/70 text-white">
               {dialogCurrentImageIndex + 1} / {property.images.length}
             </Badge>
-          </div>
-
-          <div className="flex space-x-2 overflow-x-auto pb-2">
-            {property.images.map((img, i) => (
-              <motion.div
-                key={i}
-                whileHover={{ scale: 1.05 }}
-                onClick={() => {
-                  setDirection(i > dialogCurrentImageIndex ? 1 : -1);
-                  setDialogCurrentImageIndex(i);
-                }}
-                className={`flex-shrink-0 cursor-pointer overflow-hidden rounded-lg border-2 ${
-                  dialogCurrentImageIndex === i
-                    ? 'border-blue-600'
-                    : 'border-transparent'
-                }`}
-              >
-                <Image
-                  src={img || '/placeholder-2.webp'}
-                  alt={`${property.name} thumb ${i + 1}`}
-                  width={120}
-                  height={80}
-                  className="h-full w-full object-cover"
-                />
-              </motion.div>
-            ))}
           </div>
         </DialogContent>
       </Dialog>

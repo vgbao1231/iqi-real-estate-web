@@ -1,7 +1,6 @@
 import { Input } from '@/components/ui/input';
 import { ThemeToggle } from '@/components/common/theme-toggle';
 import {
-  Search,
   Phone,
   ChevronDown,
   Building2,
@@ -9,7 +8,6 @@ import {
   Globe,
   Landmark,
   Newspaper,
-  ShieldCheck,
   TreePalm,
   TrendingUp,
   Users,
@@ -73,12 +71,6 @@ export default function Header() {
           icon: <TreePalm className="w-5 h-5 text-green-500" />,
           href: '/products/resort',
         },
-        {
-          label: 'Đối tác',
-          description: 'Mạng lưới đối tác quốc tế và trong nước',
-          icon: <ShieldCheck className="w-5 h-5 text-purple-500" />,
-          href: '/partners',
-        },
       ],
     },
     {
@@ -105,7 +97,12 @@ export default function Header() {
       ],
     },
     {
+      label: 'Đối tác',
+      href: '/partners',
+    },
+    {
       label: 'Tuyển dụng',
+      href: '/careers',
     },
   ];
 
@@ -245,7 +242,7 @@ export default function Header() {
               ) : (
                 <Link
                   key={menu.label}
-                  href="/careers"
+                  href={menu.href}
                   className="hover:text-orange-500 transition-all duration-300 relative group"
                 >
                   {menu.label}
@@ -258,7 +255,7 @@ export default function Header() {
           {/* Search and Actions */}
           <div className="flex items-center space-x-4">
             <div className="hidden md:flex items-center space-x-3">
-              <div className="relative">
+              {/* <div className="relative">
                 <Search
                   className={clsx(
                     'absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4',
@@ -274,7 +271,7 @@ export default function Header() {
                       : ' dark:placeholder:text-white border-black/30 dark:border-white/60 dark:hover:bg-black/20 dark:focus:bg-black/20'
                   )}
                 />
-              </div>
+              </div> */}
               <div className="relative">
                 <Phone
                   className={clsx(

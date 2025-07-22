@@ -24,7 +24,7 @@ import { OtherTab } from './project-form-tabs/other-tab';
 import { ProductsTab } from './project-form-tabs/products-tab';
 import { TechnicalDetailsTab } from './project-form-tabs/technical-details-tab';
 
-interface ProjectFormProps {
+interface PropertyFormProps {
   initialData?: any | null;
   onCancel: () => void;
   onSubmitSuccess: (project: any) => void;
@@ -83,11 +83,11 @@ const defaultProject: any = {
   visibleOnWeb: false,
 };
 
-export function ProjectForm({
+export function PropertyForm({
   initialData,
   onCancel,
   onSubmitSuccess,
-}: ProjectFormProps) {
+}: PropertyFormProps) {
   const [project, setProject] = useState(initialData || defaultProject);
   const [activeTab, setActiveTab] = useState('basic-info');
 
