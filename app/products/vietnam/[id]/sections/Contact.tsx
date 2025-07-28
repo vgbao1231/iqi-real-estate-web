@@ -1,57 +1,86 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
-
-import { motion } from 'framer-motion';
 import { FadeIn } from '@/components/common/animations';
-import { Phone, Mail, MessageCircle } from 'lucide-react';
-import { forwardRef } from 'react';
+import { Button } from '@/components/ui/button';
+import { Combobox } from '@/components/ui/combobox';
+import { Input } from '@/components/ui/input';
+import Image from 'next/image';
+import { forwardRef, useState } from 'react';
 
-const Contact = forwardRef<HTMLElement, { property: any }>(
-  ({ property }, ref) => {
+const Contact = forwardRef<HTMLElement, { data: any; products: any }>(
+  ({ data, products }, ref) => {
+    const [product, setProduct] = useState<string>('');
+    console.log(product);
+
+    const productOptions = products.map((p: any) => ({
+      value: p.id,
+      label: p.name,
+    }));
+
+    const handleProductChange = (product: string) => {
+      setProduct(product);
+    };
+
     return (
-      <FadeIn delay={0.4}>
+      <FadeIn direction="none" delay={0.4}>
         <section ref={ref} id="contact" className="relative">
-          <div className="bg-gradient-to-r !from-green-600 !via-emerald-600 !to-teal-600 py-20">
-            <div className="max-w-4xl mx-auto px-4 text-center text-white">
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-                viewport={{ once: true }}
-                className="space-y-8"
-              >
-                <h3 className="text-4xl font-bold">Liên hệ tư vấn</h3>
-                <p className="text-xl text-green-100 max-w-2xl mx-auto">
-                  Đội ngũ chuyên viên tư vấn sẵn sàng hỗ trợ bạn 24/7. Liên hệ
-                  ngay để nhận thông tin chi tiết và ưu đãi đặc biệt!
-                </p>
-
-                <div className="grid md:grid-cols-3 gap-6 mt-12">
-                  <Button
-                    size="lg"
-                    className="bg-white text-green-600 hover:bg-green-50 h-12"
-                  >
-                    <Phone className="w-5 h-5 mr-2" />
-                    Gọi ngay: 1900 xxxx
-                  </Button>
-                  <Button
-                    size="lg"
-                    className="bg-white text-green-600 hover:bg-green-50 h-12"
-                  >
-                    <MessageCircle className="w-5 h-5 mr-2" />
-                    Chat Zalo
-                  </Button>
-                  <Button
-                    size="lg"
-                    className="bg-white text-green-600 hover:bg-green-50 h-12"
-                  >
-                    <Mail className="w-5 h-5 mr-2" />
-                    Email tư vấn
-                  </Button>
-                </div>
-              </motion.div>
+          {/* Background image full screen */}
+          <Image
+            src={data.backgroundImage}
+            alt="Eco Retreat Contact Background"
+            fill
+            className="object-cover"
+            priority
+          />
+          <div className="bg-gradient-to-b from-black/30 to-black/70 absolute inset-0 z-10"></div>
+          <div className="relative z-20 center-both flex-col gap-4 p-8 text-center text-white">
+            {/* Logo */}
+            <div className="w-36 h-32 relative center-both">
+              <Image
+                src={data.logoImage}
+                alt="Eco Retreat Logo"
+                fill
+                className="object-contain"
+                priority
+              />
             </div>
+
+            {/* Subtitle */}
+            <p className="italic text-2xl text-orange-200 max-w-2xl mb-6">
+              Quý Anh/Chị đăng ký tại đây để nhận tư vấn thông tin về khu đô thị
+              sinh thái kiểu mẫu của Ecopark tại miền Nam.
+            </p>
+
+            {/* Form */}
+            <form className="flex flex-col md:flex-row gap-3 w-full max-w-5xl justify-center mb-6">
+              <Input
+                placeholder="Họ tên (*)"
+                className="w-full md:w-1/4 px-4 py-2 rounded focus:outline-none text-foreground bg-background border border-border"
+              />
+              <Input
+                type="tel"
+                placeholder="Số điện thoại (*)"
+                className="w-full md:w-1/4 px-4 py-2 rounded focus:outline-none text-foreground bg-background border border-border"
+              />
+              <Combobox
+                options={productOptions}
+                value={product}
+                onValueChange={handleProductChange}
+                placeholder="Quan tâm sản phẩm ..."
+                searchPlaceholder="Tìm sản phẩm..."
+                emptyText="Không tìm thấy sản phẩm"
+                className="w-full md:w-1/4 px-4 py-2 rounded focus:outline-none text-foreground bg-background border border-border"
+              />
+              <Button
+                type="submit"
+                className="w-full md:w-auto bg-orange-400 hover:bg-orange-500 font-semibold px-6 py-2 rounded"
+              >
+                NHẬN THÔNG TIN
+              </Button>
+            </form>
+
+            {/* Hotline */}
+            <p className="italic text-lg">HOTLINE: {data.hotline}</p>
           </div>
         </section>
       </FadeIn>

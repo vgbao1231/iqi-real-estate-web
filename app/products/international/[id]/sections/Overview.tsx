@@ -1,142 +1,152 @@
 'use client';
 
-import { Badge } from '@/components/ui/badge';
-import { ClipboardList } from 'lucide-react';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
 import { forwardRef } from 'react';
-import { formatVnCurrencyShort } from '@/lib/utils';
+import { Badge } from '@/components/ui/badge';
+import { FadeIn, SlideIn } from '@/components/common/animations';
 
-const Overview = forwardRef<HTMLElement, { property: any }>(
-  ({ property }, ref) => {
-    const leftColumn = [
-      { label: 'Tên dự án', value: property.name },
-      { label: 'Chủ đầu tư', value: property.developer },
-      { label: 'Nhóm sản phẩm', value: property.propertyGroup },
-      { label: 'Diện tích', value: `${property.landArea} m²` },
-      {
-        label: 'Phòng ngủ',
-        value: `${property.minBedroom} - ${property.maxBedroom} phòng`,
-      },
-      { label: 'Thời gian bàn giao', value: property.handoverDate },
-      { label: 'Giai đoạn', value: property.phase },
-      {
-        label: 'Giá từ',
-        value: `Từ ${formatVnCurrencyShort(property.minPrice)}`,
-        className: 'text-yellow-400',
-      },
-      {
-        label: 'Trạng thái',
-        value: <Badge>{property.status}</Badge>,
-        isLast: true,
-      },
-    ];
+const Overview = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
+  const inforColumns = [
+    { label: 'Tên dự án', value: data.name },
+    { label: 'Chủ đầu tư', value: data.developer },
+    { label: 'Loại hình', value: data.propertyType },
+    { label: 'Nhóm sản phẩm', value: data.propertyGroup },
+    {
+      label: 'Đơn vị thiết kế cảnh quan',
+      value: data.landscapeDesigner,
+    },
+    {
+      label: 'Đơn vị thi công',
+      value: data.contractors?.join(', '),
+    },
+    {
+      label: 'Đơn vị thiết kế kiến trúc',
+      value: data.architects?.join(', '),
+      isLast: true,
+    },
+    {
+      label: 'Tổng số căn/sản phẩm',
+      value: data.totalUnits?.toLocaleString(),
+    },
+    { label: 'Diện tích đất', value: `${data.area} ha` },
+    {
+      label: 'Phòng ngủ',
+      value: `${data.minBedroom} - ${data.maxBedroom} phòng`,
+    },
+    {
+      label: 'Phòng tắm',
+      value: `${data.minBathroom} - ${data.maxBathroom} phòng`,
+    },
+    { label: 'Tình trạng sở hữu', value: data.tenure },
+    { label: 'Tình trạng pháp lý', value: data.legal },
+    { label: 'Thời gian bàn giao', value: data.handover },
+    { label: 'Giai đoạn', value: data.phase },
+    { label: 'Đơn vị tiền tệ', value: data.currency },
+    { label: 'Địa chỉ', value: data.address },
+    { label: 'Thành phố', value: data.city },
+    { label: 'Quận/Huyện', value: data.district },
+    {
+      label: 'Trạng thái',
+      value: <Badge>{data.status}</Badge>,
+    },
+  ];
 
-    const rightColumn = [
-      { label: 'Địa chỉ', value: property.address },
-      { label: 'Loại hình', value: property.propertyType },
-      { label: 'Tổng số căn/sản phẩm', value: property.totalUnits },
-      { label: 'Diện tích đất', value: `${property.landArea} m²` },
-      {
-        label: 'Phòng tắm',
-        value: `${property.minBathroom} - ${property.maxBathroom} phòng`,
-      },
-      { label: 'Tình trạng sở hữu', value: property.tenure },
-      { label: 'Tình trạng pháp lý', value: property.legalStatus },
-      { label: 'Đơn vị tiền tệ', value: property.currency },
-      {
-        label: 'Lượt xem',
-        value: property.views.toLocaleString(),
-        className: 'text-blue-400',
-        isLast: true,
-      },
-    ];
+  const half = Math.ceil(inforColumns.length / 2);
+  const columns = [inforColumns.slice(0, half), inforColumns.slice(half)];
 
-    return (
-      <section
-        ref={ref}
-        id="general-overview"
-        className="relative min-h-screen"
-      >
-        <div className="absolute inset-0">
-          <Image
-            src={property.overviewImage || '/placeholder.svg'}
-            alt="Project Overview"
-            fill
-            className="object-cover"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-l from-black/60 via-black/40 to-black/20"></div>
+  return (
+    <section ref={ref} id="overview" className="relative">
+      {/* Sub section 1 */}
+      <div className="relative min-h-[80vh] center-both">
+        {/* Background image full screen */}
+        <Image
+          src={data.backgroundImage}
+          alt="Eco Retreat Overview Background"
+          fill
+          className="object-cover object-right"
+          priority
+        />
+        <div className="absolute z-10 inset-0 bg-gradient-to-b from-black/50 to-transparent"></div>
+        <div className="relative z-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 p-6 px-32">
+          {data.overviewImages.map((item: any, idx: number) => (
+            <FadeIn
+              key={idx}
+              delay={0.6 + idx * 0.15}
+              className="border border-lime-500 relative min-w-[300px] overflow-hidden flex- flex-col"
+            >
+              <Image
+                src={item.image}
+                alt="Eco Retreat Overview Background"
+                width={300}
+                height={300}
+                className="object-contain"
+                priority
+              />
+              <div
+                className="text-base text-white px-6 py-4 italic"
+                dangerouslySetInnerHTML={{ __html: item.description }}
+              />
+            </FadeIn>
+          ))}
         </div>
+      </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 py-20 min-h-screen flex items-center">
-          <div className="w-full text-white">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              className="text-center mb-16"
-            >
-              <Badge className="bg-red-500/20 hover:bg-red-500/30 text-red-300 border-red-400/30 mb-6">
-                <ClipboardList className="w-4 h-4 mr-2" />
-                Thông tin chi tiết
-              </Badge>
-              <h2 className="text-5xl md:text-6xl font-bold mb-4 py-2 text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-pink-400">
-                Tổng Quan Dự Án
-              </h2>
-              <p className="text-xl text-gray-200 max-w-3xl mx-auto leading-relaxed">
-                {property.overviewSummary.trim()}
-              </p>
-            </motion.div>
+      {/* Sub section 2 */}
+      <div className="relative min-h-screen center-both">
+        <div className="h-full w-full center-both flex-col md:flex-row max-w-[85rem] py-8 gap-8">
+          {/* Left content */}
+          <SlideIn
+            direction="left"
+            className="relative w-full md:w-2/5 h-[85vh] center-both"
+          >
+            <Image
+              src={data.experienceImage}
+              alt="Eco Retreat Experience Background"
+              fill
+              className="object-contain"
+              priority
+            />
+          </SlideIn>
 
-            {/* Detailed Information Table */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              viewport={{ once: true }}
-              className="bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 overflow-hidden"
-            >
-              <div className="p-8">
-                <h3 className="text-2xl font-bold text-center mb-8 flex items-center justify-center">
-                  <ClipboardList className="w-6 h-6 mr-3" />
-                  Chi tiết kỹ thuật
+          {/* Right content */}
+          <div className="md:w-3/5 space-y-6">
+            <SlideIn direction="right">
+              <div>
+                <h3 className="text-5xl font-bold italic text-orange-300 mb-8">
+                  Thông tin tổng quan
                 </h3>
 
-                <div className="grid md:grid-cols-2 gap-x-12 gap-y-6">
-                  {[leftColumn, rightColumn].map((column, colIdx) => (
+                <div className="grid md:grid-cols-2 gap-x-6 gap-y-6">
+                  {columns.map((column, colIdx) => (
                     <div key={colIdx}>
-                      {column.map(
-                        ({ label, value, className, isLast }, idx) => (
-                          <div
-                            key={idx}
-                            className={`flex justify-between items-center py-3 ${
-                              isLast ? '' : 'border-b border-white/20'
-                            }`}
-                          >
-                            <span className="text-gray-300 font-medium">
-                              {label}
-                            </span>
-                            <span
-                              className={`font-semibold text-right ${className || ''}`}
-                            >
-                              {value}
-                            </span>
-                          </div>
-                        )
-                      )}
+                      {column.map(({ label, value }, idx) => (
+                        <div
+                          key={idx}
+                          className={`flex justify-between items-center py-3 gap-4 ${
+                            idx !== column.length - 1
+                              ? 'border-b border-border'
+                              : ''
+                          }`}
+                        >
+                          <span className="text-muted-foreground font-medium text-nowrap">
+                            {label}
+                          </span>
+                          <span className="font-semibold text-right text-ellipsis overflow-hidden whitespace-nowrap">
+                            {value}
+                          </span>
+                        </div>
+                      ))}
                     </div>
                   ))}
                 </div>
               </div>
-            </motion.div>
+            </SlideIn>
           </div>
         </div>
-      </section>
-    );
-  }
-);
+      </div>
+    </section>
+  );
+});
 
 Overview.displayName = 'Overview';
 export default Overview;

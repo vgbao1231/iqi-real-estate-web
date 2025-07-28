@@ -74,6 +74,7 @@ export function Combobox({
                       onValueChange(option.value === value ? '' : option.value);
                       setOpen(false);
                     }}
+                    className={cn(value === option.value ? 'bg-accent' : '')}
                   >
                     <Check
                       className={cn(

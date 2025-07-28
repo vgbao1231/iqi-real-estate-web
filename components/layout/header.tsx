@@ -17,10 +17,14 @@ import Link from 'next/link';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
-import clsx from 'clsx';
 import { FadeIn } from '../common/animations';
+import { cn } from '@/lib/utils';
 
-export default function Header() {
+export default function Header({
+  enableHidden = true,
+  enableToggleDark = true,
+  className,
+}: any) {
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isDark, setIsDark] = useState(true);
@@ -128,6 +132,8 @@ export default function Header() {
 
   // Header scroll behavior
   useEffect(() => {
+    if (!enableHidden) return;
+
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
 
@@ -144,21 +150,21 @@ export default function Header() {
       const heroHeight = document.getElementById('hero')?.offsetHeight || 0;
       setIsDark(window.scrollY < heroHeight);
     };
-
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [lastScrollY]);
+  }, [lastScrollY, enableHidden]);
 
   return (
     <motion.header
-      initial={{ y: 0 }}
+      initial={{ y: -100 }}
       animate={{ y: isHeaderVisible ? 0 : -100 }}
       transition={{ duration: 0.3, ease: 'easeInOut' }}
-      className={clsx(
+      className={cn(
         'fixed top-0 z-50 w-full border-b border-gray-400/30 backdrop-blur-sm transition-all',
-        isDark
+        enableToggleDark && isDark
           ? 'supports-[backdrop-filter]:bg-[#262626]/10 text-white'
-          : 'supports-[backdrop-filter]:bg-white/10'
+          : 'supports-[backdrop-filter]:bg-white/10',
+        className
       )}
     >
       <div className="container mx-auto px-8">
@@ -190,7 +196,11 @@ export default function Header() {
 
               {/* Logo for light mode */}
               <Image
-                src={isDark ? '/logo-dark.svg' : '/logo-light.svg'}
+                src={
+                  enableToggleDark && isDark
+                    ? '/logo-dark.svg'
+                    : '/logo-light.svg'
+                }
                 alt="logo"
                 width={100}
                 height={40}
@@ -257,16 +267,16 @@ export default function Header() {
             <div className="hidden md:flex items-center space-x-3">
               {/* <div className="relative">
                 <Search
-                  className={clsx(
+                  className={cn(
                     'absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4',
-                    isDark ? 'text-white' : 'dark:text-white'
+                    enableToggleDark && isDark ? 'text-white' : 'dark:text-white'
                   )}
                 />
                 <Input
                   placeholder="Tìm nhanh..."
-                  className={clsx(
+                  className={cn(
                     'pl-10 w-48 bg-transparent transition-all',
-                    isDark
+                    enableToggleDark && isDark
                       ? 'placeholder:text-white text-white border-white/60 hover:bg-black/20 focus:bg-black/20'
                       : ' dark:placeholder:text-white border-black/30 dark:border-white/60 dark:hover:bg-black/20 dark:focus:bg-black/20'
                   )}
@@ -274,16 +284,18 @@ export default function Header() {
               </div> */}
               <div className="relative">
                 <Phone
-                  className={clsx(
+                  className={cn(
                     'absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4',
-                    isDark ? 'text-white' : 'dark:text-white'
+                    enableToggleDark && isDark
+                      ? 'text-white'
+                      : 'dark:text-white'
                   )}
                 />
                 <Input
                   placeholder="Hotline: 1900 1234"
-                  className={clsx(
+                  className={cn(
                     'pl-10 w-48 bg-transparent',
-                    isDark
+                    enableToggleDark && isDark
                       ? 'placeholder:text-white text-white border-white/60'
                       : 'dark:placeholder:text-white border-black/30 dark:border-white/60'
                   )}
@@ -291,7 +303,7 @@ export default function Header() {
                 />
               </div>
             </div>
-            <ThemeToggle isDark={isDark} />
+            <ThemeToggle isDark={enableToggleDark && isDark} />
           </div>
         </div>
       </div>

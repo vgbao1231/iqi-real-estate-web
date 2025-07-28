@@ -1,734 +1,466 @@
 'use client';
 
-import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
+import { Fragment, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselPrevious,
-  CarouselNext,
-  CarouselApi,
-} from '@/components/ui/carousel';
-import {
-  ArrowLeft,
-  MapPin,
-  Info,
-  Home,
-  Camera,
-  LayoutGrid,
-  ClipboardList,
-  Ruler,
-  Bed,
-  Bath,
-  TreePine,
-  Dumbbell,
-  ShowerHeadIcon as SwimmingPool,
-  Baby,
-  School,
-  Hospital,
-  ShoppingBag,
-  ShieldCheck,
-  Wifi,
-  Sparkles,
-  Star,
-  Building2,
-  ExternalLink,
-  Flame,
-  TrendingUp,
-} from 'lucide-react';
-import Image from 'next/image';
-import Link from 'next/link';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
-import { motion } from 'framer-motion';
-import { FadeIn } from '@/components/common/animations';
+import { Arsenal } from 'next/font/google';
+
 import Introduction from './sections/Introduction';
+import Image from 'next/image';
+import { cn } from '@/lib/utils';
 import Overview from './sections/Overview';
-import Amenities from './sections/Amenities';
-import FloorPlan from './sections/FloorPlan';
-import Product from './sections/Product';
-import Location from './sections/Location';
-import Policies from './sections/Policies';
 import Contact from './sections/Contact';
+import Location from './sections/Location';
+import Production from './sections/Production';
+import Amenity from './sections/Amenity';
+import Policy from './sections/Policy';
+import Timeline from './sections/Timeline';
+import Agency from './sections/Agency';
+import Cover from './sections/Cover';
+
+const arsenal = Arsenal({
+  subsets: ['latin'],
+  weight: ['400', '700'], // Chỉ định độ đậm
+  style: ['normal', 'italic'], // Thêm kiểu thường và nghiêng
+  display: 'swap',
+});
 
 /* -------------------------------------------------------------------------- */
 /*                         DUMMY PROPERTY – STATIC DATA                       */
 /* -------------------------------------------------------------------------- */
 const property = {
-  id: 1,
-  name: 'Vinhomes Grand Park',
-  slug: 'vinhomes-grand-park',
-  address: 'Nguyễn Xiển, Long Thạnh Mỹ, Quận 9, TP.HCM',
-  city: 'TP.HCM',
-  district: 'Quận 9',
-  country: 'Vietnam',
-  coordinates: { lat: 10.8411, lng: 106.8066 },
+  id: 3,
 
-  // Pricing
-  currency: 'USD',
-  minPrice: 5200000,
-  maxPrice: 9800000,
-  landArea: 300,
-  minBuildUp: 20,
-  maxBuildUp: 35,
-  minBedroom: 3,
-  maxBedroom: 6,
-  minBathroom: 3,
-  maxBathroom: 5,
-  measurementUnit: 'm²',
+  // Giới thiệu
+  introduction: {
+    coverImage: '/cover.jpg',
+    titleImage: '/title.png',
+    heroImage: '/hero.png',
+    logoImages: ['/logo-retreat.png', '/logo-retreat-1.png'],
+    introductionImages: ['/product-1.jpg', '/product-2.jpg', '/product-3.jpg'],
+    introductionVideo: 'https://www.youtube.com/watch?v=pLL2g9_mZdo&t=94s',
+    backgroundImage: '/background-hero-1.jpg',
+    title: 'Trải nghiệm nghỉ dưỡng giữa thiên nhiên',
 
-  // Property Details
-  propertyType: 'Căn hộ',
-  propertyGroup: 'Residential',
-  status: 'Sẵn sàng',
-  occupancyStatus: 'Ready',
-  tenure: 'Leasehold',
-  phase: 'Phase 1',
-  developer: 'Vinhomes',
-  completion: 'Q4/2024',
-  listedOn: '2023-01-15T10:00:00Z',
-  lastUpdated: '2024-07-15T14:30:00Z',
-  totalUnits: '10,000+',
-  handoverDate: 'Q4/2024 - Q2/2025',
-  legalStatus: 'Đã có sổ hồng',
-
-  // Special Options
-  isFeatured: true,
-  isExclusive: false,
-  enableLiveSales: true,
-  visibleOnWeb: true,
-
-  // Images
-  images: Array(12).fill('/placeholder-2.webp?height=600&width=800'), // More images for carousel
-
-  // For "Giới thiệu" tab
-  introductionMainImage: '/placeholder-2.webp?height=700&width=1200',
-  introductionGallery: [
-    '/placeholder-2.webp?height=400&width=600',
-    '/placeholder-2.webp?height=400&width=600',
-    '/placeholder-2.webp?height=400&width=600',
-    '/placeholder-2.webp?height=400&width=600',
-  ],
-  introductionText: `
-      Vinhomes Grand Park là khu đô thị sinh thái thông minh quy mô lớn nhất khu Đông TP.HCM với quy mô 271ha, bao gồm công viên trung tâm 36ha cùng hệ thống tiện ích đẳng cấp 5 sao. Dự án được thiết kế theo mô hình thành phố trong công viên với không gian xanh chiếm tới 70% tổng diện tích. Với vị trí đắc địa, tiện ích đa dạng và thiết kế hiện đại, Vinhomes Grand Park hứa hẹn mang đến một cuộc sống đẳng cấp và tiện nghi cho cư dân.
-
-      Được phát triển bởi tập đoàn Vingroup, một trong những nhà phát triển bất động sản hàng đầu Việt Nam, Vinhomes Grand Park không chỉ đảm bảo chất lượng xây dựng và tiến độ bàn giao mà còn mang đến một hệ sinh thái sống toàn diện. Từ giáo dục (Vinschool), y tế (Vinmec), mua sắm (Vincom Mega Mall) đến vui chơi giải trí, mọi nhu cầu của cư dân đều được đáp ứng ngay trong nội khu. Đây là một lựa chọn an cư lý tưởng và cơ hội đầu tư hấp dẫn với tiềm năng tăng giá cao trong tương lai.
-      `,
-
-  // For "Tổng quan" tab
-  overviewImage: '/placeholder-2.webp?height=600&width=1000',
-  overviewSummary: `
-      Vinhomes Grand Park là một siêu đô thị hiện đại, được quy hoạch đồng bộ với đầy đủ tiện ích sống, làm việc và giải trí. Dự án nổi bật với công viên 36ha, hệ thống an ninh thông minh và cộng đồng cư dân văn minh.
-      `,
-
-  // Amenities & Features (For "Tiện ích" tab)
-  amenityClusters: [
-    {
-      title: 'Không gian xanh và công viên',
-      image: '/placeholder-2.webp?height=600&width=1000',
-      description: `
-          Công viên Grand Park rộng 36ha với 15 chủ đề khác nhau mang đến không gian xanh mát, trong lành và vô vàn hoạt động giải trí cho mọi lứa tuổi. Cư dân có thể tận hưởng các buổi dã ngoại, tập thể dục, hay đơn giản là thư giãn giữa thiên nhiên ngay tại ngưỡng cửa nhà mình.
-          `,
-      icons: [
-        { name: 'TreePine', component: TreePine },
-        { name: 'Flame', component: Flame },
-      ],
-    },
-    {
-      title: 'Tiện ích thể thao và giải trí',
-      image: '/placeholder-2.webp?height=600&width=1000',
-      description: `
-          Hệ thống hồ bơi vô cực, phòng gym hiện đại, sân thể thao đa năng (tennis, bóng rổ) đáp ứng nhu cầu rèn luyện sức khỏe. Khu BBQ ngoài trời và sân chơi trẻ em liên hoàn mang đến không gian vui chơi, gắn kết gia đình.
-          `,
-      icons: [
-        { name: 'SwimmingPool', component: SwimmingPool },
-        { name: 'Dumbbell', component: Dumbbell },
-        { name: 'Baby', component: Baby },
-      ],
-    },
-    {
-      title: 'Hệ sinh thái giáo dục và y tế',
-      image: '/placeholder-2.webp?height=600&width=1000',
-      description: `
-          Trường học quốc tế Vinschool và bệnh viện đa khoa Vinmec ngay trong nội khu đảm bảo chất lượng giáo dục và chăm sóc sức khỏe hàng đầu cho cư dân. Mọi nhu cầu thiết yếu đều được đáp ứng ngay tại ngưỡng cửa.
-          `,
-      icons: [
-        { name: 'School', component: School },
-        { name: 'Hospital', component: Hospital },
-      ],
-    },
-    {
-      title: 'Mua sắm và dịch vụ',
-      image: '/placeholder-2.webp?height=600&width=1000',
-      description: `
-          Trung tâm thương mại Vincom Mega Mall mang đến trải nghiệm mua sắm, ẩm thực và giải trí đẳng cấp. Cùng với đó là các dịch vụ quản lý, vận hành chuyên nghiệp, an ninh 24/7 và wifi miễn phí toàn khu.
-          `,
-      icons: [
-        { name: 'ShoppingBag', component: ShoppingBag },
-        { name: 'ShieldCheck', component: ShieldCheck },
-        { name: 'Wifi', component: Wifi },
-        { name: 'Sparkles', component: Sparkles },
-      ],
-    },
-  ],
-  amenities: [
-    { name: 'Hồ bơi vô cực', icon: 'SwimmingPool' },
-    { name: 'Gym hiện đại', icon: 'Dumbbell' },
-    { name: 'Công viên ánh sáng 36ha', icon: 'TreePine' },
-    { name: 'Trường học quốc tế Vinschool', icon: 'School' },
-    { name: 'Bệnh viện đa khoa Vinmec', icon: 'Hospital' },
-    { name: 'Trung tâm thương mại Vincom Mega Mall', icon: 'ShoppingBag' },
-    { name: 'An ninh 24/7 với công nghệ AI', icon: 'ShieldCheck' },
-    { name: 'Hệ thống thang máy tốc độ cao', icon: 'ArrowUpFromLine' },
-    { name: 'Hầm để xe thông minh', icon: 'Car' },
-    { name: 'Sân chơi trẻ em liên hoàn', icon: 'Baby' },
-    { name: 'Khu BBQ ngoài trời', icon: 'Flame' },
-    { name: 'Phòng sinh hoạt cộng đồng', icon: 'Users' },
-    { name: 'Wifi miễn phí toàn khu', icon: 'Wifi' },
-    { name: 'Dịch vụ dọn dẹp chuyên nghiệp', icon: 'Sparkles' },
-  ],
-
-  // For "Vị trí" tab
-  locationMainImage: '/placeholder-2.webp?height=600&width=1000',
-  locationDescription: `
-      Vinhomes Grand Park tọa lạc tại vị trí chiến lược phía Đông TP.HCM, ngay cửa ngõ kết nối các tỉnh miền Đông Nam Bộ. Vị trí này không chỉ thuận tiện di chuyển đến trung tâm thành phố mà còn dễ dàng tiếp cận các khu công nghệ cao, khu công nghiệp lớn, mang lại tiềm năng phát triển vượt trội.
-
-      Với sự phát triển mạnh mẽ của hạ tầng giao thông khu vực như tuyến Metro số 1, đường Vành đai 3, và cao tốc Long Thành - Dầu Giây, cư dân Vinhomes Grand Park dễ dàng di chuyển đến các khu vực trọng điểm của TP.HCM và các tỉnh lân cận. Đồng thời, dự án còn được bao quanh bởi các tiện ích ngoại khu đa dạng như trường đại học, bệnh viện quốc tế, và khu du lịch, tạo nên một môi trường sống tiện nghi và đầy đủ.
-      `,
-  locationHighlights: [
-    {
-      title: 'Kết nối giao thông',
-      description:
-        'Gần tuyến Metro số 1, Vành đai 3, cao tốc Long Thành - Dầu Giây.',
-      icon: 'Car',
-    },
-    {
-      title: 'Tiện ích ngoại khu',
-      description:
-        'Gần các trường đại học, bệnh viện quốc tế, khu du lịch Suối Tiên.',
-      icon: 'MapPin',
-    },
-    {
-      title: 'Phát triển hạ tầng',
-      description:
-        'Khu vực đang được đầu tư mạnh mẽ vào hạ tầng, thu hút dân cư và doanh nghiệp.',
-      icon: 'Building2',
-    },
-  ],
-  locationGallery: [
-    '/placeholder-2.webp?height=400&width=600',
-    '/placeholder-2.webp?height=400&width=600',
-    '/placeholder-2.webp?height=400&width=600',
-    '/placeholder-2.webp?height=400&width=600',
-    '/placeholder-2.webp?height=400&width=600',
-    '/placeholder-2.webp?height=400&width=600',
-  ],
-
-  // For "Mặt bằng" tab
-  overallFloorPlan: {
-    image: '/placeholder-2.webp?height=800&width=1200',
     description: `
-        Mặt bằng tổng thể của Vinhomes Grand Park được quy hoạch thông minh, tối ưu không gian xanh và tiện ích. Các tòa nhà được bố trí hợp lý, đảm bảo tầm nhìn thoáng đãng và không khí trong lành cho từng căn hộ. Quy hoạch tổng thể chú trọng đến sự hài hòa giữa kiến trúc và cảnh quan thiên nhiên, tạo nên một không gian sống đẳng cấp và bền vững.
-        `,
+      <p>Xây dựng mô hình khu đô thị trên thị trường không hiếm, nhưng kiến tạo môi trường đáng sống đúng nghĩa, mang đến những giá trị đích thực thì không phải dự án nào cũng làm được.</p>
+      <p>Những khu đô thị xanh của Nhà sáng lập Ecopark là ngoại lệ - nơi mọi chủ nhân đều tự hào về quyết định sở hữu và đầu tư của mình.</p>
+      <p>Chào mừng Quý Anh Chị đến với Eco Retreat - Đô thị xanh kiểu mẫu của Ecopark tại miền Nam!</p>
+    `,
+    launchTitle: 'RETREAT ISLAND',
+    launchSubtitle: 'Biệt thự đảo giữa rừng retreat',
+    launchText: `
+  <p><span style="color: #ffd4aa;">✦</span> View 2 mặt hồ thiên nga ngay cạnh nhà, có hồ bơi & sân vườn riêng</p>
+  <p><span style="color: #ffd4aa;">✦</span> Nằm trên 16 nhánh đảo riêng biệt, trung tâm của đô thị đáng sống nhất miền Nam</p>
+  <p><span style="color: #ffd4aa;">✦</span> "Nhà giữa đảo - Đảo giữa rừng retreat" chưa từng có trên thị trường.</p>
+`,
   },
-  subAreaFloorPlans: [
-    {
-      name: 'Phân khu The Rainbow',
-      image: '/placeholder-2.webp?height=700&width=1200',
-      description: `
-          The Rainbow là phân khu đầu tiên được ra mắt tại Vinhomes Grand Park, nổi bật với thiết kế hiện đại, đa dạng loại hình căn hộ và hệ thống tiện ích nội khu phong phú, mang đến không gian sống năng động và tiện nghi. Phân khu này được thiết kế với các tòa căn hộ cao tầng, tối ưu hóa tầm nhìn và ánh sáng tự nhiên, tạo nên một môi trường sống lý tưởng cho cư dân trẻ và năng động.
-          `,
-    },
-    {
-      name: 'Phân khu The Origami',
-      image: '/placeholder-2.webp?height=700&width=1200',
-      description: `
-          The Origami mang phong cách Nhật Bản tinh tế, với cảnh quan zen garden, hồ cá Koi và các tiện ích độc đáo, tạo nên một không gian sống yên bình và hài hòa giữa lòng đô thị sôi động. Các căn hộ tại The Origami được thiết kế tỉ mỉ, chú trọng đến từng chi tiết nhỏ, mang đến sự thoải mái và tiện nghi tối đa cho cư dân.
-          `,
-    },
-    {
-      name: 'Phân khu The Manhattan',
-      image: '/placeholder-2.webp?height=700&width=1200',
-      description: `
-          The Manhattan là phân khu thấp tầng đẳng cấp với các biệt thự, nhà phố và shophouse sang trọng, mang đến không gian sống riêng tư và tiện nghi tối đa. Với kiến trúc hiện đại và quy hoạch đồng bộ, The Manhattan là lựa chọn lý tưởng cho những gia đình tìm kiếm sự sang trọng và đẳng cấp.
-          `,
-    },
-    {
-      name: 'Phân khu The Beverly',
-      image: '/placeholder-2.webp?height=700&width=1200',
-      description: `
-          The Beverly là phân khu căn hộ cao cấp nhất tại Vinhomes Grand Park, với thiết kế sang trọng, tầm nhìn panorama và các tiện ích đặc quyền như hồ bơi trên cao, phòng gym hiện đại, và sảnh lounge đẳng cấp. Đây là biểu tượng của cuộc sống thượng lưu, nơi cư dân có thể tận hưởng mọi tiện nghi cao cấp nhất.
-          `,
-    },
-  ],
 
-  // For "Sản phẩm" tab
-  products: [
-    {
-      name: 'Căn hộ Studio',
-      image: '/placeholder-2.webp?height=400&width=600',
-      description: `Căn hộ Studio diện tích 30-35m², thiết kế thông minh, tối ưu không gian, phù hợp cho người độc thân hoặc đầu tư cho thuê. Đây là lựa chọn lý tưởng cho những ai tìm kiếm một không gian sống hiện đại, tiện nghi và chi phí hợp lý.`,
-      price: '1.8 - 2.5 tỷ',
-      details: [
-        { label: 'Diện tích', value: '30-35m²', icon: Ruler },
-        { label: 'Phòng ngủ', value: 'Studio', icon: Bed },
-        { label: 'Phòng tắm', value: '1', icon: Bath },
-      ],
-    },
-    {
-      name: 'Căn hộ 1PN',
-      image: '/placeholder-2.webp?height=400&width=600',
-      description: `Căn hộ 1 phòng ngủ diện tích 50-65m², thiết kế tối ưu không gian, phù hợp cho người độc thân hoặc cặp đôi trẻ. Với không gian riêng tư và đầy đủ tiện nghi, đây là tổ ấm lý tưởng cho cuộc sống hiện đại.`,
-      price: '3.2 - 4.1 tỷ',
-      details: [
-        { label: 'Diện tích', value: '50-65m²', icon: Ruler },
-        { label: 'Phòng ngủ', value: '1', icon: Bed },
-        { label: 'Phòng tắm', value: '1', icon: Bath },
-      ],
-    },
-    {
-      name: 'Căn hộ 2PN',
-      image: '/placeholder-2.webp?height=400&width=600',
-      description: `Căn hộ 2 phòng ngủ diện tích 70-85m², không gian sống rộng rãi, lý tưởng cho gia đình nhỏ. Thiết kế thông minh giúp tối đa hóa diện tích sử dụng, mang lại sự thoải mái và tiện nghi cho mọi thành viên.`,
-      price: '4.5 - 5.8 tỷ',
-      details: [
-        { label: 'Diện tích', value: '70-85m²', icon: Ruler },
-        { label: 'Phòng ngủ', value: '2', icon: Bed },
-        { label: 'Phòng tắm', value: '2', icon: Bath },
-      ],
-    },
-    {
-      name: 'Căn hộ 3PN',
-      image: '/placeholder-2.webp?height=400&width=600',
-      description: `Căn hộ 3 phòng ngủ diện tích 90-120m², thiết kế sang trọng, phù hợp cho gia đình đa thế hệ. Với không gian rộng lớn và nhiều phòng chức năng, đây là lựa chọn hoàn hảo cho cuộc sống tiện nghi và đẳng cấp.`,
-      price: '6.2 - 8.5 tỷ',
-      details: [
-        { label: 'Diện tích', value: '90-120m²', icon: Ruler },
-        { label: 'Phòng ngủ', value: '3', icon: Bed },
-        { label: 'Phòng tắm', value: '2-3', icon: Bath },
-      ],
-    },
-    {
-      name: 'Biệt thự song lập',
-      image: '/placeholder-2.webp?height=400&width=600',
-      description: `Biệt thự song lập với diện tích lớn, thiết kế hiện đại, sân vườn rộng rãi, mang đến không gian sống đẳng cấp và riêng tư cho gia đình. Tận hưởng cuộc sống xanh mát và tiện nghi với đầy đủ các tiện ích cao cấp.`,
-      price: '15 - 25 tỷ',
-      details: [
-        { label: 'Diện tích đất', value: '200-300m²', icon: Ruler },
-        { label: 'Số tầng', value: '3', icon: Building2 },
-        { label: 'Phòng ngủ', value: '4-5', icon: Bed },
-        { label: 'Sân vườn', value: 'Có', icon: TreePine },
-      ],
-    },
-    {
-      name: 'Shophouse',
-      image: '/placeholder-2.webp?height=400&width=600',
-      description: `Shophouse mặt tiền đường lớn, thiết kế đa năng vừa ở vừa kinh doanh, tiềm năng sinh lời cao. Vị trí đắc địa, thuận lợi cho việc phát triển kinh doanh và mang lại nguồn thu nhập ổn định.`,
-      price: '18 - 30 tỷ',
-      details: [
-        { label: 'Diện tích sàn', value: '100-150m²', icon: Ruler },
-        { label: 'Số tầng', value: '3-5', icon: Building2 },
-        { label: 'Mặt tiền', value: 'Lớn', icon: ExternalLink },
-        { label: 'Tiềm năng kinh doanh', value: 'Cao', icon: TrendingUp },
-      ],
-    },
-  ],
+  // Tổng quan
+  overview: {
+    overviewImages: [
+      {
+        image: '/product-overview.jpg',
+        description: `
+      <p>Khu đô thị “rừng retreat” đầu tiên của Ecopark</p>
+    `,
+      },
+      {
+        image: '/area-overview.jpg',
+        description: `
+      <p>Chiếm &gt; 121 ha với 4 triệu cây hoa, 8 tầng 8 lớp thực vật</p>
+    `,
+      },
+      {
+        image: '/amenity-overview.jpg',
+        description: `
+      <p><span style="color: #ffd4aa;">✦</span> Một khu phức hợp đầy đủ tiện ích</p>
+      <p><span style="color: #ffd4aa;">✦</span> Một “rừng trị liệu” với các tiện ích phục hồi, tái tạo sức khỏe cạnh nhà</p>
+    `,
+      },
+      {
+        image: '/location-overview.jpg',
+        description: `
+      <p>Tọa độ giao thương huyết mạch của miền Nam, kết nối TP HCM & sân bay Long Thành chỉ khoảng 30 phút</p>
+    `,
+      },
+    ],
+    name: 'Eco Retreat',
+    slug: 'eco-retreat-ecopark',
+    developer: 'Ecopark',
+    landscapeDesigner: 'PLA Studio',
+    contractors: ['Coteccons', 'Ricons'],
+    architects: [
+      'Humphreys & Partners',
+      'Alpes Green Design',
+      'BNB Architects',
+      'RSA Studio',
+      '1+1>2',
+      'MIA Design Studio',
+    ],
+    area: 220.05,
+    legal: 'Sổ hồng sở hữu lâu dài',
+    handover: 'Dự kiến Quý II/2028',
+    address: 'Đường Nguyễn Hữu Trí, Xã Thanh Phú, Huyện Bến Lức, Long An',
+    city: 'Long An',
+    district: 'Bến Lức',
+    country: 'Vietnam',
+    backgroundImage: '/background-hero-2.jpg',
+    experienceImage: '/experience-overview.webp',
+    propertyGroup: 'Căn hộ, biệt thự nghỉ dưỡng', // → nhóm sản phẩm
+    minBedroom: 1,
+    maxBedroom: 4,
+    minBathroom: 1,
+    maxBathroom: 3,
+    totalUnits: 1200, // Tổng số sản phẩm
+    tenure: 'Lâu dài', // Tình trạng sở hữu
+    propertyType: 'Khu đô thị sinh thái', // Loại hình
+    phase: 'Giai đoạn 1', // Giai đoạn
+    currency: 'VND',
+    status: 'Đang mở bán', // Trạng thái
+  },
 
-  // For "Chính sách" section
-  policies: [
-    {
-      title: 'Chính sách thanh toán linh hoạt',
-      description: `Hỗ trợ nhiều phương thức thanh toán, trả góp lãi suất ưu đãi từ các ngân hàng đối tác như Techcombank, Vietcombank, BIDV.`,
+  // Vị trí
+  location: {
+    title: `
+  <p style="line-height: 1; font-size: 48px; color: #76c472;">Vị Trí Độc Tôn</p>
+  <span style="font-size: 40px; font-style: italic;">
+    <span style="color: #ffd4aa;">Không xa phố thị,</span>
+    <span style="color: #76c472;"> đủ gần thiên nhiên</span>
+  </span>
+`,
+    description: `
+  <p style="color: #e3e3e3;">
+    <span style="color: #f4cd7c;">✦</span>
+    <em><strong>Tọa độ kết nối huyết mạch của phía Nam</strong></em><br />
+    “Cửa ngõ” kết nối Đông - Tây của TP HCM, thuận tiện di chuyển đến các quận của Sài Gòn,
+    sân bay Tân Sơn Nhất, các tỉnh Tây Nam Bộ và tương lai đến sân bay Long Thành chỉ khoảng 30 phút.
+  </p>
+
+  <p style="color: #e3e3e3;">
+    <span style="color: #f4cd7c;">✦</span>
+    <em><strong>Trung tâm mạng lưới logistics của miền Nam</strong></em><br />
+    Giao điểm của Vành đai 3, Cao tốc TP HCM - Trung Lương, Cao tốc Bến Lức - Long Thành,
+    kết nối thuận tiện đến hệ thống cao tốc, sân bay, cảng biển, khu công nghiệp, công nghệ cao,…
+  </p>
+
+  <p style="color: #e3e3e3;">
+    <span style="color: #f4cd7c;">✦</span>
+    <em><strong>Tâm điểm sinh thái – “Nhà nghỉ dưỡng” của cư dân thành phố</strong></em><br />
+    Nằm nép mình bên dòng sông Bến Lức và len lỏi những dòng chảy sông, hồ uốn lượn quanh đô thị.
+  </p>
+`,
+    locationImage: '/location.webp',
+    coordinates: { lat: 10.75, lng: 106.4 },
+    backgroundImage: '/background-hero-2.jpg',
+  },
+
+  // Sản phẩm
+  production: {
+    title: 'Sản phẩm',
+    description: `✦ Biệt thự đảo giữa rừng retreat`,
+    products: [
+      {
+        id: 1,
+        name: 'Island Villa',
+        image: '/product-1.jpg',
+        description: `
+      <table style="width: 100%; border-collapse: collapse;">
+        <tr>
+          <td style="width: 50%; vertical-align: top; padding-right: 16px;">
+            <p><strong>Loại hình:</strong> Đơn lập, Song lập, Villa Rẻ quạt</p>
+            <p><strong>Diện tích:</strong> 205m² - 484m²</p>
+          </td>
+          <td style="width: 50%; vertical-align: top;">
+            <p><strong>Xây dựng:</strong> 2 tầng + 1 tum</p>
+            <p><strong>Công năng:</strong> Để ở</p>
+          </td>
+        </tr>
+      </table>
+    `,
+      },
+      {
+        id: 2,
+        name: 'Shop Villa đảo',
+        image: '/product-2.jpg',
+        description: `
+      <table style="width: 100%; border-collapse: collapse;">
+        <tr>
+          <td style="width: 50%; vertical-align: top; padding-right: 16px;">
+            <p><strong>Loại hình:</strong> Đơn lập, Song lập</p>
+            <p><strong>Diện tích đất:</strong> 205m² - 307m²</p>
+          </td>
+          <td style="width: 50%; vertical-align: top;">
+            <p><strong>Xây dựng:</strong> 3 tầng + 1 tum</p>
+            <p><strong>Công năng:</strong> Thương mại kết hợp hoặc để ở</p>
+          </td>
+        </tr>
+      </table>
+    `,
+      },
+      {
+        id: 3,
+        name: 'Dinh thự đảo',
+        image: '/product-3.jpg',
+        description: `
+      <table style="width: 100%; border-collapse: collapse;">
+        <tr>
+          <td style="width: 50%; vertical-align: top; padding-right: 16px;">
+            <p><strong>Diện tích đất:</strong> 567m² - 697m²</p>
+            <p><strong>Diện tích sàn:</strong> 437m²</p>
+          </td>
+          <td style="width: 50%; vertical-align: top;">
+            <p><strong>Xây dựng:</strong> 2 tầng + 1 tum</p>
+            <p><strong>Công năng:</strong> Để ở</p>
+          </td>
+        </tr>
+      </table>
+    `,
+      },
+      {
+        id: 4,
+        name: 'Căn hộ SKY RETREAT',
+        image: '/product-4.jpg',
+        description: `
+      <p><strong>Loại hình sản phẩm:</strong> Studio, 1PN-3PN, Garden Villa, Duplex, Sky Villa</p>
+      <p><strong>Tiêu chuẩn bàn giao:</strong> Hoàn thiện nội thất liền tường</p>
+    `,
+      },
+    ],
+    furnitures: [
+      '/furniture-1.jpg',
+      '/furniture-2.jpg',
+      '/furniture-3.jpg',
+      '/furniture-4.jpg',
+    ],
+  },
+
+  // Tiện ích
+  amenity: {
+    title:
+      '<p style="color:#76c472;">Tiện Ích <br/><em>Không gian Retreat</em> <em style="color:#ffd4aa;">cho mọi thế hệ</em></p>',
+    description: `
+    <p>Giống như một <strong>“thành phố hiện đại thu nhỏ”</strong>, Eco Retreat được quy hoạch bài bản, đầy đủ tiện ích từ hệ thống trường từ mầm non đến THPT, bệnh viện & dịch vụ y tế quốc tế, khu thương mại - giải trí, trung tâm thể thao… Đặc biệt còn có Eco Bus phục vụ dành riêng cư dân Eco Retreat.</p>
+    <p>Điểm nhấn nổi bật là <strong>tiện ích “retreat” đặc quyền</strong> - lần đầu tiên xuất hiện trong dự án của NSL Ecopark và khó tìm thấy ở một đô thị khác trên thị trường bất động sản phía Nam.</p>
+  `,
+    amenityImages: [
+      '/amenities-1.jpg',
+      '/amenities-2.jpg',
+      '/amenities-3.jpg',
+      '/amenities-4.jpg',
+    ],
+  },
+
+  // Liên hệ
+  contact: {
+    logoImage: '/logo-dark.svg',
+    backgroundImage: '/background-hero-3.png',
+    agencyImage: '/contact.png',
+    title: 'Đông Tây Land',
+    subtitle: 'Đại lý phân phối F1 dự án Eco Retreat',
+    description: `
+      <p>Là doanh nghiệp uy tín và có hơn 10 năm kinh nghiệm trong lĩnh vực bất động sản, Đông Tây Land tự hào là một trong số ít đơn vị trở thành Đại lý F1 phân phối chính thức dự án khu đô thị sinh thái Eco Retreat</p>
+      <p>Nhờ đó, Quý khách hàng của Đông Tây Land dễ dàng sở hữu sản phẩm đẹp nhất, phù hợp nhu cầu nhất tại dự án mang thương hiệu danh tiếng Tập đoàn Ecopark.</p>
+    `,
+    hotline: '1900 636 999',
+  },
+
+  // Khác
+  other: {
+    //Chính sách
+    policy: {
+      title: 'Chính Sách Bán Hàng Eco Retreat',
+      policyImage: '/policy.webp',
+      policies: [
+        '<p><span style="color: #ffd4aa;">✦</span> Thanh toán đến khi nhận nhà chỉ <span style="color: #76c472;font-weight: bold; font-style: italic; font-size: 30px;">25%</span> </p>',
+        '<p><span style="color: #ffd4aa;">✦</span> Ngân hàng cho vay <span style="color: #76c472;font-weight: bold; font-style: italic; font-size: 30px;">70%</span> </p>',
+        '<p><span style="color: #ffd4aa;">✦</span> Hỗ trợ lãi suất & ân hạn gốc <span style="color: #76c472;font-weight: bold; font-style: italic; font-size: 30px;">24 tháng</span></p>',
+        '<p><span style="color: #ffd4aa;">✦</span> Ưu đãi thanh toán sớm <span style="color: #76c472;font-weight: bold; font-style: italic; font-size: 30px;">10%</span></p>',
+        '<p><span style="color: #ffd4aa;">✦</span> Ưu đãi thanh toán theo tiến độ <span style="color: #76c472;font-weight: bold; font-style: italic; font-size: 30px;">2%</span></p>',
+        '<p><span style="color: #ffd4aa;">✦</span> Ưu đãi cho KH đã sở hữu BĐS của NSL Ecopark <span style="color: #76c472;font-weight: bold; font-style: italic; font-size: 30px;">0,5%</span></p>',
+      ],
     },
-    {
-      title: 'Ưu đãi đặc biệt cho khách hàng thân thiết',
-      description: `Giảm giá đặc biệt và quà tặng hấp dẫn cho khách hàng đã từng mua sản phẩm của Vinhomes.`,
+
+    // Timeline
+    timeline: {
+      timelineTitle:
+        '<p style="color:#76c472;">Các Cột Mốc Tạo Sóng <br/><em style="color:#ffd4aa;">cho Eco Retreat</em></p>',
+      timelineImage: '/time-line.png',
+      progressTitle: 'Hình Ảnh Tiến Độ Dự Án',
+      progressImages: [
+        '/progress-1.jpg',
+        '/progress-2.jpg',
+        '/progress-3.jpg',
+        '/progress-4.jpg',
+        '/progress-5.jpg',
+        '/progress-6.jpg',
+        '/progress-1.jpg',
+      ],
+      backgroundImage: '/background-hero-1.jpg',
     },
-    {
-      title: 'Hỗ trợ vay vốn ngân hàng lên đến 70%',
-      description: `Liên kết với các ngân hàng lớn, hỗ trợ vay lên đến 70% giá trị căn hộ với thời hạn dài (lên đến 35 năm).`,
-    },
-    {
-      title: 'Chính sách bàn giao đúng tiến độ và chất lượng',
-      description: `Cam kết bàn giao đúng tiến độ, đảm bảo chất lượng công trình và nội thất theo cam kết trong hợp đồng.`,
-    },
-    {
-      title: 'Chính sách quản lý và vận hành chuyên nghiệp',
-      description: `Dự án được quản lý và vận hành bởi Vinhomes, đảm bảo chất lượng dịch vụ cao cấp, an ninh 24/7.`,
-    },
-    {
-      title: 'Chính sách bảo hành và hậu mãi',
-      description: `Chính sách bảo hành rõ ràng, minh bạch cho các hạng mục công trình và thiết bị nội thất.`,
-    },
-  ],
-  features: [
-    'Vị trí đắc địa, kết nối giao thông thuận tiện',
-    'Tiện ích nội khu và ngoại khu đa dạng, đẳng cấp',
-    'Thiết kế hiện đại, tối ưu không gian sống',
-    'Chủ đầu tư uy tín, kinh nghiệm lâu năm',
-    'Tiềm năng tăng giá cao trong tương lai',
-    'Môi trường sống xanh, trong lành',
-    'An ninh 24/7, đảm bảo an toàn',
-    'Cộng đồng cư dân văn minh, thân thiện',
-  ],
-  views: 12345,
+    isFeatured: true,
+    isExclusive: false,
+    enableLiveSales: true,
+    visibleOnWeb: true,
+    breakImages: [
+      '/break-1.jpg',
+      '/break-2.jpg',
+      '/break-3.jpg',
+      '/break-4.jpg',
+      '/break-5.jpg',
+    ],
+  },
 };
 
 /* -------------------------------------------------------------------------- */
 
 export default function VietnamProductDetailPage() {
   /* ---------- Local state ---------- */
-  const [activeImageIndex, setActiveImageIndex] = useState(0);
-  const [showAllImages, setShowAllImages] = useState(false);
-  const [dialogCurrentImageIndex, setDialogCurrentImageIndex] = useState(0);
-  const [carouselApi, setCarouselApi] = useState<CarouselApi>();
-  const [activeSection, setActiveSection] = useState('introduction'); // State to manage active section
-  // Refs for each section
-  const introductionRef = useRef<HTMLElement>(null);
-  const generalOverviewRef = useRef<HTMLElement>(null);
-  const amenitiesRef = useRef<HTMLElement>(null);
-  const locationRef = useRef<HTMLElement>(null);
-  const floorplansRef = useRef<HTMLElement>(null);
-  const productsRef = useRef<HTMLElement>(null);
-  const policiesRef = useRef<HTMLElement>(null);
-  const contactRef = useRef<HTMLElement>(null);
-
-  const handleOpenImageDialog = () => {
-    setDialogCurrentImageIndex(activeImageIndex);
-    setShowAllImages(true);
-  };
-
   const sections = useMemo(
     () => [
       {
         id: 'introduction',
-        content: <Introduction property={property} ref={introductionRef} />,
+        content: <Introduction data={property.introduction} />,
         label: 'Giới thiệu',
-        icon: Info,
-        ref: introductionRef,
       },
       {
-        id: 'general-overview',
-        content: <Overview property={property} ref={generalOverviewRef} />,
+        content: (
+          <Contact
+            data={property.contact}
+            products={property.production.products}
+          />
+        ),
+      },
+      {
+        id: 'overview',
+        content: <Overview data={property.overview} />,
         label: 'Tổng quan',
-        icon: ClipboardList,
-        ref: generalOverviewRef,
       },
-      {
-        id: 'amenities',
-        content: <Amenities property={property} ref={amenitiesRef} />,
-        label: 'Tiện ích',
-        icon: Star,
-        ref: amenitiesRef,
-      },
+      { content: <SectionBreak data={property.other.breakImages[0]} /> },
       {
         id: 'location',
-        content: <Location property={property} ref={locationRef} />,
+        content: <Location data={property.location} />,
         label: 'Vị trí',
-        icon: MapPin,
-        ref: locationRef,
       },
+      { content: <SectionBreak data={property.other.breakImages[1]} /> },
       {
-        id: 'floorplans',
-        content: <FloorPlan property={property} ref={floorplansRef} />,
-        label: 'Mặt bằng',
-        icon: LayoutGrid,
-        ref: floorplansRef,
-      },
-      {
-        id: 'products',
-        content: <Product property={property} ref={productsRef} />,
+        id: 'production',
+        content: <Production data={property.production} />,
         label: 'Sản phẩm',
-        icon: Home,
-        ref: productsRef,
       },
       {
-        id: 'policies',
-        content: <Policies property={property} ref={policiesRef} />,
+        content: (
+          <Contact
+            data={property.contact}
+            products={property.production.products}
+          />
+        ),
+      },
+      { content: <SectionBreak data={property.other.breakImages[2]} /> },
+      {
+        id: 'amenity',
+        content: <Amenity data={property.amenity} />,
+        label: 'Tiện ích',
+      },
+      { content: <SectionBreak data={property.other.breakImages[3]} /> },
+      {
+        id: 'policy',
+        content: <Policy data={property.other.policy} />,
         label: 'Chính sách',
-        icon: Home,
-        ref: policiesRef,
       },
       {
-        id: 'contact',
-        content: <Contact property={property} ref={contactRef} />,
-        label: 'Liên hệ',
-        icon: Home,
-        ref: contactRef,
+        id: 'timeline',
+        content: <Timeline data={property.other.timeline} />,
+        label: 'Tiến độ',
+      },
+      { content: <SectionBreak data={property.other.breakImages[4]} /> },
+      {
+        id: 'agency',
+        content: <Agency data={property.contact} />,
+        label: 'Đại lý',
+      },
+      {
+        content: (
+          <Contact
+            data={property.contact}
+            products={property.production.products}
+          />
+        ),
       },
     ],
     []
   );
 
-  useEffect(() => {
-    if (!carouselApi) return;
-
-    const onSelect = () => {
-      const index = carouselApi.selectedScrollSnap();
-      setDialogCurrentImageIndex(index);
-    };
-
-    onSelect();
-    carouselApi.on('select', onSelect);
-    carouselApi.on('reInit', onSelect);
-
-    return () => {
-      carouselApi.off('select', onSelect);
-      carouselApi.off('reInit', onSelect);
-    };
-  }, [carouselApi]);
-
-  // Update active section based on scroll position
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollY = window.scrollY;
-      const offset = 120; // Điều chỉnh theo chiều cao header
-      let currentSectionId = sections[0].id;
-
-      for (const section of sections) {
-        const el = section.ref.current;
-        if (el) {
-          const top = el.getBoundingClientRect().top + scrollY - offset;
-          if (scrollY >= top) {
-            currentSectionId = section.id;
-          }
-        }
-      }
-
-      // Nếu cuộn gần cuối trang thì luôn active section cuối
-      const nearBottom =
-        window.innerHeight + scrollY >= document.body.offsetHeight - 50;
-
-      if (nearBottom) {
-        currentSectionId = sections[sections.length - 1].id;
-      }
-
-      setActiveSection(currentSectionId);
-    };
-
-    handleScroll();
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [sections]);
-
-  /* ============================== RENDER ============================== */
   return (
-    <div className="min-h-screen bg-gradient-to-r from-gray-50 to-white">
+    <div
+      className={cn(
+        'min-h-screen bg-gradient-to-r from-gray-50 to-white overflow-x-clip',
+        arsenal.className
+      )}
+    >
+      <Cover data={property.introduction} />
+
       {/* ----------------------------------------------------------------------- */}
       {/* Header – transparent overlay                                            */}
       {/* ----------------------------------------------------------------------- */}
-      <header className="fixed top-0 left-0 z-50 w-full bg-black/15 backdrop-blur-md py-2">
-        <div className="mx-auto flex items-center justify-between overflow-x-auto px-4 scrollbar-hide">
-          <Link
-            href="/products/vietnam"
-            className="text-white transition-colors rounded-full hover:bg-black/5 p-2 w-10 h-10 center-both"
-          >
-            <ArrowLeft strokeWidth={2.75} className="h-4 w-4" />
-          </Link>
+      <header className="sticky top-0 z-50 w-full bg-background py-2 shadow-md">
+        <div className="mx-auto overflow-x-auto px-4 scrollbar-hide">
+          <div className="flex items-center justify-between">
+            <div
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              className="w-24 h-14 relative center-both ml-32 cursor-pointer"
+            >
+              <Image
+                src={property.introduction.logoImages[0]}
+                alt="Eco Retreat Logo"
+                fill
+                className="object-contain"
+                priority
+              />
+            </div>
 
-          <nav className="flex flex-grow justify-center space-x-6">
-            {sections.map((item) => {
-              const Icon = item.icon;
-              const isActive = activeSection === item.id;
-              return (
-                <a
-                  href={`#${item.id}`}
-                  key={item.id}
-                  onClick={() => setActiveSection(item.id)}
-                >
-                  <Button
-                    variant="ghost"
-                    className={`text-white hover:text-white hover:font-bold hover:bg-background/20 ${isActive ? 'bg-background/20 font-bold' : ''}`}
-                  >
-                    <Icon className="mr-2 h-4 w-4" />
-                    {item.label}
-                  </Button>
-                </a>
-              );
-            })}
-          </nav>
+            <nav className="flex justify-end mr-24">
+              {sections.map(
+                (item) =>
+                  item.label && (
+                    <Button
+                      key={item.id}
+                      variant="ghost"
+                      className="text-foreground text-base font-bold hover:bg-transparent uppercase p-2"
+                      onClick={() => {
+                        const section = document.getElementById(item.id);
+                        if (section) {
+                          section.scrollIntoView({ behavior: 'smooth' });
+                        }
+                      }}
+                    >
+                      {item.label}
+                    </Button>
+                  )
+              )}
+            </nav>
+          </div>
         </div>
       </header>
 
       {/* ----------------------------------------------------------------------- */}
-      {/* Hero Section – header overlays, so no padding-top                        */}
-      {/* ----------------------------------------------------------------------- */}
-      <FadeIn>
-        <div className="relative">
-          {/* Image Gallery */}
-          <div className="relative h-[80vh] overflow-hidden">
-            <Image
-              src={property.images[activeImageIndex] || '/placeholder-2.webp'}
-              alt={property.name}
-              fill
-              className="object-cover"
-              priority
-            />
-
-            {/* Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/10" />
-
-            {/* Property Info Overlay */}
-            <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
-              <div className="max-w-4xl">
-                {/* Badges */}
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {property.isFeatured && (
-                    <Badge className="bg-gradient-to-r !from-yellow-500 !to-orange-500 text-white border-0">
-                      <Star className="w-3 h-3 mr-1" />
-                      Nổi bật
-                    </Badge>
-                  )}
-                  {property.isExclusive && (
-                    <Badge className="bg-gradient-to-r !from-green-500 !to-green-600 text-white border-0">
-                      Độc quyền
-                    </Badge>
-                  )}
-                </div>
-
-                <h1 className="text-4xl md:text-5xl font-bold mb-4 text-shadow-xl">
-                  {property.name}
-                </h1>
-
-                <div className="flex items-center text-lg mb-4">
-                  <MapPin className="w-5 h-5 mr-2" />
-                  {property.address}
-                </div>
-
-                {/* <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-                  <div>
-                    <div className="text-2xl font-bold text-green-200">
-                      Từ {formatVnCurrencyShort(property.minPrice)}
-                    </div>
-                    <div className="text-white/80">Giá</div>
-                  </div>
-                  <div>
-                    <div className="text-2xl font-bold text-green-200">
-                      {property.landArea}
-                      {property.measurementUnit === 'sqm' ? 'm²' : 'ft²'}
-                    </div>
-                    <div className="text-white/80">Diện tích</div>
-                  </div>
-                  <div>
-                    <div className="text-2xl font-bold text-green-200">
-                      {property.minBedroom}-{property.maxBedroom}
-                    </div>
-                    <div className="text-white/80">Phòng ngủ</div>
-                  </div>
-                  <div>
-                    <div className="text-2xl font-bold text-green-200">
-                      {property.minBathroom}-{property.maxBathroom}
-                    </div>
-                    <div className="text-white/80">Phòng tắm</div>
-                  </div>
-                </div> */}
-                <div className="flex items-center gap-2">
-                  {property.images.slice(0, 5).map((image: any, index: any) => (
-                    <button
-                      key={index}
-                      onClick={() => setActiveImageIndex(index)}
-                      className={`w-16 h-12 rounded-md overflow-hidden border transition-all ${
-                        activeImageIndex === index
-                          ? 'border-white'
-                          : 'border-white/50'
-                      }`}
-                    >
-                      <Image
-                        src={image || '/placeholder-2.webp'}
-                        alt={`${property.name} ${index + 1}`}
-                        width={64}
-                        height={48}
-                        className="w-full h-full object-cover"
-                      />
-                    </button>
-                  ))}
-                  {property.images.length > 5 && (
-                    <button
-                      onClick={handleOpenImageDialog}
-                      className="w-16 h-12 rounded-md bg-black/50 backdrop-blur-sm flex items-center justify-center text-white text-xs font-medium border-2 border-white/50"
-                    >
-                      +{property.images.length - 5}
-                    </button>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Image Thumbnails */}
-          <div className="absolute bottom-6 right-8 center-both gap-2 z-10">
-            {/* Image Counter */}
-            <Button
-              variant="secondary"
-              className="backdrop-blur-sm bg-black/50 text-white hover:bg-black/70 ml-4"
-              onClick={handleOpenImageDialog}
-            >
-              <Camera className="w-4 h-4 mr-2" />
-              {activeImageIndex + 1} / {property.images.length}
-            </Button>
-          </div>
-        </div>
-      </FadeIn>
-
-      {/* ----------------------------------------------------------------------- */}
       {/* Conditional sections                                                    */}
       {/* ----------------------------------------------------------------------- */}
-      <div>
-        {sections.map((section) => (
-          <Fragment key={section.id}>{section.content}</Fragment>
-        ))}
-      </div>
-
-      {/* ----------------------------------------------------------------------- */}
-      {/* Image dialog                                                             */}
-      {/* ----------------------------------------------------------------------- */}
-      <Dialog open={showAllImages} onOpenChange={setShowAllImages}>
-        <DialogContent className="max-w-5xl p-6">
-          <DialogHeader>
-            <DialogTitle>Tất cả hình ảnh của {property.name}</DialogTitle>
-          </DialogHeader>
-          <div className="relative mb-4 h-[60vh] w-full overflow-hidden rounded-lg">
-            <Carousel
-              className="w-full"
-              setApi={setCarouselApi}
-              opts={{ loop: true }}
-            >
-              <CarouselContent className="-ml-2">
-                {property.images.map((img: any, idx: number) => (
-                  <CarouselItem key={idx} className="pl-2">
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: idx * 0.08 + 0.4 }}
-                      className="relative h-[60vh] w-full rounded-lg overflow-hidden"
-                    >
-                      <Image
-                        src={img || '/placeholder-2.webp'}
-                        alt={`Ảnh ${idx + 1}`}
-                        fill
-                        className="object-cover"
-                      />
-                    </motion.div>
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-              <CarouselPrevious className="left-4 rounded-sm text-white border-border bg-black/20 backdrop-blur-sm hover:bg-black/25" />
-              <CarouselNext className="right-4 rounded-sm text-white border-border bg-black/20 backdrop-blur-sm hover:bg-black/25" />
-            </Carousel>
-
-            <Badge className="absolute bottom-2 right-2 z-10 bg-black/70 text-white">
-              {dialogCurrentImageIndex + 1} / {property.images.length}
-            </Badge>
-          </div>
-        </DialogContent>
-      </Dialog>
+      {sections.map((section, idx) => (
+        <Fragment key={section.id || idx}>{section.content}</Fragment>
+      ))}
     </div>
   );
 }
+
+const SectionBreak = ({ data }: { data: string }) =>
+  data && (
+    <section className="relative min-h-screen center-both">
+      <Image
+        src={data}
+        alt="Break Image"
+        fill
+        className="object-cover"
+        priority
+      />
+    </section>
+  );

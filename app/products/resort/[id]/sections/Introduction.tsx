@@ -1,102 +1,225 @@
 'use client';
 
-import { forwardRef } from 'react';
 import Image from 'next/image';
+import { forwardRef, useEffect, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
-import { formatVnCurrencyShort } from '@/lib/utils';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselApi,
+} from '@/components/ui/carousel';
+import { cn } from '@/lib/utils';
+import { FadeIn, SlideIn } from '@/components/common/animations';
 
-const Introduction = forwardRef<HTMLElement, { property: any }>(
-  ({ property }, ref) => {
-    return (
-      <section ref={ref} id="introduction" className="relative min-h-screen">
-        <div className="absolute inset-0">
-          <Image
-            src={property.introductionMainImage || '/placeholder.svg'}
-            alt={`${property.name} Introduction`}
-            fill
-            className="object-cover"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/30 to-black/10"></div>
+const Introduction = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
+  const [carouselApi, setCarouselApi] = useState<CarouselApi>();
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const embedUrl = useMemo(
+    () => convertToEmbedUrl(data.introductionVideo),
+    [data.introductionVideo]
+  );
+
+  function convertToEmbedUrl(url: any) {
+    try {
+      const ytUrl = new URL(url);
+
+      // Lấy videoId từ ?v= trên youtube.com hoặc từ path trên youtu.be
+      const videoId = ytUrl.hostname.includes('youtu.be')
+        ? ytUrl.pathname.slice(1)
+        : ytUrl.searchParams.get('v');
+
+      // Lấy thời gian bắt đầu nếu có (t=94s hoặc t=94)
+      const tParam = ytUrl.searchParams.get('t');
+      const startTime = tParam ? parseInt(tParam.replace('s', '')) : null;
+
+      if (!videoId) return null;
+
+      // Tạo query string
+      const params = new URLSearchParams();
+      params.set('autoplay', '1');
+      params.set('mute', '1'); // tránh bị chặn bởi trình duyệt
+      if (startTime) {
+        params.set('start', startTime.toString());
+      }
+
+      return `https://www.youtube.com/embed/${videoId}?${params.toString()}`;
+    } catch (err) {
+      return null;
+    }
+  }
+
+  useEffect(() => {
+    if (!carouselApi) return;
+
+    const onSelect = () => {
+      const index = carouselApi.selectedScrollSnap();
+      setCurrentImageIndex(index);
+    };
+
+    onSelect();
+    carouselApi.on('select', onSelect);
+    carouselApi.on('reInit', onSelect);
+
+    // Auto slide every 3 seconds
+    const interval = setInterval(() => {
+      if (!carouselApi.canScrollNext()) {
+        carouselApi.scrollTo(0); // Quay lại ảnh đầu nếu hết
+      } else {
+        carouselApi.scrollNext();
+      }
+    }, 5000);
+
+    return () => {
+      carouselApi.off('select', onSelect);
+      carouselApi.off('reInit', onSelect);
+      clearInterval(interval);
+    };
+  }, [carouselApi]);
+
+  return (
+    <section ref={ref} id="introduction">
+      {/* Sub section 1 */}
+      <div className="relative min-h-screen center-both py-20">
+        {/* Background image full screen */}
+        <Image
+          src={data.backgroundImage}
+          alt="Eco Retreat Background"
+          fill
+          className="object-cover object-left"
+          priority
+        />
+
+        {/* Content */}
+        <div className="relative z-20 h-full w-full center-both flex-col md:flex-row max-w-7xl py-8 gap-6">
+          {/* Left content */}
+          <div className="md:w-1/2 text-white space-y-4">
+            {/* Logo/title image */}
+            <FadeIn className="relative w-100 h-64">
+              <Image
+                src={data.titleImage}
+                alt="Eco Retreat Title"
+                fill
+                className="object-contain"
+                priority
+              />
+            </FadeIn>
+            <div
+              className="text-lg space-y-2 leading-relaxed"
+              dangerouslySetInnerHTML={{ __html: data.description }}
+            />
+          </div>
+
+          {/* Right hero image */}
+          <SlideIn
+            direction="right"
+            className="relative md:w-1/2 w-full h-[80vh] center-both"
+          >
+            <Image
+              src={data.heroImage}
+              alt="Eco Retreat Hero"
+              fill
+              className="object-contain shadow-lg rounded-sm"
+              priority
+            />
+          </SlideIn>
         </div>
+      </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 py-20 min-h-screen flex items-center">
-          <div className="w-full text-white">
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              className="max-w-4xl"
+      {/* Sub section 2 */}
+      <div className="relative min-h-screen center-both">
+        <div className="relative z-20 h-full w-full center-both flex-col md:flex-row max-w-7xl py-8 gap-6">
+          {/* Left content */}
+          <SlideIn
+            direction="left"
+            className="relative md:w-1/2 w-full h-[80vh] center-both"
+          >
+            <Carousel
+              className="w-full"
+              setApi={setCarouselApi}
+              opts={{ loop: true }}
             >
-              <div className="mb-8">
-                <h2 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-400">
-                    {property.name}
-                  </span>
-                </h2>
-                <p className="text-2xl text-blue-100 mb-8">
-                  {property.propertyType} tại {property.city}
-                </p>
-              </div>
-
-              <div className="space-y-6 text-lg leading-relaxed mb-12">
-                {property.introductionText
-                  ?.split('\n\n')
-                  .map((paragraph: string, index: number) => (
-                    <p key={index} className="text-gray-200">
-                      {paragraph.trim()}
-                    </p>
-                  ))}
-              </div>
-
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
-                {[
-                  {
-                    value: formatVnCurrencyShort(property.minPrice),
-                    label: 'Giá từ',
-                    color: 'text-green-400',
-                  },
-                  {
-                    value: `${property.landArea}${
-                      property.measurementUnit === 'sqm' ? 'm²' : 'ft²'
-                    }`,
-                    label: 'Diện tích',
-                    color: 'text-yellow-400',
-                  },
-                  {
-                    value: `${property.minBedroom}-${property.maxBedroom}`,
-                    label: 'Phòng ngủ',
-                    color: 'text-blue-400',
-                  },
-                  {
-                    value: `${property.minBathroom}-${property.maxBathroom}`,
-                    label: 'Phòng tắm',
-                    color: 'text-purple-400',
-                  },
-                ].map((item, i) => (
-                  <motion.div
+              <CarouselContent>
+                {data.introductionImages.map((img: any, idx: number) => (
+                  <CarouselItem key={idx} className="pl-0">
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: idx * 0.08 + 0.4 }}
+                      className="relative h-[80vh] w-full overflow-hidden"
+                    >
+                      <Image
+                        src={img || '/placeholder-2.webp'}
+                        alt={`Ảnh ${idx + 1}`}
+                        fill
+                        className="object-cover"
+                      />
+                    </motion.div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-3 z-10">
+                {data.introductionImages.map((_: any, i: any) => (
+                  <div
                     key={i}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.2 + i * 0.1 }}
-                    viewport={{ once: true }}
-                    className="text-center p-6 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20"
-                  >
-                    <div className={`text-3xl font-bold mb-2 ${item.color}`}>
-                      {item.value}
-                    </div>
-                    <div className="text-sm text-gray-300">{item.label}</div>
-                  </motion.div>
+                    className={cn(
+                      'h-2 w-2 rounded-full bg-white transition-all',
+                      i === currentImageIndex ? 'w-4' : 'bg-gray-300'
+                    )}
+                  />
                 ))}
               </div>
-            </motion.div>
-          </div>
+            </Carousel>
+          </SlideIn>
+
+          {/* Right content */}
+          <FadeIn className="md:w-1/2 space-y-6">
+            <div className="space-y-4 text-sm leading-relaxed">
+              <div className="text-center space-y-1">
+                <h3 className="text-orange-400 font-bold text-3xl uppercase tracking-wide">
+                  Chính thức ra mắt
+                </h3>
+
+                {/* Tên sản phẩm */}
+                <h2 className="text-lime-500 text-4xl md:text-6xl font-bold italic">
+                  {data.launchTitle}
+                </h2>
+
+                {/* Sub title */}
+                <h3 className="text-lime-500 text-2xl md:text-3xl italic font-semibold">
+                  {data.launchSubtitle}
+                </h3>
+              </div>
+
+              {/* Danh sách mô tả chi tiết */}
+              <div
+                className="text-lg ml-4 text-center"
+                dangerouslySetInnerHTML={{ __html: data.launchText }}
+              />
+            </div>
+          </FadeIn>
         </div>
-      </section>
-    );
-  }
-);
+      </div>
+
+      {/* Sub section 3 */}
+      <div className="relative min-h-screen w-full mx-auto">
+        {embedUrl ? (
+          <div className="w-full aspect-video">
+            <iframe
+              src={embedUrl}
+              title="Introduction Video"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              className="w-full h-full shadow-lg"
+            />
+          </div>
+        ) : (
+          <div className="text-red-500">Invalid YouTube URL</div>
+        )}
+      </div>
+    </section>
+  );
+});
 
 Introduction.displayName = 'Introduction';
 export default Introduction;

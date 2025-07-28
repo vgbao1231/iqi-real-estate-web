@@ -6,7 +6,7 @@ import type { ReactNode } from 'react';
 interface FadeInProps {
   children: ReactNode;
   delay?: number;
-  direction?: 'up' | 'down' | 'left' | 'right';
+  direction?: 'up' | 'down' | 'left' | 'right' | 'none';
   className?: string;
 }
 
@@ -21,6 +21,7 @@ export function FadeIn({
     down: { y: -40, x: 0 },
     left: { y: 0, x: 40 },
     right: { y: 0, x: -40 },
+    none: { y: 0, x: 0 },
   };
 
   return (
@@ -47,6 +48,7 @@ export function SlideIn({
     down: { y: -100, x: 0 },
     left: { y: 0, x: -100 },
     right: { y: 0, x: 100 },
+    none: { y: 0, x: 0 },
   };
 
   return (
