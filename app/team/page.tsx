@@ -171,16 +171,18 @@ export default function TeamPage() {
       <section className="py-12 bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-950/20 dark:to-blue-900/20">
         <div className="container mx-auto px-4">
           <FadeIn>
-            <Link
-              href="/"
-              className="inline-flex items-center text-blue-600 hover:text-blue-700 mb-6"
-            >
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Quay lại trang chủ
-            </Link>
-            <Badge className="mb-4 bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
-              ĐỘI NGŨ IQI VIETNAM
-            </Badge>
+            <div className="flex items-center gap-2 mb-4">
+              <Link
+                href="/"
+                className="inline-flex items-center text-blue-600 hover:text-blue-700"
+              >
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Quay lại trang chủ
+              </Link>
+              <Badge className="bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
+                ĐỘI NGŨ IQI VIETNAM
+              </Badge>
+            </div>
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
               Đội ngũ chuyên nghiệp
             </h1>
@@ -195,7 +197,7 @@ export default function TeamPage() {
 
       {/* Leadership Team */}
       <section className="py-16">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4 md:px-16">
           <FadeIn className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
               Ban lãnh đạo
@@ -288,7 +290,7 @@ export default function TeamPage() {
 
       {/* Departments */}
       <section className="py-16 bg-muted/30">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4 md:px-16">
           <FadeIn className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
               Các phòng ban
@@ -380,45 +382,6 @@ export default function TeamPage() {
                     </CardHeader>
 
                     <CardContent>
-                      {/* Stats */}
-                      <div className="grid grid-cols-2 gap-4 mb-4">
-                        <div>
-                          <div className="text-lg font-bold text-green-600">
-                            {agent.deals}
-                          </div>
-                          <div className="text-xs text-muted-foreground">
-                            Giao dịch
-                          </div>
-                        </div>
-                        <div>
-                          <div className="text-lg font-bold text-orange-600">
-                            {agent.revenue}
-                          </div>
-                          <div className="text-xs text-muted-foreground">
-                            Doanh số
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Rating */}
-                      <div className="flex items-center justify-center mb-4">
-                        <div className="flex items-center space-x-1">
-                          {[...Array(5)].map((_, i) => (
-                            <Star
-                              key={i}
-                              className={`w-4 h-4 ${
-                                i < Math.floor(agent.rating)
-                                  ? 'fill-yellow-400 text-yellow-400'
-                                  : 'text-gray-300'
-                              }`}
-                            />
-                          ))}
-                          <span className="text-sm font-medium ml-1">
-                            {agent.rating}
-                          </span>
-                        </div>
-                      </div>
-
                       {/* Specialties */}
                       <div>
                         <h4 className="font-semibold mb-2 text-sm">

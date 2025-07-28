@@ -398,7 +398,7 @@ export default function ConsultationPage() {
                       <div>
                         <div className="font-semibold">Hotline 24/7</div>
                         <div className="text-green-600 font-bold">
-                          1900 1234
+                          0764 155 155
                         </div>
                       </div>
                     </div>

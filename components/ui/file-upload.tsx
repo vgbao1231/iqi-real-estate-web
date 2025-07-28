@@ -29,7 +29,7 @@ export function FileUpload({
       ? value
       : value
         ? URL.createObjectURL(value)
-        : '/placeholder.svg';
+        : '/placeholder-2.webp';
   const fileName =
     typeof value === 'string' ? value.split('/').pop() : value?.name;
 
@@ -42,7 +42,7 @@ export function FileUpload({
             {/* Check if it's an image type before rendering img tag */}
             {(typeof value === 'string' || value.type.startsWith('image/')) && (
               <img
-                src={imgSrc || '/placeholder.svg'}
+                src={imgSrc || '/placeholder-2.webp'}
                 alt="Preview"
                 className="max-h-32 max-w-full rounded-md object-contain mb-2"
               />

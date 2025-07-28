@@ -68,7 +68,7 @@ const FloorPlan = forwardRef<HTMLElement, { property: any }>(
             >
               <div className="relative aspect-[3/2]">
                 <Image
-                  src={subArea.image || '/placeholder.svg'}
+                  src={subArea.image || '/placeholder-2.webp'}
                   alt={subArea.name}
                   fill
                   className="object-cover"

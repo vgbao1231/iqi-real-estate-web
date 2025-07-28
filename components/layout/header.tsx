@@ -12,6 +12,7 @@ import {
   TrendingUp,
   Users,
   Menu,
+  Smile,
 } from 'lucide-react';
 import Link from 'next/link';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -35,10 +36,16 @@ export default function Header({
       label: 'Giới thiệu',
       items: [
         {
-          label: 'Về IQI Vietnam',
+          label: 'Hình thành & Sứ mệnh',
           description: 'Tìm hiểu về sứ mệnh và tầm nhìn của chúng tôi',
           icon: <Users className="w-5 h-5 text-blue-500" />,
-          href: '/about',
+          href: '/about/mission',
+        },
+        {
+          label: 'Juwai IQI và IQI Atlas',
+          description: 'Hành trình hình thành và phát triển của IQI',
+          icon: <Clock4 className="w-5 h-5 text-yellow-500" />,
+          href: '/about/juwai',
         },
         {
           label: 'Đội ngũ',
@@ -47,10 +54,16 @@ export default function Header({
           href: '/team',
         },
         {
-          label: 'Lịch sử phát triển',
-          description: 'Hành trình hình thành và phát triển của IQI',
-          icon: <Clock4 className="w-5 h-5 text-yellow-500" />,
-          href: '/about/history',
+          label: 'Văn hóa và môi trường',
+          description: 'Khám phá môi trường làm việc và văn hóa tại IQI',
+          icon: <Smile className="w-5 h-5 text-pink-500" />,
+          href: '/about/culture',
+        },
+        {
+          label: 'Thông tin liên hệ',
+          description: 'Liên hệ với chúng tôi để được hỗ trợ nhanh chóng',
+          icon: <Phone className="w-5 h-5 text-red-500" />,
+          href: '/contact',
         },
       ],
     },
@@ -105,7 +118,7 @@ export default function Header({
       href: '/partners',
     },
     {
-      label: 'Tuyển dụng',
+      label: 'Cơ hội nghề nghiệp',
       href: '/careers',
     },
   ];
@@ -198,12 +211,12 @@ export default function Header({
               <Image
                 src={
                   enableToggleDark && isDark
-                    ? '/logo-dark.svg'
-                    : '/logo-light.svg'
+                    ? '/logo-detail-light.png'
+                    : '/logo-detail-dark.png'
                 }
                 alt="logo"
-                width={100}
-                height={40}
+                width={120}
+                height={44}
                 className="dark:hidden"
               />
             </motion.div>
@@ -221,13 +234,13 @@ export default function Header({
                     </span>
                     <ChevronDown className="w-4 h-4 transition-all duration-300 group-hover/menu:rotate-180" />
                   </button>
-                  <div className="absolute top-full left-0 mt-2 w-72 bg-card/95 border rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity duration-300 text-foreground">
+                  <div className="absolute top-full left-0 mt-2 w-72 bg-card/80 border rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity duration-300 text-foreground">
                     <div className="py-2">
                       {menu.items.map((item) => (
                         <Link
                           key={item.href}
                           href={item.href}
-                          className="group/item block transition-all duration-300 hover:bg-muted"
+                          className="group/item block transition-all duration-300 hover:bg-card/50"
                         >
                           <div className="px-4 py-3">
                             <div className="flex items-start gap-2">
@@ -292,7 +305,7 @@ export default function Header({
                   )}
                 />
                 <Input
-                  placeholder="Hotline: 1900 1234"
+                  placeholder="Hotline: 0764 155 155"
                   className={cn(
                     'pl-10 w-48 bg-transparent',
                     enableToggleDark && isDark

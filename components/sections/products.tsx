@@ -10,7 +10,7 @@ export default function Products() {
   return (
     <section
       id="products"
-      className="pt-8 pb-20 bg-gradient-to-r from-slate-100 via-white to-gray-200 relative overflow-hidden"
+      className="py-8 md:pb-20 bg-gradient-to-r from-slate-100 via-white to-gray-200 relative overflow-hidden"
     >
       {/* Animated Background Elements */}
       <div className="absolute inset-0">

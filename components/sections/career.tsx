@@ -8,7 +8,7 @@ import { motion } from 'framer-motion';
 
 export default function Career() {
   return (
-    <section className="py-16 bg-muted/30">
+    <section className="py-8 md:py-16 bg-muted/30">
       <div className="container mx-auto px-4">
         <FadeIn className="text-center mb-12">
           <Badge className="mb-4 bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300">
@@ -23,7 +23,7 @@ export default function Career() {
           </p>
         </FadeIn>
 
-        <div className="grid md:grid-cols-2 gap-12 items-center justify-center mb-12">
+        <div className="grid md:grid-cols-2 gap-12 items-center justify-center">
           <SlideIn direction="left" className="center-both">
             <div>
               <h3 className="text-2xl font-bold mb-6">Tại sao chọn IQI?</h3>

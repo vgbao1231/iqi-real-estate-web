@@ -263,7 +263,7 @@ const ImageCard = ({ image, index }: any) => (
   >
     <div className="relative w-full h-full">
       <Image
-        src={image || '/placeholder.svg'}
+        src={image || '/placeholder-2.webp'}
         alt={`Gallery image ${index + 1}`}
         fill
         className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"

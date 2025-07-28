@@ -17,6 +17,11 @@ import {
   Building,
   Headphones,
   Globe,
+  Facebook,
+  Instagram,
+  Linkedin,
+  Video,
+  Youtube,
 } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -37,7 +42,7 @@ export default function ContactPage() {
       icon: Phone,
       title: 'Hotline 24/7',
       description: 'Gọi ngay để được tư vấn miễn phí',
-      contact: '1900 1234',
+      contact: '0764155155',
       action: 'Gọi ngay',
       color: 'text-green-600',
       bg: 'bg-green-100 dark:bg-green-900/30',
@@ -55,35 +60,88 @@ export default function ContactPage() {
       icon: Mail,
       title: 'Email',
       description: 'Gửi email chi tiết về nhu cầu của bạn',
-      contact: 'info@iqi.com',
+      contact: ' info-vietnam@iqiglobal.com',
       action: 'Gửi email',
       color: 'text-orange-600',
       bg: 'bg-orange-100 dark:bg-orange-900/30',
     },
   ];
 
+  const contactLinks = [
+    {
+      label: 'Website',
+      value: 'https://iqiglobal.com',
+      icon: <Globe size={20} />,
+      href: 'https://iqiglobal.com',
+    },
+    {
+      label: 'Facebook',
+      value: 'IQI Vietnam',
+      icon: <Facebook size={20} />,
+      href: 'https://www.facebook.com/iqivietnam',
+    },
+    {
+      label: 'Instagram',
+      value: 'instagram.com/iqivietnam',
+      icon: <Instagram size={20} />,
+      href: 'https://www.instagram.com/iqivietnam',
+    },
+    {
+      label: 'LinkedIn',
+      value: 'linkedin.com/company/iqivietnam',
+      icon: <Linkedin size={20} />,
+      href: 'https://www.linkedin.com/company/iqivietnam',
+    },
+    {
+      label: 'YouTube',
+      value: 'youtube.com/IQIVIETNAM',
+      icon: <Youtube size={20} />,
+      href: 'https://www.youtube.com/@IQIVIETNAM',
+    },
+    {
+      label: 'TikTok',
+      value: 'tiktok.com/@iqivietnam',
+      icon: <Video size={20} />,
+      href: 'https://www.tiktok.com/@iqivietnam',
+    },
+    {
+      label: 'Email',
+      value: 'info-vietnam@iqiglobal.com',
+      icon: <Mail size={20} />,
+      href: 'mailto:info-vietnam@iqiglobal.com',
+    },
+    {
+      label: 'Phone',
+      value: '0764155155',
+      icon: <Phone size={20} />,
+      href: 'tel:+84764155155',
+    },
+  ];
+
   const offices = [
     {
-      city: 'TP. Hồ Chí Minh',
-      address: 'Tầng 15, Tòa nhà Vietcombank, 5 Công Trường Mê Linh, Quận 1',
-      phone: '(028) 3821 1234',
-      email: 'hcm@iqi.com',
+      city: 'TP. Thủ Đức (Thảo Điền)',
+      address:
+        'Tầng G, Toà nhà City Gate, số 67-69 Võ Nguyên Giáp, Phường Thảo Điền, TP. Thủ Đức, TP. Hồ Chí Minh',
+      phone: '0911 130 135',
+      email: 'info-vietnam@iqiglobal.com',
       hours: '8:00 - 18:00 (T2-T6), 8:00 - 12:00 (T7)',
       image: '/placeholder-2.webp?height=200&width=300',
     },
     {
       city: 'Hà Nội',
-      address: 'Tầng 10, Tòa nhà Lotte Center, 54 Liễu Giai, Ba Đình',
-      phone: '(024) 3936 1234',
-      email: 'hanoi@iqi.com',
+      address: '1152 đường Láng, Láng Thượng, Quận Đống Đa, Hà Nội',
+      phone: '0911 130 135',
+      email: 'info-vietnam@iqiglobal.com',
       hours: '8:00 - 18:00 (T2-T6), 8:00 - 12:00 (T7)',
       image: '/placeholder-2.webp?height=200&width=300',
     },
     {
       city: 'Đà Nẵng',
-      address: 'Tầng 8, Tòa nhà Indochina, 4 Nguyễn Tất Thành, Hải Châu',
-      phone: '(0236) 3888 1234',
-      email: 'danang@iqi.com',
+      address:
+        '305 đường Núi Thành, Phường Hoà Cường Bắc, Quận Hải Châu, TP. Đà Nẵng',
+      phone: '0911 130 135',
+      email: 'info-vietnam@iqiglobal.com',
       hours: '8:00 - 18:00 (T2-T6), 8:00 - 12:00 (T7)',
       image: '/placeholder-2.webp?height=200&width=300',
     },
@@ -93,15 +151,15 @@ export default function ContactPage() {
     {
       icon: Phone,
       title: 'Gọi Hotline',
-      description: '1900 1234',
-      action: () => window.open('tel:19001234'),
+      description: '0764155155',
+      action: () => window.open('tel:0764155155'),
       color: 'bg-green-600 hover:bg-green-700',
     },
     {
       icon: MessageCircle,
       title: 'Chat Zalo',
       description: 'Nhắn tin ngay',
-      action: () => window.open('https://zalo.me/19001234'),
+      action: () => window.open('https://zalo.me/0764155155'),
       color: 'bg-blue-600 hover:bg-blue-700',
     },
     {
@@ -117,18 +175,20 @@ export default function ContactPage() {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <section className="py-12 bg-gradient-to-r from-green-50 to-green-100 dark:from-green-950/20 dark:to-green-900/20">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4 md:px-12">
           <FadeIn>
-            <Link
-              href="/"
-              className="inline-flex items-center text-green-600 hover:text-green-700 mb-6"
-            >
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Quay lại trang chủ
-            </Link>
-            <Badge className="mb-4 bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300">
-              LIÊN HỆ
-            </Badge>
+            <div className="flex items-center gap-2 mb-4">
+              <Link
+                href="/"
+                className="inline-flex items-center text-green-600 hover:text-green-700"
+              >
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Quay lại trang chủ
+              </Link>
+              <Badge className="bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300">
+                LIÊN HỆ
+              </Badge>
+            </div>
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
               Liên hệ với IQI Vietnam
             </h1>
@@ -142,7 +202,7 @@ export default function ContactPage() {
 
       {/* Quick Contact Methods */}
       <section className="py-16">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4 md:px-12">
           <FadeIn className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
               Liên hệ nhanh
@@ -215,12 +275,12 @@ export default function ContactPage() {
       </section>
 
       {/* Contact Form & Info */}
-      <section className="py-16 bg-muted/30">
-        <div className="container mx-auto px-4">
+      <section className="relative min-h-screen py-16 bg-muted/30">
+        <div className="container mx-auto px-4 md:px-12">
           <div className="grid lg:grid-cols-2 gap-12">
             {/* Contact Form */}
             <FadeIn>
-              <Card>
+              <Card className="sticky top-12">
                 <CardHeader>
                   <CardTitle className="text-2xl flex items-center">
                     <Send className="w-6 h-6 mr-2 text-green-600" />
@@ -359,11 +419,11 @@ export default function ContactPage() {
                     <div className="space-y-2">
                       <div className="flex justify-between">
                         <span>Thứ 2 - Thứ 6:</span>
-                        <span className="font-semibold">8:00 - 18:00</span>
+                        <span className="font-semibold">8:30 - 17:30</span>
                       </div>
                       <div className="flex justify-between">
                         <span>Thứ 7:</span>
-                        <span className="font-semibold">8:00 - 12:00</span>
+                        <span className="font-semibold">8:30 - 12:00</span>
                       </div>
                       <div className="flex justify-between">
                         <span>Chủ nhật:</span>
@@ -373,7 +433,7 @@ export default function ContactPage() {
                         <div className="flex items-center text-green-700 dark:text-green-300">
                           <Headphones className="w-4 h-4 mr-2" />
                           <span className="font-semibold">
-                            Hotline 24/7: 1900 1234
+                            Hotline 24/7: 0764 155 155
                           </span>
                         </div>
                       </div>
@@ -391,23 +451,26 @@ export default function ContactPage() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="grid grid-cols-2 gap-3">
-                      {[
-                        { name: 'Facebook', followers: '50K+' },
-                        { name: 'YouTube', followers: '25K+' },
-                        { name: 'LinkedIn', followers: '15K+' },
-                        { name: 'Zalo', followers: '30K+' },
-                      ].map((social, index) => (
-                        <motion.div
-                          key={index}
-                          whileHover={{ scale: 1.05 }}
-                          className="p-3 bg-muted/50 rounded-lg text-center cursor-pointer"
-                        >
-                          <div className="font-semibold">{social.name}</div>
-                          <div className="text-sm text-muted-foreground">
-                            {social.followers}
-                          </div>
-                        </motion.div>
+                    <div className="flex flex-col gap-4">
+                      {contactLinks.map((link, idx) => (
+                        <FadeIn key={idx} delay={0.4 + idx * 0.1}>
+                          <a
+                            href={link.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="p-4 border border-border rounded-lg flex items-center hover:bg-background transition-all gap-3"
+                          >
+                            <div className="p-2 rounded-full bg-gray-100 dark:bg-gray-800">
+                              {link.icon}
+                            </div>
+                            <div className="flex flex-col gap-1">
+                              <span className="font-medium">{link.label}</span>
+                              <p className="text-gray-400 text-sm break-all">
+                                {link.value}
+                              </p>
+                            </div>
+                          </a>
+                        </FadeIn>
                       ))}
                     </div>
                   </CardContent>
@@ -430,7 +493,7 @@ export default function ContactPage() {
             </p>
           </FadeIn>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-8 md:px-12">
             {offices.map((office, index) => (
               <ScaleIn key={index} delay={index * 0.2}>
                 <motion.div whileHover={{ y: -5 }}>

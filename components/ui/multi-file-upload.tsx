@@ -71,7 +71,7 @@ export function MultiFileUpload({
                 >
                   {isImage ? (
                     <img
-                      src={imgSrc || '/placeholder.svg'}
+                      src={imgSrc || '/placeholder-2.webp'}
                       alt={`Preview ${fileName}`}
                       className="object-cover w-full h-full"
                     />

@@ -11,6 +11,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import clsx from 'clsx';
+import { cn } from '@/lib/utils';
 
 export function ThemeToggle({ isDark }: { isDark: boolean }) {
   const { theme, setTheme } = useTheme();
@@ -33,37 +34,24 @@ export function ThemeToggle({ isDark }: { isDark: boolean }) {
           <span className="sr-only">Toggle theme</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="min-w-[160px]">
-        <DropdownMenuItem
-          onClick={() => setTheme('light')}
-          className={`cursor-pointer ${theme === 'light' ? 'bg-orange-100 dark:bg-orange-900/20' : ''}`}
-        >
-          <Sun className="mr-2 h-4 w-4" />
-          <span>Light Mode</span>
-          {theme === 'light' && (
-            <span className="ml-auto text-orange-600">✓</span>
-          )}
-        </DropdownMenuItem>
-        <DropdownMenuItem
-          onClick={() => setTheme('dark')}
-          className={`cursor-pointer ${theme === 'dark' ? 'bg-orange-100 dark:bg-orange-900/20' : ''}`}
-        >
-          <Moon className="mr-2 h-4 w-4" />
-          <span>Dark Mode</span>
-          {theme === 'dark' && (
-            <span className="ml-auto text-orange-600">✓</span>
-          )}
-        </DropdownMenuItem>
-        <DropdownMenuItem
-          onClick={() => setTheme('system')}
-          className={`cursor-pointer ${theme === 'system' ? 'bg-orange-100 dark:bg-orange-900/20' : ''}`}
-        >
-          <Monitor className="mr-2 h-4 w-4" />
-          <span>System</span>
-          {theme === 'system' && (
-            <span className="ml-auto text-orange-600">✓</span>
-          )}
-        </DropdownMenuItem>
+      <DropdownMenuContent align="end" className="min-w-[160px] bg-card/60">
+        {[
+          { label: 'Light Mode', value: 'light', icon: Sun },
+          { label: 'Dark Mode', value: 'dark', icon: Moon },
+          { label: 'System', value: 'system', icon: Monitor },
+        ].map(({ label, value, icon: Icon }) => (
+          <DropdownMenuItem
+            key={value}
+            onClick={() => setTheme(value)}
+            className={cn('cursor-pointer', theme === value && 'bg-accent/40')}
+          >
+            <Icon className="mr-2 h-4 w-4" />
+            <span>{label}</span>
+            {theme === value && (
+              <span className="ml-auto text-orange-600">✓</span>
+            )}
+          </DropdownMenuItem>
+        ))}
       </DropdownMenuContent>
     </DropdownMenu>
   );

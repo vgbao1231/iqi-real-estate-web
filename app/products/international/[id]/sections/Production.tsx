@@ -63,7 +63,7 @@ const Production = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
             >
               <div className="aspect-[4/3] relative">
                 <Image
-                  src={product.image || '/placeholder.svg'}
+                  src={product.image || '/placeholder-2.webp'}
                   alt={product.name}
                   fill
                   className="object-cover transition-transform duration-500 group-hover:scale-105"

@@ -28,6 +28,7 @@ export default function Contact() {
         className="absolute -bottom-16 left-10 w-48 h-48 bg-white/20 dark:bg-white/10 rounded-full blur-md"
       />
 
+      <div className="absolute inset-0 bg-gradient-to-br from-[#fbf4e6]/60 to-orange-300 dark:from-gray-900/40 dark:via-gray-950/60 dark:to-black/40"></div>
       <SlideIn direction="right" className="absolute inset-0 z-10">
         <Image
           src="https://iqiglobal-web-revamp.s3.ap-southeast-1.amazonaws.com/laravel/img/home/house-with-vector-background.webp"
@@ -37,9 +38,8 @@ export default function Contact() {
           priority
         />
       </SlideIn>
-      <div className="absolute inset-0 bg-gradient-to-br from-[#fbf4e6]/60 to-orange-300 dark:from-gray-900/40 dark:via-gray-950/60 dark:to-black/40"></div>
 
-      <div className="container mx-auto px-4 text-center relative z-10 my-14">
+      <div className="container mx-auto px-4 text-center relative z-30 my-14">
         <FadeIn>
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
             Sẵn sàng bắt đầu hành trình bất động sản?
@@ -58,7 +58,7 @@ export default function Contact() {
                   className="bg-orange-600 text-white hover:bg-orange-700"
                 >
                   <Phone className="w-4 h-4 mr-2" />
-                  Gọi ngay: 1900 1234
+                  Gọi ngay: 0764 155 155
                 </Button>
               </Link>
             </motion.div>
@@ -66,7 +66,7 @@ export default function Contact() {
               <Link href="/consultation">
                 <Button
                   size="lg"
-                  className="border border-orange-600 text-orange-600 hover:bg-white/10 hover:text-orange-600 bg-transparent"
+                  className="border border-orange-600 text-orange-600 hover:bg-white hover:text-orange-600 bg-white/95"
                 >
                   <Mail className="w-4 h-4 mr-2" />
                   Đăng ký tư vấn
@@ -76,7 +76,7 @@ export default function Contact() {
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Button
                 size="lg"
-                className="border border-orange-600 text-orange-600 hover:bg-white/10 hover:text-orange-600 bg-transparent"
+                className="border border-orange-600 text-orange-600 hover:bg-white hover:text-orange-600 bg-white/95"
               >
                 <MessageCircle className="w-4 h-4 mr-2" />
                 Chat với chuyên gia
