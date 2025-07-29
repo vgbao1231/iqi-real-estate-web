@@ -97,19 +97,19 @@ export default function Header({
           label: 'Thị trường',
           description: 'Cập nhật tin tức thị trường bất động sản',
           icon: <Newspaper className="w-5 h-5 text-red-500" />,
-          href: '/news/market',
+          href: '/market',
         },
         {
           label: 'Tin tức BDS',
           description: 'Tổng hợp thông tin mới nhất về bất động sản',
           icon: <Building2 className="w-5 h-5 text-blue-600" />,
-          href: '/news/real-estate',
+          href: '/news',
         },
         {
           label: 'Xu hướng',
           description: 'Những xu hướng bất động sản nổi bật hiện nay',
           icon: <TrendingUp className="w-5 h-5 text-teal-500" />,
-          href: '/news/trends',
+          href: '/trends',
         },
       ],
     },
@@ -234,7 +234,7 @@ export default function Header({
                     </span>
                     <ChevronDown className="w-4 h-4 transition-all duration-300 group-hover/menu:rotate-180" />
                   </button>
-                  <div className="absolute top-full left-0 mt-2 w-72 bg-card/80 border rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity duration-300 text-foreground">
+                  <div className="absolute top-full left-0 mt-2 w-72 bg-card/85 border rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity duration-300 text-foreground">
                     <div className="py-2">
                       {menu.items.map((item) => (
                         <Link
@@ -307,7 +307,7 @@ export default function Header({
                 <Input
                   placeholder="Hotline: 0764 155 155"
                   className={cn(
-                    'pl-10 w-48 bg-transparent',
+                    'pl-10 w-52 bg-transparent',
                     enableToggleDark && isDark
                       ? 'placeholder:text-white text-white border-white/60'
                       : 'dark:placeholder:text-white border-black/30 dark:border-white/60'
@@ -348,7 +348,7 @@ export default function Header({
                           >
                             <Link
                               href={item.href}
-                              className="text-lg text-gray-300 hover:text-orange-400 transition-colors duration-300 flex items-center gap-2 pl-1"
+                              className="text-lg text-gray-200 hover:text-orange-400 transition-colors duration-300 flex items-center gap-2 pl-1"
                               onClick={() => setIsMobileMenuOpen(false)}
                             >
                               {item.icon}

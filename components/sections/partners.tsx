@@ -7,7 +7,7 @@ import Image from 'next/image';
 
 export default function Partners() {
   return (
-    <section className="py-8 md:py-12 bg-muted/30">
+    <section className="py-8 md:p-12 bg-muted/30">
       <div className="container mx-auto px-4">
         <FadeIn className="text-center mb-8">
           <Badge className="mb-4 bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-300">

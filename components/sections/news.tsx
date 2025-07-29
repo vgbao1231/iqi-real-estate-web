@@ -14,7 +14,7 @@ import { motion } from 'framer-motion';
 
 export default function News() {
   return (
-    <section className="py-8 md:py-16">
+    <section className="py-8 md:p-12">
       <div className="container mx-auto px-4">
         <FadeIn className="text-center mb-12">
           <Badge className="mb-4 bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300">

@@ -35,10 +35,12 @@ const config: Config = {
         muted: {
           DEFAULT: 'hsl(var(--muted))',
           foreground: 'hsl(var(--muted-foreground))',
+          card: 'hsl(var(--muted-card))',
         },
         accent: {
           DEFAULT: 'hsl(var(--accent))',
           foreground: 'hsl(var(--accent-foreground))',
+          card: 'hsl(var(--accent-card))',
         },
         destructive: {
           DEFAULT: 'hsl(var(--destructive))',

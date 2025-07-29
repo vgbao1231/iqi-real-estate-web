@@ -1,281 +1,902 @@
-export const allProperties = {
-  vietnam: [
-    {
-      id: 1,
-      name: 'Vinhomes Grand Park',
-      location: 'Quận 9, TP.HCM',
-      city: 'hcmc',
-      district: 'Quận 9',
-      country: 'vietnam',
-      type: 'Căn hộ cao cấp',
-      status: 'active',
-      price: 'Từ 3.2 tỷ',
-      priceValue: 3200000000,
-      bedrooms: 2,
-      bathrooms: 2,
-      area: 75,
-      developer: 'Vingroup',
-      completion: 'Q4/2024',
-      views: 2341,
-      inquiries: 45,
-      leads: 12,
-      sales: 8,
-      images: ['/placeholder-2.webp?height=200&width=300'],
-      features: [
-        'Công viên 36ha',
-        'Trường học liên cấp',
-        'Bệnh viện',
-        'Shopping mall',
-      ],
-      description: 'Dự án căn hộ cao cấp với không gian xanh rộng lớn...',
-      createdAt: '2023-01-15',
-      updatedAt: '2024-01-10',
-      category: 'vietnam',
-    },
-    {
-      id: 2,
-      name: 'Vinhomes Smart City',
-      location: 'Nam Từ Liêm, Hà Nội',
-      city: 'hanoi',
-      district: 'Nam Từ Liêm',
-      country: 'vietnam',
-      type: 'Căn hộ thông minh',
-      status: 'active',
-      price: 'Từ 2.8 tỷ',
-      priceValue: 2800000000,
-      bedrooms: 3,
-      bathrooms: 2,
-      area: 85,
-      developer: 'Vingroup',
-      completion: 'Q3/2024',
-      views: 3241,
-      inquiries: 67,
-      leads: 18,
-      sales: 11,
-      images: ['/placeholder-2.webp?height=200&width=300'],
-      features: ['Smart home', 'Công viên Nhật', 'Trường quốc tế', 'IoT'],
-      description: 'Khu đô thị thông minh đầu tiên tại Hà Nội...',
-      createdAt: '2023-03-10',
-      updatedAt: '2024-01-05',
-      category: 'vietnam',
-    },
-  ],
-  international: [
-    {
-      id: 3,
-      name: 'Marina Bay Residences',
-      location: 'Marina Bay, Singapore',
-      city: 'singapore',
-      district: 'Marina Bay',
-      country: 'singapore',
-      type: 'Luxury Apartment',
-      status: 'active',
-      price: 'From $1.2M',
-      priceValue: 1200000,
-      bedrooms: 2,
-      bathrooms: 2,
-      area: 80,
-      developer: 'CapitaLand',
-      completion: 'Q2/2024',
-      views: 3456,
-      inquiries: 78,
-      leads: 23,
-      sales: 15,
-      images: ['/placeholder-2.webp?height=200&width=300'],
-      features: ['Marina view', 'Sky garden', 'Infinity pool', 'Concierge'],
-      description: 'Luxury waterfront living in the heart of Singapore...',
-      createdAt: '2023-02-20',
-      updatedAt: '2024-01-08',
-      category: 'international',
-    },
-    {
-      id: 4,
-      name: 'Pavilion Damansara Heights',
-      location: 'Damansara Heights, KL',
-      city: 'kualalumpur',
-      district: 'Damansara Heights',
-      country: 'malaysia',
-      type: 'Luxury Condominium',
-      status: 'draft',
-      price: 'From RM 800K',
-      priceValue: 800000,
-      bedrooms: 3,
-      bathrooms: 2,
-      area: 100,
-      developer: 'Malton Berhad',
-      completion: 'Q1/2025',
-      views: 1876,
-      inquiries: 34,
-      leads: 9,
-      sales: 3,
-      images: ['/placeholder-2.webp?height=200&width=300'],
-      features: ['KLCC view', 'Sky lounge', 'Gym', 'Security'],
-      description: 'Premium condominium in prestigious Damansara Heights...',
-      createdAt: '2023-04-05',
-      updatedAt: '2024-01-03',
-      category: 'international',
-    },
-  ],
-  resort: [
-    {
-      id: 5,
-      name: 'Fusion Suites Danang Beach',
-      location: 'Đà Nẵng, Việt Nam',
-      city: 'danang',
-      district: 'Ngũ Hành Sơn',
-      country: 'vietnam',
-      type: 'Condotel',
-      status: 'active',
-      price: 'Từ 8.5 tỷ',
-      priceValue: 8500000000,
-      bedrooms: 2,
-      bathrooms: 2,
-      area: 100,
-      developer: 'Fusion Group',
-      completion: 'Đã hoàn thành',
-      views: 3240,
-      inquiries: 89,
-      leads: 34,
-      sales: 18,
-      images: ['/placeholder-2.webp?height=200&width=300'],
-      features: ['Bãi biển riêng', 'Spa', 'Nhà hàng', 'Hồ bơi vô cực', 'Golf'],
-      description: 'Resort cao cấp bên bờ biển Đà Nẵng...',
-      createdAt: '2023-05-15',
-      updatedAt: '2024-01-12',
-      category: 'resort',
-      rentalYield: '8-12%',
-    },
-    {
-      id: 6,
-      name: 'Movenpick Resort Waverly Phu Quoc',
-      location: 'Phú Quốc, Việt Nam',
-      city: 'phuquoc',
-      district: 'Gành Dầu',
-      country: 'vietnam',
-      type: 'Villa',
-      status: 'active',
-      price: 'Từ 12 tỷ',
-      priceValue: 12000000000,
-      bedrooms: 3,
-      bathrooms: 3,
-      area: 120,
-      developer: 'Movenpick',
-      completion: 'Q3/2024',
-      views: 2876,
-      inquiries: 67,
-      leads: 28,
-      sales: 12,
-      images: ['/placeholder-2.webp?height=200&width=300'],
-      features: [
-        'Bãi biển riêng',
-        'Water park',
-        'Kids club',
-        'Multiple pools',
-        'Diving center',
-      ],
-      description: 'Resort đảo nhiệt đới tại Phú Quốc...',
-      createdAt: '2023-06-20',
-      updatedAt: '2024-01-15',
-      category: 'resort',
-      rentalYield: '10-15%',
-    },
-  ],
-};
+// Properties data
+export const properties = [
+  {
+    id: 1,
 
-export const getFilterOptions = (category: string) => {
-  switch (category) {
-    case 'vietnam':
-      return {
-        cities: [
-          { value: 'hcmc', label: 'TP. Hồ Chí Minh' },
-          { value: 'hanoi', label: 'Hà Nội' },
-          { value: 'danang', label: 'Đà Nẵng' },
-          { value: 'haiphong', label: 'Hải Phòng' },
-        ],
-        districts: [
-          { value: 'quan-1', label: 'Quận 1', city: 'hcmc' },
-          { value: 'quan-9', label: 'Quận 9', city: 'hcmc' },
-          { value: 'ba-dinh', label: 'Ba Đình', city: 'hanoi' },
-          { value: 'nam-tu-liem', label: 'Nam Từ Liêm', city: 'hanoi' },
-        ],
-        propertyTypes: [
-          { value: 'can-ho', label: 'Căn hộ' },
-          { value: 'villa', label: 'Villa' },
-          { value: 'nha-pho', label: 'Nhà phố' },
-          { value: 'dat-nen', label: 'Đất nền' },
-        ],
-      };
-    case 'international':
-      return {
-        cities: [
-          { value: 'singapore', label: 'Singapore' },
-          { value: 'kualalumpur', label: 'Kuala Lumpur' },
-          { value: 'bangkok', label: 'Bangkok' },
-          { value: 'manila', label: 'Manila' },
-        ],
-        districts: [
-          { value: 'marina-bay', label: 'Marina Bay', city: 'singapore' },
-          { value: 'orchard', label: 'Orchard', city: 'singapore' },
-          {
-            value: 'damansara',
-            label: 'Damansara Heights',
-            city: 'kualalumpur',
-          },
-          { value: 'klcc', label: 'KLCC', city: 'kualalumpur' },
-        ],
-        propertyTypes: [
-          { value: 'apartment', label: 'Apartment' },
-          { value: 'condominium', label: 'Condominium' },
-          { value: 'villa', label: 'Villa' },
-          { value: 'townhouse', label: 'Townhouse' },
-        ],
-      };
-    case 'resort':
-      return {
-        cities: [
-          { value: 'danang', label: 'Đà Nẵng' },
-          { value: 'phuquoc', label: 'Phú Quốc' },
-          { value: 'nhatrang', label: 'Nha Trang' },
-          { value: 'phanrang', label: 'Phan Rang' },
-        ],
-        districts: [
-          { value: 'ngu-hanh-son', label: 'Ngũ Hành Sơn', city: 'danang' },
-          { value: 'son-tra', label: 'Sơn Trà', city: 'danang' },
-          { value: 'ganh-dau', label: 'Gành Dầu', city: 'phuquoc' },
-          { value: 'duong-dong', label: 'Dương Đông', city: 'phuquoc' },
-        ],
-        propertyTypes: [
-          { value: 'condotel', label: 'Condotel' },
-          { value: 'villa', label: 'Villa' },
-          { value: 'bungalow', label: 'Bungalow' },
-          { value: 'suite', label: 'Suite' },
-        ],
-      };
-    default:
-      return { cities: [], districts: [], propertyTypes: [] };
-  }
-};
+    // Giới thiệu
+    introduction: {
+      coverImage: '/cover.jpg',
+      titleImage: '/title.png',
+      heroImage: '/hero.png',
+      logoImages: ['/logo-retreat.png', '/logo-retreat-1.png'],
+      introductionImages: [
+        '/product-1.jpg',
+        '/product-2.jpg',
+        '/product-3.jpg',
+      ],
+      introductionVideo: 'https://www.youtube.com/watch?v=pLL2g9_mZdo&t=94s',
+      backgroundImage: '/background-hero-1.jpg',
+      title: 'Trải nghiệm nghỉ dưỡng giữa thiên nhiên',
 
-export const statusOptions = [
-  { value: 'active', label: 'Đang hoạt động' },
-  { value: 'draft', label: 'Bản nháp' },
-  { value: 'archived', label: 'Đã lưu trữ' },
+      description: `
+      <p>Xây dựng mô hình khu đô thị trên thị trường không hiếm, nhưng kiến tạo môi trường đáng sống đúng nghĩa, mang đến những giá trị đích thực thì không phải dự án nào cũng làm được.</p>
+      <p>Những khu đô thị xanh của Nhà sáng lập Ecopark là ngoại lệ - nơi mọi chủ nhân đều tự hào về quyết định sở hữu và đầu tư của mình.</p>
+      <p>Chào mừng Quý Anh Chị đến với Eco Retreat - Đô thị xanh kiểu mẫu của Ecopark tại miền Nam!</p>
+    `,
+      launchTitle: 'RETREAT ISLAND',
+      launchSubtitle: 'Biệt thự đảo giữa rừng retreat',
+      launchText: `
+  <p><span style="color: #ffd4aa;">✦</span> View 2 mặt hồ thiên nga ngay cạnh nhà, có hồ bơi & sân vườn riêng</p>
+  <p><span style="color: #ffd4aa;">✦</span> Nằm trên 16 nhánh đảo riêng biệt, trung tâm của đô thị đáng sống nhất miền Nam</p>
+  <p><span style="color: #ffd4aa;">✦</span> "Nhà giữa đảo - Đảo giữa rừng retreat" chưa từng có trên thị trường.</p>
+`,
+    },
+
+    // Tổng quan
+    overview: {
+      overviewImages: [
+        {
+          image: '/product-overview.jpg',
+          description: `
+      <p>Khu đô thị “rừng retreat” đầu tiên của Ecopark</p>
+    `,
+        },
+        {
+          image: '/area-overview.jpg',
+          description: `
+      <p>Chiếm &gt; 121 ha với 4 triệu cây hoa, 8 tầng 8 lớp thực vật</p>
+    `,
+        },
+        {
+          image: '/amenity-overview.jpg',
+          description: `
+      <p><span style="color: #ffd4aa;">✦</span> Một khu phức hợp đầy đủ tiện ích</p>
+      <p><span style="color: #ffd4aa;">✦</span> Một “rừng trị liệu” với các tiện ích phục hồi, tái tạo sức khỏe cạnh nhà</p>
+    `,
+        },
+        {
+          image: '/location-overview.jpg',
+          description: `
+      <p>Tọa độ giao thương huyết mạch của miền Nam, kết nối TP HCM & sân bay Long Thành chỉ khoảng 30 phút</p>
+    `,
+        },
+      ],
+      name: 'Eco Retreat',
+      slug: 'eco-retreat-ecopark',
+      developer: 'Ecopark',
+      landscapeDesigner: 'PLA Studio',
+      contractors: ['Coteccons', 'Ricons'],
+      architects: [
+        'Humphreys & Partners',
+        'Alpes Green Design',
+        'BNB Architects',
+        'RSA Studio',
+        '1+1>2',
+        'MIA Design Studio',
+      ],
+      landArea: 220.05,
+      legal: 'Sổ hồng sở hữu lâu dài',
+      handover: 'Dự kiến Quý II/2028',
+      address: 'Đường Nguyễn Hữu Trí, Xã Thanh Phú, Huyện Bến Lức, Long An',
+      city: 'Tỉnh Long An',
+      district: 'Huyện Bến Lức',
+      country: 'Vietnam',
+      backgroundImage: '/background-hero-2.jpg',
+      experienceImage: '/experience-overview.webp',
+      propertyGroup: 'Căn hộ, biệt thự nghỉ dưỡng', // → nhóm sản phẩm
+      minBedroom: 1,
+      maxBedroom: 4,
+      minBathroom: 1,
+      maxBathroom: 3,
+      minPrice: 100000000,
+      maxPrice: 300000000,
+      totalUnits: 1200, // Tổng số sản phẩm
+      tenure: 'Lâu dài', // Tình trạng sở hữu
+      propertyType: 'Khu đô thị sinh thái', // Loại hình
+      phase: 'Giai đoạn 1', // Giai đoạn
+      currency: 'VND',
+      status: 'Đang mở bán', // Trạng thái
+    },
+
+    // Vị trí
+    location: {
+      title: `
+  <p style="line-height: 1; font-size: 48px; color: #76c472;">Vị Trí Độc Tôn</p>
+  <span style="font-size: 40px; font-style: italic;">
+    <span style="color: #ffd4aa;">Không xa phố thị,</span>
+    <span style="color: #76c472;"> đủ gần thiên nhiên</span>
+  </span>
+`,
+      description: `
+  <p style="color: #e3e3e3;">
+    <span style="color: #f4cd7c;">✦</span>
+    <em><strong>Tọa độ kết nối huyết mạch của phía Nam</strong></em><br />
+    “Cửa ngõ” kết nối Đông - Tây của TP HCM, thuận tiện di chuyển đến các quận của Sài Gòn,
+    sân bay Tân Sơn Nhất, các tỉnh Tây Nam Bộ và tương lai đến sân bay Long Thành chỉ khoảng 30 phút.
+  </p>
+
+  <p style="color: #e3e3e3;">
+    <span style="color: #f4cd7c;">✦</span>
+    <em><strong>Trung tâm mạng lưới logistics của miền Nam</strong></em><br />
+    Giao điểm của Vành đai 3, Cao tốc TP HCM - Trung Lương, Cao tốc Bến Lức - Long Thành,
+    kết nối thuận tiện đến hệ thống cao tốc, sân bay, cảng biển, khu công nghiệp, công nghệ cao,…
+  </p>
+
+  <p style="color: #e3e3e3;">
+    <span style="color: #f4cd7c;">✦</span>
+    <em><strong>Tâm điểm sinh thái – “Nhà nghỉ dưỡng” của cư dân thành phố</strong></em><br />
+    Nằm nép mình bên dòng sông Bến Lức và len lỏi những dòng chảy sông, hồ uốn lượn quanh đô thị.
+  </p>
+`,
+      locationImage: '/location.webp',
+      coordinates: { lat: 10.75, lng: 106.4 },
+      backgroundImage: '/background-hero-2.jpg',
+    },
+
+    // Sản phẩm
+    production: {
+      title: 'Sản phẩm',
+      description: `✦ Biệt thự đảo giữa rừng retreat`,
+      products: [
+        {
+          id: 1,
+          name: 'Island Villa',
+          image: '/product-1.jpg',
+          description: `
+      <table style="width: 100%; border-collapse: collapse;">
+        <tr>
+          <td style="width: 50%; vertical-align: top; padding-right: 16px;">
+            <p><strong>Loại hình:</strong> Đơn lập, Song lập, Villa Rẻ quạt</p>
+            <p><strong>Diện tích:</strong> 205m² - 484m²</p>
+          </td>
+          <td style="width: 50%; vertical-align: top;">
+            <p><strong>Xây dựng:</strong> 2 tầng + 1 tum</p>
+            <p><strong>Công năng:</strong> Để ở</p>
+          </td>
+        </tr>
+      </table>
+    `,
+        },
+        {
+          id: 2,
+          name: 'Shop Villa đảo',
+          image: '/product-2.jpg',
+          description: `
+      <table style="width: 100%; border-collapse: collapse;">
+        <tr>
+          <td style="width: 50%; vertical-align: top; padding-right: 16px;">
+            <p><strong>Loại hình:</strong> Đơn lập, Song lập</p>
+            <p><strong>Diện tích đất:</strong> 205m² - 307m²</p>
+          </td>
+          <td style="width: 50%; vertical-align: top;">
+            <p><strong>Xây dựng:</strong> 3 tầng + 1 tum</p>
+            <p><strong>Công năng:</strong> Thương mại kết hợp hoặc để ở</p>
+          </td>
+        </tr>
+      </table>
+    `,
+        },
+        {
+          id: 3,
+          name: 'Dinh thự đảo',
+          image: '/product-3.jpg',
+          description: `
+      <table style="width: 100%; border-collapse: collapse;">
+        <tr>
+          <td style="width: 50%; vertical-align: top; padding-right: 16px;">
+            <p><strong>Diện tích đất:</strong> 567m² - 697m²</p>
+            <p><strong>Diện tích sàn:</strong> 437m²</p>
+          </td>
+          <td style="width: 50%; vertical-align: top;">
+            <p><strong>Xây dựng:</strong> 2 tầng + 1 tum</p>
+            <p><strong>Công năng:</strong> Để ở</p>
+          </td>
+        </tr>
+      </table>
+    `,
+        },
+        {
+          id: 4,
+          name: 'Căn hộ SKY RETREAT',
+          image: '/product-4.jpg',
+          description: `
+      <p><strong>Loại hình sản phẩm:</strong> Studio, 1PN-3PN, Garden Villa, Duplex, Sky Villa</p>
+      <p><strong>Tiêu chuẩn bàn giao:</strong> Hoàn thiện nội thất liền tường</p>
+    `,
+        },
+      ],
+      furnitures: [
+        '/furniture-1.jpg',
+        '/furniture-2.jpg',
+        '/furniture-3.jpg',
+        '/furniture-4.jpg',
+      ],
+    },
+
+    // Tiện ích
+    amenity: {
+      title:
+        '<p style="color:#76c472;">Tiện Ích <br/><em>Không gian Retreat</em> <em style="color:#ffd4aa;">cho mọi thế hệ</em></p>',
+      description: `
+    <p>Giống như một <strong>“thành phố hiện đại thu nhỏ”</strong>, Eco Retreat được quy hoạch bài bản, đầy đủ tiện ích từ hệ thống trường từ mầm non đến THPT, bệnh viện & dịch vụ y tế quốc tế, khu thương mại - giải trí, trung tâm thể thao… Đặc biệt còn có Eco Bus phục vụ dành riêng cư dân Eco Retreat.</p>
+    <p>Điểm nhấn nổi bật là <strong>tiện ích “retreat” đặc quyền</strong> - lần đầu tiên xuất hiện trong dự án của NSL Ecopark và khó tìm thấy ở một đô thị khác trên thị trường bất động sản phía Nam.</p>
+  `,
+      amenityImages: [
+        '/amenities-1.jpg',
+        '/amenities-2.jpg',
+        '/amenities-3.jpg',
+        '/amenities-4.jpg',
+      ],
+    },
+
+    // Liên hệ
+    contact: {
+      logoImage: '/logo-dark.svg',
+      backgroundImage: '/background-hero-3.png',
+      agencyImage: '/contact.png',
+      title: 'Đông Tây Land',
+      subtitle: 'Đại lý phân phối F1 dự án Eco Retreat',
+      description: `
+      <p>Là doanh nghiệp uy tín và có hơn 10 năm kinh nghiệm trong lĩnh vực bất động sản, Đông Tây Land tự hào là một trong số ít đơn vị trở thành Đại lý F1 phân phối chính thức dự án khu đô thị sinh thái Eco Retreat</p>
+      <p>Nhờ đó, Quý khách hàng của Đông Tây Land dễ dàng sở hữu sản phẩm đẹp nhất, phù hợp nhu cầu nhất tại dự án mang thương hiệu danh tiếng Tập đoàn Ecopark.</p>
+    `,
+      hotline: '1900 636 999',
+    },
+
+    // Khác
+    other: {
+      //Chính sách
+      policy: {
+        title: 'Chính Sách Bán Hàng Eco Retreat',
+        policyImage: '/policy.webp',
+        policies: [
+          '<p><span style="color: #ffd4aa;">✦</span> Thanh toán đến khi nhận nhà chỉ <span style="color: #76c472;font-weight: bold; font-style: italic; font-size: 30px;">25%</span> </p>',
+          '<p><span style="color: #ffd4aa;">✦</span> Ngân hàng cho vay <span style="color: #76c472;font-weight: bold; font-style: italic; font-size: 30px;">70%</span> </p>',
+          '<p><span style="color: #ffd4aa;">✦</span> Hỗ trợ lãi suất & ân hạn gốc <span style="color: #76c472;font-weight: bold; font-style: italic; font-size: 30px;">24 tháng</span></p>',
+          '<p><span style="color: #ffd4aa;">✦</span> Ưu đãi thanh toán sớm <span style="color: #76c472;font-weight: bold; font-style: italic; font-size: 30px;">10%</span></p>',
+          '<p><span style="color: #ffd4aa;">✦</span> Ưu đãi thanh toán theo tiến độ <span style="color: #76c472;font-weight: bold; font-style: italic; font-size: 30px;">2%</span></p>',
+          '<p><span style="color: #ffd4aa;">✦</span> Ưu đãi cho KH đã sở hữu BĐS của NSL Ecopark <span style="color: #76c472;font-weight: bold; font-style: italic; font-size: 30px;">0,5%</span></p>',
+        ],
+      },
+
+      // Timeline
+      timeline: {
+        timelineTitle:
+          '<p style="color:#76c472;">Các Cột Mốc Tạo Sóng <br/><em style="color:#ffd4aa;">cho Eco Retreat</em></p>',
+        timelineImage: '/time-line.png',
+        progressTitle: 'Hình Ảnh Tiến Độ Dự Án',
+        progressImages: [
+          '/progress-1.jpg',
+          '/progress-2.jpg',
+          '/progress-3.jpg',
+          '/progress-4.jpg',
+          '/progress-5.jpg',
+          '/progress-6.jpg',
+          '/progress-1.jpg',
+        ],
+        backgroundImage: '/background-hero-1.jpg',
+      },
+      isFeatured: true,
+      isExclusive: false,
+      enableLiveSales: true,
+      visibleOnWeb: true,
+      breakImages: [
+        '/break-1.jpg',
+        '/break-2.jpg',
+        '/break-3.jpg',
+        '/break-4.jpg',
+        '/break-5.jpg',
+      ],
+    },
+  },
+  {
+    id: 2,
+
+    // Giới thiệu
+    introduction: {
+      coverImage: '/cover.jpg',
+      titleImage: '/title.png',
+      heroImage: '/hero.png',
+      logoImages: ['/logo-retreat.png', '/logo-retreat-1.png'],
+      introductionImages: [
+        '/product-1.jpg',
+        '/product-2.jpg',
+        '/product-3.jpg',
+      ],
+      introductionVideo: 'https://www.youtube.com/watch?v=pLL2g9_mZdo&t=94s',
+      backgroundImage: '/background-hero-1.jpg',
+      title: 'Trải nghiệm nghỉ dưỡng giữa thiên nhiên',
+
+      description: `
+      <p>Xây dựng mô hình khu đô thị trên thị trường không hiếm, nhưng kiến tạo môi trường đáng sống đúng nghĩa, mang đến những giá trị đích thực thì không phải dự án nào cũng làm được.</p>
+      <p>Những khu đô thị xanh của Nhà sáng lập Ecopark là ngoại lệ - nơi mọi chủ nhân đều tự hào về quyết định sở hữu và đầu tư của mình.</p>
+      <p>Chào mừng Quý Anh Chị đến với Eco Retreat - Đô thị xanh kiểu mẫu của Ecopark tại miền Nam!</p>
+    `,
+      launchTitle: 'RETREAT ISLAND',
+      launchSubtitle: 'Biệt thự đảo giữa rừng retreat',
+      launchText: `
+  <p><span style="color: #ffd4aa;">✦</span> View 2 mặt hồ thiên nga ngay cạnh nhà, có hồ bơi & sân vườn riêng</p>
+  <p><span style="color: #ffd4aa;">✦</span> Nằm trên 16 nhánh đảo riêng biệt, trung tâm của đô thị đáng sống nhất miền Nam</p>
+  <p><span style="color: #ffd4aa;">✦</span> "Nhà giữa đảo - Đảo giữa rừng retreat" chưa từng có trên thị trường.</p>
+`,
+    },
+
+    // Tổng quan
+    overview: {
+      overviewImages: [
+        {
+          image: '/product-overview.jpg',
+          description: `
+      <p>Khu đô thị “rừng retreat” đầu tiên của Ecopark</p>
+    `,
+        },
+        {
+          image: '/area-overview.jpg',
+          description: `
+      <p>Chiếm &gt; 121 ha với 4 triệu cây hoa, 8 tầng 8 lớp thực vật</p>
+    `,
+        },
+        {
+          image: '/amenity-overview.jpg',
+          description: `
+      <p><span style="color: #ffd4aa;">✦</span> Một khu phức hợp đầy đủ tiện ích</p>
+      <p><span style="color: #ffd4aa;">✦</span> Một “rừng trị liệu” với các tiện ích phục hồi, tái tạo sức khỏe cạnh nhà</p>
+    `,
+        },
+        {
+          image: '/location-overview.jpg',
+          description: `
+      <p>Tọa độ giao thương huyết mạch của miền Nam, kết nối TP HCM & sân bay Long Thành chỉ khoảng 30 phút</p>
+    `,
+        },
+      ],
+      name: 'Eco Retreat',
+      slug: 'eco-retreat-ecopark',
+      developer: 'Ecopark',
+      landscapeDesigner: 'PLA Studio',
+      contractors: ['Coteccons', 'Ricons'],
+      architects: [
+        'Humphreys & Partners',
+        'Alpes Green Design',
+        'BNB Architects',
+        'RSA Studio',
+        '1+1>2',
+        'MIA Design Studio',
+      ],
+      landArea: 220.05,
+      legal: 'Sổ hồng sở hữu lâu dài',
+      handover: 'Dự kiến Quý II/2028',
+      address: 'Đường Nguyễn Hữu Trí, Xã Thanh Phú, Huyện Bến Lức, Long An',
+      city: 'Tỉnh Long An',
+      district: 'Huyện Bến Lức',
+      country: 'Vietnam',
+      backgroundImage: '/background-hero-2.jpg',
+      experienceImage: '/experience-overview.webp',
+      propertyGroup: 'Căn hộ, biệt thự nghỉ dưỡng', // → nhóm sản phẩm
+      minBedroom: 1,
+      maxBedroom: 4,
+      minBathroom: 1,
+      maxBathroom: 3,
+      minPrice: 100000000,
+      maxPrice: 300000000,
+      totalUnits: 1200, // Tổng số sản phẩm
+      tenure: 'Lâu dài', // Tình trạng sở hữu
+      propertyType: 'Khu đô thị sinh thái', // Loại hình
+      phase: 'Giai đoạn 1', // Giai đoạn
+      currency: 'VND',
+      status: 'Đang mở bán', // Trạng thái
+    },
+
+    // Vị trí
+    location: {
+      title: `
+  <p style="line-height: 1; font-size: 48px; color: #76c472;">Vị Trí Độc Tôn</p>
+  <span style="font-size: 40px; font-style: italic;">
+    <span style="color: #ffd4aa;">Không xa phố thị,</span>
+    <span style="color: #76c472;"> đủ gần thiên nhiên</span>
+  </span>
+`,
+      description: `
+  <p style="color: #e3e3e3;">
+    <span style="color: #f4cd7c;">✦</span>
+    <em><strong>Tọa độ kết nối huyết mạch của phía Nam</strong></em><br />
+    “Cửa ngõ” kết nối Đông - Tây của TP HCM, thuận tiện di chuyển đến các quận của Sài Gòn,
+    sân bay Tân Sơn Nhất, các tỉnh Tây Nam Bộ và tương lai đến sân bay Long Thành chỉ khoảng 30 phút.
+  </p>
+
+  <p style="color: #e3e3e3;">
+    <span style="color: #f4cd7c;">✦</span>
+    <em><strong>Trung tâm mạng lưới logistics của miền Nam</strong></em><br />
+    Giao điểm của Vành đai 3, Cao tốc TP HCM - Trung Lương, Cao tốc Bến Lức - Long Thành,
+    kết nối thuận tiện đến hệ thống cao tốc, sân bay, cảng biển, khu công nghiệp, công nghệ cao,…
+  </p>
+
+  <p style="color: #e3e3e3;">
+    <span style="color: #f4cd7c;">✦</span>
+    <em><strong>Tâm điểm sinh thái – “Nhà nghỉ dưỡng” của cư dân thành phố</strong></em><br />
+    Nằm nép mình bên dòng sông Bến Lức và len lỏi những dòng chảy sông, hồ uốn lượn quanh đô thị.
+  </p>
+`,
+      locationImage: '/location.webp',
+      coordinates: { lat: 10.75, lng: 106.4 },
+      backgroundImage: '/background-hero-2.jpg',
+    },
+
+    // Sản phẩm
+    production: {
+      title: 'Sản phẩm',
+      description: `✦ Biệt thự đảo giữa rừng retreat`,
+      products: [
+        {
+          id: 1,
+          name: 'Island Villa',
+          image: '/product-1.jpg',
+          description: `
+      <table style="width: 100%; border-collapse: collapse;">
+        <tr>
+          <td style="width: 50%; vertical-align: top; padding-right: 16px;">
+            <p><strong>Loại hình:</strong> Đơn lập, Song lập, Villa Rẻ quạt</p>
+            <p><strong>Diện tích:</strong> 205m² - 484m²</p>
+          </td>
+          <td style="width: 50%; vertical-align: top;">
+            <p><strong>Xây dựng:</strong> 2 tầng + 1 tum</p>
+            <p><strong>Công năng:</strong> Để ở</p>
+          </td>
+        </tr>
+      </table>
+    `,
+        },
+        {
+          id: 2,
+          name: 'Shop Villa đảo',
+          image: '/product-2.jpg',
+          description: `
+      <table style="width: 100%; border-collapse: collapse;">
+        <tr>
+          <td style="width: 50%; vertical-align: top; padding-right: 16px;">
+            <p><strong>Loại hình:</strong> Đơn lập, Song lập</p>
+            <p><strong>Diện tích đất:</strong> 205m² - 307m²</p>
+          </td>
+          <td style="width: 50%; vertical-align: top;">
+            <p><strong>Xây dựng:</strong> 3 tầng + 1 tum</p>
+            <p><strong>Công năng:</strong> Thương mại kết hợp hoặc để ở</p>
+          </td>
+        </tr>
+      </table>
+    `,
+        },
+        {
+          id: 3,
+          name: 'Dinh thự đảo',
+          image: '/product-3.jpg',
+          description: `
+      <table style="width: 100%; border-collapse: collapse;">
+        <tr>
+          <td style="width: 50%; vertical-align: top; padding-right: 16px;">
+            <p><strong>Diện tích đất:</strong> 567m² - 697m²</p>
+            <p><strong>Diện tích sàn:</strong> 437m²</p>
+          </td>
+          <td style="width: 50%; vertical-align: top;">
+            <p><strong>Xây dựng:</strong> 2 tầng + 1 tum</p>
+            <p><strong>Công năng:</strong> Để ở</p>
+          </td>
+        </tr>
+      </table>
+    `,
+        },
+        {
+          id: 4,
+          name: 'Căn hộ SKY RETREAT',
+          image: '/product-4.jpg',
+          description: `
+      <p><strong>Loại hình sản phẩm:</strong> Studio, 1PN-3PN, Garden Villa, Duplex, Sky Villa</p>
+      <p><strong>Tiêu chuẩn bàn giao:</strong> Hoàn thiện nội thất liền tường</p>
+    `,
+        },
+      ],
+      furnitures: [
+        '/furniture-1.jpg',
+        '/furniture-2.jpg',
+        '/furniture-3.jpg',
+        '/furniture-4.jpg',
+      ],
+    },
+
+    // Tiện ích
+    amenity: {
+      title:
+        '<p style="color:#76c472;">Tiện Ích <br/><em>Không gian Retreat</em> <em style="color:#ffd4aa;">cho mọi thế hệ</em></p>',
+      description: `
+    <p>Giống như một <strong>“thành phố hiện đại thu nhỏ”</strong>, Eco Retreat được quy hoạch bài bản, đầy đủ tiện ích từ hệ thống trường từ mầm non đến THPT, bệnh viện & dịch vụ y tế quốc tế, khu thương mại - giải trí, trung tâm thể thao… Đặc biệt còn có Eco Bus phục vụ dành riêng cư dân Eco Retreat.</p>
+    <p>Điểm nhấn nổi bật là <strong>tiện ích “retreat” đặc quyền</strong> - lần đầu tiên xuất hiện trong dự án của NSL Ecopark và khó tìm thấy ở một đô thị khác trên thị trường bất động sản phía Nam.</p>
+  `,
+      amenityImages: [
+        '/amenities-1.jpg',
+        '/amenities-2.jpg',
+        '/amenities-3.jpg',
+        '/amenities-4.jpg',
+      ],
+    },
+
+    // Liên hệ
+    contact: {
+      logoImage: '/logo-dark.svg',
+      backgroundImage: '/background-hero-3.png',
+      agencyImage: '/contact.png',
+      title: 'Đông Tây Land',
+      subtitle: 'Đại lý phân phối F1 dự án Eco Retreat',
+      description: `
+      <p>Là doanh nghiệp uy tín và có hơn 10 năm kinh nghiệm trong lĩnh vực bất động sản, Đông Tây Land tự hào là một trong số ít đơn vị trở thành Đại lý F1 phân phối chính thức dự án khu đô thị sinh thái Eco Retreat</p>
+      <p>Nhờ đó, Quý khách hàng của Đông Tây Land dễ dàng sở hữu sản phẩm đẹp nhất, phù hợp nhu cầu nhất tại dự án mang thương hiệu danh tiếng Tập đoàn Ecopark.</p>
+    `,
+      hotline: '1900 636 999',
+    },
+
+    // Khác
+    other: {
+      //Chính sách
+      policy: {
+        title: 'Chính Sách Bán Hàng Eco Retreat',
+        policyImage: '/policy.webp',
+        policies: [
+          '<p><span style="color: #ffd4aa;">✦</span> Thanh toán đến khi nhận nhà chỉ <span style="color: #76c472;font-weight: bold; font-style: italic; font-size: 30px;">25%</span> </p>',
+          '<p><span style="color: #ffd4aa;">✦</span> Ngân hàng cho vay <span style="color: #76c472;font-weight: bold; font-style: italic; font-size: 30px;">70%</span> </p>',
+          '<p><span style="color: #ffd4aa;">✦</span> Hỗ trợ lãi suất & ân hạn gốc <span style="color: #76c472;font-weight: bold; font-style: italic; font-size: 30px;">24 tháng</span></p>',
+          '<p><span style="color: #ffd4aa;">✦</span> Ưu đãi thanh toán sớm <span style="color: #76c472;font-weight: bold; font-style: italic; font-size: 30px;">10%</span></p>',
+          '<p><span style="color: #ffd4aa;">✦</span> Ưu đãi thanh toán theo tiến độ <span style="color: #76c472;font-weight: bold; font-style: italic; font-size: 30px;">2%</span></p>',
+          '<p><span style="color: #ffd4aa;">✦</span> Ưu đãi cho KH đã sở hữu BĐS của NSL Ecopark <span style="color: #76c472;font-weight: bold; font-style: italic; font-size: 30px;">0,5%</span></p>',
+        ],
+      },
+
+      // Timeline
+      timeline: {
+        timelineTitle:
+          '<p style="color:#76c472;">Các Cột Mốc Tạo Sóng <br/><em style="color:#ffd4aa;">cho Eco Retreat</em></p>',
+        timelineImage: '/time-line.png',
+        progressTitle: 'Hình Ảnh Tiến Độ Dự Án',
+        progressImages: [
+          '/progress-1.jpg',
+          '/progress-2.jpg',
+          '/progress-3.jpg',
+          '/progress-4.jpg',
+          '/progress-5.jpg',
+          '/progress-6.jpg',
+          '/progress-1.jpg',
+        ],
+        backgroundImage: '/background-hero-1.jpg',
+      },
+      isFeatured: true,
+      isExclusive: false,
+      enableLiveSales: true,
+      visibleOnWeb: true,
+      breakImages: [
+        '/break-1.jpg',
+        '/break-2.jpg',
+        '/break-3.jpg',
+        '/break-4.jpg',
+        '/break-5.jpg',
+      ],
+    },
+  },
+  {
+    id: 3,
+
+    // Giới thiệu
+    introduction: {
+      coverImage: '/cover.jpg',
+      titleImage: '/title.png',
+      heroImage: '/hero.png',
+      logoImages: ['/logo-retreat.png', '/logo-retreat-1.png'],
+      introductionImages: [
+        '/product-1.jpg',
+        '/product-2.jpg',
+        '/product-3.jpg',
+      ],
+      introductionVideo: 'https://www.youtube.com/watch?v=pLL2g9_mZdo&t=94s',
+      backgroundImage: '/background-hero-1.jpg',
+      title: 'Trải nghiệm nghỉ dưỡng giữa thiên nhiên',
+
+      description: `
+      <p>Xây dựng mô hình khu đô thị trên thị trường không hiếm, nhưng kiến tạo môi trường đáng sống đúng nghĩa, mang đến những giá trị đích thực thì không phải dự án nào cũng làm được.</p>
+      <p>Những khu đô thị xanh của Nhà sáng lập Ecopark là ngoại lệ - nơi mọi chủ nhân đều tự hào về quyết định sở hữu và đầu tư của mình.</p>
+      <p>Chào mừng Quý Anh Chị đến với Eco Retreat - Đô thị xanh kiểu mẫu của Ecopark tại miền Nam!</p>
+    `,
+      launchTitle: 'RETREAT ISLAND',
+      launchSubtitle: 'Biệt thự đảo giữa rừng retreat',
+      launchText: `
+  <p><span style="color: #ffd4aa;">✦</span> View 2 mặt hồ thiên nga ngay cạnh nhà, có hồ bơi & sân vườn riêng</p>
+  <p><span style="color: #ffd4aa;">✦</span> Nằm trên 16 nhánh đảo riêng biệt, trung tâm của đô thị đáng sống nhất miền Nam</p>
+  <p><span style="color: #ffd4aa;">✦</span> "Nhà giữa đảo - Đảo giữa rừng retreat" chưa từng có trên thị trường.</p>
+`,
+    },
+
+    // Tổng quan
+    overview: {
+      overviewImages: [
+        {
+          image: '/product-overview.jpg',
+          description: `
+      <p>Khu đô thị “rừng retreat” đầu tiên của Ecopark</p>
+    `,
+        },
+        {
+          image: '/area-overview.jpg',
+          description: `
+      <p>Chiếm &gt; 121 ha với 4 triệu cây hoa, 8 tầng 8 lớp thực vật</p>
+    `,
+        },
+        {
+          image: '/amenity-overview.jpg',
+          description: `
+      <p><span style="color: #ffd4aa;">✦</span> Một khu phức hợp đầy đủ tiện ích</p>
+      <p><span style="color: #ffd4aa;">✦</span> Một “rừng trị liệu” với các tiện ích phục hồi, tái tạo sức khỏe cạnh nhà</p>
+    `,
+        },
+        {
+          image: '/location-overview.jpg',
+          description: `
+      <p>Tọa độ giao thương huyết mạch của miền Nam, kết nối TP HCM & sân bay Long Thành chỉ khoảng 30 phút</p>
+    `,
+        },
+      ],
+      name: 'Eco Retreat',
+      slug: 'eco-retreat-ecopark',
+      developer: 'Ecopark',
+      landscapeDesigner: 'PLA Studio',
+      contractors: ['Coteccons', 'Ricons'],
+      architects: [
+        'Humphreys & Partners',
+        'Alpes Green Design',
+        'BNB Architects',
+        'RSA Studio',
+        '1+1>2',
+        'MIA Design Studio',
+      ],
+      landArea: 220.05,
+      legal: 'Sổ hồng sở hữu lâu dài',
+      handover: 'Dự kiến Quý II/2028',
+      address: 'Đường Nguyễn Hữu Trí, Xã Thanh Phú, Huyện Bến Lức, Long An',
+      city: 'Tỉnh Long An',
+      district: 'Huyện Bến Lức',
+      country: 'Vietnam',
+      backgroundImage: '/background-hero-2.jpg',
+      experienceImage: '/experience-overview.webp',
+      propertyGroup: 'Căn hộ, biệt thự nghỉ dưỡng', // → nhóm sản phẩm
+      minBedroom: 1,
+      maxBedroom: 4,
+      minBathroom: 1,
+      maxBathroom: 3,
+      minPrice: 100000000,
+      maxPrice: 300000000,
+      totalUnits: 1200, // Tổng số sản phẩm
+      tenure: 'Lâu dài', // Tình trạng sở hữu
+      propertyType: 'Khu đô thị sinh thái', // Loại hình
+      phase: 'Giai đoạn 1', // Giai đoạn
+      currency: 'VND',
+      status: 'Đang mở bán', // Trạng thái
+    },
+
+    // Vị trí
+    location: {
+      title: `
+  <p style="line-height: 1; font-size: 48px; color: #76c472;">Vị Trí Độc Tôn</p>
+  <span style="font-size: 40px; font-style: italic;">
+    <span style="color: #ffd4aa;">Không xa phố thị,</span>
+    <span style="color: #76c472;"> đủ gần thiên nhiên</span>
+  </span>
+`,
+      description: `
+  <p style="color: #e3e3e3;">
+    <span style="color: #f4cd7c;">✦</span>
+    <em><strong>Tọa độ kết nối huyết mạch của phía Nam</strong></em><br />
+    “Cửa ngõ” kết nối Đông - Tây của TP HCM, thuận tiện di chuyển đến các quận của Sài Gòn,
+    sân bay Tân Sơn Nhất, các tỉnh Tây Nam Bộ và tương lai đến sân bay Long Thành chỉ khoảng 30 phút.
+  </p>
+
+  <p style="color: #e3e3e3;">
+    <span style="color: #f4cd7c;">✦</span>
+    <em><strong>Trung tâm mạng lưới logistics của miền Nam</strong></em><br />
+    Giao điểm của Vành đai 3, Cao tốc TP HCM - Trung Lương, Cao tốc Bến Lức - Long Thành,
+    kết nối thuận tiện đến hệ thống cao tốc, sân bay, cảng biển, khu công nghiệp, công nghệ cao,…
+  </p>
+
+  <p style="color: #e3e3e3;">
+    <span style="color: #f4cd7c;">✦</span>
+    <em><strong>Tâm điểm sinh thái – “Nhà nghỉ dưỡng” của cư dân thành phố</strong></em><br />
+    Nằm nép mình bên dòng sông Bến Lức và len lỏi những dòng chảy sông, hồ uốn lượn quanh đô thị.
+  </p>
+`,
+      locationImage: '/location.webp',
+      coordinates: { lat: 10.75, lng: 106.4 },
+      backgroundImage: '/background-hero-2.jpg',
+    },
+
+    // Sản phẩm
+    production: {
+      title: 'Sản phẩm',
+      description: `✦ Biệt thự đảo giữa rừng retreat`,
+      products: [
+        {
+          id: 1,
+          name: 'Island Villa',
+          image: '/product-1.jpg',
+          description: `
+      <table style="width: 100%; border-collapse: collapse;">
+        <tr>
+          <td style="width: 50%; vertical-align: top; padding-right: 16px;">
+            <p><strong>Loại hình:</strong> Đơn lập, Song lập, Villa Rẻ quạt</p>
+            <p><strong>Diện tích:</strong> 205m² - 484m²</p>
+          </td>
+          <td style="width: 50%; vertical-align: top;">
+            <p><strong>Xây dựng:</strong> 2 tầng + 1 tum</p>
+            <p><strong>Công năng:</strong> Để ở</p>
+          </td>
+        </tr>
+      </table>
+    `,
+        },
+        {
+          id: 2,
+          name: 'Shop Villa đảo',
+          image: '/product-2.jpg',
+          description: `
+      <table style="width: 100%; border-collapse: collapse;">
+        <tr>
+          <td style="width: 50%; vertical-align: top; padding-right: 16px;">
+            <p><strong>Loại hình:</strong> Đơn lập, Song lập</p>
+            <p><strong>Diện tích đất:</strong> 205m² - 307m²</p>
+          </td>
+          <td style="width: 50%; vertical-align: top;">
+            <p><strong>Xây dựng:</strong> 3 tầng + 1 tum</p>
+            <p><strong>Công năng:</strong> Thương mại kết hợp hoặc để ở</p>
+          </td>
+        </tr>
+      </table>
+    `,
+        },
+        {
+          id: 3,
+          name: 'Dinh thự đảo',
+          image: '/product-3.jpg',
+          description: `
+      <table style="width: 100%; border-collapse: collapse;">
+        <tr>
+          <td style="width: 50%; vertical-align: top; padding-right: 16px;">
+            <p><strong>Diện tích đất:</strong> 567m² - 697m²</p>
+            <p><strong>Diện tích sàn:</strong> 437m²</p>
+          </td>
+          <td style="width: 50%; vertical-align: top;">
+            <p><strong>Xây dựng:</strong> 2 tầng + 1 tum</p>
+            <p><strong>Công năng:</strong> Để ở</p>
+          </td>
+        </tr>
+      </table>
+    `,
+        },
+        {
+          id: 4,
+          name: 'Căn hộ SKY RETREAT',
+          image: '/product-4.jpg',
+          description: `
+      <p><strong>Loại hình sản phẩm:</strong> Studio, 1PN-3PN, Garden Villa, Duplex, Sky Villa</p>
+      <p><strong>Tiêu chuẩn bàn giao:</strong> Hoàn thiện nội thất liền tường</p>
+    `,
+        },
+      ],
+      furnitures: [
+        '/furniture-1.jpg',
+        '/furniture-2.jpg',
+        '/furniture-3.jpg',
+        '/furniture-4.jpg',
+      ],
+    },
+
+    // Tiện ích
+    amenity: {
+      title:
+        '<p style="color:#76c472;">Tiện Ích <br/><em>Không gian Retreat</em> <em style="color:#ffd4aa;">cho mọi thế hệ</em></p>',
+      description: `
+    <p>Giống như một <strong>“thành phố hiện đại thu nhỏ”</strong>, Eco Retreat được quy hoạch bài bản, đầy đủ tiện ích từ hệ thống trường từ mầm non đến THPT, bệnh viện & dịch vụ y tế quốc tế, khu thương mại - giải trí, trung tâm thể thao… Đặc biệt còn có Eco Bus phục vụ dành riêng cư dân Eco Retreat.</p>
+    <p>Điểm nhấn nổi bật là <strong>tiện ích “retreat” đặc quyền</strong> - lần đầu tiên xuất hiện trong dự án của NSL Ecopark và khó tìm thấy ở một đô thị khác trên thị trường bất động sản phía Nam.</p>
+  `,
+      amenityImages: [
+        '/amenities-1.jpg',
+        '/amenities-2.jpg',
+        '/amenities-3.jpg',
+        '/amenities-4.jpg',
+      ],
+    },
+
+    // Liên hệ
+    contact: {
+      logoImage: '/logo-dark.svg',
+      backgroundImage: '/background-hero-3.png',
+      agencyImage: '/contact.png',
+      title: 'Đông Tây Land',
+      subtitle: 'Đại lý phân phối F1 dự án Eco Retreat',
+      description: `
+      <p>Là doanh nghiệp uy tín và có hơn 10 năm kinh nghiệm trong lĩnh vực bất động sản, Đông Tây Land tự hào là một trong số ít đơn vị trở thành Đại lý F1 phân phối chính thức dự án khu đô thị sinh thái Eco Retreat</p>
+      <p>Nhờ đó, Quý khách hàng của Đông Tây Land dễ dàng sở hữu sản phẩm đẹp nhất, phù hợp nhu cầu nhất tại dự án mang thương hiệu danh tiếng Tập đoàn Ecopark.</p>
+    `,
+      hotline: '1900 636 999',
+    },
+
+    // Khác
+    other: {
+      //Chính sách
+      policy: {
+        title: 'Chính Sách Bán Hàng Eco Retreat',
+        policyImage: '/policy.webp',
+        policies: [
+          '<p><span style="color: #ffd4aa;">✦</span> Thanh toán đến khi nhận nhà chỉ <span style="color: #76c472;font-weight: bold; font-style: italic; font-size: 30px;">25%</span> </p>',
+          '<p><span style="color: #ffd4aa;">✦</span> Ngân hàng cho vay <span style="color: #76c472;font-weight: bold; font-style: italic; font-size: 30px;">70%</span> </p>',
+          '<p><span style="color: #ffd4aa;">✦</span> Hỗ trợ lãi suất & ân hạn gốc <span style="color: #76c472;font-weight: bold; font-style: italic; font-size: 30px;">24 tháng</span></p>',
+          '<p><span style="color: #ffd4aa;">✦</span> Ưu đãi thanh toán sớm <span style="color: #76c472;font-weight: bold; font-style: italic; font-size: 30px;">10%</span></p>',
+          '<p><span style="color: #ffd4aa;">✦</span> Ưu đãi thanh toán theo tiến độ <span style="color: #76c472;font-weight: bold; font-style: italic; font-size: 30px;">2%</span></p>',
+          '<p><span style="color: #ffd4aa;">✦</span> Ưu đãi cho KH đã sở hữu BĐS của NSL Ecopark <span style="color: #76c472;font-weight: bold; font-style: italic; font-size: 30px;">0,5%</span></p>',
+        ],
+      },
+
+      // Timeline
+      timeline: {
+        timelineTitle:
+          '<p style="color:#76c472;">Các Cột Mốc Tạo Sóng <br/><em style="color:#ffd4aa;">cho Eco Retreat</em></p>',
+        timelineImage: '/time-line.png',
+        progressTitle: 'Hình Ảnh Tiến Độ Dự Án',
+        progressImages: [
+          '/progress-1.jpg',
+          '/progress-2.jpg',
+          '/progress-3.jpg',
+          '/progress-4.jpg',
+          '/progress-5.jpg',
+          '/progress-6.jpg',
+          '/progress-1.jpg',
+        ],
+        backgroundImage: '/background-hero-1.jpg',
+      },
+      isFeatured: true,
+      isExclusive: false,
+      enableLiveSales: true,
+      visibleOnWeb: true,
+      breakImages: [
+        '/break-1.jpg',
+        '/break-2.jpg',
+        '/break-3.jpg',
+        '/break-4.jpg',
+        '/break-5.jpg',
+      ],
+    },
+  },
 ];
 
-export const amenitiesList = [
-  'Hồ bơi',
-  'Gym',
-  'Công viên',
-  'Trường học',
-  'Bệnh viện',
-  'Shopping mall',
-  'View sông',
-  'Sky bar',
-  'Spa',
-  'Tennis',
-  'Golf',
-  'An ninh 24/7',
-  'Bãi biển riêng',
-  'Water park',
-  'Kids club',
+export const bedroomOptions = [
+  { value: 'all', label: 'Tất cả' },
+  { value: '1', label: '1 phòng' },
+  { value: '2', label: '2 phòng' },
+  { value: '3', label: '3 phòng' },
+  { value: '4+', label: '4+ phòng' },
+];
+
+export const bathroomOptions = [
+  { value: 'all', label: 'Tất cả' },
+  { value: '1', label: '1 phòng' },
+  { value: '2', label: '2 phòng' },
+  { value: '3', label: '3 phòng' },
+  { value: '4+', label: '4+ phòng' },
+];
+
+export const propertyTypes = [
+  { value: 'all', label: 'Tất cả loại hình' },
+  { value: 'apartment', label: 'Căn hộ' },
+  { value: 'villa', label: 'Villa' },
+  { value: 'townhouse', label: 'Nhà phố' },
+  { value: 'office', label: 'Văn phòng' },
+];
+
+export const statusOptions = [
+  { value: 'all', label: 'Tất cả trạng thái' },
+  { value: 'selling', label: 'Đang bán' },
+  { value: 'ready', label: 'Sẵn sàng' },
+  { value: 'upcoming', label: 'Sắp mở bán' },
+  { value: 'handover', label: 'Sắp bàn giao' },
 ];

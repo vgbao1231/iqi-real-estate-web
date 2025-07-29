@@ -97,7 +97,7 @@ const property = {
       '1+1>2',
       'MIA Design Studio',
     ],
-    area: 220.05,
+    landArea: 220.05,
     legal: 'Sổ hồng sở hữu lâu dài',
     handover: 'Dự kiến Quý II/2028',
     address: 'Đường Nguyễn Hữu Trí, Xã Thanh Phú, Huyện Bến Lức, Long An',
@@ -111,6 +111,8 @@ const property = {
     maxBedroom: 4,
     minBathroom: 1,
     maxBathroom: 3,
+    minPrice: 100000000,
+    maxPrice: 300000000,
     totalUnits: 1200, // Tổng số sản phẩm
     tenure: 'Lâu dài', // Tình trạng sở hữu
     propertyType: 'Khu đô thị sinh thái', // Loại hình
@@ -397,12 +399,15 @@ export default function VietnamProductDetailPage() {
         arsenal.className
       )}
     >
+      {/* ----------------------------------------------------------------------- */}
+      {/* Cover – Header IQI                                                      */}
+      {/* ----------------------------------------------------------------------- */}
       <Cover data={property.introduction} />
 
       {/* ----------------------------------------------------------------------- */}
       {/* Header – transparent overlay                                            */}
       {/* ----------------------------------------------------------------------- */}
-      <header className="sticky top-0 z-50 w-full bg-background py-2 shadow-md">
+      <header className="sticky top-0 z-50 w-full bg-accent-card py-2 shadow-md">
         <div className="mx-auto overflow-x-auto px-4 scrollbar-hide">
           <div className="flex items-center justify-between">
             <div

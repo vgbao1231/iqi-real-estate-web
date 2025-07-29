@@ -25,89 +25,91 @@ export default function TeamPage() {
   const leadership = [
     {
       id: 1,
-      name: 'Nguyễn Văn Minh',
-      position: 'Tổng Giám đốc',
-      experience: '20+ năm kinh nghiệm BDS',
-      image: '/placeholder-2.webp?height=300&width=300',
-      bio: 'Với hơn 20 năm kinh nghiệm trong lĩnh vực bất động sản, ông Minh đã dẫn dắt IQI Vietnam phát triển từ một văn phòng nhỏ thành công ty hàng đầu với hơn 500 đại lý.',
+      name: 'Dustin Trung Nguyễn',
+      position: 'Giám đốc Quốc gia - IQI Vietnam',
+      experience: 'Dẫn dắt hoạt động IQI Vietnam tại Hà Nội, TP.HCM và Đà Nẵng',
+      image: 'placeholder-2.webp',
+      bio: 'Với vai trò Giám đốc Quốc gia, Dustin đã thúc đẩy sự mở rộng nhanh chóng của IQI Vietnam, khai trương văn phòng tại 3 thành phố trọng điểm và xây dựng đội ngũ tư vấn chuyên nghiệp trên toàn quốc.',
       achievements: [
-        'CEO of the Year 2023',
-        'Top 10 Real Estate Leaders',
-        'Vietnam Business Award',
+        'Khai trương văn phòng IQI tại Hà Nội, TP.HCM & Đà Nẵng',
+        'Mở rộng thị trường ra khu vực miền Trung',
+        'Xây dựng đội ngũ hơn 900 tư vấn viên chuyên nghiệp',
       ],
-      email: 'minh.nguyen@iqi.com',
-      phone: '+84 901 234 567',
-      linkedin: 'linkedin.com/in/nguyen-van-minh',
+      email: 'dustin.nguyen@iqi.com',
+      phone: '+84‑…',
+      linkedin: 'linkedin.com/in/dustin-trung-nguyen',
     },
     {
       id: 2,
-      name: 'Trần Thị Hương',
-      position: 'Giám đốc Kinh doanh',
-      experience: '15+ năm phát triển thị trường',
-      image: '/placeholder-2.webp?height=300&width=300',
-      bio: 'Chị Hương chịu trách nhiệm phát triển mạng lưới kinh doanh toàn quốc và xây dựng các mối quan hệ đối tác chiến lược với các chủ đầu tư hàng đầu.',
+      name: 'La Kim Mỹ Duyên',
+      position: 'Giám đốc Kinh doanh – TP.HCM & Hồ Tràm',
+      experience: 'Lãnh đạo kinh doanh và phát triển đội ngũ bán hàng',
+      image: 'placeholder-2.webp',
+      bio: 'Chị Duyên phụ trách mảng kinh doanh tại TP.HCM và thị trường Hồ Tràm, trực tiếp huấn luyện các tư vấn viên xuất sắc và xây dựng quan hệ chiến lược với đối tác.',
       achievements: [
-        'Sales Director Award 2022',
-        'Top Performer 5 years',
-        'Market Expansion Leader',
+        'Giám đốc Kinh doanh TP.HCM & Hồ Tràm',
+        'Phát triển nhanh đội ngũ bán hàng địa phương',
+        'Lãnh đạo trụ cột bán hàng xuất sắc',
       ],
-      email: 'huong.tran@iqi.com',
-      phone: '+84 902 345 678',
-      linkedin: 'linkedin.com/in/tran-thi-huong',
+      email: 'duyen.lakim@iqi.com',
+      phone: '+84‑…',
+      linkedin: 'linkedin.com/in/la-kim-my-duyen',
     },
     {
       id: 3,
-      name: 'Lê Văn Đức',
-      position: 'Giám đốc Đào tạo',
-      experience: '12+ năm đào tạo chuyên nghiệp',
-      image: '/placeholder-2.webp?height=300&width=300',
-      bio: 'Thầy Đức phụ trách chương trình đào tạo toàn diện cho đại lý, với tỷ lệ thành công 95% và hơn 1000 đại lý được đào tạo.',
+      name: 'Nguyễn Minh Thư',
+      position: 'Trưởng bộ phận Mở rộng - IQI Vietnam',
+      experience: 'Giám sát khai trương văn phòng mới và phát triển thị trường',
+      image: 'placeholder-2.webp',
+      bio: 'Chị Thư dẫn dắt chiến lược mở rộng thị trường, điều phối khai trương văn phòng Đà Nẵng và mở rộng hiện diện của IQI tại các thành phố trọng điểm.',
       achievements: [
-        'Training Excellence Award',
-        'Certified Master Trainer',
-        'Education Innovation Award',
+        'Điều phối khai trương văn phòng Đà Nẵng',
+        'Dẫn dắt mở rộng 3 văn phòng khu vực',
+        'Xây dựng chiến lược mở rộng bền vững',
       ],
-      email: 'duc.le@iqi.com',
-      phone: '+84 903 456 789',
-      linkedin: 'linkedin.com/in/le-van-duc',
+      email: 'minhthu.nguyen@iqi.com',
+      phone: '+84‑…',
+      linkedin: 'linkedin.com/in/nguyen-minh-thu',
     },
   ];
 
   const departments = [
     {
-      name: 'Kinh doanh',
-      head: 'Trần Thị Hương',
-      members: 45,
+      name: 'Sales (WE Group)',
+      head: 'La Kim Mỹ Duyên',
+      members: 1100,
       description:
-        'Phụ trách tư vấn khách hàng, phát triển thị trường và đạt chỉ tiêu doanh số',
+        'Quản lý hàng nghìn agents, phát triển kinh doanh dự án trên toàn quốc',
       icon: TrendingUp,
       color: 'text-green-600',
       bg: 'bg-green-100 dark:bg-green-900/30',
     },
     {
-      name: 'Đào tạo',
+      name: 'Training & Education',
       head: 'Lê Văn Đức',
-      members: 12,
+      members: 20,
       description:
-        'Xây dựng chương trình đào tạo và phát triển năng lực cho đại lý',
+        'Thiết kế chương trình đào tạo chuyên nghiệp và nâng cao kỹ năng cho agents',
       icon: Award,
       color: 'text-blue-600',
       bg: 'bg-blue-100 dark:bg-blue-900/30',
     },
     {
-      name: 'Marketing',
+      name: 'Marketing & Brand',
       head: 'Phạm Thị Lan',
-      members: 18,
-      description: 'Phát triển thương hiệu, marketing digital và truyền thông',
+      members: 15,
+      description:
+        'Xây dựng thương hiệu, marketing kỹ thuật số và truyền thông đa kênh',
       icon: Globe,
       color: 'text-purple-600',
       bg: 'bg-purple-100 dark:bg-purple-900/30',
     },
     {
-      name: 'Hỗ trợ khách hàng',
+      name: 'Customer Support',
       head: 'Hoàng Văn Nam',
       members: 25,
-      description: 'Chăm sóc khách hàng, xử lý khiếu nại và hỗ trợ sau bán',
+      description:
+        'Hỗ trợ khách hàng, chăm sóc after-sales và giải quyết khiếu nại',
       icon: Users,
       color: 'text-orange-600',
       bg: 'bg-orange-100 dark:bg-orange-900/30',
@@ -118,14 +120,14 @@ export default function TeamPage() {
     {
       id: 1,
       name: 'Nguyễn Thị Mai',
-      title: 'Senior Sales Agent',
+      title: 'Senior Sales Consultant',
       location: 'TP.HCM',
       experience: '8 năm',
       deals: 156,
       revenue: '45 tỷ',
       rating: 4.9,
-      image: '/placeholder-2.webp?height=200&width=200',
-      specialties: ['Căn hộ cao cấp', 'Biệt thự', 'BDS Quận 7'],
+      image: 'placeholder-2.webp',
+      specialties: ['Căn hộ cao cấp', 'Biệt thự Quận 2', 'Thủ Thiêm'],
     },
     {
       id: 2,
@@ -136,8 +138,8 @@ export default function TeamPage() {
       deals: 89,
       revenue: '28 tỷ',
       rating: 4.8,
-      image: '/placeholder-2.webp?height=200&width=200',
-      specialties: ['BDS Singapore', 'BDS Malaysia', 'Đầu tư quốc tế'],
+      image: 'placeholder-2.webp',
+      specialties: ['BDS Singapore', 'Malaysia', 'Đầu tư quốc tế'],
     },
     {
       id: 3,
@@ -148,8 +150,8 @@ export default function TeamPage() {
       deals: 67,
       revenue: '22 tỷ',
       rating: 4.9,
-      image: '/placeholder-2.webp?height=200&width=200',
-      specialties: ['Condotel', 'Resort', 'BDS nghỉ dưỡng'],
+      image: 'placeholder-2.webp',
+      specialties: ['Condotel', 'Resort biển', 'Second home nghỉ dưỡng'],
     },
     {
       id: 4,
@@ -160,8 +162,8 @@ export default function TeamPage() {
       deals: 134,
       revenue: '38 tỷ',
       rating: 4.7,
-      image: '/placeholder-2.webp?height=200&width=200',
-      specialties: ['Văn phòng', 'Shophouse', 'BDS thương mại'],
+      image: 'placeholder-2.webp',
+      specialties: ['Shophouse', 'Officetel', 'Cho thuê văn phòng'],
     },
   ];
 
@@ -350,58 +352,56 @@ export default function TeamPage() {
             </p>
           </FadeIn>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 md:px-12">
             {topAgents.map((agent, index) => (
               <ScaleIn key={agent.id} delay={index * 0.1}>
-                <motion.div whileHover={{ y: -5 }}>
-                  <Card className="text-center h-full">
-                    <CardHeader>
-                      <motion.div whileHover={{ scale: 1.1 }}>
-                        <Image
-                          src={agent.image || '/placeholder-2.webp'}
-                          alt={agent.name}
-                          width={120}
-                          height={120}
-                          className="w-24 h-24 object-cover rounded-full mx-auto mb-4 shadow-md"
-                        />
-                      </motion.div>
-                      <CardTitle className="text-lg">{agent.name}</CardTitle>
-                      <p className="text-blue-600 font-medium text-sm">
-                        {agent.title}
-                      </p>
-                      <div className="flex items-center justify-center space-x-4 text-xs text-muted-foreground mt-2">
-                        <span className="flex items-center">
-                          <MapPin className="w-3 h-3 mr-1" />
-                          {agent.location}
-                        </span>
-                        <span className="flex items-center">
-                          <Calendar className="w-3 h-3 mr-1" />
-                          {agent.experience}
-                        </span>
-                      </div>
-                    </CardHeader>
+                <Card className="text-center h-full">
+                  <CardHeader>
+                    <motion.div whileHover={{ scale: 1.1 }}>
+                      <Image
+                        src={agent.image || '/placeholder-2.webp'}
+                        alt={agent.name}
+                        width={120}
+                        height={120}
+                        className="w-24 h-24 object-cover rounded-full mx-auto mb-4 shadow-md"
+                      />
+                    </motion.div>
+                    <CardTitle className="text-lg">{agent.name}</CardTitle>
+                    <p className="text-blue-600 font-medium text-sm">
+                      {agent.title}
+                    </p>
+                    <div className="flex items-center justify-center space-x-4 text-xs text-muted-foreground mt-2">
+                      <span className="flex items-center">
+                        <MapPin className="w-3 h-3 mr-1" />
+                        {agent.location}
+                      </span>
+                      <span className="flex items-center">
+                        <Calendar className="w-3 h-3 mr-1" />
+                        {agent.experience}
+                      </span>
+                    </div>
+                  </CardHeader>
 
-                    <CardContent>
-                      {/* Specialties */}
-                      <div>
-                        <h4 className="font-semibold mb-2 text-sm">
-                          Chuyên môn:
-                        </h4>
-                        <div className="flex flex-wrap gap-1 justify-center">
-                          {agent.specialties.map((specialty, idx) => (
-                            <Badge
-                              key={idx}
-                              variant="secondary"
-                              className="text-xs"
-                            >
-                              {specialty}
-                            </Badge>
-                          ))}
-                        </div>
+                  <CardContent>
+                    {/* Specialties */}
+                    <div>
+                      <h4 className="font-semibold mb-2 text-sm">
+                        Chuyên môn:
+                      </h4>
+                      <div className="flex flex-wrap gap-1 justify-center">
+                        {agent.specialties.map((specialty, idx) => (
+                          <Badge
+                            key={idx}
+                            variant="secondary"
+                            className="text-xs"
+                          >
+                            {specialty}
+                          </Badge>
+                        ))}
                       </div>
-                    </CardContent>
-                  </Card>
-                </motion.div>
+                    </div>
+                  </CardContent>
+                </Card>
               </ScaleIn>
             ))}
           </div>

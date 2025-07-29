@@ -18,184 +18,13 @@ import { AreaFilter } from '@/components/ui/area-filter';
 import { PriceFilter } from '@/components/ui/price-filter';
 import { PropertyCard } from './components/PropertyCard';
 import { Header } from './components/Header';
-
-const properties = [
-  {
-    id: 1,
-    name: 'The Beverly Hills Residences',
-    slug: 'beverly-hills-residences',
-    country: 'USA',
-    address: '123 Rodeo Drive, Beverly Hills, CA 90210',
-    city: 'Los Angeles',
-    district: 'Beverly Hills',
-    price: 4500000,
-    pricePerSqm: 12000,
-    currency: 'USD',
-    minPrice: 4500000,
-    maxPrice: 9800000,
-    landArea: 250,
-    minBuildUp: 15,
-    maxBuildUp: 30,
-    minBedroom: 3,
-    maxBedroom: 6,
-    minBathroom: 3,
-    maxBathroom: 5,
-    propertyType: 'villa',
-    propertyGroup: 'international',
-    status: 'Available',
-    occupancyStatus: 'Ready',
-    tenure: 'Freehold',
-    phase: 'Phase 1',
-    isFeatured: true,
-    isExclusive: false,
-    enableLiveSales: true,
-    visibleOnWeb: true,
-    image: '/placeholder-2.webp?height=300&width=400',
-    images: [
-      '/placeholder-2.webp?height=300&width=400',
-      '/placeholder-2.webp?height=300&width=400',
-      '/placeholder-2.webp?height=300&width=400',
-    ],
-    developer: 'Sunset Global Properties',
-    completion: 'Q1/2025',
-    listedOn: '2024-01-15',
-    amenities: [
-      'Infinity pool',
-      'Private cinema',
-      'Home gym',
-      'Wine cellar',
-      '24/7 security',
-    ],
-    features: [
-      'Panoramic city views',
-      'Smart home automation',
-      'Luxury interior design',
-    ],
-    description:
-      'A prestigious villa project in the heart of Beverly Hills, offering unmatched luxury and privacy.',
-    views: 2341,
-    coordinates: { lat: 34.0736, lng: -118.4004 },
-    measurementUnit: 'sqm',
-    createdAt: '12/01/2025',
-    updatedAt: '12/07/2025',
-    createdBy: 'admin',
-  },
-  {
-    id: 2,
-    name: 'Marina Bay Residences',
-    slug: 'marina-bay-residences',
-    country: 'Singapore',
-    address: '8 Marina Boulevard, Singapore 018981',
-    city: 'Singapore',
-    district: 'Marina Bay',
-    price: 3000000,
-    pricePerSqm: 15000,
-    currency: 'USD',
-    minPrice: 3000000,
-    maxPrice: 7200000,
-    landArea: 150,
-    minBuildUp: 10,
-    maxBuildUp: 40,
-    minBedroom: 2,
-    maxBedroom: 4,
-    minBathroom: 2,
-    maxBathroom: 3,
-    propertyType: 'apartment',
-    propertyGroup: 'international',
-    status: 'Available',
-    occupancyStatus: 'Ready',
-    tenure: 'Leasehold (99 years)',
-    phase: 'Phase 2',
-    isFeatured: true,
-    isExclusive: true,
-    enableLiveSales: true,
-    visibleOnWeb: true,
-    image: '/placeholder-2.webp?height=300&width=400',
-    images: [
-      '/placeholder-2.webp?height=300&width=400',
-      '/placeholder-2.webp?height=300&width=400',
-    ],
-    developer: 'CapitaLand',
-    completion: 'Q3/2024',
-    listedOn: '2024-02-10',
-    amenities: [
-      'Sky garden',
-      'Infinity pool',
-      'Jacuzzi',
-      'Gym & Yoga studio',
-      'Concierge service',
-    ],
-    features: [
-      'Iconic Marina Bay view',
-      'Integrated smart home',
-      'Direct MRT access',
-    ],
-    description:
-      'Luxury high-rise apartments overlooking Marina Bay, with state-of-the-art facilities and central location.',
-    views: 1876,
-    coordinates: { lat: 1.2801, lng: 103.8545 },
-    measurementUnit: 'sqm',
-    createdAt: '12/01/2025',
-    updatedAt: '12/07/2025',
-    createdBy: 'admin',
-  },
-  {
-    id: 3,
-    name: 'Canary Wharf Riverside',
-    slug: 'canary-wharf-riverside',
-    country: 'USA',
-    address: '20 Water Street, London E14 5GX, United Kingdom',
-    city: 'London',
-    district: 'Canary Wharf',
-    price: 3900000,
-    pricePerSqm: 11000,
-    currency: 'USD',
-    minPrice: 3900000,
-    maxPrice: 12000000,
-    landArea: 180,
-    minBuildUp: 12,
-    maxBuildUp: 35,
-    minBedroom: 2,
-    maxBedroom: 5,
-    minBathroom: 2,
-    maxBathroom: 4,
-    propertyType: 'penthouse',
-    propertyGroup: 'international',
-    status: 'On Sale',
-    occupancyStatus: 'Under Construction',
-    tenure: 'Leasehold (999 years)',
-    phase: 'Phase 3',
-    isFeatured: false,
-    isExclusive: true,
-    enableLiveSales: false,
-    visibleOnWeb: true,
-    image: '/placeholder-2.webp?height=300&width=400',
-    images: ['/placeholder-2.webp?height=300&width=400'],
-    developer: 'Berkeley Group',
-    completion: 'Q2/2025',
-    listedOn: '2024-03-05',
-    amenities: [
-      'Riverfront promenade',
-      'Sky lounge',
-      'Underground parking',
-      'Business center',
-      'Private cinema',
-    ],
-    features: [
-      'Thames river view',
-      'Smart access system',
-      '5-star concierge service',
-    ],
-    description:
-      'Exclusive penthouses along the River Thames, blending elegant British design with modern conveniences.',
-    views: 3421,
-    coordinates: { lat: 51.5054, lng: -0.0235 },
-    measurementUnit: 'sqm',
-    createdAt: '12/01/2025',
-    updatedAt: '12/07/2025',
-    createdBy: 'admin',
-  },
-];
+import {
+  properties,
+  bedroomOptions,
+  bathroomOptions,
+  propertyTypes,
+  statusOptions,
+} from '@/lib/property-data';
 
 export default function InternationalPropertiesPage() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -213,73 +42,52 @@ export default function InternationalPropertiesPage() {
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
   const itemsPerPage = 6;
 
-  const bedroomOptions = [
-    { value: 'all', label: 'Tất cả' },
-    { value: '1', label: '1 phòng' },
-    { value: '2', label: '2 phòng' },
-    { value: '3', label: '3 phòng' },
-    { value: '4+', label: '4+ phòng' },
-  ];
-
-  const bathroomOptions = [
-    { value: 'all', label: 'Tất cả' },
-    { value: '1', label: '1 phòng' },
-    { value: '2', label: '2 phòng' },
-    { value: '3', label: '3 phòng' },
-    { value: '4+', label: '4+ phòng' },
-  ];
-
-  const propertyTypes = [
-    { value: 'all', label: 'Tất cả loại hình' },
-    { value: 'apartment', label: 'Căn hộ' },
-    { value: 'villa', label: 'Villa' },
-    { value: 'townhouse', label: 'Nhà phố' },
-    { value: 'office', label: 'Văn phòng' },
-  ];
-
-  const statusOptions = [
-    { value: 'all', label: 'Tất cả trạng thái' },
-    { value: 'selling', label: 'Đang bán' },
-    { value: 'ready', label: 'Sẵn sàng' },
-    { value: 'upcoming', label: 'Sắp mở bán' },
-    { value: 'handover', label: 'Sắp bàn giao' },
-  ];
-
   // Filter logic
   const filteredProperties = useMemo(() => {
     return properties.filter((property) => {
       const matchesSearch =
-        property.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        property.address.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        property.developer.toLowerCase().includes(searchTerm.toLowerCase());
+        property.overview.name
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase()) ||
+        property.overview.address
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase()) ||
+        property.overview.developer
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase());
 
       const matchesPrice =
         (!priceFrom ||
-          property.minPrice >= Number.parseFloat(priceFrom) * 1000000000) &&
+          property.overview.minPrice >=
+            Number.parseFloat(priceFrom) * 1000000000) &&
         (!priceTo ||
-          property.maxPrice <= Number.parseFloat(priceTo) * 1000000000);
+          property.overview.maxPrice <=
+            Number.parseFloat(priceTo) * 1000000000);
 
       const matchesArea =
-        (!areaFrom || property.landArea >= Number.parseFloat(areaFrom)) &&
-        (!areaTo || property.landArea <= Number.parseFloat(areaTo));
+        (!areaFrom ||
+          property.overview.landArea >= Number.parseFloat(areaFrom)) &&
+        (!areaTo || property.overview.landArea <= Number.parseFloat(areaTo));
 
       const matchesBedrooms =
         selectedBedrooms === 'all' ||
         (selectedBedrooms === '4+'
-          ? property.maxBedroom >= 4
-          : property.minBedroom <= Number.parseInt(selectedBedrooms) &&
-            property.maxBedroom >= Number.parseInt(selectedBedrooms));
+          ? property.overview.maxBedroom >= 4
+          : property.overview.minBedroom <= Number.parseInt(selectedBedrooms) &&
+            property.overview.maxBedroom >= Number.parseInt(selectedBedrooms));
 
       const matchesBathrooms =
         selectedBathrooms === 'all' ||
         (selectedBathrooms === '4+'
-          ? property.maxBathroom >= 4
-          : property.minBathroom <= Number.parseInt(selectedBathrooms) &&
-            property.maxBathroom >= Number.parseInt(selectedBathrooms));
+          ? property.overview.maxBathroom >= 4
+          : property.overview.minBathroom <=
+              Number.parseInt(selectedBathrooms) &&
+            property.overview.maxBathroom >=
+              Number.parseInt(selectedBathrooms));
 
       const matchesType =
         selectedType === 'all' ||
-        property.propertyType
+        property.overview.propertyType
           .toLowerCase()
           .includes(selectedType.toLowerCase());
 
@@ -288,13 +96,13 @@ export default function InternationalPropertiesPage() {
         (() => {
           switch (selectedStatus) {
             case 'selling':
-              return property.status === 'Đang bán';
+              return property.overview.status === 'Đang bán';
             case 'ready':
-              return property.status === 'Sẵn sàng';
+              return property.overview.status === 'Sẵn sàng';
             case 'upcoming':
-              return property.status === 'Sắp mở bán';
+              return property.overview.status === 'Sắp mở bán';
             case 'handover':
-              return property.status === 'Sắp bàn giao';
+              return property.overview.status === 'Sắp bàn giao';
             default:
               return true;
           }
@@ -367,7 +175,7 @@ export default function InternationalPropertiesPage() {
                       onClick={() =>
                         setShowAdvancedFilters(!showAdvancedFilters)
                       }
-                      className="lg:w-auto"
+                      className="lg:w-auto bg-background border-border hover:bg-muted-card"
                     >
                       <Filter className="w-4 h-4 mr-2" />
                       Lọc nâng cao
@@ -427,7 +235,7 @@ export default function InternationalPropertiesPage() {
                               value={filter.value}
                               onValueChange={filter.onChange}
                             >
-                              <SelectTrigger>
+                              <SelectTrigger className="border-border">
                                 <SelectValue placeholder={filter.placeholder} />
                               </SelectTrigger>
                               <SelectContent>
@@ -450,6 +258,7 @@ export default function InternationalPropertiesPage() {
                             onFromChange={setPriceFrom}
                             onToChange={setPriceTo}
                             unit="tỷ VNĐ"
+                            className="bg-background border-border hover:bg-muted-card"
                           />
                         </div>
 
@@ -463,6 +272,7 @@ export default function InternationalPropertiesPage() {
                             onFromChange={setAreaFrom}
                             onToChange={setAreaTo}
                             unit="m²"
+                            className="bg-background border-border hover:bg-muted-card"
                           />
                         </div>
                       </div>
@@ -519,7 +329,7 @@ export default function InternationalPropertiesPage() {
         </div>
       </section>
 
-      <div className="container mx-auto px-4 pb-8">
+      <div className="container mx-auto px-4 md:px-12 pb-8">
         {/* Main Content */}
         <div className="lg:col-span-3 space-y-6">
           {/* Results */}

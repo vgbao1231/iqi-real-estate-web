@@ -121,7 +121,7 @@ export default function NewsPage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <section className="py-12 bg-gradient-to-r from-green-50 to-green-100 dark:from-green-950/20 dark:to-green-900/20">
+      <section className="py-12 md:px-12 bg-gradient-to-r from-green-50 to-green-100 dark:from-green-950/20 dark:to-green-900/20">
         <div className="container mx-auto px-4">
           <FadeIn>
             <div className="flex items-center gap-4 mb-6">
@@ -150,7 +150,7 @@ export default function NewsPage() {
       </section>
 
       {/* Search and Filter */}
-      <section className="py-8 bg-muted/30">
+      <section className="pt-8 md:px-12 bg-muted/30">
         <div className="container mx-auto px-4">
           <FadeIn>
             <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
@@ -183,7 +183,7 @@ export default function NewsPage() {
       </section>
 
       {/* Featured News */}
-      <section className="py-16">
+      <section className="py-12 md:px-12">
         <div className="container mx-auto px-4">
           <FadeIn className="mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Tin nổi bật</h2>
@@ -258,7 +258,7 @@ export default function NewsPage() {
       </section>
 
       {/* All News */}
-      <section className="py-16 bg-muted/30">
+      <section className="py-12 md:px-12 bg-muted/30">
         <div className="container mx-auto px-4">
           <FadeIn className="mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
@@ -319,9 +319,8 @@ export default function NewsPage() {
                       >
                         <Link href={`/news/${article.id}`}>
                           <Button
-                            variant="outline"
                             size="sm"
-                            className="w-full bg-transparent"
+                            className="w-full border-border bg-green-600 hover:bg-green-700 text-white"
                           >
                             Đọc thêm
                           </Button>
@@ -343,7 +342,7 @@ export default function NewsPage() {
       </section>
 
       {/* Newsletter Signup */}
-      <section className="py-16 bg-gradient-to-r from-green-600 to-green-500 text-white">
+      <section className="py-12 bg-gradient-to-r from-green-600 to-green-500 text-white">
         <div className="container mx-auto px-4 text-center">
           <FadeIn>
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
@@ -356,7 +355,7 @@ export default function NewsPage() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
               <Input
                 placeholder="Nhập email của bạn..."
-                className="bg-white text-gray-900 border-0"
+                className="bg-card text-foreground border-border"
               />
               <motion.div
                 whileHover={{ scale: 1.05 }}

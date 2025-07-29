@@ -5,7 +5,7 @@ import { type DialogProps } from '@radix-ui/react-dialog';
 import { Command as CommandPrimitive } from 'cmdk';
 import { Search } from 'lucide-react';
 
-import { cn } from '@/lib/utils';
+import { cn, removeAccents } from '@/lib/utils';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 
 const Command = React.forwardRef<
@@ -13,6 +13,11 @@ const Command = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof CommandPrimitive>
 >(({ className, ...props }, ref) => (
   <CommandPrimitive
+    filter={(value, search) => {
+      const v = removeAccents(value.toLowerCase());
+      const s = removeAccents(search.toLowerCase());
+      return v.includes(s) ? 1 : 0; // match thì trả 1, không match thì 0
+    }}
     ref={ref}
     className={cn(
       'flex h-full w-full flex-col overflow-hidden rounded-md bg-popover text-popover-foreground',

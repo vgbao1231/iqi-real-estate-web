@@ -10,7 +10,6 @@ import {
   ArrowLeft,
   Phone,
   Mail,
-  MapPin,
   Clock,
   MessageCircle,
   Send,
@@ -24,9 +23,9 @@ import {
   Youtube,
 } from 'lucide-react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
+import OfficeCarousel from './components/OfficeCarousel';
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -118,34 +117,94 @@ export default function ContactPage() {
     },
   ];
 
-  const offices = [
-    {
-      city: 'TP. Thủ Đức (Thảo Điền)',
-      address:
-        'Tầng G, Toà nhà City Gate, số 67-69 Võ Nguyên Giáp, Phường Thảo Điền, TP. Thủ Đức, TP. Hồ Chí Minh',
-      phone: '0911 130 135',
-      email: 'info-vietnam@iqiglobal.com',
-      hours: '8:00 - 18:00 (T2-T6), 8:00 - 12:00 (T7)',
-      image: '/placeholder-2.webp?height=200&width=300',
-    },
-    {
-      city: 'Hà Nội',
-      address: '1152 đường Láng, Láng Thượng, Quận Đống Đa, Hà Nội',
-      phone: '0911 130 135',
-      email: 'info-vietnam@iqiglobal.com',
-      hours: '8:00 - 18:00 (T2-T6), 8:00 - 12:00 (T7)',
-      image: '/placeholder-2.webp?height=200&width=300',
-    },
-    {
-      city: 'Đà Nẵng',
-      address:
-        '305 đường Núi Thành, Phường Hoà Cường Bắc, Quận Hải Châu, TP. Đà Nẵng',
-      phone: '0911 130 135',
-      email: 'info-vietnam@iqiglobal.com',
-      hours: '8:00 - 18:00 (T2-T6), 8:00 - 12:00 (T7)',
-      image: '/placeholder-2.webp?height=200&width=300',
-    },
-  ];
+  const offices = {
+    headOffices: [
+      {
+        city: 'TP.HCM',
+        district: 'Phường An Khánh',
+        offices: [
+          {
+            name: 'Trụ sở chính',
+            address:
+              'Tầng M, City Gates, 67-69 Võ Nguyên Giáp, Phường An Khánh, TP.HCM',
+            phone: '(028) 3821 1234',
+            email: 'hcm@iqi.com',
+            hours: '8:00 - 18:00 (T2-T6), 8:00 - 12:00 (T7)',
+            image: '/placeholder-2.webp?height=200&width=300',
+          },
+          {
+            name: 'Văn phòng 2',
+            address:
+              'Venice 3, VES02C New City, 17 Mai Chí Thọ, Phường An Khánh, TP.HCM',
+            phone: '(028) 3821 1235',
+            email: 'hcm2@iqi.com',
+            hours: '8:00 - 18:00 (T2-T6), 8:00 - 12:00 (T7)',
+            image: '/placeholder-2.webp?height=200&width=300',
+          },
+        ],
+      },
+      {
+        city: 'Hà Nội',
+        address:
+          'Tầng 14, Lancaster Luminaire, 1152 Đường Láng, Phường Láng, Hà Nội',
+        phone: '(024) 3936 1234',
+        email: 'hanoi@iqi.com',
+        hours: '8:00 - 18:00 (T2-T6), 8:00 - 12:00 (T7)',
+        image: '/placeholder-2.webp?height=200&width=300',
+      },
+      {
+        city: 'Nghệ An',
+        address:
+          'An Phát Complex, Đại lộ Vinh - Cửa Lò, Phường Vinh Phú, Nghệ An',
+        phone: '(0238) 3888 1234',
+        email: 'nghean@iqi.com',
+        hours: '8:00 - 18:00 (T2-T6), 8:00 - 12:00 (T7)',
+        image: '/placeholder-2.webp?height=200&width=300',
+      },
+      {
+        city: 'Đà Nẵng',
+        address: 'Tầng 4, 305 Núi Thành, Phường Hải Châu, Đà Nẵng',
+        phone: '(0236) 3888 1234',
+        email: 'danang@iqi.com',
+        hours: '8:00 - 18:00 (T2-T6), 8:00 - 12:00 (T7)',
+        image: '/placeholder-2.webp?height=200&width=300',
+      },
+    ],
+    consultationOffices: [
+      {
+        city: 'TP.HCM',
+        district: 'Phường Thủ Dầu Một',
+        name: 'Văn phòng tư vấn KĐT Artisan Park',
+        address: 'Số 163, Phạm Văn Đồng, Phường Thủ Dầu Một, TP.HCM',
+        phone: '(028) 3821 1236',
+        email: 'artisan@iqi.com',
+        hours: '8:00 - 18:00 (T2-T6), 8:00 - 12:00 (T7)',
+        image: '/placeholder-2.webp?height=200&width=300',
+      },
+      {
+        city: 'TP.HCM',
+        district: 'Phường Long Bình',
+        name: 'Văn phòng Vinhomes Grand Park',
+        address:
+          'The Beverly Solari - BS1501.S12, Số 512 Nguyễn Xiển, Phường Long Bình, TP.HCM',
+        phone: '(028) 3821 1237',
+        email: 'grandpark@iqi.com',
+        hours: '8:00 - 18:00 (T2-T6), 8:00 - 12:00 (T7)',
+        image: '/placeholder-2.webp?height=200&width=300',
+      },
+      {
+        city: 'TP.HCM',
+        district: 'Phường Vũng Tàu',
+        name: 'Văn phòng tư vấn Chung cư Gateway',
+        address:
+          'Tòa B - GB01.11, Đường Nguyễn Hữu Cảnh, Phường Vũng Tàu, TP.HCM',
+        phone: '(028) 3821 1238',
+        email: 'gateway@iqi.com',
+        hours: '8:00 - 18:00 (T2-T6), 8:00 - 12:00 (T7)',
+        image: '/placeholder-2.webp?height=200&width=300',
+      },
+    ],
+  };
 
   const quickActions = [
     {
@@ -453,12 +512,12 @@ export default function ContactPage() {
                   <CardContent>
                     <div className="flex flex-col gap-4">
                       {contactLinks.map((link, idx) => (
-                        <FadeIn key={idx} delay={0.4 + idx * 0.1}>
+                        <FadeIn key={idx} delay={idx * 0.1}>
                           <a
                             href={link.href}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="p-4 border border-border rounded-lg flex items-center hover:bg-background transition-all gap-3"
+                            className="p-4 border border-border rounded-lg flex items-center bg-muted-card hover:bg-accent-card transition-all gap-3"
                           >
                             <div className="p-2 rounded-full bg-gray-100 dark:bg-gray-800">
                               {link.icon}
@@ -493,60 +552,69 @@ export default function ContactPage() {
             </p>
           </FadeIn>
 
-          <div className="grid md:grid-cols-3 gap-8 md:px-12">
-            {offices.map((office, index) => (
-              <ScaleIn key={index} delay={index * 0.2}>
-                <motion.div whileHover={{ y: -5 }}>
-                  <Card className="h-full">
-                    <CardHeader className="p-0">
-                      <motion.div whileHover={{ scale: 1.05 }}>
-                        <Image
-                          src={office.image || '/placeholder-2.webp'}
-                          alt={`${office.city} Office`}
-                          width={300}
-                          height={200}
-                          className="w-full h-48 object-cover rounded-t-lg"
-                        />
-                      </motion.div>
-                    </CardHeader>
-                    <CardContent className="p-6">
-                      <CardTitle className="text-xl mb-4">
-                        {office.city}
-                      </CardTitle>
-                      <div className="space-y-3">
-                        <div className="flex items-start space-x-2">
-                          <MapPin className="w-4 h-4 text-muted-foreground mt-1 flex-shrink-0" />
-                          <span className="text-sm">{office.address}</span>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <Phone className="w-4 h-4 text-muted-foreground" />
-                          <span className="text-sm font-semibold">
-                            {office.phone}
-                          </span>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <Mail className="w-4 h-4 text-muted-foreground" />
-                          <span className="text-sm">{office.email}</span>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <Clock className="w-4 h-4 text-muted-foreground" />
-                          <span className="text-sm">{office.hours}</span>
-                        </div>
-                      </div>
-                      <motion.div whileHover={{ scale: 1.05 }} className="mt-4">
-                        <Button
-                          variant="outline"
-                          className="w-full bg-transparent"
-                        >
-                          <MapPin className="w-4 h-4 mr-2" />
-                          Xem bản đồ
-                        </Button>
-                      </motion.div>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              </ScaleIn>
-            ))}
+          <div className="space-y-12">
+            {/* Head Offices */}
+            <div>
+              <div className="flex items-center justify-center mb-8">
+                <div className="flex items-center space-x-3">
+                  <Building className="w-6 h-6 text-blue-600" />
+                  <h3 className="text-2xl font-bold">Trụ sở chính</h3>
+                  <Badge className="bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
+                    {offices.headOffices.reduce(
+                      (total, office) =>
+                        total + (office.offices ? office.offices.length : 1),
+                      0
+                    )}{' '}
+                    văn phòng
+                  </Badge>
+                </div>
+              </div>
+
+              <OfficeCarousel
+                offices={offices.headOffices.flatMap((office) => {
+                  if (office.offices) {
+                    return office.offices.map((subOffice) => ({
+                      ...subOffice,
+                      city: office.city,
+                      type: 'head',
+                    }));
+                  } else {
+                    return [
+                      {
+                        name: `Trụ sở ${office.city}`,
+                        address: office.address,
+                        phone: office.phone,
+                        email: office.email,
+                        hours: office.hours,
+                        image: office.image,
+                        city: office.city,
+                        type: 'head',
+                      },
+                    ];
+                  }
+                })}
+              />
+            </div>
+
+            {/* Consultation Offices */}
+            <div>
+              <div className="flex items-center justify-center mb-8">
+                <div className="flex items-center space-x-3">
+                  <MessageCircle className="w-6 h-6 text-green-600" />
+                  <h3 className="text-2xl font-bold">Văn phòng tư vấn</h3>
+                  <Badge className="bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300">
+                    {offices.consultationOffices.length} văn phòng
+                  </Badge>
+                </div>
+              </div>
+
+              <OfficeCarousel
+                offices={offices.consultationOffices.map((office) => ({
+                  ...office,
+                  type: 'consultation',
+                }))}
+              />
+            </div>
           </div>
         </div>
       </section>

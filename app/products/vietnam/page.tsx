@@ -20,177 +20,13 @@ import { AreaFilter } from '@/components/ui/area-filter';
 import { PriceFilter } from '@/components/ui/price-filter';
 import { PropertyCard } from './components/PropertyCard';
 import { Header } from './components/Header';
-
-// Properties data
-const properties = [
-  {
-    id: 1,
-    name: 'Vinhomes Grand Park',
-    slug: 'vinhomes-grand-park',
-    address: 'Nguyễn Xiển, Long Thạnh Mỹ, TP. Thủ Đức, TP.HCM',
-    city: 'Thành phố Hồ Chí Minh',
-    district: 'Thành phố Thủ Đức',
-    currency: 'VND',
-    minPrice: 3200000000,
-    maxPrice: 8500000000,
-    landArea: 120,
-    minBuildUp: 11,
-    maxBuildUp: 33,
-    minBedroom: 1,
-    maxBedroom: 4,
-    minBathroom: 1,
-    maxBathroom: 3,
-    propertyType: 'villa',
-    propertyGroup: 'vietnam',
-    status: 'Sẵn sàng',
-    occupancyStatus: 'Ready',
-    tenure: 'Freehold',
-    phase: 'Phase 1',
-    isFeatured: true,
-    isExclusive: false,
-    enableLiveSales: true,
-    visibleOnWeb: true,
-    image: '/placeholder-2.webp?height=300&width=400',
-    images: [
-      '/placeholder-2.webp?height=300&width=400',
-      '/placeholder-2.webp?height=300&width=400',
-      '/placeholder-2.webp?height=300&width=400',
-    ],
-    developer: 'Vingroup',
-    completion: 'Q4/2024',
-    listedOn: '2024-01-15',
-    amenities: [
-      'Hồ bơi',
-      'Gym',
-      'Công viên',
-      'Trường học',
-      'Bệnh viện',
-      'Shopping mall',
-    ],
-    features: [
-      'Công viên trung tâm 36ha',
-      'Trường học liên cấp Vinschool',
-      'Bệnh viện đa khoa Vinmec',
-    ],
-    description:
-      'Vinhomes Grand Park là khu đô thị sinh thái thông minh quy mô lớn nhất khu Đông TP.HCM',
-    views: 2341,
-    coordinates: { lat: 10.8411, lng: 106.8066 },
-    measurementUnit: 'sqm',
-    createdAt: '12/01/2025',
-    updatedAt: '12/07/2025',
-    createdBy: 'admin',
-  },
-  {
-    id: 2,
-    name: 'Vinhomes Smart City',
-    slug: 'vinhomes-smart-city',
-    address: 'Đại lộ Thăng Long, Nam Từ Liêm, Hà Nội',
-    city: 'Thành phố Hà Nội',
-    district: 'Quận Nam Từ Liêm',
-    currency: 'VND',
-    minPrice: 2800000000,
-    maxPrice: 7200000000,
-    landArea: 150,
-    minBuildUp: 11,
-    maxBuildUp: 36,
-    minBedroom: 2,
-    maxBedroom: 4,
-    minBathroom: 2,
-    maxBathroom: 3,
-    propertyType: 'apartment',
-    propertyGroup: 'vietnam',
-    status: 'Sẵn sàng',
-    occupancyStatus: 'Ready',
-    tenure: 'Freehold',
-    phase: 'Phase 2',
-    isFeatured: true,
-    isExclusive: true,
-    enableLiveSales: true,
-    visibleOnWeb: true,
-    image: '/placeholder-2.webp?height=300&width=400',
-    images: [
-      '/placeholder-2.webp?height=300&width=400',
-      '/placeholder-2.webp?height=300&width=400',
-    ],
-    developer: 'Vingroup',
-    completion: 'Q3/2024',
-    listedOn: '2024-02-10',
-    amenities: [
-      'Smart home',
-      'Công viên Nhật',
-      'Trường quốc tế',
-      'IoT',
-      'Sky bar',
-      'Tennis',
-    ],
-    features: [
-      'Khu đô thị thông minh đầu tiên',
-      'Công nghệ IoT toàn diện',
-      'Công viên Nhật Bản',
-    ],
-    description:
-      'Khu đô thị thông minh đầu tiên tại Hà Nội với công nghệ IoT hiện đại',
-    views: 1876,
-    coordinates: { lat: 21.0285, lng: 105.8542 },
-    measurementUnit: 'sqm',
-    createdAt: '12/01/2025',
-    updatedAt: '12/07/2025',
-    createdBy: 'admin',
-  },
-  {
-    id: 3,
-    name: 'Masteri Thảo Điền',
-    slug: 'masteri-thao-dien',
-    address: '159 Xa lộ Hà Nội, Thảo Điền, TP. Thủ Đức, TP.HCM',
-    city: 'Thành phố Hồ Chí Minh',
-    district: 'Thành phố Thủ Đức',
-    currency: 'VND',
-    minPrice: 4500000000,
-    maxPrice: 12000000000,
-    landArea: 180,
-    minBuildUp: 11,
-    maxBuildUp: 23,
-    minBedroom: 1,
-    maxBedroom: 4,
-    minBathroom: 1,
-    maxBathroom: 4,
-    propertyType: 'villa',
-    propertyGroup: 'vietnam',
-    status: 'Đang bán',
-    occupancyStatus: 'Under Construction',
-    tenure: 'Freehold',
-    phase: 'Phase 3',
-    isFeatured: false,
-    isExclusive: true,
-    enableLiveSales: false,
-    visibleOnWeb: true,
-    image: '/placeholder-2.webp?height=300&width=400',
-    images: ['/placeholder-2.webp?height=300&width=400'],
-    developer: 'Masteri Holdings',
-    completion: 'Q2/2025',
-    listedOn: '2024-03-05',
-    amenities: [
-      'View sông',
-      'Sky bar',
-      'Infinity pool',
-      'Concierge',
-      'Valet parking',
-    ],
-    features: [
-      'Tầm nhìn sông Sài Gòn 360°',
-      'Hệ thống an ninh thông minh',
-      'Dịch vụ concierge 24/7',
-    ],
-    description: 'Căn hộ cao cấp với tầm nhìn toàn cảnh sông Sài Gòn',
-    views: 3421,
-    coordinates: { lat: 10.8031, lng: 106.7338 },
-    measurementUnit: 'sqm',
-    createdAt: '12/01/2025',
-    updatedAt: '12/07/2025',
-    createdBy: 'admin',
-  },
-];
+import {
+  bathroomOptions,
+  bedroomOptions,
+  properties,
+  propertyTypes,
+  statusOptions,
+} from '@/lib/property-data';
 
 export default function VietnamPropertiesPage() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -234,78 +70,58 @@ export default function VietnamPropertiesPage() {
     ),
   };
 
-  const bedroomOptions = [
-    { value: 'all', label: 'Tất cả' },
-    { value: '1', label: '1 phòng' },
-    { value: '2', label: '2 phòng' },
-    { value: '3', label: '3 phòng' },
-    { value: '4+', label: '4+ phòng' },
-  ];
-
-  const bathroomOptions = [
-    { value: 'all', label: 'Tất cả' },
-    { value: '1', label: '1 phòng' },
-    { value: '2', label: '2 phòng' },
-    { value: '3', label: '3 phòng' },
-    { value: '4+', label: '4+ phòng' },
-  ];
-
-  const propertyTypes = [
-    { value: 'all', label: 'Tất cả loại hình' },
-    { value: 'apartment', label: 'Căn hộ' },
-    { value: 'villa', label: 'Villa' },
-    { value: 'townhouse', label: 'Nhà phố' },
-    { value: 'office', label: 'Văn phòng' },
-  ];
-
-  const statusOptions = [
-    { value: 'all', label: 'Tất cả trạng thái' },
-    { value: 'selling', label: 'Đang bán' },
-    { value: 'ready', label: 'Sẵn sàng' },
-    { value: 'upcoming', label: 'Sắp mở bán' },
-    { value: 'handover', label: 'Sắp bàn giao' },
-  ];
-
   // Filter logic
   const filteredProperties = useMemo(() => {
     return properties.filter((property) => {
       const matchesSearch =
-        property.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        property.address.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        property.developer.toLowerCase().includes(searchTerm.toLowerCase());
+        property.overview.name
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase()) ||
+        property.overview.address
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase()) ||
+        property.overview.developer
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase());
 
       const matchesCity =
-        selectedCity === 'all' || property.city === selectedCity;
+        selectedCity === 'all' || property.overview.city === selectedCity;
       const matchesDistrict =
-        selectedDistrict === 'all' || property.district === selectedDistrict;
+        selectedDistrict === 'all' ||
+        property.overview.district === selectedDistrict;
 
       const matchesPrice =
         (!priceFrom ||
-          property.minPrice >= Number.parseFloat(priceFrom) * 1000000000) &&
+          property.overview.minPrice >=
+            Number.parseFloat(priceFrom) * 1000000000) &&
         (!priceTo ||
-          property.maxPrice <= Number.parseFloat(priceTo) * 1000000000);
+          property.overview.maxPrice <=
+            Number.parseFloat(priceTo) * 1000000000);
 
       const matchesArea =
-        (!areaFrom || property.landArea >= Number.parseFloat(areaFrom)) &&
-        (!areaTo || property.landArea <= Number.parseFloat(areaTo));
+        (!areaFrom ||
+          property.overview.landArea >= Number.parseFloat(areaFrom)) &&
+        (!areaTo || property.overview.landArea <= Number.parseFloat(areaTo));
 
       const matchesBedrooms =
         selectedBedrooms === 'all' ||
         (selectedBedrooms === '4+'
-          ? property.maxBedroom >= 4
-          : property.minBedroom <= Number.parseInt(selectedBedrooms) &&
-            property.maxBedroom >= Number.parseInt(selectedBedrooms));
+          ? property.overview.maxBedroom >= 4
+          : property.overview.minBedroom <= Number.parseInt(selectedBedrooms) &&
+            property.overview.maxBedroom >= Number.parseInt(selectedBedrooms));
 
       const matchesBathrooms =
         selectedBathrooms === 'all' ||
         (selectedBathrooms === '4+'
-          ? property.maxBathroom >= 4
-          : property.minBathroom <= Number.parseInt(selectedBathrooms) &&
-            property.maxBathroom >= Number.parseInt(selectedBathrooms));
+          ? property.overview.maxBathroom >= 4
+          : property.overview.minBathroom <=
+              Number.parseInt(selectedBathrooms) &&
+            property.overview.maxBathroom >=
+              Number.parseInt(selectedBathrooms));
 
       const matchesType =
         selectedType === 'all' ||
-        property.propertyType
+        property.overview.propertyType
           .toLowerCase()
           .includes(selectedType.toLowerCase());
 
@@ -314,13 +130,13 @@ export default function VietnamPropertiesPage() {
         (() => {
           switch (selectedStatus) {
             case 'selling':
-              return property.status === 'Đang bán';
+              return property.overview.status === 'Đang bán';
             case 'ready':
-              return property.status === 'Sẵn sàng';
+              return property.overview.status === 'Sẵn sàng';
             case 'upcoming':
-              return property.status === 'Sắp mở bán';
+              return property.overview.status === 'Sắp mở bán';
             case 'handover':
-              return property.status === 'Sắp bàn giao';
+              return property.overview.status === 'Sắp bàn giao';
             default:
               return true;
           }
@@ -389,6 +205,7 @@ export default function VietnamPropertiesPage() {
                         placeholder="Chọn thành phố"
                         searchPlaceholder="Tìm thành phố..."
                         emptyText="Không tìm thấy thành phố"
+                        className="bg-background border-border hover:bg-muted-card"
                       />
                     </div>
                     <div>
@@ -402,6 +219,7 @@ export default function VietnamPropertiesPage() {
                         placeholder="Chọn khu vực"
                         searchPlaceholder="Tìm quận/huyện..."
                         emptyText="Không tìm thấy khu vực"
+                        className="bg-background border-border hover:bg-muted-card"
                       />
                     </div>
                     <div className="flex-1">
@@ -420,7 +238,7 @@ export default function VietnamPropertiesPage() {
                       onClick={() =>
                         setShowAdvancedFilters(!showAdvancedFilters)
                       }
-                      className="lg:w-auto"
+                      className="lg:w-auto bg-background border-border hover:bg-muted-card"
                     >
                       <Filter className="w-4 h-4 mr-2" />
                       Lọc nâng cao
@@ -480,7 +298,7 @@ export default function VietnamPropertiesPage() {
                               value={filter.value}
                               onValueChange={filter.onChange}
                             >
-                              <SelectTrigger>
+                              <SelectTrigger className="border-border">
                                 <SelectValue placeholder={filter.placeholder} />
                               </SelectTrigger>
                               <SelectContent>
@@ -503,6 +321,7 @@ export default function VietnamPropertiesPage() {
                             onFromChange={setPriceFrom}
                             onToChange={setPriceTo}
                             unit="tỷ VNĐ"
+                            className="bg-background border-border hover:bg-muted-card"
                           />
                         </div>
 
@@ -516,6 +335,7 @@ export default function VietnamPropertiesPage() {
                             onFromChange={setAreaFrom}
                             onToChange={setAreaTo}
                             unit="m²"
+                            className="bg-background border-border hover:bg-muted-card"
                           />
                         </div>
                       </div>
@@ -572,7 +392,7 @@ export default function VietnamPropertiesPage() {
         </div>
       </section>
 
-      <div className="container mx-auto px-4 pb-8">
+      <div className="container mx-auto px-4 md:px-12 pb-8">
         {/* Main Content */}
         <div className="lg:col-span-3 space-y-6">
           {/* Results */}

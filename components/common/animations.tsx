@@ -1,7 +1,7 @@
 'use client';
 
 import { animate, motion, useMotionValue, useTransform } from 'framer-motion';
-import type { ReactNode } from 'react';
+import type { ComponentProps, ReactNode } from 'react';
 
 interface FadeInProps {
   children: ReactNode;
@@ -64,15 +64,17 @@ export function SlideIn({
   );
 }
 
+interface ScaleInProps extends ComponentProps<typeof motion.div> {
+  children: ReactNode;
+  delay?: number;
+}
+
 export function ScaleIn({
   children,
   delay = 0,
   className = '',
-}: {
-  children: ReactNode;
-  delay?: number;
-  className?: string;
-}) {
+  ...rest
+}: ScaleInProps) {
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.8 }}
@@ -80,6 +82,7 @@ export function ScaleIn({
       viewport={{ once: true }}
       transition={{ duration: 0.6, delay }}
       className={className}
+      {...rest}
     >
       {children}
     </motion.div>

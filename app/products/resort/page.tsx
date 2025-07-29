@@ -18,184 +18,13 @@ import { AreaFilter } from '@/components/ui/area-filter';
 import { PriceFilter } from '@/components/ui/price-filter';
 import { PropertyCard } from './components/PropertyCard';
 import { Header } from './components/Header';
-
-const properties = [
-  {
-    id: 1,
-    name: 'Sunset Paradise Resort Villas',
-    slug: 'sunset-paradise-resort',
-    country: 'Vietnam',
-    address: 'Khu nghỉ dưỡng Bãi Dài, Cam Ranh, Khánh Hòa',
-    city: 'Cam Ranh',
-    district: 'Bãi Dài',
-    price: 5200000,
-    pricePerSqm: 10500,
-    currency: 'USD',
-    minPrice: 5200000,
-    maxPrice: 9800000,
-    landArea: 300,
-    minBuildUp: 20,
-    maxBuildUp: 35,
-    minBedroom: 3,
-    maxBedroom: 6,
-    minBathroom: 3,
-    maxBathroom: 5,
-    propertyType: 'resort villa',
-    propertyGroup: 'resort',
-    status: 'Available',
-    occupancyStatus: 'Ready',
-    tenure: 'Lâu dài',
-    phase: 'Giai đoạn 1',
-    isFeatured: true,
-    isExclusive: true,
-    enableLiveSales: true,
-    visibleOnWeb: true,
-    image: '/placeholder-2.webp?height=300&width=400',
-    images: [
-      '/placeholder-2.webp?height=300&width=400',
-      '/placeholder-2.webp?height=300&width=400',
-      '/placeholder-2.webp?height=300&width=400',
-    ],
-    developer: 'Resort Group Vietnam',
-    completion: 'Q4/2025',
-    listedOn: '2024-03-01',
-    amenities: [
-      'Hồ bơi tràn bờ hướng biển',
-      'Spa cao cấp',
-      'Nhà hàng 5 sao',
-      'Xe điện nội khu',
-      'Dịch vụ lễ tân 24/7',
-    ],
-    features: [
-      'View biển trực diện',
-      'Thiết kế chuẩn resort quốc tế',
-      'Vận hành bởi thương hiệu nghỉ dưỡng quốc tế',
-    ],
-    description:
-      'Khu biệt thự nghỉ dưỡng đẳng cấp tại Bãi Dài Cam Ranh, sở hữu vị trí đắc địa ven biển và tiện ích 5 sao chuẩn quốc tế.',
-    views: 3210,
-    coordinates: { lat: 11.9823, lng: 109.2193 },
-    measurementUnit: 'sqm',
-    createdAt: '12/01/2025',
-    updatedAt: '12/07/2025',
-    createdBy: 'admin',
-  },
-  {
-    id: 2,
-    name: 'Forest Retreat Residences',
-    slug: 'forest-retreat-residences',
-    country: 'Vietnam',
-    address: 'Thung lũng Bảo Lộc, Lâm Đồng',
-    city: 'Bảo Lộc',
-    district: 'Lộc Thanh',
-    price: 2800000,
-    pricePerSqm: 9000,
-    currency: 'USD',
-    minPrice: 2800000,
-    maxPrice: 6000000,
-    landArea: 200,
-    minBuildUp: 12,
-    maxBuildUp: 30,
-    minBedroom: 2,
-    maxBedroom: 4,
-    minBathroom: 2,
-    maxBathroom: 3,
-    propertyType: 'resort villa',
-    propertyGroup: 'resort',
-    status: 'Available',
-    occupancyStatus: 'Ready',
-    tenure: 'Lâu dài',
-    phase: 'Giai đoạn 2',
-    isFeatured: true,
-    isExclusive: false,
-    enableLiveSales: true,
-    visibleOnWeb: true,
-    image: '/placeholder-2.webp?height=300&width=400',
-    images: [
-      '/placeholder-2.webp?height=300&width=400',
-      '/placeholder-2.webp?height=300&width=400',
-    ],
-    developer: 'Green Valley Corp',
-    completion: 'Q2/2025',
-    listedOn: '2024-04-10',
-    amenities: [
-      'Khu cắm trại',
-      'Nhà hàng sân vườn',
-      'Đường dạo bộ xuyên rừng',
-      'Hồ bơi nước suối',
-      'Khu thiền & yoga',
-    ],
-    features: [
-      'Bao quanh bởi rừng thông',
-      'Thiết kế kiến trúc gỗ hiện đại',
-      'Không khí trong lành quanh năm',
-    ],
-    description:
-      'Một dự án nghỉ dưỡng xanh nằm giữa núi rừng Bảo Lộc, nơi lý tưởng để tìm về sự bình yên và tái tạo năng lượng.',
-    views: 2155,
-    coordinates: { lat: 11.5515, lng: 107.8068 },
-    measurementUnit: 'sqm',
-    createdAt: '12/01/2025',
-    updatedAt: '12/07/2025',
-    createdBy: 'admin',
-  },
-  {
-    id: 3,
-    name: 'Ocean Breeze Retreat',
-    slug: 'ocean-breeze-retreat',
-    country: 'Vietnam',
-    address: 'Đường ven biển, Phan Thiết, Bình Thuận',
-    city: 'Phan Thiết',
-    district: 'Tiến Thành',
-    price: 3500000,
-    pricePerSqm: 9500,
-    currency: 'USD',
-    minPrice: 3500000,
-    maxPrice: 7500000,
-    landArea: 250,
-    minBuildUp: 15,
-    maxBuildUp: 33,
-    minBedroom: 2,
-    maxBedroom: 5,
-    minBathroom: 2,
-    maxBathroom: 4,
-    propertyType: 'resort villa',
-    propertyGroup: 'resort',
-    status: 'On Sale',
-    occupancyStatus: 'Under Construction',
-    tenure: 'Lâu dài',
-    phase: 'Giai đoạn 3',
-    isFeatured: false,
-    isExclusive: true,
-    enableLiveSales: false,
-    visibleOnWeb: true,
-    image: '/placeholder-2.webp?height=300&width=400',
-    images: ['/placeholder-2.webp?height=300&width=400'],
-    developer: 'Seaside Development JSC',
-    completion: 'Q1/2026',
-    listedOn: '2024-05-15',
-    amenities: [
-      'Bãi biển riêng',
-      'Bar & Lounge ngoài trời',
-      'Khu vui chơi trẻ em',
-      'Phòng gym & spa',
-      'Hệ thống xe buggy',
-    ],
-    features: [
-      'Thiết kế mở hướng biển',
-      'Bàn giao nội thất cao cấp',
-      'Phù hợp đầu tư cho thuê nghỉ dưỡng',
-    ],
-    description:
-      'Ocean Breeze Retreat là khu biệt thự nghỉ dưỡng cao cấp với tầm nhìn trực diện ra biển, tọa lạc tại trung tâm du lịch mới Phan Thiết.',
-    views: 2873,
-    coordinates: { lat: 10.8896, lng: 108.108 },
-    measurementUnit: 'sqm',
-    createdAt: '12/01/2025',
-    updatedAt: '12/07/2025',
-    createdBy: 'admin',
-  },
-];
+import {
+  properties,
+  bedroomOptions,
+  bathroomOptions,
+  propertyTypes,
+  statusOptions,
+} from '@/lib/property-data';
 
 export default function ResortPropertiesPage() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -213,73 +42,52 @@ export default function ResortPropertiesPage() {
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
   const itemsPerPage = 6;
 
-  const bedroomOptions = [
-    { value: 'all', label: 'Tất cả' },
-    { value: '1', label: '1 phòng' },
-    { value: '2', label: '2 phòng' },
-    { value: '3', label: '3 phòng' },
-    { value: '4+', label: '4+ phòng' },
-  ];
-
-  const bathroomOptions = [
-    { value: 'all', label: 'Tất cả' },
-    { value: '1', label: '1 phòng' },
-    { value: '2', label: '2 phòng' },
-    { value: '3', label: '3 phòng' },
-    { value: '4+', label: '4+ phòng' },
-  ];
-
-  const propertyTypes = [
-    { value: 'all', label: 'Tất cả loại hình' },
-    { value: 'apartment', label: 'Căn hộ' },
-    { value: 'villa', label: 'Villa' },
-    { value: 'townhouse', label: 'Nhà phố' },
-    { value: 'office', label: 'Văn phòng' },
-  ];
-
-  const statusOptions = [
-    { value: 'all', label: 'Tất cả trạng thái' },
-    { value: 'selling', label: 'Đang bán' },
-    { value: 'ready', label: 'Sẵn sàng' },
-    { value: 'upcoming', label: 'Sắp mở bán' },
-    { value: 'handover', label: 'Sắp bàn giao' },
-  ];
-
   // Filter logic
   const filteredProperties = useMemo(() => {
     return properties.filter((property) => {
       const matchesSearch =
-        property.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        property.address.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        property.developer.toLowerCase().includes(searchTerm.toLowerCase());
+        property.overview.name
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase()) ||
+        property.overview.address
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase()) ||
+        property.overview.developer
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase());
 
       const matchesPrice =
         (!priceFrom ||
-          property.minPrice >= Number.parseFloat(priceFrom) * 1000000000) &&
+          property.overview.minPrice >=
+            Number.parseFloat(priceFrom) * 1000000000) &&
         (!priceTo ||
-          property.maxPrice <= Number.parseFloat(priceTo) * 1000000000);
+          property.overview.maxPrice <=
+            Number.parseFloat(priceTo) * 1000000000);
 
       const matchesArea =
-        (!areaFrom || property.landArea >= Number.parseFloat(areaFrom)) &&
-        (!areaTo || property.landArea <= Number.parseFloat(areaTo));
+        (!areaFrom ||
+          property.overview.landArea >= Number.parseFloat(areaFrom)) &&
+        (!areaTo || property.overview.landArea <= Number.parseFloat(areaTo));
 
       const matchesBedrooms =
         selectedBedrooms === 'all' ||
         (selectedBedrooms === '4+'
-          ? property.maxBedroom >= 4
-          : property.minBedroom <= Number.parseInt(selectedBedrooms) &&
-            property.maxBedroom >= Number.parseInt(selectedBedrooms));
+          ? property.overview.maxBedroom >= 4
+          : property.overview.minBedroom <= Number.parseInt(selectedBedrooms) &&
+            property.overview.maxBedroom >= Number.parseInt(selectedBedrooms));
 
       const matchesBathrooms =
         selectedBathrooms === 'all' ||
         (selectedBathrooms === '4+'
-          ? property.maxBathroom >= 4
-          : property.minBathroom <= Number.parseInt(selectedBathrooms) &&
-            property.maxBathroom >= Number.parseInt(selectedBathrooms));
+          ? property.overview.maxBathroom >= 4
+          : property.overview.minBathroom <=
+              Number.parseInt(selectedBathrooms) &&
+            property.overview.maxBathroom >=
+              Number.parseInt(selectedBathrooms));
 
       const matchesType =
         selectedType === 'all' ||
-        property.propertyType
+        property.overview.propertyType
           .toLowerCase()
           .includes(selectedType.toLowerCase());
 
@@ -288,13 +96,13 @@ export default function ResortPropertiesPage() {
         (() => {
           switch (selectedStatus) {
             case 'selling':
-              return property.status === 'Đang bán';
+              return property.overview.status === 'Đang bán';
             case 'ready':
-              return property.status === 'Sẵn sàng';
+              return property.overview.status === 'Sẵn sàng';
             case 'upcoming':
-              return property.status === 'Sắp mở bán';
+              return property.overview.status === 'Sắp mở bán';
             case 'handover':
-              return property.status === 'Sắp bàn giao';
+              return property.overview.status === 'Sắp bàn giao';
             default:
               return true;
           }
@@ -367,7 +175,7 @@ export default function ResortPropertiesPage() {
                       onClick={() =>
                         setShowAdvancedFilters(!showAdvancedFilters)
                       }
-                      className="lg:w-auto"
+                      className="lg:w-auto bg-background border-border hover:bg-muted-card"
                     >
                       <Filter className="w-4 h-4 mr-2" />
                       Lọc nâng cao
@@ -427,7 +235,7 @@ export default function ResortPropertiesPage() {
                               value={filter.value}
                               onValueChange={filter.onChange}
                             >
-                              <SelectTrigger>
+                              <SelectTrigger className="border-border">
                                 <SelectValue placeholder={filter.placeholder} />
                               </SelectTrigger>
                               <SelectContent>
@@ -450,6 +258,7 @@ export default function ResortPropertiesPage() {
                             onFromChange={setPriceFrom}
                             onToChange={setPriceTo}
                             unit="tỷ VNĐ"
+                            className="bg-background border-border hover:bg-muted-card"
                           />
                         </div>
 
@@ -463,6 +272,7 @@ export default function ResortPropertiesPage() {
                             onFromChange={setAreaFrom}
                             onToChange={setAreaTo}
                             unit="m²"
+                            className="bg-background border-border hover:bg-muted-card"
                           />
                         </div>
                       </div>
@@ -519,7 +329,7 @@ export default function ResortPropertiesPage() {
         </div>
       </section>
 
-      <div className="container mx-auto px-4 pb-8">
+      <div className="container mx-auto px-4 md:px-12 pb-8">
         {/* Main Content */}
         <div className="lg:col-span-3 space-y-6">
           {/* Results */}

@@ -76,7 +76,9 @@ export default function AboutUs() {
         <div className="md:px-12 grid md:grid-cols-2 gap-12 items-center">
           <SlideIn direction="left" className="center-both">
             <div>
-              <h3 className="text-2xl font-bold mb-6">Juwai IQI & IQI Atlas</h3>
+              <h3 className="text-2xl font-bold mb-6 text-center md:text-start">
+                Juwai IQI & IQI Atlas
+              </h3>
               <div className="space-y-4">
                 <motion.div
                   whileHover={{ x: 10 }}

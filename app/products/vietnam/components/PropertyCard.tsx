@@ -5,9 +5,7 @@ import { ScaleIn } from '@/components/common/animations';
 import {
   Bed,
   Bath,
-  Square,
   Share2,
-  Eye,
   MapPin,
   Building2,
   Calendar,
@@ -41,8 +39,8 @@ export const PropertyCard = ({ property, index }: any) => {
         <div className="relative">
           <Link href={`/products/vietnam/${property.id}`}>
             <Image
-              src={property.image || '/placeholder-2.webp'}
-              alt={property.name}
+              src={property.introduction.coverImage || '/placeholder-2.webp'}
+              alt={property.overview.name}
               width={400}
               height={280}
               className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500"
@@ -51,13 +49,13 @@ export const PropertyCard = ({ property, index }: any) => {
 
           {/* Badges */}
           <div className="absolute top-3 left-3 flex flex-col gap-2">
-            {property.isFeatured && (
+            {property.other.isFeatured && (
               <Badge className="bg-gradient-to-r !from-yellow-500 !to-orange-500 text-white border-0">
                 <Star className="w-3 h-3 mr-1" />
                 Nổi bật
               </Badge>
             )}
-            {property.isExclusive && (
+            {property.other.isExclusive && (
               <Badge className="bg-gradient-to-r !from-green-500 !to-green-600 text-white border-0">
                 Độc quyền
               </Badge>
@@ -80,51 +78,37 @@ export const PropertyCard = ({ property, index }: any) => {
               <Share2 className="w-4 h-4" />
             </Button>
           </div>
-
-          {/* Stats overlay */}
-          <div className="absolute bottom-3 left-3 flex items-center space-x-4 text-white text-sm">
-            <span className="flex items-center backdrop-blur-sm bg-black/30 px-2 py-1 rounded">
-              <Eye className="w-3 h-3 mr-1" />
-              {property.views?.toLocaleString()}
-            </span>
-          </div>
         </div>
 
         <CardContent className="p-6 flex-1">
           <div className="flex flex-col gap-4 h-full">
-            {/* Title and Rating */}
+            {/* Title */}
             <div className="flex items-start justify-between">
               <div className="flex-1">
                 <h3 className="text-xl font-bold mb-1 group-hover:text-green-600 transition-colors line-clamp-2">
                   <Link href={`/products/vietnam/${property.id}`}>
-                    {property.name}
+                    {property.overview.name}
                   </Link>
                 </h3>
                 <p className="text-muted-foreground text-sm flex items-center">
                   <MapPin className="w-4 h-4 mr-1 flex-shrink-0" />
-                  {property.address}
+                  {property.overview.address}
                 </p>
               </div>
-              {property.rating && (
-                <div className="flex items-center ml-2">
-                  <Star className="w-4 h-4 fill-yellow-400 text-yellow-400 mr-1" />
-                  <span className="font-medium text-sm">{property.rating}</span>
-                </div>
-              )}
             </div>
 
             {/* Price */}
             <div className="flex items-center justify-between">
               <div>
                 <div className="text-2xl font-bold text-green-600">
-                  Từ {formatVnCurrencyShort(property.minPrice)}
+                  Từ {formatVnCurrencyShort(property.overview.minPrice)}
                 </div>
               </div>
               <div className="text-right">
                 <div className="font-semibold flex items-center">
                   <Ruler className="w-5 h-5 text-muted-foreground mr-1" />
-                  {property.landArea}{' '}
-                  {property.measurementUnit === 'sqm' ? 'm²' : 'ft²'}
+                  {property.overview.landArea}{' '}
+                  {property.overview.measurementUnit === 'sqm' ? 'm²' : 'ft²'}
                 </div>
               </div>
             </div>
@@ -138,7 +122,8 @@ export const PropertyCard = ({ property, index }: any) => {
                     className="w-4 h-4 text-muted-foreground mr-1"
                   />
                   <span className="font-medium">
-                    {property.minBedroom}-{property.maxBedroom} PN
+                    {property.overview.minBedroom}-
+                    {property.overview.maxBedroom} PN
                   </span>
                 </div>
               </div>
@@ -149,11 +134,12 @@ export const PropertyCard = ({ property, index }: any) => {
                     className="w-4 h-4 text-muted-foreground mr-1"
                   />
                   <span className="font-medium">
-                    {property.minBathroom}-{property.maxBathroom} PT
+                    {property.overview.minBathroom}-
+                    {property.overview.maxBathroom} PT
                   </span>
                 </div>
               </div>
-              <div className="text-center">
+              {/* <div className="text-center">
                 <div className="flex items-center justify-center mb-1">
                   <Square
                     strokeWidth={2.5}
@@ -164,11 +150,11 @@ export const PropertyCard = ({ property, index }: any) => {
                     {property.measurementUnit === 'sqm' ? 'm²' : 'ft²'}
                   </span>
                 </div>
-              </div>
+              </div> */}
             </div>
 
             {/* Features */}
-            <div className="flex flex-wrap gap-1">
+            {/* <div className="flex flex-wrap gap-1">
               {property.amenities.slice(0, 3).map((amenity: any) => (
                 <Badge
                   key={amenity}
@@ -183,19 +169,19 @@ export const PropertyCard = ({ property, index }: any) => {
                   +{property.amenities.length - 3}
                 </Badge>
               )}
-            </div>
+            </div> */}
 
             {/* Footer */}
             <div className="flex flex-1 mt-auto items-center justify-between pt-4 border-t border-border">
               <div className="flex items-center space-x-2">
                 <Building2 className="w-4 h-4 text-muted-foreground" />
                 <span className="text-sm font-medium">
-                  {property.developer}
+                  {property.overview.developer}
                 </span>
               </div>
               <div className="flex items-center space-x-2 text-sm text-muted-foreground">
                 <Calendar className="w-4 h-4" />
-                <span>{property.completion}</span>
+                <span>{property.overview.handover}</span>
               </div>
             </div>
           </div>
