@@ -135,6 +135,8 @@ export default function Header({
     },
   ];
 
+  console.log(isMobileMenuOpen);
+
   const languages = [
     { code: 'vi', label: 'Tiếng Việt', icon: '🇻🇳' },
     { code: 'en', label: 'English', icon: '🇺🇸' },
@@ -201,6 +203,7 @@ export default function Header({
 
   return (
     <motion.header
+      ref={mobileMenuRef}
       initial={{ y: -100 }}
       animate={{ y: isHeaderVisible ? 0 : -100 }}
       transition={{ duration: 0.3, ease: 'easeInOut' }}
@@ -215,13 +218,22 @@ export default function Header({
       <div className="container mx-auto px-8">
         <div className="flex h-16 items-center justify-between">
           {/* Hamburger menu for mobile */}
-          <div className="lg:hidden">
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="focus:outline-none"
+          <div
+            className="lg:hidden"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            {/* Mobile menu button */}
+            <Button
+              variant="ghost"
+              size="sm"
+              className="focus:bg-background/20"
             >
-              <Menu />
-            </button>
+              {isMobileMenuOpen ? (
+                <X className="h-5 w-5" />
+              ) : (
+                <Menu className="h-5 w-5" />
+              )}
+            </Button>
           </div>
 
           {/* Logo */}
@@ -368,20 +380,6 @@ export default function Header({
                   ))}
                 </DropdownMenuContent>
               </DropdownMenu>
-
-              {/* Mobile menu button */}
-              <Button
-                variant="ghost"
-                size="sm"
-                className="md:hidden"
-                onClick={() => setIsLanguageMenuOpen(!isLanguageMenuOpen)}
-              >
-                {isLanguageMenuOpen ? (
-                  <X className="h-5 w-5" />
-                ) : (
-                  <Menu className="h-5 w-5" />
-                )}
-              </Button>
             </div>
           </div>
         </div>
@@ -390,7 +388,6 @@ export default function Header({
       <AnimatePresence>
         {isMobileMenuOpen && isHeaderVisible && (
           <motion.div
-            ref={mobileMenuRef}
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
