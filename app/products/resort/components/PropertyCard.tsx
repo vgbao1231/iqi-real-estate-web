@@ -56,7 +56,7 @@ export const PropertyCard = ({ property, index }: any) => {
               </Badge>
             )}
             {property.other.isExclusive && (
-              <Badge className="bg-gradient-to-r !from-teal-500 !to-teal-600 text-white border-0">
+              <Badge className="bg-gradient-to-r !from-orange-500 !to-orange-600 text-white border-0">
                 Độc quyền
               </Badge>
             )}
@@ -85,7 +85,7 @@ export const PropertyCard = ({ property, index }: any) => {
             {/* Title */}
             <div className="flex items-start justify-between">
               <div className="flex-1">
-                <h3 className="text-xl font-bold mb-1 group-hover:text-teal-600 transition-colors line-clamp-2">
+                <h3 className="text-xl font-bold mb-1 group-hover:text-orange-600 transition-colors line-clamp-2">
                   <Link href={`/products/resort/${property.id}`}>
                     {property.overview.name}
                   </Link>
@@ -100,7 +100,7 @@ export const PropertyCard = ({ property, index }: any) => {
             {/* Price */}
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-2xl font-bold text-teal-600">
+                <div className="text-2xl font-bold text-orange-600">
                   Từ {formatVnCurrencyShort(property.overview.minPrice)}
                 </div>
               </div>

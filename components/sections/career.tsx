@@ -78,12 +78,13 @@ export default function Career() {
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 transition={{ duration: 0.3 }}
+                className="w-[500px] h-[400px] relative"
               >
                 <Image
                   src="/placeholder-2.webp?height=400&width=500"
                   alt="IQI Team"
-                  width={500}
-                  height={400}
+                  fill
+                  priority
                   className="rounded-lg shadow-lg"
                 />
               </motion.div>

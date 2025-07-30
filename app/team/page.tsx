@@ -170,25 +170,25 @@ export default function TeamPage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <section className="py-12 bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-950/20 dark:to-blue-900/20">
-        <div className="container mx-auto px-4">
+      <section className="py-12 bg-gradient-to-br from-orange-400/90 via-orange-400 to-orange-500 dark:from-orange-400 dark:to-orange-600">
+        <div className="container mx-auto px-4 relative z-10 text-white md:px-8">
           <FadeIn>
             <div className="flex items-center gap-2 mb-4">
               <Link
                 href="/"
-                className="inline-flex items-center text-blue-600 hover:text-blue-700"
+                className="inline-flex items-center text-orange-100 hover:text-white"
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Quay lại trang chủ
               </Link>
-              <Badge className="bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
+              <Badge className="bg-orange-100 text-orange-800 dark:bg-orange-700 dark:text-orange-100">
                 ĐỘI NGŨ IQI VIETNAM
               </Badge>
             </div>
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
               Đội ngũ chuyên nghiệp
             </h1>
-            <p className="text-xl text-muted-foreground max-w-3xl">
+            <p className="text-xl max-w-3xl">
               Gặp gỡ những con người tài năng và giàu kinh nghiệm đang dẫn dắt
               IQI Vietnam phát triển và mang đến những dịch vụ bất động sản tốt
               nhất cho khách hàng.
@@ -437,13 +437,15 @@ export default function TeamPage() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="border-white text-white hover:bg-white hover:text-blue-600 bg-transparent"
-                >
-                  Liên hệ HR
-                </Button>
+                <Link href="/contact">
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="border-white text-white hover:bg-white hover:text-blue-600 bg-transparent"
+                  >
+                    Liên hệ
+                  </Button>
+                </Link>
               </motion.div>
             </div>
           </FadeIn>

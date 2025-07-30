@@ -85,7 +85,7 @@ export const PropertyCard = ({ property, index }: any) => {
             {/* Title */}
             <div className="flex items-start justify-between">
               <div className="flex-1">
-                <h3 className="text-xl font-bold mb-1 group-hover:text-green-600 transition-colors line-clamp-2">
+                <h3 className="text-xl font-bold mb-1 group-hover:text-orange-600 transition-colors line-clamp-2">
                   <Link href={`/products/vietnam/${property.id}`}>
                     {property.overview.name}
                   </Link>
@@ -100,7 +100,7 @@ export const PropertyCard = ({ property, index }: any) => {
             {/* Price */}
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-2xl font-bold text-green-600">
+                <div className="text-2xl font-bold text-orange-600">
                   Từ {formatVnCurrencyShort(property.overview.minPrice)}
                 </div>
               </div>

@@ -22,25 +22,25 @@ export default function AboutPage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <section className="py-12 bg-gradient-to-r from-orange-50 to-orange-100 dark:from-orange-950/20 dark:to-orange-900/20">
+      <section className="py-12 bg-gradient-to-br from-orange-400/90 via-orange-400 to-orange-500 dark:from-orange-500 dark:to-orange-600">
         <div className="container mx-auto px-4">
           <FadeIn>
             <div className="flex items-center gap-4 mb-6">
               <Link
                 href="/"
-                className="inline-flex items-center text-orange-600 hover:text-orange-700"
+                className="inline-flex items-center text-orange-100 hover:text-white"
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Quay lại trang chủ
               </Link>
-              <Badge className="bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300">
+              <Badge className="bg-orange-100 text-orange-800 dark:bg-orange-700 dark:text-orange-100">
                 VỀ CHÚNG TÔI
               </Badge>
             </div>
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
               Giới thiệu về IQI Vietnam
             </h1>
-            <p className="text-xl text-muted-foreground max-w-3xl">
+            <p className="text-xl max-w-3xl">
               Với hơn 15 năm kinh nghiệm trong lĩnh vực bất động sản, IQI
               Vietnam đã khẳng định vị thế là đối tác tin cậy của hàng nghìn
               khách hàng trên toàn quốc.
@@ -288,7 +288,7 @@ export default function AboutPage() {
       </section>
 
       {/* Contact CTA */}
-      <section className="py-16 bg-gradient-to-r from-orange-600 to-orange-500 text-white">
+      <section className="py-16 bg-gradient-to-r from-orange-400 to-orange-500 dark:from-orange-500 dark:to-orange-600">
         <div className="container mx-auto px-4 text-center">
           <FadeIn>
             <h2 className="text-3xl md:text-4xl font-bold mb-4">

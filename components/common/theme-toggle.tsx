@@ -10,7 +10,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import clsx from 'clsx';
 import { cn } from '@/lib/utils';
 
 export function ThemeToggle({ isDark }: { isDark: boolean }) {
@@ -22,7 +21,7 @@ export function ThemeToggle({ isDark }: { isDark: boolean }) {
         <Button
           variant="outline"
           size="icon"
-          className={clsx(
+          className={cn(
             'hover:bg-orange-300/10 dark:hover:bg-orange-900/20 bg-transparent',
             isDark
               ? 'text-white border-white/60'

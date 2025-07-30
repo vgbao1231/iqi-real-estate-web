@@ -10,7 +10,6 @@ import {
   Lightbulb,
   TrendingUp,
   CheckCircle,
-  ArrowRight,
 } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -20,31 +19,28 @@ export default function AboutJuwaiPage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <section
-        className="py-12 bg-cover bg-center relative"
-        style={{ backgroundImage: `url('/images/abstract-blue-bg.png')` }}
-      >
-        <div className="absolute inset-0 bg-blue-950/30 dark:bg-blue-950/50" />
+      <section className="py-12 bg-gradient-to-br from-orange-400/90 via-orange-400 to-orange-500 dark:from-orange-400 dark:to-orange-600">
         <div className="container mx-auto px-4 relative z-10 text-white md:px-8">
           <FadeIn>
             <div className="flex items-center gap-2 mb-4">
               <Link
-                href="/about"
-                className="inline-flex items-center text-blue-200 hover:text-blue-100"
+                href="/"
+                className="inline-flex items-center text-orange-100 hover:text-white"
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
-                Quay lại trang Giới thiệu
+                Quay lại trang chủ
               </Link>
-              <Badge className="bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
-                JUWAI IQI VÀ IQI ATLAS
+              <Badge className="bg-orange-100 text-orange-800 dark:bg-orange-700 dark:text-orange-100">
+                TẬP ĐOÀN JUWAI IQI
               </Badge>
             </div>
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Mạng lưới toàn cầu và Công nghệ tiên tiến
+              IQI Global – Mạng lưới bất động sản quốc tế
             </h1>
             <p className="text-xl max-w-3xl">
-              Khám phá sức mạnh của Juwai IQI, tập đoàn bất động sản hàng đầu
-              Đông Nam Á, và nền tảng công nghệ IQI Atlas đột phá.
+              Khám phá sức mạnh của Juwai IQI – tập đoàn bất động sản quốc tế sở
+              hữu hơn 50.000 chuyên viên tại 30 quốc gia, cùng nền tảng số IQI
+              Atlas hỗ trợ toàn diện.
             </p>
           </FadeIn>
         </div>
@@ -56,38 +52,28 @@ export default function AboutJuwaiPage() {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <SlideIn direction="left">
               <div>
-                <h2 className="text-3xl font-bold mb-6">
-                  Juwai IQI: Sức mạnh toàn cầu
-                </h2>
+                <h2 className="text-3xl font-bold mb-6">Về Juwai IQI</h2>
                 <div className="space-y-4 text-muted-foreground">
                   <p>
-                    Juwai IQI là một trong những tập đoàn bất động sản lớn nhất
-                    và phát triển nhanh nhất tại Đông Nam Á, với sự hiện diện
-                    tại hơn 20 quốc gia và vùng lãnh thổ. Chúng tôi kết nối
-                    người mua và người bán trên toàn thế giới, mang đến những cơ
-                    hội đầu tư đa dạng.
+                    Juwai IQI là tập đoàn công nghệ bất động sản hàng đầu Châu Á
+                    – sở hữu mạng lưới hơn 50.000 chuyên viên bất động sản hoạt
+                    động tại 30 quốc gia, với hơn 42.000 giao dịch trong năm
+                    2022.
                   </p>
                   <p>
-                    Là thành viên của Juwai IQI, IQI Vietnam được thừa hưởng
-                    mạng lưới rộng lớn, nguồn lực dồi dào và kinh nghiệm quốc
-                    tế, giúp chúng tôi phục vụ khách hàng một cách toàn diện
-                    hơn.
+                    Là thành viên chính thức, IQI Vietnam thừa hưởng toàn bộ hệ
+                    sinh thái và nguồn lực của tập đoàn để kết nối khách hàng
+                    với những cơ hội đầu tư toàn cầu.
                   </p>
                 </div>
-                <motion.div whileHover={{ scale: 1.05 }} className="mt-6">
-                  <Button className="bg-blue-600 hover:bg-blue-700">
-                    Tìm hiểu thêm về Juwai IQI
-                    <ArrowRight className="ml-2 w-4 h-4" />
-                  </Button>
-                </motion.div>
               </div>
             </SlideIn>
             <SlideIn direction="right">
               <div className="relative">
                 <motion.div whileHover={{ scale: 1.05 }}>
                   <Image
-                    src="/placeholder-2.webp?height=400&width=600"
-                    alt="Juwai IQI Global Network"
+                    src="/images/juwai-iqi-network.jpg"
+                    alt="Juwai IQI Network"
                     width={600}
                     height={400}
                     className="rounded-lg shadow-lg"
@@ -104,11 +90,12 @@ export default function AboutJuwaiPage() {
         <div className="container mx-auto px-4">
           <FadeIn className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              IQI Atlas: Nền tảng công nghệ đột phá
+              IQI Atlas – Nền tảng công nghệ dẫn đầu
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              IQI Atlas là hệ sinh thái công nghệ độc quyền, hỗ trợ đại lý và
-              khách hàng trong mọi giao dịch bất động sản.
+              IQI Atlas là hệ sinh thái số toàn diện hỗ trợ chuyên viên bất động
+              sản trong toàn bộ quy trình tư vấn, bán hàng, đào tạo và chăm sóc
+              khách hàng.
             </p>
           </FadeIn>
 
@@ -125,13 +112,13 @@ export default function AboutJuwaiPage() {
                       <Lightbulb className="w-10 h-10 text-green-600" />
                     </motion.div>
                     <CardTitle className="text-2xl">
-                      Quản lý dự án thông minh
+                      Quản lý giao dịch
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <p className="text-muted-foreground">
-                      Truy cập thông tin chi tiết về hàng nghìn dự án, cập nhật
-                      trạng thái theo thời gian thực.
+                      Theo dõi toàn bộ tiến độ giao dịch, lịch sử khách hàng và
+                      tài liệu liên quan ngay trên nền tảng.
                     </p>
                   </CardContent>
                 </Card>
@@ -150,13 +137,13 @@ export default function AboutJuwaiPage() {
                       <Network className="w-10 h-10 text-purple-600" />
                     </motion.div>
                     <CardTitle className="text-2xl">
-                      Kết nối đại lý toàn cầu
+                      Mạng lưới toàn cầu
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <p className="text-muted-foreground">
-                      Hơn 30.000 đại lý trên toàn thế giới cùng nhau chia sẻ
-                      thông tin và cơ hội.
+                      Kết nối và hợp tác với hàng chục nghìn đại lý trên toàn
+                      thế giới trong thời gian thực.
                     </p>
                   </CardContent>
                 </Card>
@@ -175,13 +162,13 @@ export default function AboutJuwaiPage() {
                       <TrendingUp className="w-10 h-10 text-orange-600" />
                     </motion.div>
                     <CardTitle className="text-2xl">
-                      Phân tích thị trường chuyên sâu
+                      Phân tích dữ liệu
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <p className="text-muted-foreground">
-                      Cung cấp dữ liệu và báo cáo thị trường chính xác, hỗ trợ
-                      quyết định đầu tư.
+                      Hệ thống báo cáo chuyên sâu giúp đánh giá thị trường và
+                      hiệu quả bán hàng chính xác.
                     </p>
                   </CardContent>
                 </Card>
@@ -196,75 +183,61 @@ export default function AboutJuwaiPage() {
         <div className="container mx-auto px-4 md:px-24">
           <FadeIn className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Lợi ích cho khách hàng
+              Khách hàng nhận được gì từ IQI?
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Với Juwai IQI và IQI Atlas, khách hàng của chúng tôi được hưởng
-              những lợi ích vượt trội:
+              IQI Vietnam mang lại giải pháp toàn diện cho nhà đầu tư, người mua
+              và chủ sở hữu bất động sản.
             </p>
           </FadeIn>
 
           <div className="grid md:grid-cols-2 gap-8">
             <SlideIn direction="left">
               <div className="space-y-4">
-                <div className="flex items-start space-x-3">
-                  <CheckCircle className="w-5 h-5 text-blue-600 mt-1 flex-shrink-0" />
-                  <div>
-                    <h4 className="font-semibold text-lg">
-                      Tiếp cận dự án toàn cầu
-                    </h4>
-                    <p className="text-muted-foreground">
-                      Dễ dàng tìm kiếm và đầu tư vào các dự án bất động sản tại
-                      nhiều quốc gia.
-                    </p>
+                {[
+                  {
+                    title: 'Mạng lưới phân phối toàn cầu',
+                    desc: 'Tiếp cận khách hàng tiềm năng trên toàn thế giới thông qua hơn 50.000 chuyên viên.',
+                  },
+                  {
+                    title: 'Thông tin minh bạch & chính xác',
+                    desc: 'IQI công bố đầy đủ thông tin dự án, pháp lý, hoa hồng và hỗ trợ mọi thủ tục.',
+                  },
+                  {
+                    title: 'Đội ngũ chuyên gia đồng hành',
+                    desc: 'Tư vấn chuyên sâu, hỗ trợ lựa chọn sản phẩm, chiến lược đầu tư, tài chính và pháp lý.',
+                  },
+                ].map((item, idx) => (
+                  <div className="flex items-start space-x-3" key={idx}>
+                    <CheckCircle className="w-5 h-5 text-blue-600 mt-1 flex-shrink-0" />
+                    <div>
+                      <h4 className="font-semibold text-lg">{item.title}</h4>
+                      <p className="text-muted-foreground">{item.desc}</p>
+                    </div>
                   </div>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <CheckCircle className="w-5 h-5 text-blue-600 mt-1 flex-shrink-0" />
-                  <div>
-                    <h4 className="font-semibold text-lg">
-                      Thông tin minh bạch
-                    </h4>
-                    <p className="text-muted-foreground">
-                      Mọi thông tin về dự án, pháp lý, giá cả đều được công khai
-                      và cập nhật liên tục.
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <CheckCircle className="w-5 h-5 text-blue-600 mt-1 flex-shrink-0" />
-                  <div>
-                    <h4 className="font-semibold text-lg">Tư vấn chuyên sâu</h4>
-                    <p className="text-muted-foreground">
-                      Đội ngũ chuyên gia giàu kinh nghiệm hỗ trợ từ A-Z, đảm bảo
-                      quyết định đầu tư hiệu quả.
-                    </p>
-                  </div>
-                </div>
+                ))}
               </div>
             </SlideIn>
             <SlideIn direction="right">
               <div className="space-y-4">
-                <div className="flex items-start space-x-3">
-                  <CheckCircle className="w-5 h-5 text-blue-600 mt-1 flex-shrink-0" />
-                  <div>
-                    <h4 className="font-semibold text-lg">Hỗ trợ 24/7</h4>
-                    <p className="text-muted-foreground">
-                      Đội ngũ hỗ trợ luôn sẵn sàng giúp đỡ khách hàng mọi lúc
-                      mọi nơi.
-                    </p>
+                {[
+                  {
+                    title: 'Hệ thống công nghệ hiện đại',
+                    desc: 'IQI Atlas giúp giao dịch nhanh chóng, minh bạch và quản lý hiệu quả.',
+                  },
+                  {
+                    title: 'Đào tạo & cập nhật liên tục',
+                    desc: 'Đại lý và khách hàng được tiếp cận thông tin thị trường mới nhất qua nhiều kênh nội bộ.',
+                  },
+                ].map((item, idx) => (
+                  <div className="flex items-start space-x-3" key={idx}>
+                    <CheckCircle className="w-5 h-5 text-blue-600 mt-1 flex-shrink-0" />
+                    <div>
+                      <h4 className="font-semibold text-lg">{item.title}</h4>
+                      <p className="text-muted-foreground">{item.desc}</p>
+                    </div>
                   </div>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <CheckCircle className="w-5 h-5 text-blue-600 mt-1 flex-shrink-0" />
-                  <div>
-                    <h4 className="font-semibold text-lg">Tiện ích đa dạng</h4>
-                    <p className="text-muted-foreground">
-                      Cung cấp nhiều tiện ích hỗ trợ khách hàng trong quá trình
-                      đầu tư.
-                    </p>
-                  </div>
-                </div>
+                ))}
               </div>
             </SlideIn>
           </div>
@@ -276,11 +249,11 @@ export default function AboutJuwaiPage() {
         <div className="container mx-auto px-4 text-center">
           <FadeIn>
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Sẵn sàng trở thành một phần của IQI Vietnam?
+              Cùng xây dựng tương lai bất động sản cùng IQI Vietnam
             </h2>
             <p className="text-xl mb-8 max-w-2xl mx-auto opacity-90">
-              Khám phá các vị trí tuyển dụng hiện có và gửi hồ sơ của bạn ngay
-              hôm nay!
+              Gia nhập mạng lưới hơn 50.000 chuyên viên toàn cầu và khám phá cơ
+              hội nghề nghiệp hấp dẫn.
             </p>
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Link href="/careers">

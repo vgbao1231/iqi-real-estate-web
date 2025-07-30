@@ -118,7 +118,7 @@ export default function AboutUs() {
                 </motion.div>
               </div>
               <motion.div whileHover={{ scale: 1.05 }} className="mt-6">
-                <Link href="/about">
+                <Link href="/about/juwai">
                   <Button className="bg-orange-600 hover:bg-orange-700">
                     Tìm hiểu thêm
                     <ArrowRight className="ml-2 w-4 h-4" />

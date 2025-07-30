@@ -43,7 +43,7 @@ export default function ContactPage() {
       description: 'Gọi ngay để được tư vấn miễn phí',
       contact: '0764155155',
       action: 'Gọi ngay',
-      color: 'text-green-600',
+      color: 'text-green-500',
       bg: 'bg-green-100 dark:bg-green-900/30',
     },
     {
@@ -212,7 +212,7 @@ export default function ContactPage() {
       title: 'Gọi Hotline',
       description: '0764155155',
       action: () => window.open('tel:0764155155'),
-      color: 'bg-green-600 hover:bg-green-700',
+      color: 'bg-green-500 hover:bg-green-700',
     },
     {
       icon: MessageCircle,
@@ -233,25 +233,25 @@ export default function ContactPage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <section className="py-12 bg-gradient-to-r from-green-50 to-green-100 dark:from-green-950/20 dark:to-green-900/20">
+      <section className="py-12 bg-gradient-to-br from-orange-400/90 via-orange-400 to-orange-500 dark:from-orange-400 dark:to-orange-600">
         <div className="container mx-auto px-4 md:px-12">
           <FadeIn>
             <div className="flex items-center gap-2 mb-4">
               <Link
                 href="/"
-                className="inline-flex items-center text-green-600 hover:text-green-700"
+                className="inline-flex items-center text-white hover:text-orange-100"
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Quay lại trang chủ
               </Link>
-              <Badge className="bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300">
+              <Badge className="bg-orange-200 text-orange-700 dark:bg-orange-900/30 dark:text-orange-300">
                 LIÊN HỆ
               </Badge>
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4 text-white">
               Liên hệ với IQI Vietnam
             </h1>
-            <p className="text-xl text-muted-foreground max-w-3xl">
+            <p className="text-xl max-w-3xl text-white/80">
               Chúng tôi luôn sẵn sàng hỗ trợ bạn 24/7. Liên hệ ngay để được tư
               vấn miễn phí từ đội ngũ chuyên gia
             </p>
@@ -342,7 +342,7 @@ export default function ContactPage() {
               <Card className="sticky top-12">
                 <CardHeader>
                   <CardTitle className="text-2xl flex items-center">
-                    <Send className="w-6 h-6 mr-2 text-green-600" />
+                    <Send className="w-6 h-6 mr-2 text-orange-500" />
                     Gửi tin nhắn
                   </CardTitle>
                   <p className="text-muted-foreground">
@@ -415,7 +415,7 @@ export default function ContactPage() {
                     whileTap={{ scale: 0.98 }}
                   >
                     <Button
-                      className="w-full bg-green-600 hover:bg-green-700"
+                      className="w-full bg-orange-500 hover:bg-green-700"
                       size="lg"
                     >
                       <Send className="w-4 h-4 mr-2" />
@@ -454,7 +454,7 @@ export default function ContactPage() {
                         </div>
                       </div>
                       <div className="p-3 bg-muted/50 rounded-lg">
-                        <div className="text-2xl font-bold text-green-600">
+                        <div className="text-2xl font-bold text-orange-500">
                           20+
                         </div>
                         <div className="text-sm text-muted-foreground">
@@ -600,7 +600,7 @@ export default function ContactPage() {
             <div>
               <div className="flex items-center justify-center mb-8">
                 <div className="flex items-center space-x-3">
-                  <MessageCircle className="w-6 h-6 text-green-600" />
+                  <MessageCircle className="w-6 h-6 text-orange-500" />
                   <h3 className="text-2xl font-bold">Văn phòng tư vấn</h3>
                   <Badge className="bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300">
                     {offices.consultationOffices.length} văn phòng

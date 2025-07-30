@@ -262,7 +262,7 @@ const property = {
       `,
     },
     hotline: '1900 636 999',
-    logoImage: '/logo-dark.svg',
+    logoImage: '/logo-detail-light.png',
     backgroundImage: '/background-hero-3.png',
   },
 

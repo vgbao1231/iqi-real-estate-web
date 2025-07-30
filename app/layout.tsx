@@ -5,6 +5,7 @@ import { ReactQueryProvider } from '@/components/providers/react-query-provider'
 import LayoutWrapper from '@/components/layout/layout-wrapper';
 import React from 'react';
 import 'leaflet/dist/leaflet.css';
+import GoogleTranslateScript from '@/components/common/google-translate-script';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -33,7 +34,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="vi" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <head>
         <meta
           name="google-site-verification"
@@ -42,7 +43,10 @@ export default function RootLayout({
       </head>
       <body className={inter.className} suppressHydrationWarning>
         <LayoutWrapper>
-          <ReactQueryProvider>{children}</ReactQueryProvider>
+          <ReactQueryProvider>
+            {children}
+            <GoogleTranslateScript />
+          </ReactQueryProvider>
         </LayoutWrapper>
       </body>
     </html>

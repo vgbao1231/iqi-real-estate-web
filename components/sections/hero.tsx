@@ -21,19 +21,19 @@ export default function Hero() {
   // Hero carousel
   const heroSlides = [
     {
-      image: '/placeholder-1.webp',
+      image: '/hero-1.png',
       title: 'Đối tác Bất động sản Đáng tin cậy tại Việt Nam',
       subtitle:
         'Với hơn 15 năm kinh nghiệm, IQI Vietnam là đối tác tin cậy cho mọi nhu cầu bất động sản của bạn.',
     },
     {
-      image: '/placeholder-2.webp',
+      image: '/hero-2.jpg',
       title: 'Đầu tư Bất động sản Quốc tế',
       subtitle:
         'Khám phá cơ hội đầu tư bất động sản tại Singapore, Malaysia, Australia với lợi nhuận hấp dẫn.',
     },
     {
-      image: '/placeholder-3.jpg',
+      image: '/placeholder-1.webp',
       title: 'Tư vấn Chuyên nghiệp 24/7',
       subtitle:
         'Đội ngũ chuyên gia giàu kinh nghiệm sẵn sàng hỗ trợ bạn tìm kiếm bất động sản phù hợp nhất.',

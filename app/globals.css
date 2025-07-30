@@ -16,7 +16,7 @@
     --secondary-foreground: 222.2 47.4% 11.2%; /* #0f172a */
     --muted: 210 40% 96%; /* #f1f5f9 */
     --muted-foreground: 0 0% 33%; /* #555555 */
-    --muted-card: 0 0% 94%; /* #efefef */
+    --muted-card: 0 0% 98%; /* #fafafa */
     --accent: 30 100% 97.1%; /* #fff8f1 */
     --accent-foreground: 222.2 47.4% 11.2%; /* #0f172a */
     --accent-card: 0 0% 90%; /* #e5e5e5 */
@@ -81,6 +81,15 @@
 
   ::-webkit-scrollbar-thumb:hover {
     background-color: hsl(var(--muted-foreground) / 0.5);
+  }
+
+  .goog-logo-link,
+  .goog-te-gadget span {
+    display: none !important;
+  }
+  #google_translate_element {
+    font-size: 0;
+    display: none;
   }
 }
 

@@ -4,49 +4,36 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { FadeIn, SlideIn, ScaleIn } from '@/components/common/animations';
-import {
-  ArrowLeft,
-  Users,
-  Award,
-  Globe,
-  Target,
-  Shield,
-  Zap,
-  TrendingUp,
-} from 'lucide-react';
+import { ArrowLeft, Target, Shield, Zap } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 
 export default function AboutMissionPage() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       {/* Header */}
-      <section
-        className="py-12 bg-cover bg-center relative"
-        style={{ backgroundImage: `url('/images/abstract-orange-bg.png')` }}
-      >
-        <div className="absolute inset-0 bg-orange-950/30 dark:bg-orange-950/50" />
+      <section className="py-12 bg-gradient-to-br from-orange-400/90 via-orange-400 to-orange-500 dark:from-orange-400 dark:to-orange-600">
         <div className="container mx-auto px-4 relative z-10 text-white md:px-8">
           <FadeIn>
             <div className="flex items-center gap-2 mb-4">
               <Link
-                href="/about"
-                className="inline-flex items-center text-orange-200 hover:text-orange-100"
+                href="/"
+                className="inline-flex items-center text-orange-100 hover:text-white"
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
-                Quay lại trang Giới thiệu
+                Quay lại trang chủ
               </Link>
-              <Badge className="bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300">
-                HÌNH THÀNH VÀ SỨ MỆNH
+              <Badge className="bg-orange-100 text-orange-800 dark:bg-orange-700 dark:text-orange-100">
+                GIỚI THIỆU IQI VIETNAM
               </Badge>
             </div>
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Hành trình và Sứ mệnh của IQI Vietnam
+              Đối tác bất động sản toàn cầu đến từ Châu Á
             </h1>
             <p className="text-xl max-w-3xl">
-              Tìm hiểu về câu chuyện thành lập, tầm nhìn và những giá trị cốt
-              lõi đã định hình IQI Vietnam.
+              Tìm hiểu hành trình phát triển, tầm nhìn toàn cầu và các giá trị
+              cốt lõi định hình IQI Vietnam - thành viên của IQI Global.
             </p>
           </FadeIn>
         </div>
@@ -59,24 +46,23 @@ export default function AboutMissionPage() {
             <SlideIn direction="left">
               <div>
                 <h2 className="text-3xl font-bold mb-6">
-                  Câu chuyện thành lập
+                  Tập đoàn công nghệ bất động sản hàng đầu
                 </h2>
                 <div className="space-y-4 text-muted-foreground">
                   <p>
-                    IQI Vietnam được thành lập vào năm 2009 với tầm nhìn trở
-                    thành công ty bất động sản hàng đầu tại Việt Nam. Khởi đầu
-                    từ một văn phòng nhỏ tại TP.HCM, chúng tôi đã không ngừng
-                    phát triển và mở rộng.
+                    IQI Global là tập đoàn công nghệ bất động sản quốc tế, sở
+                    hữu mạng lưới hơn 50.000 chuyên viên tại 30 quốc gia, thực
+                    hiện hơn 42.000 giao dịch trong năm 2022.
                   </p>
                   <p>
-                    Năm 2015, IQI Vietnam chính thức gia nhập mạng lưới Juwai
-                    IQI - tập đoàn bất động sản lớn nhất Đông Nam Á, mở ra cơ
-                    hội tiếp cận thị trường quốc tế cho khách hàng Việt Nam.
+                    IQI Vietnam – chi nhánh tại Việt Nam – mang sứ mệnh kết nối
+                    khách hàng với các cơ hội đầu tư bất động sản chất lượng
+                    trên toàn cầu.
                   </p>
                   <p>
-                    Đến nay, với hơn 500 đại lý chuyên nghiệp và 20 văn phòng
-                    trên toàn quốc, chúng tôi tự hào là cầu nối tin cậy giữa
-                    khách hàng và những cơ hội đầu tư bất động sản tốt nhất.
+                    Với hệ sinh thái số hiện đại và đội ngũ chuyên nghiệp, IQI
+                    Vietnam không ngừng tạo ra giá trị bền vững cho cộng đồng
+                    thông qua đổi mới và chuyên môn sâu rộng.
                   </p>
                 </div>
               </div>
@@ -85,11 +71,12 @@ export default function AboutMissionPage() {
               <div className="relative">
                 <motion.div whileHover={{ scale: 1.05 }}>
                   <Image
-                    src="/placeholder-2.webp?height=400&width=600"
+                    src="/iqi-office.jpg"
                     alt="IQI Vietnam Office"
                     width={600}
                     height={400}
                     className="rounded-lg shadow-lg"
+                    priority
                   />
                 </motion.div>
               </div>
@@ -123,9 +110,9 @@ export default function AboutMissionPage() {
                   </CardHeader>
                   <CardContent>
                     <p className="text-muted-foreground">
-                      Kết nối khách hàng với những cơ hội bất động sản tốt nhất,
-                      tạo ra giá trị bền vững cho cộng đồng và xã hội thông qua
-                      dịch vụ chuyên nghiệp và tận tâm.
+                      Trao quyền phát triển cho cá nhân và doanh nghiệp; trở
+                      thành tập đoàn tư vấn và tiếp thị bất động sản hàng đầu
+                      toàn cầu.
                     </p>
                   </CardContent>
                 </Card>
@@ -147,9 +134,8 @@ export default function AboutMissionPage() {
                   </CardHeader>
                   <CardContent>
                     <p className="text-muted-foreground">
-                      Trở thành công ty bất động sản hàng đầu Việt Nam, tiên
-                      phong trong ứng dụng công nghệ và dịch vụ, mở rộng ra thị
-                      trường khu vực và quốc tế.
+                      Thay đổi cuộc sống và hiện thực hóa ước mơ cho cộng đồng,
+                      khách hàng và đội ngũ thông qua đổi mới và công nghệ.
                     </p>
                   </CardContent>
                 </Card>
@@ -171,9 +157,9 @@ export default function AboutMissionPage() {
                   </CardHeader>
                   <CardContent>
                     <p className="text-muted-foreground">
-                      Chính trực, chuyên nghiệp, tận tâm và luôn đặt lợi ích
-                      khách hàng lên hàng đầu. Chúng tôi cam kết minh bạch trong
-                      mọi giao dịch.
+                      Đam mê - Sáng tạo - Trung thực - Cộng hưởng – Khát vọng
+                      lớn. IQI không chỉ hướng đến kết quả mà còn hướng đến sự
+                      phát triển bền vững.
                     </p>
                   </CardContent>
                 </Card>
@@ -183,50 +169,8 @@ export default function AboutMissionPage() {
         </div>
       </section>
 
-      {/* Achievements */}
-      <section className="py-16">
-        <div className="container mx-auto px-4">
-          <FadeIn className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Thành tựu đạt được
-            </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Những con số ấn tượng khẳng định vị thế của IQI Vietnam trong
-              ngành bất động sản
-            </p>
-          </FadeIn>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-            {[
-              { number: '15+', label: 'Năm kinh nghiệm', icon: Award },
-              {
-                number: '10,000+',
-                label: 'Bất động sản đã bán',
-                icon: TrendingUp,
-              },
-              { number: '5,000+', label: 'Khách hàng hài lòng', icon: Users },
-              { number: '20+', label: 'Văn phòng toàn quốc', icon: Globe },
-            ].map((item, index) => (
-              <ScaleIn key={index} delay={index * 0.2}>
-                <motion.div whileHover={{ scale: 1.05 }}>
-                  <Card className="text-center">
-                    <CardContent className="p-6">
-                      <item.icon className="w-12 h-12 text-orange-600 mx-auto mb-4" />
-                      <div className="text-3xl font-bold text-orange-600 mb-2">
-                        {item.number}
-                      </div>
-                      <div className="text-muted-foreground">{item.label}</div>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              </ScaleIn>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Contact CTA */}
-      <section className="py-16 bg-gradient-to-r from-orange-600 to-orange-500 text-white">
+      <section className="py-16 bg-gradient-to-r from-orange-400 to-orange-500 dark:from-orange-500 dark:to-orange-600 text-white">
         <div className="container mx-auto px-4 text-center">
           <FadeIn>
             <h2 className="text-3xl md:text-4xl font-bold mb-4">

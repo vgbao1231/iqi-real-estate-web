@@ -75,6 +75,7 @@ export const properties = [
         'MIA Design Studio',
       ],
       landArea: 220.05,
+      measurementUnit: 'sqft',
       legal: 'Sổ hồng sở hữu lâu dài',
       handover: 'Dự kiến Quý II/2028',
       address: 'Đường Nguyễn Hữu Trí, Xã Thanh Phú, Huyện Bến Lức, Long An',
@@ -231,7 +232,7 @@ export const properties = [
 
     // Liên hệ
     contact: {
-      logoImage: '/logo-dark.svg',
+      logoImage: '/logo-detail-light.png',
       backgroundImage: '/background-hero-3.png',
       agencyImage: '/contact.png',
       title: 'Đông Tây Land',
@@ -364,6 +365,7 @@ export const properties = [
         'MIA Design Studio',
       ],
       landArea: 220.05,
+      measurementUnit: 'sqft',
       legal: 'Sổ hồng sở hữu lâu dài',
       handover: 'Dự kiến Quý II/2028',
       address: 'Đường Nguyễn Hữu Trí, Xã Thanh Phú, Huyện Bến Lức, Long An',
@@ -520,7 +522,7 @@ export const properties = [
 
     // Liên hệ
     contact: {
-      logoImage: '/logo-dark.svg',
+      logoImage: '/logo-detail-light.png',
       backgroundImage: '/background-hero-3.png',
       agencyImage: '/contact.png',
       title: 'Đông Tây Land',
@@ -653,6 +655,7 @@ export const properties = [
         'MIA Design Studio',
       ],
       landArea: 220.05,
+      measurementUnit: 'sqft',
       legal: 'Sổ hồng sở hữu lâu dài',
       handover: 'Dự kiến Quý II/2028',
       address: 'Đường Nguyễn Hữu Trí, Xã Thanh Phú, Huyện Bến Lức, Long An',
@@ -809,7 +812,7 @@ export const properties = [
 
     // Liên hệ
     contact: {
-      logoImage: '/logo-dark.svg',
+      logoImage: '/logo-detail-light.png',
       backgroundImage: '/background-hero-3.png',
       agencyImage: '/contact.png',
       title: 'Đông Tây Land',

@@ -28,7 +28,10 @@ const Overview = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
       label: 'Tổng số căn/sản phẩm',
       value: data.totalUnits?.toLocaleString(),
     },
-    { label: 'Diện tích đất', value: `${data.area} ha` },
+    {
+      label: 'Diện tích đất',
+      value: `${data.landArea} ${data.measurementUnit === 'sqm' ? 'm²' : 'ft²'}`,
+    },
     {
       label: 'Phòng ngủ',
       value: `${data.minBedroom} - ${data.maxBedroom} phòng`,
@@ -67,21 +70,23 @@ const Overview = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
           priority
         />
         <div className="absolute z-10 inset-0 bg-gradient-to-b from-black/50 to-transparent"></div>
-        <div className="relative z-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 p-6 px-32">
+        <div className="relative z-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 p-6 px-32">
           {data.overviewImages.map((item: any, idx: number) => (
             <FadeIn
               key={idx}
-              delay={0.6 + idx * 0.15}
-              className="border border-lime-500 relative min-w-[300px] overflow-hidden flex- flex-col"
+              delay={idx * 0.15}
+              className="border border-lime-500 overflow-hidden flex flex-col"
             >
-              <Image
-                src={item.image}
-                alt="Eco Retreat Overview Background"
-                width={300}
-                height={300}
-                className="object-contain"
-                priority
-              />
+              <div className="relative w-full aspect-square">
+                <Image
+                  src={item.image}
+                  alt="Eco Retreat Overview Background"
+                  className="object-contain"
+                  fill
+                  priority
+                />
+              </div>
+
               <div
                 className="text-base text-white px-6 py-4 italic"
                 dangerouslySetInnerHTML={{ __html: item.description }}
@@ -93,7 +98,7 @@ const Overview = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
 
       {/* Sub section 2 */}
       <div className="relative min-h-screen center-both">
-        <div className="h-full w-full center-both flex-col md:flex-row max-w-[85rem] py-8 gap-8">
+        <div className="h-full w-full center-both flex-col md:flex-row max-w-[85vw] py-8 gap-12">
           {/* Left content */}
           <SlideIn
             direction="left"

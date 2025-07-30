@@ -13,6 +13,8 @@ import {
   Users,
   Menu,
   Smile,
+  Languages,
+  X,
 } from 'lucide-react';
 import Link from 'next/link';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -20,6 +22,13 @@ import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { FadeIn } from '../common/animations';
 import { cn } from '@/lib/utils';
+import { Button } from '../ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '../ui/dropdown-menu';
 
 export default function Header({
   enableHidden = true,
@@ -31,6 +40,9 @@ export default function Header({
   const [isDark, setIsDark] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
+  const [language, setLanguage] = useState('vi');
+  const [isLanguageMenuOpen, setIsLanguageMenuOpen] = useState(false);
+
   const navMenus = [
     {
       label: 'Giới thiệu',
@@ -123,6 +135,23 @@ export default function Header({
     },
   ];
 
+  const languages = [
+    { code: 'vi', label: 'Tiếng Việt', icon: '🇻🇳' },
+    { code: 'en', label: 'English', icon: '🇺🇸' },
+    { code: 'ja', label: '日本語', icon: '🇯🇵' },
+    { code: 'ko', label: '한국어', icon: '🇰🇷' },
+  ];
+
+  const changeLang = (langCode: string) => {
+    const select = document.querySelector<HTMLSelectElement>('.goog-te-combo');
+    if (select) {
+      console.log(select, langCode);
+
+      select.value = langCode;
+      select.dispatchEvent(new Event('change'));
+    }
+  };
+
   // Đóng menu khi click ra ngoài
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -193,33 +222,27 @@ export default function Header({
           </div>
 
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2">
-            <motion.div
-              whileHover={{ scale: 1.1 }}
-              className="flex items-center justify-center"
-            >
-              {/* Logo for dark mode */}
-              <Image
-                src="/logo-dark.svg"
-                alt="logo"
-                width={100}
-                height={40}
-                className="hidden dark:block"
-              />
-
-              {/* Logo for light mode */}
-              <Image
-                src={
-                  enableToggleDark && isDark
-                    ? '/logo-detail-light.png'
-                    : '/logo-detail-dark.png'
-                }
-                alt="logo"
-                width={120}
-                height={44}
-                className="dark:hidden"
-              />
-            </motion.div>
+          <Link
+            href="/"
+            className="center-both hover:scale-105 relative w-[140px] h-[64px]"
+          >
+            {/* Logo for dark mode */}
+            <Image
+              src="/logo-detail-light.png"
+              alt="logo"
+              fill
+              className="object-contain hidden dark:block"
+            />
+            <Image
+              src={
+                enableToggleDark && isDark
+                  ? '/logo-detail-light.png'
+                  : '/logo-detail-dark.png'
+              }
+              alt="logo"
+              fill
+              className="object-contain dark:hidden"
+            />
           </Link>
 
           {/* Navigation Menu */}
@@ -317,6 +340,65 @@ export default function Header({
               </div>
             </div>
             <ThemeToggle isDark={enableToggleDark && isDark} />
+            <div className="flex items-center space-x-4">
+              {/* Language Switcher */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className={cn(
+                      'hover:bg-orange-300/10 dark:hover:bg-orange-900/20 bg-transparent',
+                      isDark
+                        ? 'text-white border-white/60'
+                        : 'text-black dark:text-white border-black/30 dark:border-white/60'
+                    )}
+                  >
+                    <Languages className="h-4 w-4" />
+                    <span className="text-sm font-medium">
+                      {language === 'vi' ? 'VI' : 'EN'}
+                    </span>
+                    <ChevronDown className="h-3 w-3" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                  align="end"
+                  className="min-w-[160px] bg-card/60"
+                >
+                  {languages.map(({ code, label, icon }) => (
+                    <DropdownMenuItem
+                      key={code}
+                      onClick={() => {
+                        setLanguage(code);
+                        changeLang(code);
+                      }}
+                      className={cn(
+                        'cursor-pointer',
+                        language === code && 'bg-accent/40'
+                      )}
+                    >
+                      <div className="flex items-center space-x-2">
+                        <span className="text-lg">{icon}</span>
+                        <span>{label}</span>
+                      </div>
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+
+              {/* Mobile menu button */}
+              <Button
+                variant="ghost"
+                size="sm"
+                className="md:hidden"
+                onClick={() => setIsLanguageMenuOpen(!isLanguageMenuOpen)}
+              >
+                {isLanguageMenuOpen ? (
+                  <X className="h-5 w-5" />
+                ) : (
+                  <Menu className="h-5 w-5" />
+                )}
+              </Button>
+            </div>
           </div>
         </div>
       </div>

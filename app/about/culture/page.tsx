@@ -84,11 +84,11 @@ export default function AboutCulturePage() {
           <FadeIn>
             <div className="flex items-center gap-2 mb-4">
               <Link
-                href="/about"
+                href="/"
                 className="inline-flex items-center text-purple-200 hover:text-purple-100"
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
-                Quay lại trang Giới thiệu
+                Quay lại trang chủ
               </Link>
               <Badge className="bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300">
                 VĂN HÓA VÀ MÔI TRƯỜNG
