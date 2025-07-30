@@ -73,24 +73,20 @@ export default function AboutCulturePage() {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       {/* Header */}
-      <section
-        className="py-12 bg-cover bg-center relative"
-        style={{ backgroundImage: `url('/images/abstract-purple-bg.png')` }}
-      >
-        <div className="absolute inset-0 bg-purple-950/30 dark:bg-purple-950/50" />
+      <section className="py-12 bg-gradient-to-br from-orange-400/90 via-orange-400 to-orange-500 dark:from-orange-400 dark:to-orange-600">
         <div className="container mx-auto px-4 relative z-10 text-white">
           <FadeIn>
             <div className="flex items-center gap-2 mb-4">
               <Link
                 href="/"
-                className="inline-flex items-center text-purple-200 hover:text-purple-100"
+                className="inline-flex items-center text-orange-100 hover:text-white"
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Quay lại trang chủ
               </Link>
-              <Badge className="bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300">
+              <Badge className="bg-orange-100 text-orange-800 dark:bg-orange-700 dark:text-orange-100">
                 VĂN HÓA VÀ MÔI TRƯỜNG
               </Badge>
             </div>

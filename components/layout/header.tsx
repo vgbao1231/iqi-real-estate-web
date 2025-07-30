@@ -142,14 +142,17 @@ export default function Header({
     { code: 'ko', label: '한국어', icon: '🇰🇷' },
   ];
 
-  const changeLang = (langCode: string) => {
-    const select = document.querySelector<HTMLSelectElement>('.goog-te-combo');
-    if (select) {
-      console.log(select, langCode);
+  useEffect(() => {
+    const savedLang = localStorage.getItem('language') || 'vi';
+    setLanguage(savedLang);
+  }, []);
 
-      select.value = langCode;
-      select.dispatchEvent(new Event('change'));
-    }
+  const handleChangeLang = (code: string) => {
+    localStorage.setItem('language', code);
+    setLanguage(code);
+
+    document.cookie = `googtrans=/vi/${code}; path=/`;
+    window.location.reload();
   };
 
   // Đóng menu khi click ra ngoài
@@ -301,23 +304,6 @@ export default function Header({
           {/* Search and Actions */}
           <div className="flex items-center space-x-4">
             <div className="hidden md:flex items-center space-x-3">
-              {/* <div className="relative">
-                <Search
-                  className={cn(
-                    'absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4',
-                    enableToggleDark && isDark ? 'text-white' : 'dark:text-white'
-                  )}
-                />
-                <Input
-                  placeholder="Tìm nhanh..."
-                  className={cn(
-                    'pl-10 w-48 bg-transparent transition-all',
-                    enableToggleDark && isDark
-                      ? 'placeholder:text-white text-white border-white/60 hover:bg-black/20 focus:bg-black/20'
-                      : ' dark:placeholder:text-white border-black/30 dark:border-white/60 dark:hover:bg-black/20 dark:focus:bg-black/20'
-                  )}
-                />
-              </div> */}
               <div className="relative">
                 <Phone
                   className={cn(
@@ -355,7 +341,8 @@ export default function Header({
                   >
                     <Languages className="h-4 w-4" />
                     <span className="text-sm font-medium">
-                      {language === 'vi' ? 'VI' : 'EN'}
+                      {languages.find((l) => l.code === language)?.label ??
+                        language}
                     </span>
                     <ChevronDown className="h-3 w-3" />
                   </Button>
@@ -367,10 +354,7 @@ export default function Header({
                   {languages.map(({ code, label, icon }) => (
                     <DropdownMenuItem
                       key={code}
-                      onClick={() => {
-                        setLanguage(code);
-                        changeLang(code);
-                      }}
+                      onClick={() => handleChangeLang(code)}
                       className={cn(
                         'cursor-pointer',
                         language === code && 'bg-accent/40'

@@ -11,31 +11,37 @@ declare global {
 
 export default function GoogleTranslateScript() {
   useEffect(() => {
-    // Chặn load lại nếu đã có
-    if (document.getElementById('google-translate-script')) return;
+    // Ẩn UI tạm thời để tránh flash tiếng Việt
+    document.documentElement.style.visibility = 'hidden';
 
-    const script = document.createElement('script');
-    script.id = 'google-translate-script';
-    script.src =
-      '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
-    script.async = true;
-    document.body.appendChild(script);
+    // Load script nếu chưa có
+    if (!document.getElementById('google-translate-script')) {
+      const script = document.createElement('script');
+      script.id = 'google-translate-script';
+      script.src =
+        '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+      script.async = true;
+      document.body.appendChild(script);
+    }
 
-    // Khởi tạo widget dịch
+    // Gắn callback khi Google Translate sẵn sàng
     window.googleTranslateElementInit = () => {
       new window.google.translate.TranslateElement(
         {
-          pageLanguage: 'vi', // ngôn ngữ gốc của trang
-          includedLanguages: 'en,vi,ja,ko', // thêm ngôn ngữ bạn muốn
+          pageLanguage: 'vi',
+          includedLanguages: 'vi,en,ja,ko,zh-CN',
           layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE,
           autoDisplay: false,
         },
         'google_translate_element'
       );
+
+      // Sau khi dịch xong (hoặc timeout), hiện lại giao diện
+      setTimeout(() => {
+        document.documentElement.style.visibility = 'visible';
+      }, 300); // Điều chỉnh delay nếu cần
     };
   }, []);
 
-  return (
-    <div id="google_translate_element" className="fixed top-4 right-4 z-50" />
-  );
+  return <div id="google_translate_element" className="hidden" />;
 }
