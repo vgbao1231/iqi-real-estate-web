@@ -189,7 +189,7 @@ export default function VietnamPropertiesPage() {
       <Header filteredProperties={filteredProperties} />
 
       {/* Search and Filter */}
-      <section className="py-10 px-6">
+      <section className="py-10 px-6 md:px-12">
         <div className="container mx-auto px-4">
           <FadeIn>
             <Card className="border-border shadow-lg mb-6">
@@ -392,75 +392,79 @@ export default function VietnamPropertiesPage() {
         </div>
       </section>
 
-      <div className="container mx-auto px-4 md:px-12 pb-8">
-        {/* Main Content */}
-        <div className="lg:col-span-3 space-y-6">
-          {/* Results */}
-          <FadeIn delay={0.2}>
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold">
-                {filteredProperties.length} dự án được tìm thấy
-              </h2>
-              <div className="text-sm text-muted-foreground">
-                Cập nhật: {new Date().toLocaleDateString('vi-VN')}
-              </div>
-            </div>
-          </FadeIn>
-
-          {/* Properties Grid */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {paginatedProperties.map((property, index) => (
-              <PropertyCard
-                key={property.id}
-                property={property}
-                index={index}
-              />
-            ))}
-          </div>
-
-          {/* Pagination */}
-          {totalPages > 1 && (
-            <FadeIn delay={0.3}>
-              <div className="flex justify-center mt-16">
-                <div className="flex items-center space-x-2">
-                  <Button
-                    variant="outline"
-                    onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
-                    disabled={currentPage === 1}
-                    className="h-12 px-6"
-                  >
-                    Trước
-                  </Button>
-
-                  {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                    (page) => (
-                      <Button
-                        key={page}
-                        variant={currentPage === page ? 'default' : 'outline'}
-                        onClick={() => setCurrentPage(page)}
-                        className="h-12 w-12"
-                      >
-                        {page}
-                      </Button>
-                    )
-                  )}
-
-                  <Button
-                    variant="outline"
-                    onClick={() =>
-                      setCurrentPage(Math.min(totalPages, currentPage + 1))
-                    }
-                    disabled={currentPage === totalPages}
-                    className="h-12 px-6"
-                  >
-                    Sau
-                  </Button>
+      <section className="py-10 px-6 md:px-12">
+        <div className="container mx-auto px-4 pb-8">
+          {/* Main Content */}
+          <div className="lg:col-span-3 space-y-6">
+            {/* Results */}
+            <FadeIn delay={0.2}>
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold">
+                  {filteredProperties.length} dự án được tìm thấy
+                </h2>
+                <div className="text-sm text-muted-foreground">
+                  Cập nhật: {new Date().toLocaleDateString('vi-VN')}
                 </div>
               </div>
             </FadeIn>
-          )}
+
+            {/* Properties Grid */}
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {paginatedProperties.map((property, index) => (
+                <PropertyCard
+                  key={property.id}
+                  property={property}
+                  index={index}
+                />
+              ))}
+            </div>
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <FadeIn delay={0.3}>
+                <div className="flex justify-center mt-16">
+                  <div className="flex items-center space-x-2">
+                    <Button
+                      variant="outline"
+                      onClick={() =>
+                        setCurrentPage(Math.max(1, currentPage - 1))
+                      }
+                      disabled={currentPage === 1}
+                      className="h-12 px-6"
+                    >
+                      Trước
+                    </Button>
+
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                      (page) => (
+                        <Button
+                          key={page}
+                          variant={currentPage === page ? 'default' : 'outline'}
+                          onClick={() => setCurrentPage(page)}
+                          className="h-12 w-12"
+                        >
+                          {page}
+                        </Button>
+                      )
+                    )}
+
+                    <Button
+                      variant="outline"
+                      onClick={() =>
+                        setCurrentPage(Math.min(totalPages, currentPage + 1))
+                      }
+                      disabled={currentPage === totalPages}
+                      className="h-12 px-6"
+                    >
+                      Sau
+                    </Button>
+                  </div>
+                </div>
+              </FadeIn>
+            )}
+          </div>
         </div>
-      </div>
+      </section>
     </div>
   );
 }

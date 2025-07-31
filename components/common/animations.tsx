@@ -95,15 +95,22 @@ export function CountUp({
   end,
   duration = 2,
   delay = 0,
+  decimals = 0, // NEW: số chữ số sau dấu phẩy
 }: {
   end: number;
   duration?: number;
   delay?: number;
+  decimals?: number;
 }) {
   const count = useMotionValue(0);
+
   const rounded = useTransform(count, (latest) =>
-    Math.round(latest).toLocaleString()
+    latest.toLocaleString(undefined, {
+      minimumFractionDigits: decimals,
+      maximumFractionDigits: decimals,
+    })
   );
+
   const [hasAnimated, setHasAnimated] = useState(false);
 
   useEffect(() => {
@@ -113,7 +120,7 @@ export function CountUp({
         delay,
         onComplete: () => setHasAnimated(true),
       });
-      return controls.stop; // cleanup
+      return controls.stop;
     }
   }, [count, end, duration, delay, hasAnimated]);
 

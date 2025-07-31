@@ -49,9 +49,9 @@ export function IntroductionTab({
           />
           <FileUpload
             label="Ảnh hero"
-            value={introduction.heroImage}
+            value={introduction.introductionImage}
             onChange={(file) =>
-              updateProject('introduction', 'heroImage', file)
+              updateProject('introduction', 'introductionImage', file)
             }
           />
           <FileUpload
@@ -137,9 +137,9 @@ export function IntroductionTab({
         {/* Introduction Images - Unlimited */}
         <MultiFileUpload
           label="Ảnh giới thiệu (Không giới hạn số lượng)"
-          value={introduction.introductionImages}
+          value={introduction.launchImages}
           onChange={(files) =>
-            updateProject('introduction', 'introductionImages', files)
+            updateProject('introduction', 'launchImages', files)
           }
         />
 
@@ -236,9 +236,9 @@ export function IntroductionTab({
         <div className="space-y-2">
           <Label>Nội dung ra mắt</Label>
           <RichTextEditor
-            value={introduction.launchText}
+            value={introduction.launchDescription}
             onChange={(value) =>
-              updateProject('introduction', 'launchText', value)
+              updateProject('introduction', 'launchDescription', value)
             }
             placeholder="Nhập nội dung ra mắt với các điểm nổi bật..."
           />

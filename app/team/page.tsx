@@ -6,9 +6,6 @@ import { Badge } from '@/components/ui/badge';
 import { FadeIn, ScaleIn } from '@/components/common/animations';
 import {
   ArrowLeft,
-  Mail,
-  Phone,
-  Linkedin,
   Award,
   Users,
   TrendingUp,
@@ -20,56 +17,61 @@ import {
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import Achievement from '@/components/sections/achievement';
 
 export default function TeamPage() {
   const leadership = [
     {
       id: 1,
-      name: 'Dustin Trung Nguyễn',
-      position: 'Giám đốc Quốc gia - IQI Vietnam',
-      experience: 'Dẫn dắt hoạt động IQI Vietnam tại Hà Nội, TP.HCM và Đà Nẵng',
-      image: 'placeholder-2.webp',
-      bio: 'Với vai trò Giám đốc Quốc gia, Dustin đã thúc đẩy sự mở rộng nhanh chóng của IQI Vietnam, khai trương văn phòng tại 3 thành phố trọng điểm và xây dựng đội ngũ tư vấn chuyên nghiệp trên toàn quốc.',
+      name: 'Nguyễn Thành Trung',
+      position: 'Chairman',
+      image: 'nguyen-thanh-trung.png',
+      experience: '11+ năm điều hành doanh nghiệp tại Việt Nam & Singapore',
+      bio: 'Sáng lập và phát triển IQI Vietnam, định hướng chiến lược kinh doanh, mở rộng văn phòng và đội ngũ trên toàn quốc.',
       achievements: [
-        'Khai trương văn phòng IQI tại Hà Nội, TP.HCM & Đà Nẵng',
-        'Mở rộng thị trường ra khu vực miền Trung',
-        'Xây dựng đội ngũ hơn 900 tư vấn viên chuyên nghiệp',
+        'Giám đốc Sales tại Alma Nha Trang',
+        'Thành lập IQI Vietnam tại Hà Nội, TP.HCM, Đà Nẵng',
+        'Quản lý vận hành & pháp lý toàn quốc',
       ],
-      email: 'dustin.nguyen@iqi.com',
-      phone: '+84‑…',
-      linkedin: 'linkedin.com/in/dustin-trung-nguyen',
     },
     {
       id: 2,
-      name: 'La Kim Mỹ Duyên',
-      position: 'Giám đốc Kinh doanh – TP.HCM & Hồ Tràm',
-      experience: 'Lãnh đạo kinh doanh và phát triển đội ngũ bán hàng',
-      image: 'placeholder-2.webp',
-      bio: 'Chị Duyên phụ trách mảng kinh doanh tại TP.HCM và thị trường Hồ Tràm, trực tiếp huấn luyện các tư vấn viên xuất sắc và xây dựng quan hệ chiến lược với đối tác.',
+      name: 'Nguyễn Minh Thư',
+      position: 'Group Vice President',
+      image: 'nguyen-minh-thu.png',
+      experience: 'Nhiều năm giữ vai trò lãnh đạo tại Savills & Realplus',
+      bio: 'Phụ trách hoạch định chiến lược phát triển bền vững, đồng thời mở rộng thị trường tại các khu vực trọng điểm.',
       achievements: [
-        'Giám đốc Kinh doanh TP.HCM & Hồ Tràm',
-        'Phát triển nhanh đội ngũ bán hàng địa phương',
-        'Lãnh đạo trụ cột bán hàng xuất sắc',
+        'Tối ưu hệ thống vận hành IQI',
+        'Mở rộng thành công thị trường miền Trung',
+        'Dẫn dắt đội ngũ tư vấn chiến lược',
       ],
-      email: 'duyen.lakim@iqi.com',
-      phone: '+84‑…',
-      linkedin: 'linkedin.com/in/la-kim-my-duyen',
     },
     {
       id: 3,
-      name: 'Nguyễn Minh Thư',
-      position: 'Trưởng bộ phận Mở rộng - IQI Vietnam',
-      experience: 'Giám sát khai trương văn phòng mới và phát triển thị trường',
-      image: 'placeholder-2.webp',
-      bio: 'Chị Thư dẫn dắt chiến lược mở rộng thị trường, điều phối khai trương văn phòng Đà Nẵng và mở rộng hiện diện của IQI tại các thành phố trọng điểm.',
+      name: 'Lê Thị Mai Hoa',
+      position: 'Group Vice President',
+      image: 'le-thi-mai-hoa.png',
+      experience: '16+ năm trong lĩnh vực bất động sản từ năm 2007',
+      bio: 'Từng giữ vị trí CEO tại nhiều doanh nghiệp, chuyên định hướng hợp tác chiến lược và mô hình đầu tư lâu dài.',
       achievements: [
-        'Điều phối khai trương văn phòng Đà Nẵng',
-        'Dẫn dắt mở rộng 3 văn phòng khu vực',
-        'Xây dựng chiến lược mở rộng bền vững',
+        'Phát triển mô hình liên kết đầu tư bền vững',
+        'Lãnh đạo chiến lược kinh doanh dài hạn',
+        'Kết nối với đối tác lớn trong ngành',
       ],
-      email: 'minhthu.nguyen@iqi.com',
-      phone: '+84‑…',
-      linkedin: 'linkedin.com/in/nguyen-minh-thu',
+    },
+    {
+      id: 4,
+      name: 'La Kim Mỹ Duyên',
+      position: 'Vice President',
+      image: 'la-kim-my-duyen.png',
+      experience: '10+ năm kinh nghiệm tư vấn & điều hành kinh doanh',
+      bio: 'Lãnh đạo hoạt động bán hàng tại TP.HCM & Hồ Tràm, tập trung phát triển đội ngũ và tăng trưởng doanh số bền vững.',
+      achievements: [
+        'Xây dựng đội ngũ tư vấn chuyên sâu',
+        'Dẫn dắt bán hàng tại Hồ Tràm & TP.HCM',
+        'Thúc đẩy tăng trưởng doanh số khu vực',
+      ],
     },
   ];
 
@@ -170,8 +172,8 @@ export default function TeamPage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <section className="py-12 bg-gradient-to-br from-orange-400/90 via-orange-400 to-orange-500 dark:from-orange-400 dark:to-orange-600">
-        <div className="container mx-auto px-4 relative z-10 text-white md:px-8">
+      <section className="py-12 md:px-12 bg-gradient-to-br from-orange-400/90 via-orange-400 to-orange-500 dark:from-orange-400 dark:to-orange-600">
+        <div className="container mx-auto px-4 relative z-10 text-white">
           <FadeIn>
             <div className="flex items-center gap-2 mb-4">
               <Link
@@ -198,8 +200,8 @@ export default function TeamPage() {
       </section>
 
       {/* Leadership Team */}
-      <section className="py-16">
-        <div className="container mx-auto px-4 md:px-16">
+      <section className="py-16 md:px-12">
+        <div className="container mx-auto px-4">
           <FadeIn className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
               Ban lãnh đạo
@@ -210,7 +212,7 @@ export default function TeamPage() {
             </p>
           </FadeIn>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {leadership.map((leader, index) => (
               <ScaleIn key={leader.id} delay={index * 0.2}>
                 <motion.div whileHover={{ y: -10 }} className="h-full">
@@ -222,7 +224,7 @@ export default function TeamPage() {
                           alt={leader.name}
                           width={200}
                           height={200}
-                          className="rounded-full w-32 h-32 object-cover mx-auto mb-4 shadow-lg"
+                          className="rounded-full w-32 h-32 object-cover object-top mx-auto mb-4 shadow-lg"
                         />
                       </motion.div>
                       <CardTitle className="text-xl">{leader.name}</CardTitle>
@@ -248,38 +250,13 @@ export default function TeamPage() {
                           {leader.achievements.map((achievement, idx) => (
                             <div
                               key={idx}
-                              className="flex items-center text-xs text-muted-foreground"
+                              className="flex text-xs text-start text-muted-foreground"
                             >
                               <Star className="w-3 h-3 mr-1 text-yellow-500" />
                               {achievement}
                             </div>
                           ))}
                         </div>
-                      </div>
-
-                      {/* Contact */}
-                      <div className="flex justify-center space-x-2">
-                        <motion.button
-                          whileHover={{ scale: 1.1 }}
-                          whileTap={{ scale: 0.9 }}
-                          className="p-2 text-muted-foreground hover:text-blue-600 transition-colors"
-                        >
-                          <Mail className="w-4 h-4" />
-                        </motion.button>
-                        <motion.button
-                          whileHover={{ scale: 1.1 }}
-                          whileTap={{ scale: 0.9 }}
-                          className="p-2 text-muted-foreground hover:text-green-600 transition-colors"
-                        >
-                          <Phone className="w-4 h-4" />
-                        </motion.button>
-                        <motion.button
-                          whileHover={{ scale: 1.1 }}
-                          whileTap={{ scale: 0.9 }}
-                          className="p-2 text-muted-foreground hover:text-blue-700 transition-colors"
-                        >
-                          <Linkedin className="w-4 h-4" />
-                        </motion.button>
                       </div>
                     </CardContent>
                   </Card>
@@ -291,8 +268,8 @@ export default function TeamPage() {
       </section>
 
       {/* Departments */}
-      <section className="py-16 bg-muted/30">
-        <div className="container mx-auto px-4 md:px-16">
+      <section className="py-16 md:px-12 bg-muted/30">
+        <div className="container mx-auto px-4">
           <FadeIn className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
               Các phòng ban
@@ -340,7 +317,7 @@ export default function TeamPage() {
       </section>
 
       {/* Top Agents */}
-      <section className="py-16">
+      <section className="py-16 md:px-12">
         <div className="container mx-auto px-4">
           <FadeIn className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
@@ -352,7 +329,7 @@ export default function TeamPage() {
             </p>
           </FadeIn>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 md:px-12">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {topAgents.map((agent, index) => (
               <ScaleIn key={agent.id} delay={index * 0.1}>
                 <Card className="text-center h-full">
@@ -408,8 +385,11 @@ export default function TeamPage() {
         </div>
       </section>
 
+      {/* Achievement */}
+      <Achievement />
+
       {/* Join Team CTA */}
-      <section className="py-16 bg-gradient-to-r from-blue-600 to-blue-500 text-white">
+      <section className="py-16 md:px-12 bg-gradient-to-r from-blue-600 to-blue-500 dark:!from-blue-700 dark:!to-blue-800 text-white">
         <div className="container mx-auto px-4 text-center">
           <FadeIn>
             <h2 className="text-3xl md:text-4xl font-bold mb-4">

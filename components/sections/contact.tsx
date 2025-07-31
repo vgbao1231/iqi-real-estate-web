@@ -10,9 +10,9 @@ export default function Contact() {
     <section className="py-16 relative overflow-hidden">
       {/* Animated Background */}
       <motion.div
-        animate={{ scale: [1, 1.2, 1] }}
+        animate={{ scale: [1, 1.3, 1] }}
         transition={{
-          duration: 5,
+          duration: 3,
           repeat: Number.POSITIVE_INFINITY,
           ease: 'linear',
         }}
@@ -21,14 +21,14 @@ export default function Contact() {
       <motion.div
         animate={{ scale: [1.2, 1, 1.2] }}
         transition={{
-          duration: 3,
+          duration: 2,
           repeat: Number.POSITIVE_INFINITY,
           ease: 'linear',
         }}
         className="absolute -bottom-16 left-10 w-48 h-48 bg-white/20 dark:bg-white/10 rounded-full blur-md"
       />
 
-      <div className="absolute inset-0 bg-gradient-to-br from-[#fbf4e6]/60 to-orange-300 dark:from-gray-900/40 dark:via-gray-950/60 dark:to-black/40"></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-[#fbf4e6]/60 to-orange-300 dark:from-gray-800/40 dark:via-gray-850/60 dark:to-gray-900/40"></div>
       <SlideIn direction="right" className="absolute inset-0 z-10">
         <Image
           src="https://iqiglobal-web-revamp.s3.ap-southeast-1.amazonaws.com/laravel/img/home/house-with-vector-background.webp"

@@ -10,6 +10,7 @@ import Career from '@/components/sections/career';
 import News from '@/components/sections/news';
 import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
+import Achievement from '@/components/sections/achievement';
 
 export default function HomePage() {
   return (
@@ -34,6 +35,9 @@ export default function HomePage() {
 
       {/* Partners Section - Compact Version */}
       <Partners />
+
+      {/* Achievement */}
+      <Achievement />
 
       {/* Contact CTA */}
       <Contact />

@@ -6,69 +6,99 @@ import { Badge } from '@/components/ui/badge';
 import { FadeIn, SlideIn, ScaleIn } from '@/components/common/animations';
 import {
   ArrowLeft,
-  Heart,
   Users,
-  Lightbulb,
-  Zap,
-  Handshake,
-  Smile,
   Briefcase,
   ArrowRight,
+  Globe,
+  Layers,
+  Megaphone,
+  Sparkles,
+  BarChart,
+  Cpu,
+  GraduationCap,
+  Network,
+  TrendingUp,
 } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import Achievement from '@/components/sections/achievement';
 
 export default function AboutCulturePage() {
   const cultureValues = [
     {
-      icon: Handshake,
-      title: 'Hợp tác và Đoàn kết',
+      title: 'Đam mê và sáng tạo',
       description:
-        'Chúng tôi tin vào sức mạnh của sự hợp tác, cùng nhau xây dựng một môi trường làm việc hỗ trợ.',
+        'Luôn đổi mới và đầu tư công nghệ để dẫn đầu, nâng cao trải nghiệm cho khách hàng và cộng đồng.',
+      icon: Sparkles,
+      color: 'orange',
+    },
+    {
+      title: 'Tổng hoà nguồn lực',
+      description:
+        'Xây dựng mô hình doanh nghiệp trong doanh nghiệp, phát huy thế mạnh đa chiều.',
+      icon: Layers,
       color: 'green',
     },
     {
-      icon: Lightbulb,
-      title: 'Sáng tạo và Đổi mới',
+      title: 'Môi trường chuyên nghiệp',
       description:
-        'Khuyến khích tư duy đột phá, không ngừng tìm kiếm những giải pháp mới và hiệu quả.',
+        'IQI Vietnam là nơi giao thoa giữa thế hệ trẻ năng động và đội ngũ dày kinh nghiệm.',
+      icon: Briefcase,
+      color: 'blue',
+    },
+    {
+      title: 'Tư duy toàn cầu',
+      description:
+        'Chiến lược phát triển gắn liền với tầm nhìn quốc tế, hướng đến dẫn đầu toàn cầu.',
+      icon: Globe,
       color: 'purple',
     },
     {
-      icon: Smile,
-      title: 'Tôn trọng và Lắng nghe',
+      title: 'Hiệu ứng truyền thông',
       description:
-        'Mọi ý kiến đều được trân trọng, tạo nên một môi trường cởi mở và đa dạng.',
-      color: 'yellow',
-    },
-    {
-      icon: Heart,
-      title: 'Tận tâm và Trách nhiệm',
-      description:
-        'Cam kết mang lại giá trị tốt nhất cho khách hàng và cộng đồng với tinh thần trách nhiệm cao.',
+        'Phát triển thương hiệu thông qua đào tạo và đội ngũ KOLs chất lượng ngành BĐS.',
+      icon: Megaphone,
       color: 'red',
     },
   ];
 
   const environmentBenefits = [
     {
-      icon: Briefcase,
-      title: 'Cơ hội phát triển sự nghiệp',
+      title: 'Đào tạo chuyên sâu',
       description:
-        'Lộ trình thăng tiến rõ ràng, cơ hội học hỏi và phát triển bản thân không ngừng.',
+        'Học viện IQI và nền tảng online giúp bạn phát triển liên tục về chuyên môn và kỹ năng.',
+      icon: GraduationCap,
     },
     {
+      title: 'Nền tảng công nghệ hiện đại',
+      description:
+        'Super App, hệ sinh thái kỹ thuật số hỗ trợ toàn diện từ đăng tin đến phân tích dữ liệu.',
+      icon: Cpu,
+    },
+    {
+      title: 'Mạng lưới toàn cầu',
+      description:
+        'Kết nối hơn 50,000 chuyên viên từ 111 quốc gia, mở rộng cơ hội quốc tế.',
+      icon: Network,
+    },
+    {
+      title: 'Cơ hội thăng tiến rõ ràng',
+      description:
+        'Lộ trình phát triển minh bạch, bạn có thể trở thành Team Leader, Director chỉ trong vài năm.',
+      icon: TrendingUp,
+    },
+    {
+      title: 'Thị trường lớn và tiềm năng',
+      description:
+        'Phân phối hàng trăm dự án cao cấp trên toàn Việt Nam với doanh số hàng trăm triệu USD.',
+      icon: BarChart,
+    },
+    {
+      title: 'Văn hóa gắn kết',
+      description:
+        'Các hoạt động gắn kết đội ngũ, truyền cảm hứng và xây dựng thương hiệu cá nhân.',
       icon: Users,
-      title: 'Môi trường làm việc năng động',
-      description:
-        'Đội ngũ trẻ, nhiệt huyết, luôn sẵn sàng chia sẻ và hỗ trợ lẫn nhau.',
-    },
-    {
-      icon: Zap,
-      title: 'Công nghệ hiện đại',
-      description:
-        'Ứng dụng các công cụ và nền tảng công nghệ tiên tiến nhất trong công việc.',
     },
   ];
 
@@ -76,7 +106,7 @@ export default function AboutCulturePage() {
     <div className="min-h-screen">
       {/* Header */}
       <section className="py-12 bg-gradient-to-br from-orange-400/90 via-orange-400 to-orange-500 dark:from-orange-400 dark:to-orange-600">
-        <div className="container mx-auto px-4 relative z-10 text-white">
+        <div className="container mx-auto px-4 md:px-12 relative z-10 text-white">
           <FadeIn>
             <div className="flex items-center gap-2 mb-4">
               <Link
@@ -91,11 +121,12 @@ export default function AboutCulturePage() {
               </Badge>
             </div>
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Văn hóa và Môi trường làm việc tại IQI Vietnam
+              IQI Vietnam - Nơi truyền cảm hứng và phát triển
             </h1>
             <p className="text-xl max-w-3xl">
-              Chúng tôi xây dựng một môi trường làm việc nơi mỗi cá nhân đều
-              được truyền cảm hứng để phát triển và cống hiến.
+              Chúng tôi không ngừng tạo ra giá trị, trao quyền cho từng cá nhân
+              phát triển vượt bậc trong môi trường đầy năng lượng, công nghệ và
+              cơ hội toàn cầu.
             </p>
           </FadeIn>
         </div>
@@ -103,7 +134,7 @@ export default function AboutCulturePage() {
 
       {/* Core Values */}
       <section className="py-16">
-        <div className="container mx-auto px-4 md:px-16">
+        <div className="container mx-auto px-4 md:px-8">
           <FadeIn className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
               Giá trị văn hóa cốt lõi
@@ -114,11 +145,11 @@ export default function AboutCulturePage() {
             </p>
           </FadeIn>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid md:grid-cols-3 lg:flex lg:flex-wrap lg:justify-center gap-8">
             {cultureValues.map((value, index) => (
               <ScaleIn key={index} delay={index * 0.1}>
                 <motion.div whileHover={{ y: -10 }}>
-                  <Card className="text-center h-full">
+                  <Card className="text-center h-full lg:w-[24vw]">
                     <CardHeader>
                       <motion.div
                         whileHover={{ rotate: 360 }}
@@ -155,16 +186,14 @@ export default function AboutCulturePage() {
                 </h2>
                 <div className="space-y-4 text-muted-foreground">
                   <p>
-                    Tại IQI Vietnam, chúng tôi tạo dựng một môi trường làm việc
-                    chuyên nghiệp, năng động và đầy cảm hứng. Chúng tôi tin rằng
-                    sự phát triển của mỗi cá nhân là chìa khóa cho sự thành công
-                    của tổ chức.
+                    Với hơn 670 đại diện kinh doanh tại TP.HCM, Hà Nội và Đà
+                    Nẵng, IQI Vietnam xây dựng môi trường làm việc chuyên
+                    nghiệp, sáng tạo và đáng tin cậy.
                   </p>
                   <p>
-                    Bạn sẽ được làm việc trong một không gian mở, hiện đại, với
-                    các đồng nghiệp tài năng và luôn sẵn sàng hỗ trợ. Chúng tôi
-                    khuyến khích sự chủ động, sáng tạo và tinh thần học hỏi
-                    không ngừng.
+                    Chúng tôi luôn khuyến khích sự chủ động, học hỏi không ngừng
+                    và tinh thần hợp tác trong không gian hiện đại, đầy cảm
+                    hứng.
                   </p>
                 </div>
                 <motion.div whileHover={{ scale: 1.05 }} className="mt-6">
@@ -229,17 +258,21 @@ export default function AboutCulturePage() {
         </div>
       </section>
 
+      {/* Achievement */}
+      <Achievement />
+
       {/* Contact CTA */}
       <section className="py-16 bg-gradient-to-r from-purple-600 to-purple-500 text-white">
         <div className="container mx-auto px-4 text-center">
           <FadeIn>
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Sẵn sàng trở thành một phần của IQI Vietnam?
+              Sẵn sàng gia nhập đội ngũ hơn 670 chiến binh tại IQI Vietnam?
             </h2>
             <p className="text-xl mb-8 max-w-2xl mx-auto opacity-90">
-              Khám phá các vị trí tuyển dụng hiện có và gửi hồ sơ của bạn ngay
-              hôm nay!
+              Hãy là một phần của tập đoàn bất động sản quốc tế, tiên phong về
+              công nghệ và đào tạo!
             </p>
+
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Link href="/careers">
                 <Button

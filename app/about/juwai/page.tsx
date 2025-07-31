@@ -14,13 +14,14 @@ import {
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import Achievement from '@/components/sections/achievement';
 
 export default function AboutJuwaiPage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <section className="py-12 bg-gradient-to-br from-orange-400/90 via-orange-400 to-orange-500 dark:from-orange-400 dark:to-orange-600">
-        <div className="container mx-auto px-4 relative z-10 text-white md:px-8">
+      <section className="py-12 md:px-12 bg-gradient-to-br from-orange-400/90 via-orange-400 to-orange-500 dark:from-orange-400 dark:to-orange-600">
+        <div className="container mx-auto px-4 relative z-10 text-white">
           <FadeIn>
             <div className="flex items-center gap-2 mb-4">
               <Link
@@ -47,8 +48,8 @@ export default function AboutJuwaiPage() {
       </section>
 
       {/* Juwai IQI Overview */}
-      <section className="py-16">
-        <div className="container mx-auto px-4 md:px-16">
+      <section className="py-16 md:px-12">
+        <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <SlideIn direction="left">
               <div>
@@ -70,7 +71,10 @@ export default function AboutJuwaiPage() {
             </SlideIn>
             <SlideIn direction="right">
               <div className="relative">
-                <motion.div whileHover={{ scale: 1.05 }}>
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  className="center-both"
+                >
                   <Image
                     src="/images/juwai-iqi-network.jpg"
                     alt="Juwai IQI Network"
@@ -86,7 +90,7 @@ export default function AboutJuwaiPage() {
       </section>
 
       {/* IQI Atlas Platform */}
-      <section className="py-16 bg-muted/30">
+      <section className="py-16 md:px-12 bg-muted/30">
         <div className="container mx-auto px-4">
           <FadeIn className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
@@ -179,8 +183,8 @@ export default function AboutJuwaiPage() {
       </section>
 
       {/* Benefits for Clients */}
-      <section className="py-16">
-        <div className="container mx-auto px-4 md:px-24">
+      <section className="py-16 md:px-12">
+        <div className="container mx-auto px-4">
           <FadeIn className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
               Khách hàng nhận được gì từ IQI?
@@ -244,8 +248,11 @@ export default function AboutJuwaiPage() {
         </div>
       </section>
 
+      {/* Achievement */}
+      <Achievement />
+
       {/* Contact CTA */}
-      <section className="py-16 bg-gradient-to-r from-purple-600 to-purple-500 text-white">
+      <section className="py-16 md:px-12 bg-gradient-to-r from-purple-600 to-purple-500 text-white">
         <div className="container mx-auto px-4 text-center">
           <FadeIn>
             <h2 className="text-3xl md:text-4xl font-bold mb-4">

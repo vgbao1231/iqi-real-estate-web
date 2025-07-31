@@ -41,7 +41,6 @@ export default function Header({
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const [language, setLanguage] = useState('vi');
-  const [isLanguageMenuOpen, setIsLanguageMenuOpen] = useState(false);
 
   const navMenus = [
     {
@@ -135,8 +134,6 @@ export default function Header({
     },
   ];
 
-  console.log(isMobileMenuOpen);
-
   const languages = [
     { code: 'vi', label: 'Tiếng Việt', icon: '🇻🇳' },
     { code: 'en', label: 'English', icon: '🇺🇸' },
@@ -145,14 +142,12 @@ export default function Header({
   ];
 
   useEffect(() => {
-    const savedLang = localStorage.getItem('language') || 'vi';
-    setLanguage(savedLang);
+    const cookie = document.cookie.match(/googtrans=\/vi\/(\w+)/);
+    const langFromCookie = cookie?.[1] || 'vi';
+    setLanguage(langFromCookie);
   }, []);
 
   const handleChangeLang = (code: string) => {
-    localStorage.setItem('language', code);
-    setLanguage(code);
-
     document.cookie = `googtrans=/vi/${code}; path=/`;
     window.location.reload();
   };
@@ -337,7 +332,8 @@ export default function Header({
                 />
               </div>
             </div>
-            <ThemeToggle isDark={enableToggleDark && isDark} />
+
+            {/* Actions */}
             <div className="flex items-center space-x-4">
               {/* Language Switcher */}
               <DropdownMenu>
@@ -381,6 +377,7 @@ export default function Header({
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
+            <ThemeToggle isDark={enableToggleDark && isDark} />
           </div>
         </div>
       </div>

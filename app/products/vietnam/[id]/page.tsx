@@ -17,7 +17,6 @@ import Timeline from './sections/Timeline';
 import Agency from './sections/Agency';
 import Cover from './sections/Cover';
 import { properties } from '@/lib/property-data';
-import ScrollToTopButton from '@/components/common/scroll-top';
 
 const arsenal = Arsenal({
   subsets: ['latin'],
@@ -117,8 +116,6 @@ export default function VietnamProductDetailPage() {
         arsenal.className
       )}
     >
-      <ScrollToTopButton />
-
       {/* ----------------------------------------------------------------------- */}
       {/* Cover – Header IQI                                                      */}
       {/* ----------------------------------------------------------------------- */}

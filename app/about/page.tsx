@@ -22,8 +22,8 @@ export default function AboutPage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <section className="py-12 bg-gradient-to-br from-orange-400/90 via-orange-400 to-orange-500 dark:from-orange-500 dark:to-orange-600">
-        <div className="container mx-auto px-4">
+      <section className="py-12 md:px-12 bg-gradient-to-br from-orange-400/90 via-orange-400 to-orange-500 dark:from-orange-500 dark:to-orange-600">
+        <div className="container mx-auto px-4 text-white">
           <FadeIn>
             <div className="flex items-center gap-4 mb-6">
               <Link
@@ -50,7 +50,7 @@ export default function AboutPage() {
       </section>
 
       {/* Company Story */}
-      <section className="py-16">
+      <section className="py-16 md:px-12">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <SlideIn direction="left">
@@ -96,7 +96,7 @@ export default function AboutPage() {
       </section>
 
       {/* Mission, Vision, Values */}
-      <section className="py-16 bg-muted/30">
+      <section className="py-16 md:px-12 bg-muted/30">
         <div className="container mx-auto px-4">
           <FadeIn className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
@@ -181,7 +181,7 @@ export default function AboutPage() {
       </section>
 
       {/* Achievements */}
-      <section className="py-16">
+      <section className="py-16 md:px-12">
         <div className="container mx-auto px-4">
           <FadeIn className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
@@ -223,7 +223,7 @@ export default function AboutPage() {
       </section>
 
       {/* Team */}
-      <section className="py-16 bg-muted/30">
+      <section className="py-16 md:px-12 bg-muted/30">
         <div className="container mx-auto px-4">
           <FadeIn className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
@@ -288,8 +288,8 @@ export default function AboutPage() {
       </section>
 
       {/* Contact CTA */}
-      <section className="py-16 bg-gradient-to-r from-orange-400 to-orange-500 dark:from-orange-500 dark:to-orange-600">
-        <div className="container mx-auto px-4 text-center">
+      <section className="py-16 md:px-12 bg-gradient-to-r from-orange-400 to-orange-500 dark:from-orange-500 dark:to-orange-600">
+        <div className="container mx-auto px-4 text-center text-white">
           <FadeIn>
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
               Muốn tìm hiểu thêm về IQI Vietnam?

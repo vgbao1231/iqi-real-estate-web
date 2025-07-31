@@ -12,31 +12,31 @@ export default function Hero() {
   const [isHovered, setIsHovered] = useState(false);
 
   const stats = [
-    { value: 10000, label: 'Bất động sản' },
-    { value: 5000, label: 'Khách hàng' },
-    { value: 500, label: 'Đại lý' },
-    { value: 15, label: 'Năm KN' },
+    { value: 42000, label: 'Giao dịch thành công (2022)' },
+    { value: 50000, label: 'Chuyên viên toàn cầu' },
+    { value: 111, label: 'Quốc gia có dự án' },
+    { value: 13.5, label: 'Triệu lượt tiếp cận/tháng', decimals: 1 }, // 👈
   ];
 
   // Hero carousel
   const heroSlides = [
     {
       image: '/hero-1.png',
-      title: 'Đối tác Bất động sản Đáng tin cậy tại Việt Nam',
+      title: 'Tập đoàn Bất động sản Công nghệ Toàn cầu',
       subtitle:
-        'Với hơn 15 năm kinh nghiệm, IQI Vietnam là đối tác tin cậy cho mọi nhu cầu bất động sản của bạn.',
+        'IQI Vietnam là thành viên của IQI Global với hơn 50.000 chuyên viên trên 30 quốc gia.',
     },
     {
       image: '/hero-2.jpg',
-      title: 'Đầu tư Bất động sản Quốc tế',
+      title: 'Đào tạo - Đồng hành - Phát triển',
       subtitle:
-        'Khám phá cơ hội đầu tư bất động sản tại Singapore, Malaysia, Australia với lợi nhuận hấp dẫn.',
+        'Chúng tôi trao quyền cho bạn xây dựng sự nghiệp bền vững trong lĩnh vực bất động sản.',
     },
     {
-      image: '/placeholder-1.webp',
-      title: 'Tư vấn Chuyên nghiệp 24/7',
+      image: '/placeholder-1.jpg',
+      title: 'Nền tảng toàn diện cho chuyên viên BĐS',
       subtitle:
-        'Đội ngũ chuyên gia giàu kinh nghiệm sẵn sàng hỗ trợ bạn tìm kiếm bất động sản phù hợp nhất.',
+        'Từ Super App, CRM đến hệ sinh thái đào tạo - tất cả trong một tại IQI Vietnam.',
     },
   ];
 
@@ -83,8 +83,8 @@ export default function Hero() {
             className="object-cover"
             priority
           />
-          <div className="absolute inset-0 bg-gradient-to-r !from-black/30 !via-black/10 !to-black/30" />
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background/20" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/10 to-background/20" />
+          <div className="absolute inset-0 z-20 bg-black/30 dark:bg-black/40" />
         </motion.div>
       </AnimatePresence>
 
@@ -104,16 +104,16 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -30 }}
             transition={{ duration: 0.5 }}
-            className="max-w-4xl min-h-[360px] center-both flex-col"
+            className="max-w-5xl min-h-[360px] center-both flex-col"
           >
             <FadeIn delay={0.2}>
-              <h1 className="text-4xl drop-shadow-md md:text-6xl font-bold py-6 bg-gradient-to-r !from-white !via-orange-200 !to-white bg-clip-text text-transparent">
+              <h1 className="text-4xl drop-shadow-lg md:text-6xl font-bold py-6 bg-gradient-to-r !from-white !via-orange-200 !to-white bg-clip-text text-transparent">
                 {heroSlides[currentSlide].title}
               </h1>
             </FadeIn>
 
             <FadeIn delay={0.3}>
-              <p className="text-xl font-medium text-shadow-soft text-gray-200 mb-8 max-w-2xl mx-auto">
+              <p className="text-xl font-semibold text-shadow-lg text-white mb-8 max-w-2xl mx-auto">
                 {heroSlides[currentSlide].subtitle}
               </p>
             </FadeIn>
@@ -161,9 +161,9 @@ export default function Hero() {
                 className="text-center bg-background/10 backdrop-brightness-90 backdrop-blur-sm rounded-lg p-4 hover:scale-105 transition-all"
               >
                 <div className="text-2xl font-bold text-orange-400">
-                  <CountUp end={item.value} />+
+                  <CountUp end={item.value} decimals={item.decimals} />+
                 </div>
-                <div className="text-sm text-gray-300">{item.label}</div>
+                <div className="text-sm text-gray-200">{item.label}</div>
               </div>
             ))}
           </div>

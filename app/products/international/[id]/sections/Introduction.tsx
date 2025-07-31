@@ -116,7 +116,7 @@ const Introduction = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
             className="relative md:w-1/2 w-full h-[80vh] center-both"
           >
             <Image
-              src={data.heroImage}
+              src={data.introductionImage}
               alt="Eco Retreat Hero"
               fill
               className="object-contain shadow-lg rounded-sm"
@@ -140,7 +140,7 @@ const Introduction = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
               opts={{ loop: true }}
             >
               <CarouselContent>
-                {data.introductionImages.map((img: any, idx: number) => (
+                {data.launchImages.map((img: any, idx: number) => (
                   <CarouselItem key={idx} className="pl-0">
                     <motion.div
                       initial={{ opacity: 0, y: 20 }}
@@ -159,7 +159,7 @@ const Introduction = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
                 ))}
               </CarouselContent>
               <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-3 z-10">
-                {data.introductionImages.map((_: any, i: any) => (
+                {data.launchImages.map((_: any, i: any) => (
                   <div
                     key={i}
                     className={cn(
@@ -194,7 +194,7 @@ const Introduction = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
               {/* Danh sách mô tả chi tiết */}
               <div
                 className="text-lg ml-4 text-center"
-                dangerouslySetInnerHTML={{ __html: data.launchText }}
+                dangerouslySetInnerHTML={{ __html: data.launchDescription }}
               />
             </div>
           </FadeIn>

@@ -8,13 +8,14 @@ import { ArrowLeft, Target, Shield, Zap } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import Achievement from '@/components/sections/achievement';
 
 export default function AboutMissionPage() {
   return (
     <div className="min-h-screen">
       {/* Header */}
-      <section className="py-12 bg-gradient-to-br from-orange-400/90 via-orange-400 to-orange-500 dark:from-orange-400 dark:to-orange-600">
-        <div className="container mx-auto px-4 relative z-10 text-white md:px-8">
+      <section className="py-12 md:px-12 bg-gradient-to-br from-orange-400/90 via-orange-400 to-orange-500 dark:from-orange-400 dark:to-orange-600">
+        <div className="container mx-auto px-4 relative z-10 text-white">
           <FadeIn>
             <div className="flex items-center gap-2 mb-4">
               <Link
@@ -40,8 +41,8 @@ export default function AboutMissionPage() {
       </section>
 
       {/* Company Story */}
-      <section className="py-16">
-        <div className="container mx-auto px-4 md:px-16">
+      <section className="py-16 md:px-12">
+        <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <SlideIn direction="left">
               <div>
@@ -69,7 +70,10 @@ export default function AboutMissionPage() {
             </SlideIn>
             <SlideIn direction="right">
               <div className="relative">
-                <motion.div whileHover={{ scale: 1.05 }}>
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  className="center-both"
+                >
                   <Image
                     src="/iqi-office.jpg"
                     alt="IQI Vietnam Office"
@@ -86,7 +90,7 @@ export default function AboutMissionPage() {
       </section>
 
       {/* Mission, Vision, Values */}
-      <section className="py-16 bg-muted/30">
+      <section className="py-16 md:px-12 bg-muted/30">
         <div className="container mx-auto px-4">
           <FadeIn className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
@@ -169,8 +173,11 @@ export default function AboutMissionPage() {
         </div>
       </section>
 
+      {/* Achievement */}
+      <Achievement />
+
       {/* Contact CTA */}
-      <section className="py-16 bg-gradient-to-r from-orange-400 to-orange-500 dark:from-orange-500 dark:to-orange-600 text-white">
+      <section className="py-16 md:px-12 bg-gradient-to-r from-orange-400 to-orange-500 dark:from-orange-500 dark:to-orange-600 text-white">
         <div className="container mx-auto px-4 text-center">
           <FadeIn>
             <h2 className="text-3xl md:text-4xl font-bold mb-4">

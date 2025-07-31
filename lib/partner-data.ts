@@ -28,15 +28,6 @@ export const partners = [
     type: 'Chủ đầu tư',
   },
   {
-    name: 'Juwai IQI',
-    logo: '/placeholder-2.webp?height=60&width=100&text=Juwai+IQI',
-    description:
-      'Mạng lưới bất động sản quốc tế hàng đầu châu Á với 20+ quốc gia',
-    projects: '1000+ dự án',
-    established: '2010',
-    type: 'Đối tác chiến lược',
-  },
-  {
     name: 'Vietcombank',
     logo: '/placeholder-2.webp?height=60&width=100&text=Vietcombank',
     description:

@@ -60,13 +60,13 @@ export default function Footer() {
 
   return (
     <footer className="bg-accent">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-7 gap-8 py-12 px-4 md:px-12 lg:px-20">
+      <div className="mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-7 gap-8 py-12 max-w-7xl">
         {/* Company Info */}
         <FadeIn delay={0.1} className="lg:col-span-3">
           <div className="flex items-center mb-6">
             <motion.div
               whileHover={{ scale: 1.1, rotate: 5 }}
-              className="rounded-lg center-both mr-4 relative w-[140px] h-[64px]"
+              className="center-both relative w-48 h-24"
             >
               <Image
                 src="/logo-detail-light.png"

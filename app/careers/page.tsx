@@ -70,25 +70,25 @@ export default function CareersPage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <section className="py-12 bg-gradient-to-r from-purple-50 to-purple-100 dark:from-purple-950/20 dark:to-purple-900/20">
-        <div className="container mx-auto px-4">
+      <section className="py-12 bg-gradient-to-br from-orange-400/90 via-orange-400 to-orange-500 dark:from-orange-400 dark:to-orange-600">
+        <div className="container mx-auto px-4 text-white md:px-12">
           <FadeIn>
             <div className="flex items-center gap-2 mb-4">
               <Link
                 href="/"
-                className="inline-flex items-center text-purple-600 hover:text-purple-700"
+                className="inline-flex items-center text-orange-100 hover:text-white"
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Quay lại trang chủ
               </Link>
-              <Badge className="bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300">
+              <Badge className="bg-orange-100 text-orange-800 dark:bg-orange-700 dark:text-orange-100">
                 CƠ HỘI NGHỀ NGHIỆP
               </Badge>
             </div>
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
               Tham gia đội ngũ IQI Vietnam
             </h1>
-            <p className="text-xl text-muted-foreground max-w-3xl">
+            <p className="text-xl max-w-3xl">
               Khởi đầu sự nghiệp bất động sản với đội ngũ chuyên nghiệp, chương
               trình đào tạo toàn diện và cơ hội thu nhập hấp dẫn tại IQI
               Vietnam.
@@ -98,7 +98,7 @@ export default function CareersPage() {
       </section>
 
       {/* Why Choose IQI */}
-      <section className="py-16">
+      <section className="py-16 md:px-12">
         <div className="container mx-auto px-4">
           <FadeIn className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
@@ -164,7 +164,7 @@ export default function CareersPage() {
       </section>
 
       {/* Job Openings */}
-      <section className="py-16 bg-muted/30">
+      <section className="py-16 md:px-12 bg-muted/30">
         <div className="container mx-auto px-4">
           <FadeIn className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
@@ -239,7 +239,7 @@ export default function CareersPage() {
       </section>
 
       {/* Training Program */}
-      <section className="py-16">
+      <section className="py-16 md:px-16">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <SlideIn direction="left">
@@ -306,7 +306,10 @@ export default function CareersPage() {
 
             <SlideIn direction="right">
               <div className="relative">
-                <motion.div whileHover={{ scale: 1.05 }}>
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  className="center-both"
+                >
                   <Image
                     src="/placeholder-2.webp?height=400&width=500"
                     alt="Training Program"

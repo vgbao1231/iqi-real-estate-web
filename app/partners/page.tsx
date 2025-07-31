@@ -15,8 +15,9 @@ import {
   CheckCircle,
   ChevronUp,
   Globe,
-  Handshake,
-  TrendingUp,
+  Landmark,
+  ShieldCheck,
+  Users,
 } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -31,62 +32,11 @@ export default function PartnersPage() {
   const developerPartners = [
     {
       id: 1,
-      name: 'Vinhomes',
-      type: 'Chủ đầu tư hàng đầu',
-      description:
-        'Tập đoàn bất động sản lớn nhất Việt Nam với các dự án iconic như Vinhomes Central Park, Times City',
-      logo: '/placeholder-2.webp?height=100&width=150',
-      projects: 25,
-      partnership: '2018',
-      revenue: '500+ tỷ',
-      specialties: ['Căn hộ cao cấp', 'Biệt thự', 'Shophouse'],
-      achievements: [
-        'Đối tác chiến lược',
-        'Top Revenue Partner',
-        'Excellence Award 2023',
-      ],
-    },
-    {
-      id: 2,
-      name: 'Novaland',
-      type: 'Nhà phát triển BDS',
-      description:
-        'Chuyên phát triển các dự án cao cấp tại TP.HCM và các tỉnh thành lớn',
-      logo: '/placeholder-2.webp?height=100&width=150',
-      projects: 18,
-      partnership: '2019',
-      revenue: '300+ tỷ',
-      specialties: ['Căn hộ', 'Khu đô thị', 'BDS nghỉ dưỡng'],
-      achievements: [
-        'Strategic Partner',
-        'Best Collaboration',
-        'Growth Partner 2023',
-      ],
-    },
-    {
-      id: 3,
-      name: 'Masterise Homes',
-      type: 'Chủ đầu tư cao cấp',
-      description:
-        'Chuyên phát triển các dự án bất động sản hạng sang tại trung tâm TP.HCM',
-      logo: '/placeholder-2.webp?height=100&width=150',
-      projects: 12,
-      partnership: '2020',
-      revenue: '250+ tỷ',
-      specialties: ['Luxury apartments', 'Premium towers', 'Mixed-use'],
-      achievements: [
-        'Premium Partner',
-        'Luxury Specialist',
-        'Innovation Award',
-      ],
-    },
-    {
-      id: 4,
       name: 'CapitaLand',
       type: 'Chủ đầu tư quốc tế',
       description:
-        'Tập đoàn bất động sản hàng đầu Singapore với nhiều dự án tại Việt Nam',
-      logo: '/placeholder-2.webp?height=100&width=150',
+        'Tập đoàn bất động sản hàng đầu Singapore với nhiều dự án cao cấp tại Việt Nam.',
+      logo: '/developer-partner-logos/capita-land.png',
       projects: 15,
       partnership: '2017',
       revenue: '400+ tỷ',
@@ -98,12 +48,29 @@ export default function PartnersPage() {
       ],
     },
     {
-      id: 5,
+      id: 2,
+      name: 'EcoPark',
+      type: 'Nhà phát triển đô thị xanh',
+      description:
+        'Chuyên xây dựng các khu đô thị sinh thái hiện đại với không gian sống xanh.',
+      logo: '/developer-partner-logos/ecopark.png',
+      projects: 10,
+      partnership: '2020',
+      revenue: '150+ tỷ',
+      specialties: ['Eco-living', 'Khu đô thị', 'Biệt thự xanh'],
+      achievements: [
+        'Green Living Award',
+        'Eco Excellence',
+        'Strategic Collaboration',
+      ],
+    },
+    {
+      id: 3,
       name: 'Gamuda Land',
       type: 'Nhà phát triển Malaysia',
       description:
-        'Chuyên phát triển các khu đô thị sinh thái và dự án cao cấp',
-      logo: '/placeholder-2.webp?height=100&width=150',
+        'Chuyên phát triển các khu đô thị sinh thái và dự án cao cấp.',
+      logo: '/developer-partner-logos/gamoda-land.png',
       projects: 8,
       partnership: '2021',
       revenue: '200+ tỷ',
@@ -115,20 +82,88 @@ export default function PartnersPage() {
       ],
     },
     {
-      id: 6,
+      id: 4,
       name: 'Khang Điền',
       type: 'Chủ đầu tư địa phương',
       description:
-        'Chuyên phát triển nhà ở xã hội và căn hộ bình dân tại TP.HCM',
-      logo: '/placeholder-2.webp?height=100&width=150',
+        'Phát triển nhiều dự án nhà ở vừa túi tiền và căn hộ tại TP.HCM.',
+      logo: '/developer-partner-logos/khang-dien.png',
       projects: 20,
       partnership: '2019',
       revenue: '180+ tỷ',
-      specialties: ['Affordable housing', 'Social housing', 'Apartments'],
+      specialties: ['Affordable housing', 'Apartments', 'Community housing'],
       achievements: [
         'Social Impact Partner',
         'Community Developer',
         'Affordable Housing Award',
+      ],
+    },
+    {
+      id: 5,
+      name: 'Madison Land',
+      type: 'Chủ đầu tư phát triển khu đô thị',
+      description:
+        'Tập trung phát triển các dự án đô thị quy mô lớn tại Việt Nam.',
+      logo: '/developer-partner-logos/madison-land.png',
+      projects: 6,
+      partnership: '2022',
+      revenue: '120+ tỷ',
+      specialties: ['Urban development', 'Shophouse', 'Villas'],
+      achievements: [
+        'Emerging Developer',
+        'Trusted Partner',
+        'Urban Planning Award',
+      ],
+    },
+    {
+      id: 6,
+      name: 'Masterise Homes',
+      type: 'Chủ đầu tư cao cấp',
+      description:
+        'Chuyên phát triển bất động sản hạng sang tại các khu vực trung tâm TP.HCM.',
+      logo: '/developer-partner-logos/masterise-homes.png',
+      projects: 12,
+      partnership: '2020',
+      revenue: '250+ tỷ',
+      specialties: ['Luxury apartments', 'Premium towers', 'Mixed-use'],
+      achievements: [
+        'Premium Partner',
+        'Luxury Specialist',
+        'Innovation Award',
+      ],
+    },
+    {
+      id: 7,
+      name: 'Novaland',
+      type: 'Nhà phát triển BDS',
+      description:
+        'Phát triển các dự án đô thị và nghỉ dưỡng quy mô lớn tại TP.HCM & toàn quốc.',
+      logo: '/developer-partner-logos/nova-land.png',
+      projects: 18,
+      partnership: '2019',
+      revenue: '300+ tỷ',
+      specialties: ['Căn hộ', 'Khu đô thị', 'BDS nghỉ dưỡng'],
+      achievements: [
+        'Strategic Partner',
+        'Best Collaboration',
+        'Growth Partner 2023',
+      ],
+    },
+    {
+      id: 8,
+      name: 'Sun Group',
+      type: 'Tập đoàn phát triển du lịch & nghỉ dưỡng',
+      description:
+        'Dẫn đầu trong lĩnh vực bất động sản nghỉ dưỡng và du lịch cao cấp tại Việt Nam.',
+      logo: '/developer-partner-logos/sun-group.png',
+      projects: 20,
+      partnership: '2018',
+      revenue: '450+ tỷ',
+      specialties: ['Resort', 'Condotel', 'Theme park'],
+      achievements: [
+        'Luxury Hospitality Award',
+        'Tourism Excellence',
+        'Strategic Partner',
       ],
     },
   ];
@@ -231,140 +266,137 @@ export default function PartnersPage() {
     {
       id: 1,
       name: 'Vietcombank',
-      type: 'Ngân hàng thương mại',
+      type: 'Ngân hàng TMCP Ngoại thương Việt Nam',
       description:
-        'Ngân hàng lớn nhất Việt Nam, cung cấp các gói vay ưu đãi cho khách hàng IQI',
-      logo: '/placeholder-2.webp?height=80&width=120',
+        'Một trong những ngân hàng lớn nhất Việt Nam, hỗ trợ gói vay mua nhà linh hoạt và bảo mật cao.',
+      logo: '/bank-logos/vietcombank.png',
       loanRate: '6.5%/năm',
       maxLoan: '85%',
       partnership: '2017',
-      benefits: ['Lãi suất ưu đãi', 'Thủ tục nhanh', 'Hỗ trợ 24/7'],
+      benefits: ['Lãi suất ưu đãi', 'Thủ tục rõ ràng', 'Hỗ trợ 24/7'],
     },
     {
       id: 2,
       name: 'Techcombank',
-      type: 'Ngân hàng số',
+      type: 'Ngân hàng TMCP Kỹ thương Việt Nam',
       description:
-        'Ngân hàng tiên phong về công nghệ với quy trình vay online hiện đại',
-      logo: '/placeholder-2.webp?height=80&width=120',
+        'Tiên phong chuyển đổi số với hệ sinh thái vay mua nhà và thanh toán thông minh.',
+      logo: '/bank-logos/techcombank.png',
       loanRate: '6.8%/năm',
       maxLoan: '80%',
       partnership: '2019',
-      benefits: ['Vay online', 'Duyệt nhanh', 'Không phí phạt trả trước'],
+      benefits: ['Vay online 100%', 'Xét duyệt nhanh', 'Không phí trả trước'],
     },
     {
       id: 3,
       name: 'MB Bank',
-      type: 'Ngân hàng bán lẻ',
+      type: 'Ngân hàng TMCP Quân đội',
       description:
-        'Chuyên cung cấp các sản phẩm tài chính cá nhân với lãi suất cạnh tranh',
-      logo: '/placeholder-2.webp?height=80&width=120',
+        'Cung cấp các giải pháp tài chính linh hoạt, hỗ trợ vay mua nhà lãi suất cạnh tranh.',
+      logo: '/bank-logos/mbbank.png',
       loanRate: '6.9%/năm',
       maxLoan: '80%',
       partnership: '2020',
-      benefits: ['Lãi suất thả nổi', 'Ân hạn gốc', 'Tư vấn miễn phí'],
+      benefits: ['Ân hạn gốc 12 tháng', 'Tư vấn miễn phí', 'Giao dịch bảo mật'],
     },
     {
       id: 4,
       name: 'VPBank',
-      type: 'Ngân hàng tư nhân',
+      type: 'Ngân hàng TMCP Việt Nam Thịnh Vượng',
       description:
-        'Ngân hàng tư nhân hàng đầu với các sản phẩm vay mua nhà linh hoạt',
-      logo: '/placeholder-2.webp?height=80&width=120',
+        'Chuyên cung cấp sản phẩm vay tiêu dùng và vay thế chấp nhanh chóng, linh hoạt.',
+      logo: '/bank-logos/vpbank.png',
       loanRate: '7.2%/năm',
       maxLoan: '75%',
       partnership: '2021',
       benefits: [
-        'Thủ tục đơn giản',
-        'Tư vấn chuyên nghiệp',
-        'Ưu đãi khách hàng VIP',
+        'Xét duyệt nhanh',
+        'Ưu đãi khách VIP',
+        'Không cần chứng minh thu nhập',
       ],
     },
     {
       id: 5,
       name: 'BIDV',
-      type: 'Ngân hàng đầu tư',
-      description: 'Ngân hàng đầu tư và phát triển Việt Nam với gói vay ưu đãi',
-      logo: '/placeholder-2.webp?height=80&width=120',
+      type: 'Ngân hàng TMCP Đầu tư và Phát triển Việt Nam',
+      description:
+        'Đơn vị tài chính uy tín lâu năm, cung cấp gói vay mua nhà lãi suất cố định dài hạn.',
+      logo: '/bank-logos/bidv.png',
       loanRate: '6.7%/năm',
       maxLoan: '80%',
       partnership: '2018',
-      benefits: ['Lãi suất cố định', 'Thời hạn vay dài', 'Hỗ trợ pháp lý'],
+      benefits: ['Lãi suất ổn định', 'Vay đến 25 năm', 'Miễn phí định giá'],
     },
     {
       id: 6,
       name: 'ACB',
-      type: 'Ngân hàng thương mại',
+      type: 'Ngân hàng TMCP Á Châu',
       description:
-        'Ngân hàng Á Châu với các gói vay mua nhà ưu đãi cho khách hàng trẻ',
-      logo: '/placeholder-2.webp?height=80&width=120',
+        'Ngân hàng uy tín tại khu vực phía Nam với các sản phẩm vay thế chấp linh hoạt.',
+      logo: '/bank-logos/acb.png',
       loanRate: '7.0%/năm',
       maxLoan: '85%',
       partnership: '2020',
-      benefits: [
-        'Ưu đãi khách hàng trẻ',
-        'Vay 100% giá trị',
-        'Tư vấn miễn phí',
-      ],
+      benefits: ['Duyệt hồ sơ trong ngày', 'Tỷ lệ vay cao', 'Chăm sóc tận tâm'],
     },
     {
       id: 7,
       name: 'Sacombank',
-      type: 'Ngân hàng thương mại',
+      type: 'Ngân hàng TMCP Sài Gòn Thương Tín',
       description:
-        'Ngân hàng Sài Gòn Thương Tín với chương trình vay mua nhà hấp dẫn',
-      logo: '/placeholder-2.webp?height=80&width=120',
+        'Hỗ trợ gói vay mua nhà hấp dẫn và linh hoạt phù hợp với nhiều đối tượng khách hàng.',
+      logo: '/bank-logos/sacombank.png',
       loanRate: '6.9%/năm',
       maxLoan: '80%',
       partnership: '2019',
-      benefits: [
-        'Lãi suất ưu đãi 6 tháng đầu',
-        'Miễn phí thẩm định',
-        'Hỗ trợ làm hồ sơ',
-      ],
+      benefits: ['Miễn phí hồ sơ', 'Hạn mức cao', 'Giải ngân nhanh'],
     },
     {
       id: 8,
       name: 'VIB',
-      type: 'Ngân hàng quốc tế',
+      type: 'Ngân hàng TMCP Quốc tế Việt Nam',
       description:
-        'Ngân hàng Quốc tế Việt Nam với dịch vụ vay mua nhà chuyên nghiệp',
-      logo: '/placeholder-2.webp?height=80&width=120',
+        'Ngân hàng dẫn đầu về trải nghiệm số, cung cấp các gói vay nhà đơn giản và minh bạch.',
+      logo: '/bank-logos/vib.png',
       loanRate: '7.1%/năm',
       maxLoan: '75%',
       partnership: '2022',
-      benefits: ['Duyệt nhanh trong 24h', 'Tư vấn 1-1', 'Ưu đãi phí dịch vụ'],
+      benefits: ['Ký hồ sơ online', 'Tư vấn 1:1', 'Ưu đãi phí dịch vụ'],
     },
   ];
 
   const partnershipBenefits = [
     {
       icon: Globe,
-      title: 'Mạng lưới toàn cầu',
-      description: 'Kết nối với hơn 500 đối tác trên 30 quốc gia',
+      title: 'Tiếp cận thị trường toàn cầu',
+      description:
+        'Hợp tác với hơn 111 quốc gia, mở rộng cơ hội đầu tư và phân phối dự án quốc tế.',
       color: 'text-blue-600',
       bg: 'bg-blue-100 dark:bg-blue-900/30',
     },
     {
-      icon: Award,
-      title: 'Chất lượng đảm bảo',
-      description: 'Tất cả đối tác đều được kiểm định nghiêm ngặt',
-      color: 'text-green-600',
-      bg: 'bg-green-100 dark:bg-green-900/30',
-    },
-    {
-      icon: TrendingUp,
-      title: 'Lợi ích tối ưu',
-      description: 'Đàm phán được mức giá và điều kiện tốt nhất',
+      icon: Landmark,
+      title: 'Nguồn dự án đa dạng',
+      description:
+        'Danh mục hơn 10.000 bất động sản tại Việt Nam và quốc tế với pháp lý rõ ràng.',
       color: 'text-orange-600',
       bg: 'bg-orange-100 dark:bg-orange-900/30',
     },
     {
-      icon: Handshake,
-      title: 'Hỗ trợ toàn diện',
-      description: 'Đồng hành từ tư vấn đến hoàn tất thủ tục',
+      icon: Users,
+      title: 'Hệ sinh thái chuyên viên toàn cầu',
+      description:
+        'Kết nối với 50.000+ chuyên viên IQI trên toàn thế giới để phát triển mạng lưới.',
       color: 'text-purple-600',
       bg: 'bg-purple-100 dark:bg-purple-900/30',
+    },
+    {
+      icon: ShieldCheck,
+      title: 'Đối tác tin cậy & minh bạch',
+      description:
+        'Tất cả dự án và giao dịch đều được kiểm duyệt chặt chẽ, hỗ trợ pháp lý đầy đủ.',
+      color: 'text-green-600',
+      bg: 'bg-green-100 dark:bg-green-900/30',
     },
   ];
 
@@ -382,7 +414,7 @@ export default function PartnersPage() {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <section className="py-12 bg-gradient-to-br from-orange-400/90 via-orange-400 to-orange-500 dark:from-orange-400 dark:to-orange-600">
-        <div className="container mx-auto px-4 md:px-12">
+        <div className="container mx-auto px-4 md:px-12 text-white">
           <FadeIn>
             <div className="flex items-center gap-2 mb-4">
               <Link
@@ -392,17 +424,17 @@ export default function PartnersPage() {
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Quay lại trang chủ
               </Link>
-              <Badge className="bg-orange-200 text-orange-700 dark:bg-orange-900/30 dark:text-orange-300">
+              <Badge className="bg-orange-100 text-orange-800 dark:bg-orange-700 dark:text-orange-100">
                 ĐỐI TÁC CHIẾN LƯỢC
               </Badge>
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4 text-white">
-              Đối tác của chúng tôi
+            <h1 className="text-4xl md:text-5xl font-bold mb-4 ">
+              Đối tác quốc tế của IQI Vietnam
             </h1>
-            <p className="text-xl text-white/80 max-w-3xl">
-              IQI Vietnam tự hào hợp tác với những tên tuổi hàng đầu trong ngành
-              bất động sản và tài chính, mang đến cho khách hàng những cơ hội
-              đầu tư tốt nhất.
+            <p className="text-xl max-w-3xl">
+              IQI Vietnam là thành viên của IQI Global, hợp tác cùng hơn 50.000
+              chuyên viên tại 30+ quốc gia, mang đến danh mục dự án đa dạng từ
+              Việt Nam đến quốc tế.
             </p>
           </FadeIn>
         </div>
@@ -416,8 +448,8 @@ export default function PartnersPage() {
               Lợi ích từ mạng lưới đối tác
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Với mạng lưới đối tác rộng khắp, chúng tôi mang đến những giá trị
-              vượt trội cho khách hàng
+              IQI Vietnam mang đến lợi thế cạnh tranh thông qua mạng lưới đối
+              tác rộng khắp, dự án chất lượng và nền tảng công nghệ hiện đại.
             </p>
           </FadeIn>
 
@@ -462,16 +494,18 @@ export default function PartnersPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {displayedDevelopers.map((partner, index) => (
               <ScaleIn key={partner.id} delay={index * 0.1}>
-                <motion.div whileHover={{ y: -5 }}>
+                <motion.div whileHover={{ y: -5 }} className="h-full">
                   <Card className="h-full">
                     <CardHeader className="text-center pb-4">
-                      <motion.div whileHover={{ scale: 1.1 }}>
+                      <motion.div
+                        whileHover={{ scale: 1.1 }}
+                        className="relative h-40 w-full"
+                      >
                         <Image
                           src={partner.logo || '/placeholder-2.webp'}
                           alt={partner.name}
-                          width={120}
-                          height={80}
-                          className="mx-auto mb-3"
+                          fill
+                          className="object-contain px-4"
                         />
                       </motion.div>
                       <CardTitle className="text-lg">{partner.name}</CardTitle>
@@ -684,16 +718,18 @@ export default function PartnersPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {displayedBanking.map((bank, index) => (
               <ScaleIn key={bank.id} delay={index * 0.1}>
-                <motion.div whileHover={{ y: -5 }}>
+                <motion.div whileHover={{ y: -5 }} className="h-full">
                   <Card className="text-center h-full">
                     <CardHeader className="pb-4">
-                      <motion.div whileHover={{ scale: 1.1 }}>
+                      <motion.div
+                        whileHover={{ scale: 1.1 }}
+                        className="relative h-32 w-full"
+                      >
                         <Image
                           src={bank.logo || '/placeholder-2.webp'}
                           alt={bank.name}
-                          width={100}
-                          height={60}
-                          className="mx-auto mb-3"
+                          fill
+                          className="object-contain px-16"
                         />
                       </motion.div>
                       <CardTitle className="text-lg">{bank.name}</CardTitle>

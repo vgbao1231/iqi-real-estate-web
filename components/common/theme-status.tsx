@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Sun, Moon } from 'lucide-react';
 
 export function ThemeStatus() {
-  const { theme, resolvedTheme, setTheme } = useTheme();
+  const { resolvedTheme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -24,7 +24,7 @@ export function ThemeStatus() {
     >
       <Badge
         variant="outline"
-        className="rounded-full bg-background/80 backdrop-blur-sm px-3 py-2 flex items-center gap-2 hover:bg-muted transition-colors"
+        className="rounded-full bg-background/80 backdrop-blur-sm px-3 py-1 flex items-center gap-2 hover:bg-muted transition-colors"
       >
         {isDark ? <Moon size={16} /> : <Sun size={16} />}
         <span className="capitalize">{resolvedTheme}</span>

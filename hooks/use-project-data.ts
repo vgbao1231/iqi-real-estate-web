@@ -20,16 +20,16 @@ const defaultProject = {
   introduction: {
     coverImage: null as string | File | null, // Updated type
     titleImage: null as string | File | null, // Updated type
-    heroImage: null as string | File | null, // Updated type
+    introductionImage: null as string | File | null, // Updated type
     logoImages: [] as (string | File)[], // Updated type
-    introductionImages: [] as (string | File)[], // Updated type
+    launchImages: [] as (string | File)[], // Updated type
     introductionVideo: '',
     backgroundImage: null as string | File | null, // Updated type
     title: '',
     description: '',
     launchTitle: '',
     launchSubtitle: '',
-    launchText: '',
+    launchDescription: '',
   },
   overview: {
     overviewImages: [

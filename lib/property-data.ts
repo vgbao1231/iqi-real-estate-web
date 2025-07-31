@@ -6,26 +6,23 @@ export const properties = [
     // Giới thiệu
     introduction: {
       coverImage: '/cover.jpg',
-      titleImage: '/title.png',
-      heroImage: '/hero.png',
+      title: 'Trải nghiệm nghỉ dưỡng giữa thiên nhiên',
       logoImages: ['/logo-retreat.png', '/logo-retreat-1.png'],
-      introductionImages: [
-        '/product-1.jpg',
-        '/product-2.jpg',
-        '/product-3.jpg',
-      ],
+
+      titleImage: '/title.png',
+      introductionImage: '/hero.png',
       introductionVideo: 'https://www.youtube.com/watch?v=pLL2g9_mZdo&t=94s',
       backgroundImage: '/background-hero-1.jpg',
-      title: 'Trải nghiệm nghỉ dưỡng giữa thiên nhiên',
-
       description: `
       <p>Xây dựng mô hình khu đô thị trên thị trường không hiếm, nhưng kiến tạo môi trường đáng sống đúng nghĩa, mang đến những giá trị đích thực thì không phải dự án nào cũng làm được.</p>
       <p>Những khu đô thị xanh của Nhà sáng lập Ecopark là ngoại lệ - nơi mọi chủ nhân đều tự hào về quyết định sở hữu và đầu tư của mình.</p>
       <p>Chào mừng Quý Anh Chị đến với Eco Retreat - Đô thị xanh kiểu mẫu của Ecopark tại miền Nam!</p>
-    `,
+      `,
+
+      launchImages: ['/product-1.jpg', '/product-2.jpg', '/product-3.jpg'],
       launchTitle: 'RETREAT ISLAND',
       launchSubtitle: 'Biệt thự đảo giữa rừng retreat',
-      launchText: `
+      launchDescription: `
   <p><span style="color: #ffd4aa;">✦</span> View 2 mặt hồ thiên nga ngay cạnh nhà, có hồ bơi & sân vườn riêng</p>
   <p><span style="color: #ffd4aa;">✦</span> Nằm trên 16 nhánh đảo riêng biệt, trung tâm của đô thị đáng sống nhất miền Nam</p>
   <p><span style="color: #ffd4aa;">✦</span> "Nhà giữa đảo - Đảo giữa rừng retreat" chưa từng có trên thị trường.</p>
@@ -296,26 +293,23 @@ export const properties = [
     // Giới thiệu
     introduction: {
       coverImage: '/cover.jpg',
-      titleImage: '/title.png',
-      heroImage: '/hero.png',
+      title: 'Trải nghiệm nghỉ dưỡng giữa thiên nhiên',
       logoImages: ['/logo-retreat.png', '/logo-retreat-1.png'],
-      introductionImages: [
-        '/product-1.jpg',
-        '/product-2.jpg',
-        '/product-3.jpg',
-      ],
+
+      titleImage: '/title.png',
+      introductionImage: '/hero.png',
       introductionVideo: 'https://www.youtube.com/watch?v=pLL2g9_mZdo&t=94s',
       backgroundImage: '/background-hero-1.jpg',
-      title: 'Trải nghiệm nghỉ dưỡng giữa thiên nhiên',
-
       description: `
       <p>Xây dựng mô hình khu đô thị trên thị trường không hiếm, nhưng kiến tạo môi trường đáng sống đúng nghĩa, mang đến những giá trị đích thực thì không phải dự án nào cũng làm được.</p>
       <p>Những khu đô thị xanh của Nhà sáng lập Ecopark là ngoại lệ - nơi mọi chủ nhân đều tự hào về quyết định sở hữu và đầu tư của mình.</p>
       <p>Chào mừng Quý Anh Chị đến với Eco Retreat - Đô thị xanh kiểu mẫu của Ecopark tại miền Nam!</p>
-    `,
+      `,
+
+      launchImages: ['/product-1.jpg', '/product-2.jpg', '/product-3.jpg'],
       launchTitle: 'RETREAT ISLAND',
       launchSubtitle: 'Biệt thự đảo giữa rừng retreat',
-      launchText: `
+      launchDescription: `
   <p><span style="color: #ffd4aa;">✦</span> View 2 mặt hồ thiên nga ngay cạnh nhà, có hồ bơi & sân vườn riêng</p>
   <p><span style="color: #ffd4aa;">✦</span> Nằm trên 16 nhánh đảo riêng biệt, trung tâm của đô thị đáng sống nhất miền Nam</p>
   <p><span style="color: #ffd4aa;">✦</span> "Nhà giữa đảo - Đảo giữa rừng retreat" chưa từng có trên thị trường.</p>
@@ -586,26 +580,23 @@ export const properties = [
     // Giới thiệu
     introduction: {
       coverImage: '/cover.jpg',
-      titleImage: '/title.png',
-      heroImage: '/hero.png',
+      title: 'Trải nghiệm nghỉ dưỡng giữa thiên nhiên',
       logoImages: ['/logo-retreat.png', '/logo-retreat-1.png'],
-      introductionImages: [
-        '/product-1.jpg',
-        '/product-2.jpg',
-        '/product-3.jpg',
-      ],
+
+      titleImage: '/title.png',
+      introductionImage: '/hero.png',
       introductionVideo: 'https://www.youtube.com/watch?v=pLL2g9_mZdo&t=94s',
       backgroundImage: '/background-hero-1.jpg',
-      title: 'Trải nghiệm nghỉ dưỡng giữa thiên nhiên',
-
       description: `
       <p>Xây dựng mô hình khu đô thị trên thị trường không hiếm, nhưng kiến tạo môi trường đáng sống đúng nghĩa, mang đến những giá trị đích thực thì không phải dự án nào cũng làm được.</p>
       <p>Những khu đô thị xanh của Nhà sáng lập Ecopark là ngoại lệ - nơi mọi chủ nhân đều tự hào về quyết định sở hữu và đầu tư của mình.</p>
       <p>Chào mừng Quý Anh Chị đến với Eco Retreat - Đô thị xanh kiểu mẫu của Ecopark tại miền Nam!</p>
-    `,
+      `,
+
+      launchImages: ['/product-1.jpg', '/product-2.jpg', '/product-3.jpg'],
       launchTitle: 'RETREAT ISLAND',
       launchSubtitle: 'Biệt thự đảo giữa rừng retreat',
-      launchText: `
+      launchDescription: `
   <p><span style="color: #ffd4aa;">✦</span> View 2 mặt hồ thiên nga ngay cạnh nhà, có hồ bơi & sân vườn riêng</p>
   <p><span style="color: #ffd4aa;">✦</span> Nằm trên 16 nhánh đảo riêng biệt, trung tâm của đô thị đáng sống nhất miền Nam</p>
   <p><span style="color: #ffd4aa;">✦</span> "Nhà giữa đảo - Đảo giữa rừng retreat" chưa từng có trên thị trường.</p>

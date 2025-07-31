@@ -40,10 +40,10 @@ export default function Products() {
         className="container mx-auto px-4 relative z-10"
       >
         <FadeIn className="text-center mb-8">
-          <Badge className="mb-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white border-0">
+          <Badge className="mb-4 bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300">
             DỰ ÁN ĐANG PHÂN PHỐI
           </Badge>
-          <h2 className="text-4xl md:text-5xl font-bold py-2 bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 bg-clip-text text-transparent dark:from-white dark:via-blue-200 dark:to-purple-200">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">
             Dự án nổi bật đang phân phối
           </h2>
           <p className="text-xl text-muted-foreground max-w-4xl mx-auto">

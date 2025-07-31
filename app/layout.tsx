@@ -6,6 +6,8 @@ import LayoutWrapper from '@/components/layout/layout-wrapper';
 import React from 'react';
 import 'leaflet/dist/leaflet.css';
 import GoogleTranslateScript from '@/components/common/google-translate-script';
+import { ThemeStatus } from '@/components/common/theme-status';
+import ScrollToTopButton from '@/components/common/scroll-top';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -45,6 +47,8 @@ export default function RootLayout({
         <LayoutWrapper>
           <ReactQueryProvider>
             {children}
+            <ThemeStatus />
+            <ScrollToTopButton />
             <GoogleTranslateScript />
           </ReactQueryProvider>
         </LayoutWrapper>
