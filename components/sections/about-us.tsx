@@ -88,7 +88,8 @@ export default function AboutUs() {
                   <div>
                     <h4 className="font-semibold">Mạng lưới toàn cầu</h4>
                     <p className="text-muted-foreground">
-                      Kết nối với hơn 20 quốc gia và vùng lãnh thổ
+                      Sở hữu mạng lưới hơn 50.000 chuyên gia kinh doanh và kết
+                      nối hơn 22 quốc gia trên toàn cầu.
                     </p>
                   </div>
                 </motion.div>
@@ -100,7 +101,8 @@ export default function AboutUs() {
                   <div>
                     <h4 className="font-semibold">Công nghệ tiên tiến</h4>
                     <p className="text-muted-foreground">
-                      Nền tảng IQI Atlas hỗ trợ đại lý và khách hàng
+                      Nền tảng công nghệ Atlas cho phép hơn 50.000 chuyên gia
+                      xuất bản tin đăng từ mọi nơi trên thế giới.
                     </p>
                   </div>
                 </motion.div>
@@ -112,7 +114,9 @@ export default function AboutUs() {
                   <div>
                     <h4 className="font-semibold">Đào tạo chuyên nghiệp</h4>
                     <p className="text-muted-foreground">
-                      Chương trình đào tạo toàn diện cho đại lý
+                      IQI Global Academy là nền tảng đào tạo trực tuyến với
+                      phương pháp tiếp cận mang tính cách mạng dành cho các
+                      chiến binh của IQI Global.
                     </p>
                   </div>
                 </motion.div>
@@ -128,23 +132,22 @@ export default function AboutUs() {
             </div>
           </SlideIn>
           <SlideIn direction="right" className="center-both">
-            <div>
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                transition={{ duration: 0.3 }}
-              >
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.3 }}
+              className="w-full mx-auto"
+            >
+              <div className="relative aspect-video rounded-lg shadow-lg overflow-hidden">
                 <video
                   src="/placeholder-video-1.mp4"
-                  width={700}
-                  height={500}
-                  className="rounded-lg shadow-lg"
+                  className="absolute inset-0 w-full h-full object-cover"
                   autoPlay
                   muted
                   loop
                   playsInline
                 />
-              </motion.div>
-            </div>
+              </div>
+            </motion.div>
           </SlideIn>
         </div>
       </div>

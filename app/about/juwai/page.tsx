@@ -1,51 +1,24 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { FadeIn, SlideIn, ScaleIn } from '@/components/common/animations';
-import {
-  ArrowLeft,
-  Network,
-  Lightbulb,
-  TrendingUp,
-  CheckCircle,
-} from 'lucide-react';
-import Link from 'next/link';
+import { Network, Lightbulb, TrendingUp, CheckCircle } from 'lucide-react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import Achievement from '@/components/sections/achievement';
+import IntroSection from '@/components/common/intro-section';
+import OutroSection from '@/components/common/outro-section';
 
 export default function AboutJuwaiPage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <section className="py-12 md:px-12 bg-gradient-to-br from-orange-400/90 via-orange-400 to-orange-500 dark:from-orange-400 dark:to-orange-600">
-        <div className="container mx-auto px-4 relative z-10 text-white">
-          <FadeIn>
-            <div className="flex items-center gap-2 mb-4">
-              <Link
-                href="/"
-                className="inline-flex items-center text-orange-100 hover:text-white"
-              >
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Quay lại trang chủ
-              </Link>
-              <Badge className="bg-orange-100 text-orange-800 dark:bg-orange-700 dark:text-orange-100">
-                TẬP ĐOÀN JUWAI IQI
-              </Badge>
-            </div>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              IQI Global – Mạng lưới bất động sản quốc tế
-            </h1>
-            <p className="text-xl max-w-3xl">
-              Khám phá sức mạnh của Juwai IQI – tập đoàn bất động sản quốc tế sở
+      <IntroSection
+        title="IQI Global - Mạng lưới bất động sản quốc tế"
+        description="Khám phá sức mạnh của Juwai IQI - tập đoàn bất động sản quốc tế sở
               hữu hơn 50.000 chuyên viên tại 30 quốc gia, cùng nền tảng số IQI
-              Atlas hỗ trợ toàn diện.
-            </p>
-          </FadeIn>
-        </div>
-      </section>
+              Atlas hỗ trợ toàn diện."
+      />
 
       {/* Juwai IQI Overview */}
       <section className="py-16 md:px-12">
@@ -57,7 +30,7 @@ export default function AboutJuwaiPage() {
                 <div className="space-y-4 text-muted-foreground">
                   <p>
                     Juwai IQI là tập đoàn công nghệ bất động sản hàng đầu Châu Á
-                    – sở hữu mạng lưới hơn 50.000 chuyên viên bất động sản hoạt
+                    - sở hữu mạng lưới hơn 50.000 chuyên viên bất động sản hoạt
                     động tại 30 quốc gia, với hơn 42.000 giao dịch trong năm
                     2022.
                   </p>
@@ -73,14 +46,13 @@ export default function AboutJuwaiPage() {
               <div className="relative">
                 <motion.div
                   whileHover={{ scale: 1.05 }}
-                  className="center-both"
+                  className="center-both relative w-full h-96"
                 >
                   <Image
-                    src="/images/juwai-iqi-network.jpg"
+                    src="/juwai.jpg"
                     alt="Juwai IQI Network"
-                    width={600}
-                    height={400}
-                    className="rounded-lg shadow-lg"
+                    fill
+                    className="object-cover rounded-lg shadow-lg"
                   />
                 </motion.div>
               </div>
@@ -94,7 +66,7 @@ export default function AboutJuwaiPage() {
         <div className="container mx-auto px-4">
           <FadeIn className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              IQI Atlas – Nền tảng công nghệ dẫn đầu
+              IQI Atlas - Nền tảng công nghệ dẫn đầu
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
               IQI Atlas là hệ sinh thái số toàn diện hỗ trợ chuyên viên bất động
@@ -252,29 +224,15 @@ export default function AboutJuwaiPage() {
       <Achievement />
 
       {/* Contact CTA */}
-      <section className="py-16 md:px-12 bg-gradient-to-r from-purple-600 to-purple-500 text-white">
-        <div className="container mx-auto px-4 text-center">
-          <FadeIn>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Cùng xây dựng tương lai bất động sản cùng IQI Vietnam
-            </h2>
-            <p className="text-xl mb-8 max-w-2xl mx-auto opacity-90">
-              Gia nhập mạng lưới hơn 50.000 chuyên viên toàn cầu và khám phá cơ
-              hội nghề nghiệp hấp dẫn.
-            </p>
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Link href="/careers">
-                <Button
-                  size="lg"
-                  className="bg-white text-purple-600 hover:bg-gray-100"
-                >
-                  Gia nhập đội ngũ
-                </Button>
-              </Link>
-            </motion.div>
-          </FadeIn>
-        </div>
-      </section>
+      <OutroSection
+        title="Cùng xây dựng tương lai bất động sản cùng IQI Vietnam"
+        subtitle=" Gia nhập mạng lưới hơn 50.000 chuyên viên toàn cầu và khám phá cơ
+              hội nghề nghiệp hấp dẫn."
+        primary={{
+          label: 'Gia nhập đội ngũ',
+          href: '/careers',
+        }}
+      />
     </div>
   );
 }

@@ -14,6 +14,7 @@ import {
   Youtube,
 } from 'lucide-react';
 import Image from 'next/image';
+import { contact } from '@/lib/contact-data';
 
 export default function Footer() {
   const navLinks = [
@@ -27,8 +28,8 @@ export default function Footer() {
 
   const socialLinks = [
     {
-      href: 'https://iqiglobal.com',
-      label: 'iqiglobal.com',
+      href: contact.website,
+      label: contact.websiteDisplay,
       icon: ExternalLink,
     },
     {
@@ -55,6 +56,27 @@ export default function Footer() {
       href: 'https://tiktok.com/@iqivietnam',
       label: 'tiktok.com/@iqivietnam',
       icon: Music,
+    },
+  ];
+
+  const contactInfo = [
+    {
+      label: 'Hotline',
+      value: contact.hotline,
+      href: `tel:${contact.hotline}`,
+      icon: Phone,
+    },
+    {
+      label: 'Email',
+      value: contact.email,
+      href: `mailto:${contact.email}`,
+      icon: Mail,
+    },
+    {
+      label: 'Website',
+      value: contact.websiteDisplay,
+      href: contact.website,
+      icon: Globe,
     },
   ];
 
@@ -97,61 +119,32 @@ export default function Footer() {
 
           {/* Contact Info */}
           <div className="space-y-4">
-            <motion.div
-              whileHover={{ x: 5 }}
-              className="flex items-center group"
-            >
-              <div className="w-10 h-10 bg-orange-600/20 rounded-lg flex items-center justify-center mr-4 group-hover:bg-orange-600/30 transition-colors">
-                <Phone className="w-5 h-5 text-orange-400" />
-              </div>
-              <div>
-                <p className="text-muted-foreground text-sm">Hotline</p>
-                <a
-                  href="tel:0764155155"
-                  className="hover:text-orange-400 transition-colors font-medium"
-                >
-                  0764155155
-                </a>
-              </div>
-            </motion.div>
-
-            <motion.div
-              whileHover={{ x: 5 }}
-              className="flex items-center group"
-            >
-              <div className="w-10 h-10 bg-orange-600/20 rounded-lg flex items-center justify-center mr-4 group-hover:bg-orange-600/30 transition-colors">
-                <Mail className="w-5 h-5 text-orange-400" />
-              </div>
-              <div>
-                <p className="text-muted-foreground text-sm">Email</p>
-                <a
-                  href="mailto:info-vietnam@iqiglobal.com"
-                  className="hover:text-orange-400 transition-colors font-medium"
-                >
-                  info-vietnam@iqiglobal.com
-                </a>
-              </div>
-            </motion.div>
-
-            <motion.div
-              whileHover={{ x: 5 }}
-              className="flex items-center group"
-            >
-              <div className="w-10 h-10 bg-orange-600/20 rounded-lg flex items-center justify-center mr-4 group-hover:bg-orange-600/30 transition-colors">
-                <Globe className="w-5 h-5 text-orange-400" />
-              </div>
-              <div>
-                <p className="text-muted-foreground text-sm">Website</p>
-                <a
-                  href="https://iqiglobal.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-orange-400 transition-colors font-medium"
-                >
-                  iqiglobal.com
-                </a>
-              </div>
-            </motion.div>
+            {contactInfo.map((item, idx) => (
+              <motion.div
+                key={idx}
+                whileHover={{ x: 5 }}
+                className="flex items-center group"
+              >
+                <div className="w-10 h-10 bg-orange-400/20 rounded-lg flex items-center justify-center mr-4 group-hover:bg-orange-400/30 transition-colors">
+                  <item.icon className="w-5 h-5 text-orange-400" />
+                </div>
+                <div>
+                  <p className="text-muted-foreground text-sm">{item.label}</p>
+                  <a
+                    href={item.href}
+                    target={item.label === 'Website' ? '_blank' : undefined}
+                    rel={
+                      item.label === 'Website'
+                        ? 'noopener noreferrer'
+                        : undefined
+                    }
+                    className="hover:text-orange-400 transition-colors font-medium"
+                  >
+                    {item.value}
+                  </a>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </FadeIn>
 
@@ -205,7 +198,7 @@ export default function Footer() {
       {/* Bottom Bar */}
       <div className="border-t border-border text-center py-2">
         <p className="text-muted-foreground text-sm">
-          © 2024 IQI Vietnam. All rights reserved. | Beyond Real Estate
+          © 2025 IQI Vietnam. All rights reserved. | Beyond Real Estate
         </p>
       </div>
     </footer>

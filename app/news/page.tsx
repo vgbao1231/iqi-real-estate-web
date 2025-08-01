@@ -5,10 +5,11 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { FadeIn, ScaleIn } from '@/components/common/animations';
-import { ArrowLeft, Search, Calendar, Eye, Clock } from 'lucide-react';
+import { Search, Calendar, Eye, Clock } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import IntroSection from '@/components/common/intro-section';
 
 export default function NewsPage() {
   const featuredNews = [
@@ -121,33 +122,10 @@ export default function NewsPage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <section className="py-12 md:px-12 bg-gradient-to-r from-green-50 to-green-100 dark:from-green-950/20 dark:to-green-900/20">
-        <div className="container mx-auto px-4">
-          <FadeIn>
-            <div className="flex items-center gap-4 mb-6">
-              <Link
-                href="/"
-                className="inline-flex items-center text-green-600 hover:text-green-700"
-              >
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Quay lại trang chủ
-              </Link>
-              <Badge className="bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300">
-                TIN TỨC BẤT ĐỘNG SẢN
-              </Badge>
-            </div>
-
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Tin tức & Phân tích thị trường
-            </h1>
-            <p className="text-xl text-muted-foreground max-w-3xl">
-              Cập nhật những thông tin mới nhất về thị trường bất động sản, xu
-              hướng đầu tư và các phân tích chuyên sâu từ đội ngũ chuyên gia IQI
-              Vietnam.
-            </p>
-          </FadeIn>
-        </div>
-      </section>
+      <IntroSection
+        title="Tin tức & Phân tích thị trường"
+        description="Cập nhật những thông tin mới nhất về thị trường bất động sản, xu hướng đầu tư và các phân tích chuyên sâu từ đội ngũ chuyên gia IQI Vietnam."
+      />
 
       {/* Search and Filter */}
       <section className="pt-8 md:px-12 bg-muted/30">
@@ -169,7 +147,7 @@ export default function NewsPage() {
                       variant={index === 0 ? 'default' : 'outline'}
                       size="sm"
                       className={
-                        index === 0 ? 'bg-green-600 hover:bg-green-700' : ''
+                        index === 0 ? 'bg-orange-500 hover:bg-orange-700' : ''
                       }
                     >
                       {category}
@@ -205,7 +183,7 @@ export default function NewsPage() {
                         />
                       </motion.div>
                       <div className="absolute top-4 left-4">
-                        <Badge className="bg-green-600 text-white">
+                        <Badge className="bg-orange-500 text-white">
                           {article.category}
                         </Badge>
                       </div>
@@ -243,7 +221,7 @@ export default function NewsPage() {
                         whileTap={{ scale: 0.95 }}
                       >
                         <Link href={`/news/${article.id}`}>
-                          <Button className="w-full bg-green-600 hover:bg-green-700">
+                          <Button className="w-full bg-orange-500 hover:bg-orange-700">
                             Đọc tiếp
                           </Button>
                         </Link>
@@ -320,7 +298,7 @@ export default function NewsPage() {
                         <Link href={`/news/${article.id}`}>
                           <Button
                             size="sm"
-                            className="w-full border-border bg-green-600 hover:bg-green-700 text-white"
+                            className="w-full border-border bg-orange-500 hover:bg-orange-700 text-white"
                           >
                             Đọc thêm
                           </Button>
@@ -342,7 +320,7 @@ export default function NewsPage() {
       </section>
 
       {/* Newsletter Signup */}
-      <section className="py-12 bg-gradient-to-r from-green-600 to-green-500 text-white">
+      <section className="py-12 bg-gradient-to-r from-orange-500 to-orange-400 text-white">
         <div className="container mx-auto px-4 text-center">
           <FadeIn>
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
@@ -361,7 +339,7 @@ export default function NewsPage() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <Button className="bg-white text-green-600 hover:bg-gray-100">
+                <Button className="bg-white text-orange-500 hover:bg-gray-100">
                   Đăng ký
                 </Button>
               </motion.div>

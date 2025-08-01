@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Phone, Mail, MessageCircle } from 'lucide-react';
 import Image from 'next/image';
+import { contact } from '@/lib/contact-data';
 
 export default function Contact() {
   return (
@@ -52,15 +53,15 @@ export default function Contact() {
         <FadeIn delay={0.4}>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Link href="/contact">
+              <a href="tel:0764155155">
                 <Button
                   size="lg"
                   className="bg-orange-600 text-white hover:bg-orange-700"
                 >
                   <Phone className="w-4 h-4 mr-2" />
-                  Gọi ngay: 0764 155 155
+                  Hotline: {contact.hotlineDisplay}
                 </Button>
-              </Link>
+              </a>
             </motion.div>
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Link href="/consultation">
@@ -74,13 +75,15 @@ export default function Contact() {
               </Link>
             </motion.div>
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Button
-                size="lg"
-                className="border border-orange-600 text-orange-600 hover:bg-white hover:text-orange-600 bg-white/95"
-              >
-                <MessageCircle className="w-4 h-4 mr-2" />
-                Chat với chuyên gia
-              </Button>
+              <Link href="/contact">
+                <Button
+                  size="lg"
+                  className="border border-orange-600 text-orange-600 hover:bg-white hover:text-orange-600 bg-white/95"
+                >
+                  <MessageCircle className="w-4 h-4 mr-2" />
+                  Liên hệ ngay
+                </Button>
+              </Link>
             </motion.div>
           </div>
         </FadeIn>

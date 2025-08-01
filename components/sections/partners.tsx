@@ -11,7 +11,12 @@ import { Card, CardHeader, CardTitle, CardContent } from '../ui/card';
 
 export default function Partners() {
   const [showAllPartners, setShowAllPartners] = useState(false);
-  const displayedPartners = showAllPartners ? partners : partners.slice(0, 4);
+  const commonPartners = Object.values(partners).flatMap((arr) =>
+    (arr as any[]).slice(0, 4)
+  );
+  const displayedPartners = showAllPartners
+    ? commonPartners
+    : commonPartners.slice(0, 4);
   const [selectedPartner, setSelectedPartner] = useState<any>(null);
   const [showPartnerModal, setShowPartnerModal] = useState(false);
 
@@ -51,7 +56,7 @@ export default function Partners() {
                     alt={partner.name}
                     fill
                     priority
-                    className="mx-auto grayscale group-hover:grayscale-0 transition-all duration-300 object-contain"
+                    className="mx-auto transition-all duration-300 object-contain px-8"
                   />
                 </div>
                 <div className="text-center mt-2 text-sm font-medium text-muted-foreground group-hover:text-foreground transition-colors">
@@ -66,7 +71,7 @@ export default function Partners() {
         </div>
 
         {/* Show More/Less Button */}
-        {partners.length > 4 && (
+        {commonPartners.length > 4 && (
           <FadeIn delay={0.6} className="text-center mb-6">
             <Button
               variant="outline"
@@ -80,7 +85,7 @@ export default function Partners() {
                 </>
               ) : (
                 <>
-                  Xem thêm {partners.length - 4} đối tác
+                  Xem thêm {commonPartners.length - 4} đối tác
                   <ChevronDown className="ml-2 w-4 h-4" />
                 </>
               )}
@@ -104,7 +109,7 @@ export default function Partners() {
               <div className="text-sm text-muted-foreground">Dự án</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-purple-600">95%</div>
+              <div className="text-2xl font-bold text-purple-600">99%</div>
               <div className="text-sm text-muted-foreground">Hài lòng</div>
             </div>
           </div>
@@ -119,6 +124,7 @@ export default function Partners() {
           </Link>
         </FadeIn>
       </div>
+
       {/* Partner Modal */}
       <AnimatePresence>
         {showPartnerModal && selectedPartner && (
@@ -135,45 +141,141 @@ export default function Partners() {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.8, opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="bg-background rounded-lg shadow-lg overflow-hidden max-w-md w-full mx-4"
+              className="bg-background rounded-lg shadow-lg overflow-hidden max-w-2xl w-full mx-4"
               onClick={(e) => e.stopPropagation()}
             >
               <Card>
-                <CardHeader className="flex flex-col items-center w-[160px] h-[80px]">
-                  <Image
-                    src={selectedPartner.logo || '/placeholder-2.webp'}
-                    alt={selectedPartner.name}
-                    fill
-                    className="object-contain mb-4"
-                    priority
-                  />
+                <CardHeader className="flex flex-col items-center pb-2">
+                  <div className="relative w-full h-64">
+                    <Image
+                      src={selectedPartner.logo || '/placeholder-2.webp'}
+                      alt={selectedPartner.name}
+                      fill
+                      className="object-contain mb-4 px-12"
+                      priority
+                    />
+                  </div>
                   <CardTitle className="text-2xl font-bold">
                     {selectedPartner.name}
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="text-center">
-                  <p className="text-muted-foreground mb-4">
+                <CardContent className="text-center px-12">
+                  <p className="text-muted-foreground text-lg mb-4">
                     {selectedPartner.description}
                   </p>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <div className="text-sm font-bold">Dự án</div>
-                      <div className="text-muted-foreground">
-                        {selectedPartner.projects}
+
+                  {/* THÔNG TIN CHUNG */}
+                  <div className="grid grid-cols-2 gap-6 text-left">
+                    {selectedPartner.type && (
+                      <div>
+                        <div className="font-bold">Loại hình</div>
+                        <div className="text-muted-foreground">
+                          {selectedPartner.type}
+                        </div>
                       </div>
-                    </div>
-                    <div>
-                      <div className="text-sm font-bold">Thành lập</div>
-                      <div className="text-muted-foreground">
-                        {selectedPartner.established}
+                    )}
+                    {selectedPartner.partnership && (
+                      <div>
+                        <div className="font-bold">Hợp tác từ</div>
+                        <div className="text-muted-foreground">
+                          {selectedPartner.partnership}
+                        </div>
                       </div>
-                    </div>
-                    <div>
-                      <div className="text-sm font-bold">Loại hình</div>
-                      <div className="text-muted-foreground">
-                        {selectedPartner.type}
+                    )}
+
+                    {/* TÙY THEO LOẠI PARTNER */}
+                    {selectedPartner.projects && (
+                      <div className="mb-4">
+                        <div className="font-bold">Số dự án</div>
+                        <div className="text-muted-foreground">
+                          {selectedPartner.projects}
+                        </div>
                       </div>
-                    </div>
+                    )}
+
+                    {selectedPartner.revenue && (
+                      <div className="mb-4">
+                        <div className="font-bold">Doanh thu</div>
+                        <div className="text-muted-foreground">
+                          {selectedPartner.revenue}
+                        </div>
+                      </div>
+                    )}
+
+                    {selectedPartner.countries && (
+                      <div className="mb-4">
+                        <div className="font-bold">Quốc gia hoạt động</div>
+                        <div className="text-muted-foreground">
+                          {selectedPartner.countries}
+                        </div>
+                      </div>
+                    )}
+
+                    {selectedPartner.agents && (
+                      <div className="mb-4">
+                        <div className="font-bold">Số lượng nhân viên</div>
+                        <div className="text-muted-foreground">
+                          {selectedPartner.agents}
+                        </div>
+                      </div>
+                    )}
+
+                    {selectedPartner.loanRate && (
+                      <div className="mb-4">
+                        <div className="font-bold">Lãi suất</div>
+                        <div className="text-muted-foreground">
+                          {selectedPartner.loanRate}
+                        </div>
+                      </div>
+                    )}
+
+                    {selectedPartner.maxLoan && (
+                      <div className="mb-4">
+                        <div className="font-bold">Tỷ lệ vay tối đa</div>
+                        <div className="text-muted-foreground">
+                          {selectedPartner.maxLoan}
+                        </div>
+                      </div>
+                    )}
+
+                    {selectedPartner.specialties?.length > 0 && (
+                      <div className="mb-4">
+                        <div className="font-bold">Chuyên môn</div>
+                        <ul className="text-muted-foreground list-disc list-inside text-left">
+                          {selectedPartner.specialties.map(
+                            (item: any, index: any) => (
+                              <li key={index}>{item}</li>
+                            )
+                          )}
+                        </ul>
+                      </div>
+                    )}
+
+                    {selectedPartner.benefits?.length > 0 && (
+                      <div className="mb-4">
+                        <div className="font-bold">Lợi ích</div>
+                        <ul className="text-muted-foreground list-disc list-inside text-left">
+                          {selectedPartner.benefits.map(
+                            (item: any, index: any) => (
+                              <li key={index}>{item}</li>
+                            )
+                          )}
+                        </ul>
+                      </div>
+                    )}
+
+                    {selectedPartner.achievements?.length > 0 && (
+                      <div>
+                        <div className="font-bold">Thành tựu</div>
+                        <ul className="text-muted-foreground list-disc list-inside text-left">
+                          {selectedPartner.achievements.map(
+                            (item: any, index: any) => (
+                              <li key={index}>{item}</li>
+                            )
+                          )}
+                        </ul>
+                      </div>
+                    )}
                   </div>
                 </CardContent>
               </Card>

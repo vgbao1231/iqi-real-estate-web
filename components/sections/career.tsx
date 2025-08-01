@@ -11,7 +11,7 @@ export default function Career() {
     <section className="py-8 md:py-16 bg-muted/30">
       <div className="container mx-auto px-4">
         <FadeIn className="text-center mb-12">
-          <Badge className="mb-4 bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300">
+          <Badge className="mb-4 bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300">
             CƠ HỘI NGHỀ NGHIỆP
           </Badge>
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
@@ -65,7 +65,7 @@ export default function Career() {
               </div>
               <motion.div whileHover={{ scale: 1.05 }} className="mt-6">
                 <Link href="/careers">
-                  <Button className="bg-purple-600 hover:bg-purple-700">
+                  <Button className="bg-orange-600 hover:bg-orange-700">
                     Tìm hiểu cơ hội nghề nghiệp
                     <ArrowRight className="ml-2 w-4 h-4" />
                   </Button>

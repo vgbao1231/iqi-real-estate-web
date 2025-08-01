@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import {
   Select,
   SelectContent,
@@ -15,10 +14,7 @@ import {
 import { Checkbox } from '@/components/ui/checkbox';
 import { FadeIn, ScaleIn } from '@/components/common/animations';
 import {
-  ArrowLeft,
   Phone,
-  Mail,
-  MessageCircle,
   Clock,
   CheckCircle,
   Home,
@@ -27,11 +23,15 @@ import {
   Star,
   Award,
   Shield,
+  MessageCircle,
+  Mail,
 } from 'lucide-react';
-import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
+import IntroSection from '@/components/common/intro-section';
+import { contact } from '@/lib/contact-data';
+import { cn } from '@/lib/utils';
 
 export default function ConsultationPage() {
   const [formData, setFormData] = useState({
@@ -93,7 +93,7 @@ export default function ConsultationPage() {
       specialties: ['Singapore', 'Malaysia', 'Australia'],
       rating: 4.9,
       reviews: 234,
-      image: '/placeholder-2.webp?height=100&width=100',
+      image: '/placeholder.svg?height=100&width=100',
     },
     {
       name: 'Trần Thị Hương',
@@ -102,7 +102,7 @@ export default function ConsultationPage() {
       specialties: ['Vinhomes', 'Masterise', 'Novaland'],
       rating: 4.8,
       reviews: 189,
-      image: '/placeholder-2.webp?height=100&width=100',
+      image: '/placeholder.svg?height=100&width=100',
     },
     {
       name: 'Lê Văn Đức',
@@ -111,36 +111,44 @@ export default function ConsultationPage() {
       specialties: ['Phân tích thị trường', 'ROI', 'Rủi ro'],
       rating: 4.9,
       reviews: 156,
-      image: '/placeholder-2.webp?height=100&width=100',
+      image: '/placeholder.svg?height=100&width=100',
+    },
+  ];
+
+  const quickActions = [
+    {
+      icon: Phone,
+      title: 'Gọi Hotline',
+      description: contact.hotline,
+      action: () => window.open(`tel:${contact.hotline}`),
+      color: 'text-green-500',
+    },
+    {
+      icon: MessageCircle,
+      title: 'Chat Zalo',
+      description: 'Nhắn tin ngay',
+      action: () => window.open(`https://zalo.me/${contact.hotline}`),
+      color: 'text-blue-600',
+    },
+    {
+      icon: Mail,
+      title: 'Gửi Email',
+      description: contact.email,
+      action: () =>
+        window.open(
+          `https://mail.google.com/mail/?view=cm&fs=1&to=${contact.email}&su=Liên hệ từ website&body=Chào IQI Vietnam, tôi muốn...`
+        ),
+      color: 'text-orange-600',
     },
   ];
 
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <section className="py-12 bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-950/20 dark:to-blue-900/20">
-        <div className="container mx-auto px-4">
-          <FadeIn>
-            <Link
-              href="/"
-              className="inline-flex items-center text-blue-600 hover:text-blue-700 mb-6"
-            >
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Quay lại trang chủ
-            </Link>
-            <Badge className="mb-4 bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
-              TƯ VẤN MIỄN PHÍ
-            </Badge>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Tư vấn bất động sản chuyên nghiệp
-            </h1>
-            <p className="text-xl text-muted-foreground max-w-3xl">
-              Nhận tư vấn miễn phí từ đội ngũ chuyên gia hàng đầu với hơn 15 năm
-              kinh nghiệm trong lĩnh vực bất động sản
-            </p>
-          </FadeIn>
-        </div>
-      </section>
+      <IntroSection
+        title="IQI Vietnam: Giải Pháp Bất Động Sản Toàn Cầu"
+        description="Tư vấn từ chuyên gia IQI Vietnam, thành viên tập đoàn công nghệ bất động sản quốc tế với hơn 50.000 đại diện toàn cầu và kinh nghiệm dày dặn."
+      />
 
       {/* Consultation Services */}
       <section className="py-16">
@@ -158,20 +166,20 @@ export default function ConsultationPage() {
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {consultationServices.map((service, index) => (
               <ScaleIn key={index} delay={index * 0.2}>
-                <motion.div whileHover={{ y: -10 }}>
+                <motion.div whileHover={{ y: -10 }} className="h-full">
                   <Card className="h-full text-center">
-                    <CardHeader>
+                    <CardHeader className="flex-1">
                       <div
                         className={`w-16 h-16 ${service.bg} rounded-full flex items-center justify-center mx-auto mb-4`}
                       >
                         <service.icon className={`w-8 h-8 ${service.color}`} />
                       </div>
                       <CardTitle className="text-lg">{service.title}</CardTitle>
-                      <p className="text-muted-foreground text-sm">
+                      <p className="text-muted-foreground text-sm flex-1">
                         {service.description}
                       </p>
                     </CardHeader>
-                    <CardContent>
+                    <CardContent className="flex-none">
                       <ul className="space-y-2">
                         {service.features.map((feature, idx) => (
                           <li key={idx} className="flex items-center text-sm">
@@ -393,33 +401,24 @@ export default function ConsultationPage() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    <div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg">
-                      <Phone className="w-5 h-5 text-green-600" />
-                      <div>
-                        <div className="font-semibold">Hotline 24/7</div>
-                        <div className="text-green-600 font-bold">
-                          0764 155 155
+                    {quickActions.map((action, index) => {
+                      const Icon = action.icon;
+                      return (
+                        <div
+                          key={index}
+                          onClick={action.action}
+                          className="flex items-center space-x-3 p-3 rounded-lg cursor-pointer transition bg-muted/50 hover:scale-105"
+                        >
+                          <Icon className={cn('w-5 h-5', action.color)} />
+                          <div>
+                            <div className="font-semibold">{action.title}</div>
+                            <div className="text-sm opacity-90">
+                              {action.description}
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
-                    <div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg">
-                      <MessageCircle className="w-5 h-5 text-blue-600" />
-                      <div>
-                        <div className="font-semibold">Chat trực tuyến</div>
-                        <div className="text-muted-foreground text-sm">
-                          Phản hồi trong 5 phút
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg">
-                      <Mail className="w-5 h-5 text-orange-600" />
-                      <div>
-                        <div className="font-semibold">Email</div>
-                        <div className="text-muted-foreground text-sm">
-                          info@iqi.com
-                        </div>
-                      </div>
-                    </div>
+                      );
+                    })}
                   </CardContent>
                 </Card>
               </FadeIn>
@@ -440,13 +439,14 @@ export default function ConsultationPage() {
                         whileHover={{ scale: 1.02 }}
                         className="flex items-center space-x-3 p-3 bg-muted/30 rounded-lg"
                       >
-                        <Image
-                          src={expert.image || '/placeholder-2.webp'}
-                          alt={expert.name}
-                          width={50}
-                          height={50}
-                          className="rounded-full"
-                        />
+                        <div className="relative w-14 h-14">
+                          <Image
+                            src={expert.image || '/placeholder.svg'}
+                            alt={expert.name}
+                            fill
+                            className="object-cover rounded-full"
+                          />
+                        </div>
                         <div className="flex-1">
                           <div className="font-semibold">{expert.name}</div>
                           <div className="text-sm text-muted-foreground">
@@ -475,7 +475,7 @@ export default function ConsultationPage() {
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center">
-                      <Clock className="w-5 h-5 mr-2 text-purple-600" />
+                      <Clock className="w-5 h-5 mr-2 text-orange-600" />
                       Quy trình tư vấn
                     </CardTitle>
                   </CardHeader>
@@ -491,8 +491,8 @@ export default function ConsultationPage() {
                           key={index}
                           className="flex items-center space-x-3"
                         >
-                          <div className="w-6 h-6 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center">
-                            <span className="text-xs font-bold text-purple-600">
+                          <div className="w-6 h-6 bg-orange-100 dark:bg-orange-900/30 rounded-full flex items-center justify-center">
+                            <span className="text-xs font-bold text-orange-600">
                               {index + 1}
                             </span>
                           </div>

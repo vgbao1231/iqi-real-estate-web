@@ -84,23 +84,12 @@ export default function Products() {
                     Bất động sản Quốc tế
                   </h3>
                   <p className="text-white/90 mb-6 text-lg">
-                    Singapore, Malaysia, Australia, Thailand với cơ hội định cư
-                    và ROI hấp dẫn
+                    Singapore, Malaysia, Australia, Thailand, Hy Lạp,... với cơ
+                    hội định cư và ROI hấp dẫn
                   </p>
                 </div>
 
                 <div className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4 text-sm">
-                    <div className="bg-white/10 backdrop-blur-sm backdrop-brightness-75 rounded-lg p-3">
-                      <div className="text-white/70">Singapore</div>
-                      <div className="font-bold text-lg">$800K+</div>
-                    </div>
-                    <div className="bg-white/10 backdrop-blur-sm backdrop-brightness-75 rounded-lg p-3">
-                      <div className="text-white/70">Malaysia</div>
-                      <div className="font-bold text-lg">$300K+</div>
-                    </div>
-                  </div>
-
                   <motion.div
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
@@ -144,20 +133,13 @@ export default function Products() {
                     </Badge>
                   </div>
                   <h3 className="text-2xl font-bold mb-3">BĐS Việt Nam</h3>
+                  <p className="text-white/90 text-sm mb-3">
+                    TP.HCM, Hà Nội, Đà Nẵng, Phú Quốc và các thị trường tiềm
+                    năng.
+                  </p>
                 </div>
 
                 <div className="space-y-3">
-                  <div className="grid grid-cols-2 gap-8 text-sm">
-                    <div className="bg-white/10 backdrop-blur-sm backdrop-brightness-75 rounded-lg p-2 flex justify-between items-center">
-                      <div className="text-white/70">TP.HCM</div>
-                      <div className="font-bold text-sm">3-25 tỷ</div>
-                    </div>
-                    <div className="bg-white/10 backdrop-blur-sm backdrop-brightness-75 rounded-lg p-2 flex justify-between items-center">
-                      <div className="text-white/70">Hà Nội</div>
-                      <div className="font-bold text-sm">3-12 tỷ</div>
-                    </div>
-                  </div>
-
                   <motion.div
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
@@ -202,7 +184,7 @@ export default function Products() {
                   </div>
                   <h3 className="text-xl font-bold mb-2">BĐS Nghỉ dưỡng</h3>
                   <p className="text-white/90 text-sm mb-3">
-                    Phú Quốc, Đà Nẵng, Bali, Phuket
+                    Phú Quốc, Đà Nẵng, Bali, Phuket,...
                   </p>
                 </div>
 
@@ -231,7 +213,7 @@ export default function Products() {
             >
               <div className="absolute inset-0 brightness-90 dark:brightness-75">
                 <Image
-                  src="/placeholder-1.webp"
+                  src="/placeholder-1.jpg"
                   alt="Mạng lưới Đối tác"
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-110"
@@ -258,11 +240,11 @@ export default function Products() {
                 <div className="space-y-3">
                   <div className="grid grid-cols-2 gap-2 text-xs">
                     <div className="text-center text-shadow-md">
-                      <div className="font-bold">30+</div>
+                      <div className="font-bold">700+</div>
                       <div className="text-gray-200 text-shadow-md">Chủ ĐT</div>
                     </div>
                     <div className="text-center text-shadow-md">
-                      <div className="font-bold">20+</div>
+                      <div className="font-bold">22+</div>
                       <div className="text-gray-200 text-shadow-md">
                         Quốc gia
                       </div>

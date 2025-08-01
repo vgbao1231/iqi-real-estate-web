@@ -26,6 +26,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import OfficeCarousel from './components/OfficeCarousel';
+import { contact } from '@/lib/contact-data';
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -41,8 +42,9 @@ export default function ContactPage() {
       icon: Phone,
       title: 'Hotline 24/7',
       description: 'Gọi ngay để được tư vấn miễn phí',
-      contact: '0764155155',
-      action: 'Gọi ngay',
+      contact: contact.hotline,
+      action: () => window.open(`tel:${contact.hotline}`),
+      actionText: 'Gọi ngay',
       color: 'text-green-500',
       bg: 'bg-green-100 dark:bg-green-900/30',
     },
@@ -51,7 +53,8 @@ export default function ContactPage() {
       title: 'Chat trực tuyến',
       description: 'Nhắn tin và nhận phản hồi trong 5 phút',
       contact: 'Chat ngay',
-      action: 'Bắt đầu chat',
+      action: () => window.open(`https://zalo.me/${contact.hotline}`),
+      actionText: 'Bắt đầu chat',
       color: 'text-blue-600',
       bg: 'bg-blue-100 dark:bg-blue-900/30',
     },
@@ -60,7 +63,11 @@ export default function ContactPage() {
       title: 'Email',
       description: 'Gửi email chi tiết về nhu cầu của bạn',
       contact: ' info-vietnam@iqiglobal.com',
-      action: 'Gửi email',
+      action: () =>
+        window.open(
+          `https://mail.google.com/mail/?view=cm&fs=1&to=${contact.email}&su=Liên hệ từ website&body=Chào IQI Vietnam, tôi muốn...`
+        ),
+      actionText: 'Gửi email',
       color: 'text-orange-600',
       bg: 'bg-orange-100 dark:bg-orange-900/30',
     },
@@ -69,9 +76,9 @@ export default function ContactPage() {
   const contactLinks = [
     {
       label: 'Website',
-      value: 'https://iqiglobal.com',
+      value: contact.website,
       icon: <Globe size={20} />,
-      href: 'https://iqiglobal.com',
+      href: contact.website,
     },
     {
       label: 'Facebook',
@@ -105,13 +112,13 @@ export default function ContactPage() {
     },
     {
       label: 'Email',
-      value: 'info-vietnam@iqiglobal.com',
+      value: contact.email,
       icon: <Mail size={20} />,
-      href: 'mailto:info-vietnam@iqiglobal.com',
+      href: `mailto:${contact.email}`,
     },
     {
       label: 'Phone',
-      value: '0764155155',
+      value: contact.hotline,
       icon: <Phone size={20} />,
       href: 'tel:+84764155155',
     },
@@ -210,22 +217,25 @@ export default function ContactPage() {
     {
       icon: Phone,
       title: 'Gọi Hotline',
-      description: '0764155155',
-      action: () => window.open('tel:0764155155'),
+      description: contact.hotline,
+      action: () => window.open(`tel:${contact.hotline}`),
       color: 'bg-green-500 hover:bg-green-700',
     },
     {
       icon: MessageCircle,
       title: 'Chat Zalo',
       description: 'Nhắn tin ngay',
-      action: () => window.open('https://zalo.me/0764155155'),
+      action: () => window.open(`https://zalo.me/${contact.hotline}`),
       color: 'bg-blue-600 hover:bg-blue-700',
     },
     {
       icon: Mail,
       title: 'Gửi Email',
-      description: 'info@iqi.com',
-      action: () => window.open('mailto:info@iqi.com'),
+      description: contact.email,
+      action: () =>
+        window.open(
+          `https://mail.google.com/mail/?view=cm&fs=1&to=${contact.email}&su=Liên hệ từ website&body=Chào IQI Vietnam, tôi muốn...`
+        ),
       color: 'bg-orange-600 hover:bg-orange-700',
     },
   ];
@@ -295,7 +305,9 @@ export default function ContactPage() {
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                       >
-                        <Button className="w-full">{method.action}</Button>
+                        <Button className="w-full" onClick={method.action}>
+                          {method.actionText}
+                        </Button>
                       </motion.div>
                     </CardContent>
                   </Card>
@@ -319,7 +331,7 @@ export default function ContactPage() {
                     onClick={action.action}
                   >
                     <action.icon className="w-5 h-5 mr-2" />
-                    <div className="text-left">
+                    <div>
                       <div className="font-semibold">{action.title}</div>
                       <div className="text-xs opacity-90">
                         {action.description}
@@ -415,7 +427,7 @@ export default function ContactPage() {
                     whileTap={{ scale: 0.98 }}
                   >
                     <Button
-                      className="w-full bg-orange-500 hover:bg-green-700"
+                      className="w-full bg-orange-500 hover:bg-orange-600"
                       size="lg"
                     >
                       <Send className="w-4 h-4 mr-2" />
@@ -492,7 +504,7 @@ export default function ContactPage() {
                         <div className="flex items-center text-green-700 dark:text-green-300">
                           <Headphones className="w-4 h-4 mr-2" />
                           <span className="font-semibold">
-                            Hotline 24/7: 0764 155 155
+                            Hotline 24/7: {contact.hotlineDisplay}
                           </span>
                         </div>
                       </div>

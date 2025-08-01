@@ -14,7 +14,7 @@ export default function ScrollToTopButton() {
       const totalHeight = document.body.scrollHeight - window.innerHeight;
       const percent = Math.min((scrollY / totalHeight) * 100, 100);
       setScrollPercent(percent);
-      setShowButton(scrollY > 1200);
+      setShowButton(scrollY > 800);
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -38,8 +38,9 @@ export default function ScrollToTopButton() {
           initial={{ opacity: 0, y: 100 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 100 }}
+          whileHover={{ scale: 1.1 }}
           transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-          className="fixed bottom-14 right-8 z-50 rounded-full w-12 h-12 bg-orange-500 text-white shadow-lg flex items-center justify-center"
+          className="fixed bottom-14 right-8 z-50 rounded-full w-12 h-12 bg-white text-orange-500 shadow-lg center-both"
         >
           <svg
             className="absolute top-0 left-0 w-full h-full"
@@ -50,7 +51,7 @@ export default function ScrollToTopButton() {
               cy="24"
               r={radius}
               fill="none"
-              stroke="#ffffff80"
+              stroke="#ffe8db"
               strokeWidth="3"
             />
             <circle
@@ -58,7 +59,7 @@ export default function ScrollToTopButton() {
               cy="24"
               r={radius}
               fill="none"
-              stroke="#fff"
+              stroke="#ff9b59"
               strokeWidth="3"
               strokeDasharray={circumference}
               strokeDashoffset={circumference * (1 - scrollPercent / 100)}

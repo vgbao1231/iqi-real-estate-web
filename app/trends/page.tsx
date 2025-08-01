@@ -1,14 +1,11 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { FadeIn, ScaleIn } from '@/components/common/animations';
 import {
-  ArrowLeft,
   Lightbulb,
-  Target,
   Zap,
   Home,
   Building2,
@@ -17,9 +14,10 @@ import {
   Calendar,
   Star,
 } from 'lucide-react';
-import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import IntroSection from '@/components/common/intro-section';
+import OutroSection from '@/components/common/outro-section';
 
 export default function TrendsPage() {
   const currentTrends = [
@@ -178,31 +176,10 @@ export default function TrendsPage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <section className="py-12 bg-gradient-to-r from-purple-50 to-purple-100 dark:from-purple-950/20 dark:to-purple-900/20">
-        <div className="container mx-auto px-4 md:px-12">
-          <FadeIn>
-            <div className="flex items-center gap-2 mb-4">
-              <Link
-                href="/"
-                className="inline-flex items-center text-purple-600 hover:text-purple-700"
-              >
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Quay lại trang chủ
-              </Link>
-              <Badge className="bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300">
-                XU HƯỚNG BẤT ĐỘNG SẢN
-              </Badge>
-            </div>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Xu hướng & Dự báo thị trường
-            </h1>
-            <p className="text-xl text-muted-foreground max-w-3xl">
-              Khám phá những xu hướng mới nhất, dự báo tương lai và cơ hội đầu
-              tư tiềm năng trong thị trường bất động sản Việt Nam.
-            </p>
-          </FadeIn>
-        </div>
-      </section>
+      <IntroSection
+        title="Xu hướng & Dự báo thị trường"
+        description="Khám phá những xu hướng mới nhất, dự báo tương lai và cơ hội đầu tư tiềm năng trong thị trường bất động sản Việt Nam."
+      />
 
       {/* Current Trends */}
       <section className="py-16 md:px-12">
@@ -424,49 +401,18 @@ export default function TrendsPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-gradient-to-r from-purple-600 to-purple-500 text-white">
-        <div className="container mx-auto px-4 text-center">
-          <FadeIn>
-            <Target className="w-16 h-16 mx-auto mb-6 opacity-80" />
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Sẵn sàng đầu tư thông minh?
-            </h2>
-            <p className="text-xl mb-8 max-w-2xl mx-auto opacity-90">
-              Tận dụng những xu hướng mới và cơ hội đầu tư tiềm năng với sự hỗ
-              trợ từ đội ngũ chuyên gia IQI Vietnam
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Link href="/consultation">
-                  <Button
-                    size="lg"
-                    className="bg-white text-purple-600 hover:bg-gray-100"
-                  >
-                    Tư vấn đầu tư
-                  </Button>
-                </Link>
-              </motion.div>
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Link href="/products/vietnam">
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    className="border-white text-white hover:bg-white hover:text-purple-600 bg-transparent"
-                  >
-                    Xem dự án
-                  </Button>
-                </Link>
-              </motion.div>
-            </div>
-          </FadeIn>
-        </div>
-      </section>
+      <OutroSection
+        title="Sẵn sàng đầu tư thông minh?"
+        subtitle="Tận dụng những xu hướng mới và cơ hội đầu tư tiềm năng với sự hỗ trợ từ đội ngũ chuyên gia IQI Vietnam"
+        primary={{
+          label: 'Tư vấn đầu tư',
+          href: '/consultation',
+        }}
+        secondary={{
+          label: 'Xem dự án',
+          href: '/products/vietnam',
+        }}
+      />
     </div>
   );
 }

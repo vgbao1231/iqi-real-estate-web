@@ -1,11 +1,9 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { FadeIn, ScaleIn } from '@/components/common/animations';
 import {
-  ArrowLeft,
   TrendingUp,
   TrendingDown,
   BarChart3,
@@ -13,8 +11,9 @@ import {
   Building,
   MapPin,
 } from 'lucide-react';
-import Link from 'next/link';
 import { motion } from 'framer-motion';
+import IntroSection from '@/components/common/intro-section';
+import OutroSection from '@/components/common/outro-section';
 
 export default function MarketPage() {
   const marketStats = [
@@ -113,32 +112,10 @@ export default function MarketPage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <section className="py-12 bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-950/20 dark:to-blue-900/20">
-        <div className="container mx-auto px-4 md:px-12">
-          <FadeIn>
-            <div className="flex items-center gap-2 mb-4">
-              <Link
-                href="/"
-                className="inline-flex items-center text-blue-600 hover:text-blue-700"
-              >
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Quay lại trang chủ
-              </Link>
-              <Badge className="bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
-                PHÂN TÍCH THỊ TRƯỜNG
-              </Badge>
-            </div>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Báo cáo thị trường BDS
-            </h1>
-            <p className="text-xl text-muted-foreground max-w-3xl">
-              Phân tích chuyên sâu về thị trường bất động sản Việt Nam với dữ
-              liệu cập nhật theo thời gian thực và dự báo xu hướng từ đội ngũ
-              chuyên gia IQI Vietnam.
-            </p>
-          </FadeIn>
-        </div>
-      </section>
+      <IntroSection
+        title="Báo cáo thị trường BDS"
+        description="Phân tích chuyên sâu về thị trường bất động sản Việt Nam với dữ liệu cập nhật theo thời gian thực và dự báo xu hướng từ đội ngũ chuyên gia IQI Vietnam."
+      />
 
       {/* Market Overview Stats */}
       <section className="py-12 md:px-12">
@@ -392,48 +369,18 @@ export default function MarketPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-12 bg-gradient-to-r from-blue-600 to-blue-500 text-white">
-        <div className="container mx-auto px-4 text-center">
-          <FadeIn>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Cần tư vấn chuyên sâu?
-            </h2>
-            <p className="text-xl mb-8 max-w-2xl mx-auto opacity-90">
-              Liên hệ với đội ngũ chuyên gia của chúng tôi để nhận phân tích thị
-              trường chi tiết và lời khuyên đầu tư phù hợp
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Link href="/consultation">
-                  <Button
-                    size="lg"
-                    className="bg-white text-blue-600 hover:bg-gray-100"
-                  >
-                    Đặt lịch tư vấn
-                  </Button>
-                </Link>
-              </motion.div>
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Link href="/contact">
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    className="border-white text-white hover:bg-white hover:text-blue-600 bg-transparent"
-                  >
-                    Liên hệ ngay
-                  </Button>
-                </Link>
-              </motion.div>
-            </div>
-          </FadeIn>
-        </div>
-      </section>
+      <OutroSection
+        title="Cần tư vấn chuyên sâu?"
+        subtitle="Liên hệ với đội ngũ chuyên gia của chúng tôi để nhận phân tích thị trường chi tiết và lời khuyên đầu tư phù hợp"
+        primary={{
+          label: 'Đặt lịch tư vấn',
+          href: '/consultation',
+        }}
+        secondary={{
+          label: 'Liên hệ ngay',
+          href: '/contact',
+        }}
+      />
     </div>
   );
 }

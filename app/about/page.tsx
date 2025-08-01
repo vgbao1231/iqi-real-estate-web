@@ -2,10 +2,8 @@
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { FadeIn, SlideIn, ScaleIn } from '@/components/common/animations';
 import {
-  ArrowLeft,
   Users,
   Award,
   Globe,
@@ -17,37 +15,16 @@ import {
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import IntroSection from '@/components/common/intro-section';
 
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <section className="py-12 md:px-12 bg-gradient-to-br from-orange-400/90 via-orange-400 to-orange-500 dark:from-orange-500 dark:to-orange-600">
-        <div className="container mx-auto px-4 text-white">
-          <FadeIn>
-            <div className="flex items-center gap-4 mb-6">
-              <Link
-                href="/"
-                className="inline-flex items-center text-orange-100 hover:text-white"
-              >
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Quay lại trang chủ
-              </Link>
-              <Badge className="bg-orange-100 text-orange-800 dark:bg-orange-700 dark:text-orange-100">
-                VỀ CHÚNG TÔI
-              </Badge>
-            </div>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Giới thiệu về IQI Vietnam
-            </h1>
-            <p className="text-xl max-w-3xl">
-              Với hơn 15 năm kinh nghiệm trong lĩnh vực bất động sản, IQI
-              Vietnam đã khẳng định vị thế là đối tác tin cậy của hàng nghìn
-              khách hàng trên toàn quốc.
-            </p>
-          </FadeIn>
-        </div>
-      </section>
+      <IntroSection
+        title="Giới thiệu về IQI Vietnam"
+        description="Với hơn 15 năm kinh nghiệm trong lĩnh vực bất động sản, IQI Vietnam đã khẳng định vị thế là đối tác tin cậy của hàng nghìn khách hàng trên toàn quốc."
+      />
 
       {/* Company Story */}
       <section className="py-16 md:px-12">

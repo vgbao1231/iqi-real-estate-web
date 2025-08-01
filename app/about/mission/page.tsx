@@ -1,44 +1,22 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { FadeIn, SlideIn, ScaleIn } from '@/components/common/animations';
-import { ArrowLeft, Target, Shield, Zap } from 'lucide-react';
-import Link from 'next/link';
+import { Target, Shield, Zap } from 'lucide-react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import Achievement from '@/components/sections/achievement';
+import IntroSection from '@/components/common/intro-section';
+import OutroSection from '@/components/common/outro-section';
 
 export default function AboutMissionPage() {
   return (
     <div className="min-h-screen">
       {/* Header */}
-      <section className="py-12 md:px-12 bg-gradient-to-br from-orange-400/90 via-orange-400 to-orange-500 dark:from-orange-400 dark:to-orange-600">
-        <div className="container mx-auto px-4 relative z-10 text-white">
-          <FadeIn>
-            <div className="flex items-center gap-2 mb-4">
-              <Link
-                href="/"
-                className="inline-flex items-center text-orange-100 hover:text-white"
-              >
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Quay lại trang chủ
-              </Link>
-              <Badge className="bg-orange-100 text-orange-800 dark:bg-orange-700 dark:text-orange-100">
-                GIỚI THIỆU IQI VIETNAM
-              </Badge>
-            </div>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Đối tác bất động sản toàn cầu đến từ Châu Á
-            </h1>
-            <p className="text-xl max-w-3xl">
-              Tìm hiểu hành trình phát triển, tầm nhìn toàn cầu và các giá trị
-              cốt lõi định hình IQI Vietnam - thành viên của IQI Global.
-            </p>
-          </FadeIn>
-        </div>
-      </section>
+      <IntroSection
+        title="Đối tác bất động sản toàn cầu đến từ Châu Á"
+        description="Tìm hiểu hành trình phát triển, tầm nhìn toàn cầu và các giá trị cốt lõi định hình IQI Vietnam - thành viên của IQI Global."
+      />
 
       {/* Company Story */}
       <section className="py-16 md:px-12">
@@ -56,7 +34,7 @@ export default function AboutMissionPage() {
                     hiện hơn 42.000 giao dịch trong năm 2022.
                   </p>
                   <p>
-                    IQI Vietnam – chi nhánh tại Việt Nam – mang sứ mệnh kết nối
+                    IQI Vietnam - chi nhánh tại Việt Nam - mang sứ mệnh kết nối
                     khách hàng với các cơ hội đầu tư bất động sản chất lượng
                     trên toàn cầu.
                   </p>
@@ -72,14 +50,13 @@ export default function AboutMissionPage() {
               <div className="relative">
                 <motion.div
                   whileHover={{ scale: 1.05 }}
-                  className="center-both"
+                  className="center-both relative w-full h-96"
                 >
                   <Image
-                    src="/iqi-office.jpg"
+                    src="/iqi-vietnam-office.jpg"
                     alt="IQI Vietnam Office"
-                    width={600}
-                    height={400}
-                    className="rounded-lg shadow-lg"
+                    fill
+                    className="object-cover rounded-lg shadow-lg"
                     priority
                   />
                 </motion.div>
@@ -161,7 +138,7 @@ export default function AboutMissionPage() {
                   </CardHeader>
                   <CardContent>
                     <p className="text-muted-foreground">
-                      Đam mê - Sáng tạo - Trung thực - Cộng hưởng – Khát vọng
+                      Đam mê - Sáng tạo - Trung thực - Cộng hưởng - Khát vọng
                       lớn. IQI không chỉ hướng đến kết quả mà còn hướng đến sự
                       phát triển bền vững.
                     </p>
@@ -177,29 +154,14 @@ export default function AboutMissionPage() {
       <Achievement />
 
       {/* Contact CTA */}
-      <section className="py-16 md:px-12 bg-gradient-to-r from-orange-400 to-orange-500 dark:from-orange-500 dark:to-orange-600 text-white">
-        <div className="container mx-auto px-4 text-center">
-          <FadeIn>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Bạn có câu hỏi về IQI Vietnam?
-            </h2>
-            <p className="text-xl mb-8 max-w-2xl mx-auto opacity-90">
-              Liên hệ với chúng tôi để được tư vấn chi tiết về các dịch vụ và cơ
-              hội hợp tác
-            </p>
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Link href="/contact">
-                <Button
-                  size="lg"
-                  className="bg-white text-orange-600 hover:bg-gray-100"
-                >
-                  Liên hệ ngay
-                </Button>
-              </Link>
-            </motion.div>
-          </FadeIn>
-        </div>
-      </section>
+      <OutroSection
+        title="Bạn có câu hỏi về IQI Vietnam?"
+        subtitle="Liên hệ với chúng tôi để được tư vấn chi tiết về các dịch vụ và cơ hội hợp tác"
+        primary={{
+          label: 'Liên hệ ngay',
+          href: '/contact',
+        }}
+      />
     </div>
   );
 }

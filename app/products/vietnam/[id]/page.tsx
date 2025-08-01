@@ -26,7 +26,7 @@ const arsenal = Arsenal({
 });
 
 /* -------------------------------------------------------------------------- */
-/*                         DUMMY PROPERTY – STATIC DATA                       */
+/*                         DUMMY PROPERTY - STATIC DATA                       */
 /* -------------------------------------------------------------------------- */
 const property = properties[0];
 
@@ -117,12 +117,12 @@ export default function VietnamProductDetailPage() {
       )}
     >
       {/* ----------------------------------------------------------------------- */}
-      {/* Cover – Header IQI                                                      */}
+      {/* Cover - Header IQI                                                      */}
       {/* ----------------------------------------------------------------------- */}
       <Cover data={property.introduction} />
 
       {/* ----------------------------------------------------------------------- */}
-      {/* Header – transparent overlay                                            */}
+      {/* Header - transparent overlay                                            */}
       {/* ----------------------------------------------------------------------- */}
       <header className="sticky top-0 z-50 w-full bg-accent-card py-2 shadow-md">
         <div className="mx-auto overflow-x-auto px-4 scrollbar-hide">

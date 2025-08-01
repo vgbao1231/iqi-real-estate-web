@@ -5,7 +5,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { FadeIn, SlideIn, ScaleIn } from '@/components/common/animations';
 import {
-  ArrowLeft,
   Award,
   TrendingUp,
   Users,
@@ -18,6 +17,8 @@ import {
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import OutroSection from '@/components/common/outro-section';
+import IntroSection from '@/components/common/intro-section';
 
 export default function CareersPage() {
   const jobOpenings = [
@@ -70,32 +71,10 @@ export default function CareersPage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <section className="py-12 bg-gradient-to-br from-orange-400/90 via-orange-400 to-orange-500 dark:from-orange-400 dark:to-orange-600">
-        <div className="container mx-auto px-4 text-white md:px-12">
-          <FadeIn>
-            <div className="flex items-center gap-2 mb-4">
-              <Link
-                href="/"
-                className="inline-flex items-center text-orange-100 hover:text-white"
-              >
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Quay lại trang chủ
-              </Link>
-              <Badge className="bg-orange-100 text-orange-800 dark:bg-orange-700 dark:text-orange-100">
-                CƠ HỘI NGHỀ NGHIỆP
-              </Badge>
-            </div>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Tham gia đội ngũ IQI Vietnam
-            </h1>
-            <p className="text-xl max-w-3xl">
-              Khởi đầu sự nghiệp bất động sản với đội ngũ chuyên nghiệp, chương
-              trình đào tạo toàn diện và cơ hội thu nhập hấp dẫn tại IQI
-              Vietnam.
-            </p>
-          </FadeIn>
-        </div>
-      </section>
+      <IntroSection
+        title="Tham gia đội ngũ IQI Vietnam"
+        description="Khởi đầu sự nghiệp bất động sản với đội ngũ chuyên nghiệp, chương trình đào tạo toàn diện và cơ hội thu nhập hấp dẫn tại IQI Vietnam."
+      />
 
       {/* Why Choose IQI */}
       <section className="py-16 md:px-12">
@@ -212,12 +191,12 @@ export default function CareersPage() {
 
                       <div className="flex gap-2">
                         <motion.div
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
                           className="flex-1"
                         >
                           <Link href={`/careers/${job.id}`}>
-                            <Button className="w-full bg-purple-600 hover:bg-purple-700">
+                            <Button className="w-full bg-orange-500 hover:bg-orange-600">
                               Xem chi tiết
                             </Button>
                           </Link>
@@ -254,8 +233,8 @@ export default function CareersPage() {
 
                 <div className="space-y-4">
                   <div className="flex items-start space-x-3">
-                    <div className="w-8 h-8 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center flex-shrink-0">
-                      <span className="text-purple-600 font-bold text-sm">
+                    <div className="w-8 h-8 bg-orange-100 dark:bg-orange-900/30 rounded-full flex items-center justify-center flex-shrink-0">
+                      <span className="text-orange-600 font-bold text-sm">
                         1
                       </span>
                     </div>
@@ -270,8 +249,8 @@ export default function CareersPage() {
                   </div>
 
                   <div className="flex items-start space-x-3">
-                    <div className="w-8 h-8 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center flex-shrink-0">
-                      <span className="text-purple-600 font-bold text-sm">
+                    <div className="w-8 h-8 bg-orange-100 dark:bg-orange-900/30 rounded-full flex items-center justify-center flex-shrink-0">
+                      <span className="text-orange-600 font-bold text-sm">
                         2
                       </span>
                     </div>
@@ -286,8 +265,8 @@ export default function CareersPage() {
                   </div>
 
                   <div className="flex items-start space-x-3">
-                    <div className="w-8 h-8 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center flex-shrink-0">
-                      <span className="text-purple-600 font-bold text-sm">
+                    <div className="w-8 h-8 bg-orange-100 dark:bg-orange-900/30 rounded-full flex items-center justify-center flex-shrink-0">
+                      <span className="text-orange-600 font-bold text-sm">
                         3
                       </span>
                     </div>
@@ -308,14 +287,14 @@ export default function CareersPage() {
               <div className="relative">
                 <motion.div
                   whileHover={{ scale: 1.05 }}
-                  className="center-both"
+                  className="center-both relative w-full h-96"
                 >
                   <Image
                     src="/placeholder-2.webp?height=400&width=500"
                     alt="Training Program"
-                    width={500}
-                    height={400}
-                    className="rounded-lg shadow-lg"
+                    fill
+                    priority
+                    className="object-cover rounded-lg shadow-lg"
                   />
                 </motion.div>
               </div>
@@ -325,44 +304,18 @@ export default function CareersPage() {
       </section>
 
       {/* Contact CTA */}
-      <section className="py-16 bg-gradient-to-r from-purple-600 to-purple-500 text-white">
-        <div className="container mx-auto px-4 text-center">
-          <FadeIn>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Sẵn sàng gia nhập IQI Vietnam?
-            </h2>
-            <p className="text-xl mb-8 max-w-2xl mx-auto opacity-90">
-              Gửi CV của bạn hoặc liên hệ với chúng tôi để tìm hiểu thêm về các
-              cơ hội nghề nghiệp
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Button
-                  size="lg"
-                  className="bg-white text-purple-600 hover:bg-gray-100"
-                >
-                  Gửi CV ngay
-                </Button>
-              </motion.div>
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="border-white text-white hover:bg-white hover:text-purple-600 bg-transparent"
-                >
-                  Liên hệ HR
-                </Button>
-              </motion.div>
-            </div>
-          </FadeIn>
-        </div>
-      </section>
+      <OutroSection
+        title="Sẵn sàng gia nhập IQI Vietnam?"
+        subtitle="Gửi CV của bạn hoặc liên hệ với chúng tôi để tìm hiểu thêm về các cơ hội nghề nghiệp"
+        primary={{
+          label: 'Gửi CV ngay',
+          href: '/career',
+        }}
+        secondary={{
+          label: 'Liên hệ HR',
+          href: '/contact',
+        }}
+      />
     </div>
   );
 }

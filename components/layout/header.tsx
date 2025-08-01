@@ -13,7 +13,6 @@ import {
   Users,
   Menu,
   Smile,
-  Languages,
   X,
 } from 'lucide-react';
 import Link from 'next/link';
@@ -23,14 +22,11 @@ import Image from 'next/image';
 import { FadeIn } from '../common/animations';
 import { cn } from '@/lib/utils';
 import { Button } from '../ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '../ui/dropdown-menu';
+import { contact } from '@/lib/contact-data';
+import LanguageSwitcher from '../common/language-switcher';
 
 export default function Header({
+  heroId = 'hero',
   enableHidden = true,
   enableToggleDark = true,
   className,
@@ -40,7 +36,6 @@ export default function Header({
   const [isDark, setIsDark] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
-  const [language, setLanguage] = useState('vi');
 
   const navMenus = [
     {
@@ -134,24 +129,6 @@ export default function Header({
     },
   ];
 
-  const languages = [
-    { code: 'vi', label: 'Tiếng Việt', icon: '🇻🇳' },
-    { code: 'en', label: 'English', icon: '🇺🇸' },
-    { code: 'ja', label: '日本語', icon: '🇯🇵' },
-    { code: 'ko', label: '한국어', icon: '🇰🇷' },
-  ];
-
-  useEffect(() => {
-    const cookie = document.cookie.match(/googtrans=\/vi\/(\w+)/);
-    const langFromCookie = cookie?.[1] || 'vi';
-    setLanguage(langFromCookie);
-  }, []);
-
-  const handleChangeLang = (code: string) => {
-    document.cookie = `googtrans=/vi/${code}; path=/`;
-    window.location.reload();
-  };
-
   // Đóng menu khi click ra ngoài
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -189,12 +166,12 @@ export default function Header({
       setLastScrollY(currentScrollY);
 
       // Set header bgcolor for hero section
-      const heroHeight = document.getElementById('hero')?.offsetHeight || 0;
+      const heroHeight = document.getElementById(heroId)?.offsetHeight || 0;
       setIsDark(window.scrollY < heroHeight);
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [lastScrollY, enableHidden]);
+  }, [lastScrollY, enableHidden, heroId]);
 
   return (
     <motion.header
@@ -260,10 +237,20 @@ export default function Header({
             {navMenus.map((menu) =>
               menu.items ? (
                 <div key={menu.label} className="relative group">
-                  <button className="flex items-center space-x-1 group/menu hover:text-orange-500 transition-all duration-300">
-                    <span className="relative">
+                  <button
+                    className={cn(
+                      'flex items-center space-x-1 group/menu hover:text-foreground transition-all duration-300',
+                      isDark && 'hover:text-white'
+                    )}
+                  >
+                    <span className="relative group-hover/menu:font-semibold transition-all">
                       {menu.label}
-                      <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r !from-orange-500 !to-orange-600 transition-all duration-300 group-hover/menu:w-full"></div>
+                      <div
+                        className={cn(
+                          'absolute bottom-0 left-0 w-0 h-0.5 bg-foreground transition-all duration-300 group-hover/menu:w-full',
+                          isDark && 'bg-white'
+                        )}
+                      ></div>
                     </span>
                     <ChevronDown className="w-4 h-4 transition-all duration-300 group-hover/menu:rotate-180" />
                   </button>
@@ -299,10 +286,15 @@ export default function Header({
                 <Link
                   key={menu.label}
                   href={menu.href}
-                  className="hover:text-orange-500 transition-all duration-300 relative group"
+                  className="hover:font-semibold transition-all duration-300 relative group"
                 >
                   {menu.label}
-                  <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r !from-orange-500 !to-orange-600 transition-all group-hover:w-full duration-300"></div>
+                  <div
+                    className={cn(
+                      'absolute bottom-0 left-0 w-0 h-0.5 bg-foreground transition-all duration-300 group-hover:w-full',
+                      isDark && 'bg-white'
+                    )}
+                  ></div>
                 </Link>
               )
             )}
@@ -321,7 +313,7 @@ export default function Header({
                   )}
                 />
                 <Input
-                  placeholder="Hotline: 0764 155 155"
+                  placeholder={`Hotline: ${contact.hotlineDisplay}`}
                   className={cn(
                     'pl-10 w-52 bg-transparent',
                     enableToggleDark && isDark
@@ -336,46 +328,7 @@ export default function Header({
             {/* Actions */}
             <div className="flex items-center space-x-4">
               {/* Language Switcher */}
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className={cn(
-                      'hover:bg-orange-300/10 dark:hover:bg-orange-900/20 bg-transparent',
-                      isDark
-                        ? 'text-white border-white/60'
-                        : 'text-black dark:text-white border-black/30 dark:border-white/60'
-                    )}
-                  >
-                    <Languages className="h-4 w-4" />
-                    <span className="text-sm font-medium">
-                      {languages.find((l) => l.code === language)?.label ??
-                        language}
-                    </span>
-                    <ChevronDown className="h-3 w-3" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent
-                  align="end"
-                  className="min-w-[160px] bg-card/60"
-                >
-                  {languages.map(({ code, label, icon }) => (
-                    <DropdownMenuItem
-                      key={code}
-                      onClick={() => handleChangeLang(code)}
-                      className={cn(
-                        'cursor-pointer',
-                        language === code && 'bg-accent/40'
-                      )}
-                    >
-                      <div className="flex items-center space-x-2">
-                        <span className="text-lg">{icon}</span>
-                        <span>{label}</span>
-                      </div>
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <LanguageSwitcher isDark={isDark} />
             </div>
             <ThemeToggle isDark={enableToggleDark && isDark} />
           </div>

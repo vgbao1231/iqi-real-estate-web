@@ -12,8 +12,10 @@ import {
   Phone,
   Settings,
   FileText,
+  ArrowLeft,
 } from 'lucide-react';
-
+import { useProjectData } from '@/hooks/use-project-data';
+import { ProjectsList } from './components/ProjectsList';
 import { AmenityTab } from './tabs/amenity-tab';
 import { ContactTab } from './tabs/contact-tab';
 import { IntroductionTab } from './tabs/introduction-tab';
@@ -21,9 +23,8 @@ import { LocationTab } from './tabs/location-tab';
 import { OtherTab } from './tabs/other-tab';
 import { OverviewTab } from './tabs/overview-tab';
 import { ProductionTab } from './tabs/production-tab';
-import { useProjectData } from '@/hooks/use-project-data';
 
-export default function RealEstateAdmin() {
+export default function Properties() {
   const {
     project,
     updateProject,
@@ -37,18 +38,40 @@ export default function RealEstateAdmin() {
     editingPolicyIndex,
     setEditingPolicyIndex,
   } = useProjectData();
-  const [activeTab, setActiveTab] = useState('introduction'); // Set active tab to other for easier testing
+
+  // State to manage which view is active: list or edit form
+  const [editingProjectId, setEditingProjectId] = useState<
+    string | number | null
+  >(null); // null for list view, "new" for new project, or project ID for editing
+
+  // If editingProjectId is null, show the list of projects
+  if (editingProjectId === null) {
+    return <ProjectsList onEditProject={setEditingProjectId} />;
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="border-b bg-white">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">
-                Quản lý dự án bất động sản
-              </h1>
-              <p className="text-gray-600">Cập nhật thông tin chi tiết dự án</p>
+            <div className="flex items-center space-x-4">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setEditingProjectId(null)}
+              >
+                <ArrowLeft className="h-5 w-5" />
+              </Button>
+              <div>
+                <h1 className="text-2xl font-bold text-gray-900">
+                  {editingProjectId === 'new'
+                    ? 'Thêm dự án mới'
+                    : 'Chỉnh sửa dự án'}
+                </h1>
+                <p className="text-gray-600">
+                  Cập nhật thông tin chi tiết dự án
+                </p>
+              </div>
             </div>
             <Button className="flex items-center space-x-2">
               <Save className="h-4 w-4" />
@@ -59,11 +82,9 @@ export default function RealEstateAdmin() {
       </div>
 
       <div className="container mx-auto px-4 py-6">
-        <Tabs
-          value={activeTab}
-          onValueChange={setActiveTab}
-          className="space-y-6"
-        >
+        <Tabs defaultValue="introduction" className="space-y-6">
+          {' '}
+          {/* Changed defaultValue to introduction */}
           <TabsList className="grid w-full grid-cols-7">
             <TabsTrigger
               value="introduction"
@@ -112,7 +133,6 @@ export default function RealEstateAdmin() {
               <span className="hidden sm:inline">Khác</span>
             </TabsTrigger>
           </TabsList>
-
           {/* Introduction Tab */}
           <TabsContent value="introduction">
             <IntroductionTab
@@ -120,7 +140,6 @@ export default function RealEstateAdmin() {
               updateProject={updateProject}
             />
           </TabsContent>
-
           {/* Overview Tab */}
           <TabsContent value="overview">
             <OverviewTab
@@ -131,7 +150,6 @@ export default function RealEstateAdmin() {
               updateArrayItem={updateArrayItem}
             />
           </TabsContent>
-
           {/* Location Tab */}
           <TabsContent value="location">
             <LocationTab
@@ -140,7 +158,6 @@ export default function RealEstateAdmin() {
               updateNestedProject={updateNestedProject}
             />
           </TabsContent>
-
           {/* Production Tab */}
           <TabsContent value="production">
             <ProductionTab
@@ -151,7 +168,6 @@ export default function RealEstateAdmin() {
               removeProduct={removeProduct}
             />
           </TabsContent>
-
           {/* Amenity Tab */}
           <TabsContent value="amenity">
             <AmenityTab
@@ -159,7 +175,6 @@ export default function RealEstateAdmin() {
               updateProject={updateProject}
             />
           </TabsContent>
-
           {/* Contact Tab */}
           <TabsContent value="contact">
             <ContactTab
@@ -167,7 +182,6 @@ export default function RealEstateAdmin() {
               updateProject={updateProject}
             />
           </TabsContent>
-
           {/* Other Tab */}
           <TabsContent value="other">
             <OtherTab

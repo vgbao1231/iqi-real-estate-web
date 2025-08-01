@@ -143,7 +143,7 @@ const Timeline = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
         currentIndex += 5;
       }
 
-      // Render phần còn lại (1–4 ảnh)
+      // Render phần còn lại (1-4 ảnh)
       const remaining = data.progressImages.length - currentIndex;
       const leftoverImages = data.progressImages.slice(currentIndex);
 

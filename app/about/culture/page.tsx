@@ -2,10 +2,8 @@
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { FadeIn, SlideIn, ScaleIn } from '@/components/common/animations';
 import {
-  ArrowLeft,
   Users,
   Briefcase,
   ArrowRight,
@@ -23,6 +21,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import Achievement from '@/components/sections/achievement';
+import IntroSection from '@/components/common/intro-section';
+import OutroSection from '@/components/common/outro-section';
 
 export default function AboutCulturePage() {
   const cultureValues = [
@@ -105,32 +105,12 @@ export default function AboutCulturePage() {
   return (
     <div className="min-h-screen">
       {/* Header */}
-      <section className="py-12 bg-gradient-to-br from-orange-400/90 via-orange-400 to-orange-500 dark:from-orange-400 dark:to-orange-600">
-        <div className="container mx-auto px-4 md:px-12 relative z-10 text-white">
-          <FadeIn>
-            <div className="flex items-center gap-2 mb-4">
-              <Link
-                href="/"
-                className="inline-flex items-center text-orange-100 hover:text-white"
-              >
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Quay lại trang chủ
-              </Link>
-              <Badge className="bg-orange-100 text-orange-800 dark:bg-orange-700 dark:text-orange-100">
-                VĂN HÓA VÀ MÔI TRƯỜNG
-              </Badge>
-            </div>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              IQI Vietnam - Nơi truyền cảm hứng và phát triển
-            </h1>
-            <p className="text-xl max-w-3xl">
-              Chúng tôi không ngừng tạo ra giá trị, trao quyền cho từng cá nhân
+      <IntroSection
+        title="IQI Vietnam - Nơi truyền cảm hứng và phát triển"
+        description="Chúng tôi không ngừng tạo ra giá trị, trao quyền cho từng cá nhân
               phát triển vượt bậc trong môi trường đầy năng lượng, công nghệ và
-              cơ hội toàn cầu.
-            </p>
-          </FadeIn>
-        </div>
-      </section>
+              cơ hội toàn cầu."
+      />
 
       {/* Core Values */}
       <section className="py-16">
@@ -262,30 +242,15 @@ export default function AboutCulturePage() {
       <Achievement />
 
       {/* Contact CTA */}
-      <section className="py-16 bg-gradient-to-r from-purple-600 to-purple-500 text-white">
-        <div className="container mx-auto px-4 text-center">
-          <FadeIn>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Sẵn sàng gia nhập đội ngũ hơn 670 chiến binh tại IQI Vietnam?
-            </h2>
-            <p className="text-xl mb-8 max-w-2xl mx-auto opacity-90">
-              Hãy là một phần của tập đoàn bất động sản quốc tế, tiên phong về
-              công nghệ và đào tạo!
-            </p>
 
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Link href="/careers">
-                <Button
-                  size="lg"
-                  className="bg-white text-purple-600 hover:bg-gray-100"
-                >
-                  Gia nhập đội ngũ
-                </Button>
-              </Link>
-            </motion.div>
-          </FadeIn>
-        </div>
-      </section>
+      <OutroSection
+        title="Sẵn sàng gia nhập đội ngũ hơn 670 chiến binh tại IQI Vietnam?"
+        subtitle="Hãy là một phần của tập đoàn bất động sản quốc tế, tiên phong về công nghệ và đào tạo!"
+        primary={{
+          label: 'Gia nhập đội ngũ',
+          href: '/careers',
+        }}
+      />
     </div>
   );
 }

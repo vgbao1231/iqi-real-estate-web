@@ -79,6 +79,7 @@ export const properties = [
       city: 'Tỉnh Long An',
       district: 'Huyện Bến Lức',
       country: 'Vietnam',
+      category: 'vietnam',
       backgroundImage: '/background-hero-2.jpg',
       experienceImage: '/experience-overview.webp',
       propertyGroup: 'Căn hộ, biệt thự nghỉ dưỡng', // → nhóm sản phẩm
@@ -122,7 +123,7 @@ export const properties = [
 
   <p style="color: #e3e3e3;">
     <span style="color: #f4cd7c;">✦</span>
-    <em><strong>Tâm điểm sinh thái – “Nhà nghỉ dưỡng” của cư dân thành phố</strong></em><br />
+    <em><strong>Tâm điểm sinh thái - “Nhà nghỉ dưỡng” của cư dân thành phố</strong></em><br />
     Nằm nép mình bên dòng sông Bến Lức và len lỏi những dòng chảy sông, hồ uốn lượn quanh đô thị.
   </p>
 `,
@@ -366,6 +367,7 @@ export const properties = [
       city: 'Tỉnh Long An',
       district: 'Huyện Bến Lức',
       country: 'Vietnam',
+      category: 'vietnam',
       backgroundImage: '/background-hero-2.jpg',
       experienceImage: '/experience-overview.webp',
       propertyGroup: 'Căn hộ, biệt thự nghỉ dưỡng', // → nhóm sản phẩm
@@ -409,7 +411,7 @@ export const properties = [
 
   <p style="color: #e3e3e3;">
     <span style="color: #f4cd7c;">✦</span>
-    <em><strong>Tâm điểm sinh thái – “Nhà nghỉ dưỡng” của cư dân thành phố</strong></em><br />
+    <em><strong>Tâm điểm sinh thái - “Nhà nghỉ dưỡng” của cư dân thành phố</strong></em><br />
     Nằm nép mình bên dòng sông Bến Lức và len lỏi những dòng chảy sông, hồ uốn lượn quanh đô thị.
   </p>
 `,
@@ -653,6 +655,7 @@ export const properties = [
       city: 'Tỉnh Long An',
       district: 'Huyện Bến Lức',
       country: 'Vietnam',
+      category: 'vietnam',
       backgroundImage: '/background-hero-2.jpg',
       experienceImage: '/experience-overview.webp',
       propertyGroup: 'Căn hộ, biệt thự nghỉ dưỡng', // → nhóm sản phẩm
@@ -696,7 +699,7 @@ export const properties = [
 
   <p style="color: #e3e3e3;">
     <span style="color: #f4cd7c;">✦</span>
-    <em><strong>Tâm điểm sinh thái – “Nhà nghỉ dưỡng” của cư dân thành phố</strong></em><br />
+    <em><strong>Tâm điểm sinh thái - “Nhà nghỉ dưỡng” của cư dân thành phố</strong></em><br />
     Nằm nép mình bên dòng sông Bến Lức và len lỏi những dòng chảy sông, hồ uốn lượn quanh đô thị.
   </p>
 `,
@@ -885,6 +888,13 @@ export const propertyTypes = [
   { value: 'villa', label: 'Villa' },
   { value: 'townhouse', label: 'Nhà phố' },
   { value: 'office', label: 'Văn phòng' },
+];
+
+export const categoryTypes = [
+  { value: 'all', label: 'Tất cả loại hình' },
+  { value: 'vietnam', label: 'Việt Nam' },
+  { value: 'international', label: 'Quốc tế' },
+  { value: 'resort', label: 'Nghỉ dưỡng' },
 ];
 
 export const statusOptions = [
