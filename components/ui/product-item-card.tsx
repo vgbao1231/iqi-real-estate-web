@@ -32,6 +32,11 @@ export function ProductItemCard({
         <X className="h-4 w-4" />
       </Button>
       <div className="space-y-4">
+        <FileUpload
+          label="Ảnh sản phẩm"
+          value={product.image}
+          onChange={(file) => onUpdate(index, 'image', file)}
+        />
         <div className="space-y-2">
           <Label htmlFor={`product-name-${product.id}`}>Tên sản phẩm</Label>
           <Input
@@ -41,11 +46,6 @@ export function ProductItemCard({
             placeholder="Nhập tên sản phẩm"
           />
         </div>
-        <FileUpload
-          label="Ảnh sản phẩm"
-          value={product.image}
-          onChange={(file) => onUpdate(index, 'image', file)}
-        />
         <div className="space-y-2">
           <Label>Mô tả sản phẩm</Label>
           <RichTextEditor

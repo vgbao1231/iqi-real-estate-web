@@ -27,19 +27,17 @@ export function RichTextEditor({
         value={value}
         onEditorChange={onChange}
         init={{
-          height: 300,
+          height: 240,
           menubar: false,
-          plugins: ['link', 'lists', 'code'],
-          toolbar: `
-            bold italic underline |
-            bullist numlist |
-            alignleft aligncenter alignright |
-            undo redo
-          `,
+          plugins: ['link', 'lists', 'code', 'table'],
+          toolbar:
+            'fontsize | forecolor backcolor | bold italic underline | lineheight indent outdent | bullist numlist | alignleft aligncenter alignright | table | undo redo',
+          table_toolbar:
+            'tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol',
+          font_size_formats:
+            '8px 10px 12px 14px 16px 18px 20px 24px 28px 32px 36px 40px 48px 56px 60px',
           placeholder,
           branding: false,
-          fixed_toolbar_container: '#editor-toolbar-container',
-          popup_css: false,
           skin: 'oxide',
           content_css: 'default',
         }}

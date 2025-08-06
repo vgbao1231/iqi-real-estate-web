@@ -9,26 +9,31 @@ export interface ProductItem {
 }
 
 export interface KeyValuePair {
+  id: string; // Added for DND
   key: string;
-  value: string | number;
-  type?: 'text' | 'number' | 'select';
+  value: string | number | [number | string, number | string]; // Updated to support array for range
+  type?: 'text' | 'number' | 'select' | 'range'; // Added "range" type
   options?: string[];
 }
 
 const defaultProject = {
   id: 1,
   introduction: {
+    logoImages: [] as (string | File)[], // Updated type
     coverImage: null as string | File | null, // Updated type
+    coverTitle: '',
+
+    headerLogoIndex: 0,
+    coverLogoIndex: 0,
     titleImage: null as string | File | null, // Updated type
     introductionImage: null as string | File | null, // Updated type
-    logoImages: [] as (string | File)[], // Updated type
-    launchImages: [] as (string | File)[], // Updated type
     introductionVideo: '',
-    backgroundImage: null as string | File | null, // Updated type
-    title: '',
-    description: '',
+    introductionBackground: null as string | File | null, // Updated type
+    introductionTitle: '',
+    introductionDescription: '',
+
+    launchImages: [] as (string | File)[], // Updated type
     launchTitle: '',
-    launchSubtitle: '',
     launchDescription: '',
   },
   overview: {
@@ -38,24 +43,21 @@ const defaultProject = {
       { image: null as string | File | null, description: '' }, // Amenity
       { image: null as string | File | null, description: '' }, // Location
     ],
+    overviewBackground: null as string | File | null, // Updated type
+
     basicInfo: [
-      { key: 'Tên dự án', value: '', type: 'text' },
-      { key: 'Slug', value: '', type: 'text' },
-      { key: 'Chủ đầu tư', value: '', type: 'text' },
-      { key: 'Thiết kế cảnh quan', value: '', type: 'text' },
-      { key: 'Diện tích (m²)', value: 0, type: 'number' },
-      { key: 'Tổng số sản phẩm', value: 0, type: 'number' },
-      { key: 'Bàn giao', value: '', type: 'text' },
-      { key: 'Địa chỉ', value: '', type: 'text' },
-      { key: 'Thành phố', value: '', type: 'text' },
-      { key: 'Quận/Huyện', value: '', type: 'text' },
-      { key: 'Quốc gia', value: 'Vietnam', type: 'text' },
-      { key: 'Nhóm sản phẩm', value: '', type: 'text' },
-      { key: 'Phòng ngủ tối thiểu', value: 0, type: 'number' },
-      { key: 'Phòng ngủ tối đa', value: 0, type: 'number' },
-      { key: 'Phòng tắm tối thiểu', value: 0, type: 'number' },
-      { key: 'Phòng tắm tối đa', value: 0, type: 'number' },
+      { id: 'project_name', key: 'Tên dự án', value: '', type: 'text' },
+      { id: 'bathrooms', key: 'Phòng tắm', value: ['', ''], type: 'range' },
+      { id: 'developer', key: 'Chủ đầu tư', value: '', type: 'text' },
+      { id: 'category', key: 'Danh mục', value: '', type: 'text' },
       {
+        id: 'ownership_status',
+        key: 'Tình trạng sở hữu',
+        value: '',
+        type: 'text',
+      },
+      {
+        id: 'property_type',
         key: 'Loại hình',
         value: '',
         type: 'select',
@@ -68,6 +70,64 @@ const defaultProject = {
         ],
       },
       {
+        id: 'legal_status',
+        key: 'Tình trạng pháp lý',
+        value: '',
+        type: 'text',
+      },
+      { id: 'product_group', key: 'Nhóm sản phẩm', value: '', type: 'text' },
+      {
+        id: 'handover_time',
+        key: 'Thời gian bàn giao',
+        value: '',
+        type: 'text',
+      },
+      {
+        id: 'landscape_designer',
+        key: 'Đơn vị thiết kế cảnh quan',
+        value: '',
+        type: 'text',
+      },
+      { id: 'phase', key: 'Giai đoạn', value: '', type: 'text' },
+      {
+        id: 'construction_unit',
+        key: 'Đơn vị thi công',
+        value: '',
+        type: 'text',
+      },
+      {
+        id: 'currency_unit',
+        key: 'Đơn vị tiền tệ',
+        value: 'VND',
+        type: 'select',
+        options: ['VND', 'USD', 'EUR'],
+      },
+      {
+        id: 'measurement_unit',
+        key: 'Đơn vị đo lường',
+        value: 'sqrt',
+        type: 'select',
+        options: ['sqm', 'sqrt'],
+      },
+      {
+        id: 'architectural_designer',
+        key: 'Đơn vị thiết kế kiến trúc',
+        value: '',
+        type: 'text',
+      },
+      { id: 'address', key: 'Địa chỉ', value: '', type: 'text' },
+      {
+        id: 'total_units',
+        key: 'Tổng số căn/sản phẩm',
+        value: 0,
+        type: 'number',
+      },
+      { id: 'city', key: 'Thành phố', value: '', type: 'text' },
+      { id: 'land_area', key: 'Diện tích đất', value: '', type: 'text' },
+      { id: 'district', key: 'Quận/Huyện', value: '', type: 'text' },
+      { id: 'bedrooms', key: 'Phòng ngủ', value: ['', ''], type: 'range' },
+      {
+        id: 'status',
         key: 'Trạng thái',
         value: '',
         type: 'select',
@@ -79,33 +139,24 @@ const defaultProject = {
           'Hoàn thành',
         ],
       },
-      { key: 'Pháp lý', value: '', type: 'text' },
-      { key: 'Tình trạng sở hữu', value: '', type: 'text' },
-      {
-        key: 'Đơn vị tiền tệ',
-        value: 'VND',
-        type: 'select',
-        options: ['VND', 'USD', 'EUR'],
-      },
-      { key: 'Giai đoạn', value: '', type: 'text' },
+      { id: 'slug', key: 'Slug', value: '', type: 'text', hidden: true },
+      { id: 'country', key: 'Quốc gia', value: 'Vietnam', type: 'text' },
+      { id: 'price', key: 'Giá', value: ['', ''], type: 'range' },
     ],
-    contractors: [],
-    architects: [],
-    backgroundImage: null as string | File | null, // Updated type
     experienceImage: null as string | File | null, // Updated type
   },
   location: {
     title: '',
     description: '',
     locationImage: null as string | File | null, // Updated type
+    mapInputType: 'embed' as 'embed' | 'coordinates', // New field
+    embedCode: '', // New field
     coordinates: { lat: 10.75, lng: 106.4 },
-    backgroundImage: null as string | File | null, // Updated type
+    locationBackground: null as string | File | null, // Updated type
   },
   production: {
-    title: 'Sản phẩm',
-    description: '',
     products: [] as any[],
-    furnitures: [] as (string | File)[], // Updated type
+    furnitureImages: [] as (string | File)[], // Updated type
   },
   amenity: {
     title: '',
@@ -113,20 +164,16 @@ const defaultProject = {
     amenityImages: [] as (string | File)[], // Updated type
   },
   contact: {
-    agencyImage: null as string | File | null, // Updated type
-    title: '',
-    subtitle: '',
-    description: '',
-    hotline: '',
-    logoImage: null as string | File | null, // Updated type
-    backgroundImage: null as string | File | null, // Updated type
+    layoutId: 'layout-1', // Add this field
+    logoImage: null as string | File | null,
+    contactBackground: null as string | File | null,
   },
   other: {
     //Chính sách
     policy: {
-      title: 'Chính Sách Bán Hàng Eco Retreat',
+      title: '',
       policyImage: null as string | File | null, // Updated type
-      policies: [],
+      policyText: '',
     },
     // Timeline
     timeline: {
@@ -136,11 +183,16 @@ const defaultProject = {
       progressImages: [] as (string | File)[], // Updated type
       backgroundImage: null as string | File | null, // Updated type
     },
+    agency: {
+      title: '', // Tiêu đề đại lý
+      agencyImage: null as string | File | null, // Logo/ảnh đại lý
+      description: '',
+    },
     isFeatured: true,
     isExclusive: false,
     enableLiveSales: true,
     visibleOnWeb: true,
-    breakImages: [] as (string | File)[], // Updated type
+    breakImages: Array(6).fill(null) as (string | File | null)[],
   },
 };
 

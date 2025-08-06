@@ -10,6 +10,7 @@ interface FileUploadProps {
   value: string | File | null; // Updated type to accept string (path) or File object
   onChange: (file: File | null) => void; // Still returns File object for new uploads
   accept?: string;
+  clickToDelete?: boolean; // New prop to enable click-to-delete functionality
 }
 
 export function FileUpload({
@@ -17,10 +18,18 @@ export function FileUpload({
   value,
   onChange,
   accept = 'image/*',
+  clickToDelete = false,
 }: FileUploadProps) {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] || null;
     onChange(file);
+  };
+
+  const handleImageClick = () => {
+    if (clickToDelete && value) {
+      // If clickToDelete is enabled and there's an image, delete it
+      onChange(null);
+    }
   };
 
   // Determine the image source based on whether value is a string (path) or a File object
@@ -29,7 +38,7 @@ export function FileUpload({
       ? value
       : value
         ? URL.createObjectURL(value)
-        : '/placeholder-2.webp';
+        : '/placeholder.svg';
   const fileName =
     typeof value === 'string' ? value.split('/').pop() : value?.name;
 
@@ -41,11 +50,24 @@ export function FileUpload({
           <div className="flex flex-col items-center space-y-2">
             {/* Check if it's an image type before rendering img tag */}
             {(typeof value === 'string' || value.type.startsWith('image/')) && (
-              <img
-                src={imgSrc || '/placeholder-2.webp'}
-                alt="Preview"
-                className="max-h-32 max-w-full rounded-md object-contain mb-2"
-              />
+              <div
+                className={`relative group ${clickToDelete ? 'cursor-pointer' : ''}`}
+                onClick={clickToDelete ? handleImageClick : undefined}
+                title={clickToDelete ? 'Click để xóa ảnh' : undefined}
+              >
+                <img
+                  src={imgSrc || '/placeholder.svg'}
+                  alt="Preview"
+                  className="max-h-32 max-w-full rounded-md object-contain"
+                />
+                {clickToDelete && (
+                  <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all flex items-center justify-center rounded-md">
+                    <div className="opacity-0 group-hover:opacity-100 transition-opacity bg-red-500 text-white p-1 w-6 h-6 rounded-full text-xs font-medium flex items-center justify-center">
+                      X
+                    </div>
+                  </div>
+                )}
+              </div>
             )}
             <div className="flex items-center justify-between w-full px-2">
               <div className="flex items-center space-x-2">
@@ -54,9 +76,15 @@ export function FileUpload({
                   {fileName}
                 </span>
               </div>
-              <Button variant="ghost" size="sm" onClick={() => onChange(null)}>
-                <X className="h-4 w-4" />
-              </Button>
+              {!clickToDelete && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => onChange(null)}
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              )}
             </div>
           </div>
         ) : (

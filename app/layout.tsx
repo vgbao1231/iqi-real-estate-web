@@ -2,12 +2,8 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { ReactQueryProvider } from '@/components/providers/react-query-provider';
-import LayoutWrapper from '@/components/layout/layout-wrapper';
 import React from 'react';
 import 'leaflet/dist/leaflet.css';
-import GoogleTranslateScript from '@/components/common/google-translate-script';
-import { ThemeStatus } from '@/components/common/theme-status';
-import ScrollToTopButton from '@/components/common/scroll-top';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -44,14 +40,7 @@ export default function RootLayout({
         />
       </head>
       <body className={inter.className} suppressHydrationWarning>
-        <LayoutWrapper>
-          <ReactQueryProvider>
-            {children}
-            <ThemeStatus />
-            <ScrollToTopButton />
-            <GoogleTranslateScript />
-          </ReactQueryProvider>
-        </LayoutWrapper>
+        <ReactQueryProvider>{children}</ReactQueryProvider>
       </body>
     </html>
   );

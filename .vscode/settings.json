@@ -20,5 +20,7 @@
   "tailwindCSS.experimental.classRegex": [
     ["className\\s*=\\s*`([^`]*)`", 1],
     ["class:\\s*`([^`]*)`", 1]
-  ]
+  ],
+  "typescript.preferences.importModuleSpecifier": "non-relative",
+  "javascript.preferences.importModuleSpecifier": "non-relative"
 }
