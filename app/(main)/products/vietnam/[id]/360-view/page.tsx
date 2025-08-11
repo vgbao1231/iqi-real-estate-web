@@ -5,15 +5,12 @@ import 'photo-sphere-viewer/dist/photo-sphere-viewer.css';
 import 'photo-sphere-viewer/dist/plugins/markers.css';
 import { Viewer } from 'photo-sphere-viewer';
 
-let check = false;
-
 export default function Viewer360() {
   const viewerRef = useRef<HTMLDivElement>(null);
-
+  const check = useRef(false);
   useEffect(() => {
-    if (check) return;
-    check = true;
-    console.log(1);
+    if (check.current) return;
+    check.current = true;
 
     let viewer: any = null;
     // Dữ liệu marker cho từng panorama
@@ -24,8 +21,8 @@ export default function Viewer360() {
           longitude: 1.2,
           latitude: -0.3,
           html: `
-            <div class="relative flex items-center justify-center w-10 h-10 cursor-pointer animate-bounce-scale">
-              <span class="absolute inline-flex w-10 h-10 bg-orange-400 rounded-full opacity-75 animate-[ping_1000ms_linear_infinite]"></span>
+            <div class="relative flex items-center justify-center w-6 h-6 cursor-pointer animate-bounce-scale">
+              <span class="absolute inline-flex w-6 h-6 bg-orange-400 rounded-full opacity-75 animate-[ping_1000ms_linear_infinite]"></span>
               <img 
                 src="/360-views/icon.png" 
                 class="relative inline-flex object-contain rounded-full"
@@ -59,8 +56,8 @@ export default function Viewer360() {
           longitude: 0,
           latitude: 0,
           html: `
-            <div class="relative flex items-center justify-center w-10 h-10 cursor-pointer animate-bounce-scale">
-              <span class="absolute inline-flex w-10 h-10 bg-orange-400 rounded-full opacity-75 animate-[ping_1000ms_linear_infinite]"></span>
+            <div class="relative flex items-center justify-center w-6 h-6 cursor-pointer animate-bounce-scale">
+              <span class="absolute inline-flex w-6 h-6 bg-orange-400 rounded-full opacity-75 animate-[ping_1000ms_linear_infinite]"></span>
               <img 
                 src="/360-views/icon.png" 
                 class="relative inline-flex object-contain rounded-full"
