@@ -91,7 +91,7 @@ export function ProjectsList({ onEditProject }: ProjectsListProps) {
                   <TableHead>Địa chỉ</TableHead>
                   <TableHead>Chủ đầu tư</TableHead>
                   <TableHead className="text-center">Trạng thái</TableHead>
-                  <TableHead className="text-center">Hành động</TableHead>
+                  <TableHead className="text-center">Thao tác</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>

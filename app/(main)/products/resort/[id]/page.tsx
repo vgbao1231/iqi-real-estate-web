@@ -16,7 +16,9 @@ import Policy from './sections/Policy';
 import Timeline from './sections/Timeline';
 import Agency from './sections/Agency';
 import Cover from './sections/Cover';
+import SitePlan from './sections/SitePlan';
 import { properties } from '@/lib/property-data';
+import { usePathname, useRouter } from 'next/navigation';
 
 const arsenal = Arsenal({
   subsets: ['latin'],
@@ -32,8 +34,11 @@ const property = properties[0];
 
 /* -------------------------------------------------------------------------- */
 
-export default function VietnamProductDetailPage() {
+export default function ProductDetailPage() {
   /* ---------- Local state ---------- */
+  const router = useRouter();
+  const pathname = usePathname();
+
   const sections = useMemo(
     () => [
       {
@@ -49,12 +54,7 @@ export default function VietnamProductDetailPage() {
       },
       { content: <SectionBreak data={property.other.breakImages[1]} /> },
       {
-        content: (
-          <Contact
-            data={property.contact}
-            products={property.production.products}
-          />
-        ),
+        content: <Contact data={property.contact} />,
       },
       {
         id: 'amenity',
@@ -69,17 +69,23 @@ export default function VietnamProductDetailPage() {
       },
       { content: <SectionBreak data={property.other.breakImages[3]} /> },
       {
+        id: 'site-plan',
+        content: <SitePlan data={property.sitePlan} />,
+        label: 'Mặt bằng',
+      },
+      {
+        id: '360-view',
+        content: <></>,
+        label: '360 View',
+        action: () => router.push(`${pathname}/360-view`),
+      },
+      {
         id: 'production',
         content: <Production data={property.production} />,
         label: 'Sản phẩm',
       },
       {
-        content: (
-          <Contact
-            data={property.contact}
-            products={property.production.products}
-          />
-        ),
+        content: <Contact data={property.contact} />,
       },
       { content: <SectionBreak data={property.other.breakImages[4]} /> },
 
@@ -101,21 +107,16 @@ export default function VietnamProductDetailPage() {
         label: 'Đại lý',
       },
       {
-        content: (
-          <Contact
-            data={property.contact}
-            products={property.production.products}
-          />
-        ),
+        content: <Contact data={property.contact} />,
       },
     ],
-    []
+    [pathname, router]
   );
 
   return (
     <div
       className={cn(
-        'min-h-screen bg-gradient-to-r from-gray-50 to-white overflow-x-clip',
+        'min-h-screen bg-gradient-to-r from-gray-50 to-white',
         arsenal.className
       )}
     >
@@ -147,7 +148,7 @@ export default function VietnamProductDetailPage() {
               />
             </div>
 
-            <nav className="flex justify-end mr-24">
+            <nav className="flex justify-end gap-1 mr-24">
               {sections.map(
                 (item) =>
                   item.label && (
@@ -156,9 +157,12 @@ export default function VietnamProductDetailPage() {
                       variant="ghost"
                       className="text-foreground text-base font-bold hover:bg-transparent uppercase p-2"
                       onClick={() => {
-                        const section = document.getElementById(item.id);
-                        if (section) {
-                          section.scrollIntoView({ behavior: 'smooth' });
+                        if (item.action) item.action();
+                        else {
+                          const section = document.getElementById(item.id);
+                          if (section) {
+                            section.scrollIntoView({ behavior: 'smooth' }); // Nếu không thì scroll vào phần tử
+                          }
                         }
                       }}
                     >
@@ -183,12 +187,13 @@ export default function VietnamProductDetailPage() {
 
 const SectionBreak = ({ data }: { data: string }) =>
   data && (
-    <section className="relative min-h-screen center-both">
+    <section className="w-full">
       <Image
         src={data}
         alt="Break Image"
-        fill
-        className="object-cover"
+        width={1920}
+        height={1080}
+        className="w-full h-auto"
         priority
       />
     </section>

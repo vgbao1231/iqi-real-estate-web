@@ -31,7 +31,9 @@ function FourCardGridPreview({ overview }: { overview: any }) {
       <Image
         src={
           overviewBackground
-            ? URL.createObjectURL(overviewBackground)
+            ? typeof overviewBackground === 'string'
+              ? overviewBackground
+              : URL.createObjectURL(overviewBackground)
             : '/placeholder.svg'
         }
         alt="Eco Retreat Overview Background"
@@ -50,7 +52,9 @@ function FourCardGridPreview({ overview }: { overview: any }) {
               <Image
                 src={
                   item.image
-                    ? URL.createObjectURL(item.image)
+                    ? typeof item.image === 'string'
+                      ? item.image
+                      : URL.createObjectURL(item.image)
                     : '/placeholder.svg'
                 }
                 alt="Eco Retreat Overview Background"
@@ -120,7 +124,9 @@ function TwoColumnLayoutPreview({ overview }: { overview: any }) {
           <Image
             src={
               experienceImage
-                ? URL.createObjectURL(experienceImage)
+                ? typeof experienceImage === 'string'
+                  ? experienceImage
+                  : URL.createObjectURL(experienceImage)
                 : '/placeholder.svg'
             }
             alt="Eco Retreat Experience Background"

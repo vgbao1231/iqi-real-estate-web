@@ -154,6 +154,9 @@ const defaultProject = {
     coordinates: { lat: 10.75, lng: 106.4 },
     locationBackground: null as string | File | null, // Updated type
   },
+  sitePlan: {
+    sitePlanImages: [] as (string | File)[], // Updated type
+  },
   production: {
     products: [] as any[],
     furnitureImages: [] as (string | File)[], // Updated type
@@ -161,7 +164,11 @@ const defaultProject = {
   amenity: {
     title: '',
     description: '',
-    amenityImages: [] as (string | File)[], // Updated type
+    amenityImages: [
+      '/amenities-1.jpg',
+      '/amenities-2.jpg',
+      '/amenities-3.jpg',
+    ] as (string | File)[], // Updated type
   },
   contact: {
     layoutId: 'layout-1', // Add this field

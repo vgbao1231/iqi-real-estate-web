@@ -41,7 +41,7 @@ interface IntroductionTabProps {
 // Cover Section Preview Component
 function CoverSectionPreview({ introduction }: { introduction: any }) {
   const {
-    coverBackground,
+    coverImage,
     logoImages,
     headerLogoIndex,
     coverLogoIndex,
@@ -72,7 +72,9 @@ function CoverSectionPreview({ introduction }: { introduction: any }) {
               <Image
                 src={
                   logoImages[headerLogoIndex]
-                    ? URL.createObjectURL(logoImages[headerLogoIndex])
+                    ? typeof logoImages[headerLogoIndex] === 'string'
+                      ? logoImages[headerLogoIndex]
+                      : URL.createObjectURL(logoImages[headerLogoIndex])
                     : '/placeholder.svg'
                 }
                 alt="Eco Retreat Logo"
@@ -99,8 +101,10 @@ function CoverSectionPreview({ introduction }: { introduction: any }) {
       {/* Background image full screen */}
       <Image
         src={
-          coverBackground
-            ? URL.createObjectURL(coverBackground)
+          coverImage
+            ? typeof coverImage === 'string'
+              ? coverImage
+              : URL.createObjectURL(coverImage)
             : '/placeholder.svg'
         }
         alt="Eco Retreat Cover Background"
@@ -116,7 +120,9 @@ function CoverSectionPreview({ introduction }: { introduction: any }) {
           <Image
             src={
               logoImages[coverLogoIndex]
-                ? URL.createObjectURL(logoImages[coverLogoIndex])
+                ? typeof logoImages[coverLogoIndex] === 'string'
+                  ? logoImages[coverLogoIndex]
+                  : URL.createObjectURL(logoImages[coverLogoIndex])
                 : '/placeholder.svg'
             }
             alt="Logo"
@@ -151,7 +157,9 @@ function IntroductionSectionPreview({ introduction }: { introduction: any }) {
       <Image
         src={
           introductionBackground
-            ? URL.createObjectURL(introductionBackground)
+            ? typeof introductionBackground === 'string'
+              ? introductionBackground
+              : URL.createObjectURL(introductionBackground)
             : '/placeholder.svg'
         }
         alt="Logo"
@@ -179,7 +187,9 @@ function IntroductionSectionPreview({ introduction }: { introduction: any }) {
         <Image
           src={
             introductionImage
-              ? URL.createObjectURL(introductionImage)
+              ? typeof introductionImage === 'string'
+                ? introductionImage
+                : URL.createObjectURL(introductionImage)
               : '/placeholder.svg'
           }
           alt="Logo"
@@ -239,7 +249,11 @@ function LaunchSectionPreview({ introduction }: { introduction: any }) {
                     >
                       <Image
                         src={
-                          img ? URL.createObjectURL(img) : '/placeholder.svg'
+                          img
+                            ? typeof img === 'string'
+                              ? img
+                              : URL.createObjectURL(img)
+                            : '/placeholder.svg'
                         }
                         alt={`Ảnh ${idx + 1}`}
                         fill
@@ -400,7 +414,7 @@ export function IntroductionTab({
                   {introduction.logoImages.map((logo: any, index: number) => {
                     const logoSrc =
                       typeof logo === 'string'
-                        ? logo
+                        ? logo || '/placeholder.svg'
                         : URL.createObjectURL(logo);
                     const logoName =
                       typeof logo === 'string'
@@ -413,7 +427,7 @@ export function IntroductionTab({
                         className="relative group border rounded-lg overflow-hidden bg-white"
                       >
                         <img
-                          src={logoSrc || '/placeholder.svg'}
+                          src={logoSrc}
                           alt={`Logo ${index + 1}`}
                           className="w-full h-20 object-contain p-2"
                         />
@@ -481,9 +495,9 @@ export function IntroductionTab({
           <div className="space-y-6">
             <FileUpload
               label="Ảnh nền bìa (Cover Background)"
-              value={introduction.coverBackground}
+              value={introduction.coverImage}
               onChange={(file) =>
-                updateProject('introduction', 'coverBackground', file)
+                updateProject('introduction', 'coverImage', file)
               }
             />
 

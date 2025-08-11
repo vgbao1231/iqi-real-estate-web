@@ -163,7 +163,9 @@ export default function PartnersPage() {
                       <div className="grid grid-cols-3 gap-2 mb-4 text-center">
                         <div>
                           <div className="text-sm font-bold text-blue-600">
-                            {partner.projects}
+                            {Number(partner.projects) === 0
+                              ? 'Đang cập nhật'
+                              : partner.projects}
                           </div>
                           <div className="text-xs text-muted-foreground">
                             Dự án
@@ -171,7 +173,9 @@ export default function PartnersPage() {
                         </div>
                         <div>
                           <div className="text-sm font-bold text-green-600">
-                            {partner.revenue}
+                            {Number(partner.revenue) === 0
+                              ? 'Đang cập nhật'
+                              : partner.revenue}
                           </div>
                           <div className="text-xs text-muted-foreground">
                             Doanh số

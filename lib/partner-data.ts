@@ -89,9 +89,9 @@ export const partners = {
       description:
         'Nhà phát triển bất động sản lớn nhất Việt Nam với các dự án quy mô.',
       logo: '/developer-partner/vinhomes.webp',
-      projects: 'Đang cập nhật',
+      projects: 0,
       partnership: '2018',
-      revenue: 'Đang cập nhật',
+      revenue: '0',
       specialties: ['Residential', 'Urban areas', 'Commercial'],
       achievements: ['Market Leader', 'Scale Excellence'],
     },

@@ -14,9 +14,9 @@ const Policy = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
         className="bg-background mx-auto w-full min-h-screen center-both py-16"
       >
         {data.policyText ? (
-          <div className="h-full w-full max-w-7xl center-both flex-col md:flex-row py-8 gap-8">
+          <div className="h-full w-full max-w-7xl grid grid-cols-1 md:grid-cols-2 items-center py-8 gap-8">
             {/* Left content */}
-            <div className="relative w-full md:w-2/5 h-[85vh] center-both">
+            <div className="relative w-full h-[85vh] center-both">
               <Image
                 src={data.policyImage}
                 alt="Eco Retreat Policy Background"
@@ -27,7 +27,7 @@ const Policy = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
             </div>
 
             {/* Right content */}
-            <div className="md:w-3/5 space-y-6">
+            <div className="space-y-6">
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}

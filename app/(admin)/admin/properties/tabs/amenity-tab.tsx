@@ -85,7 +85,13 @@ function AmenityPreview({ amenity }: { amenity: any }) {
                   className="relative h-[55vh] w-full overflow-hidden"
                 >
                   <Image
-                    src={img ? URL.createObjectURL(img) : '/placeholder.svg'}
+                    src={
+                      img
+                        ? typeof img === 'string'
+                          ? img
+                          : URL.createObjectURL(img)
+                        : '/placeholder.svg'
+                    }
                     alt={`Ảnh ${idx + 1}`}
                     fill
                     className="object-cover"

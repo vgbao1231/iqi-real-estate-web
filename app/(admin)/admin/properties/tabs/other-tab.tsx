@@ -61,7 +61,9 @@ export function OtherTab({
               <Image
                 src={
                   policyImage
-                    ? URL.createObjectURL(policyImage)
+                    ? typeof policyImage === 'string'
+                      ? policyImage
+                      : URL.createObjectURL(policyImage)
                     : '/placeholder.svg'
                 }
                 alt="Eco Retreat Policy Background"
@@ -93,7 +95,9 @@ export function OtherTab({
               <Image
                 src={
                   policyImage
-                    ? URL.createObjectURL(policyImage)
+                    ? typeof policyImage === 'string'
+                      ? policyImage
+                      : URL.createObjectURL(policyImage)
                     : '/placeholder.svg'
                 }
                 alt="Eco Retreat Policy Background"
@@ -122,7 +126,13 @@ export function OtherTab({
       <div className="group relative overflow-hidden rounded-sm bg-white shadow-xl hover:shadow-2xl cursor-pointer h-full">
         <div className="relative w-full h-full">
           <Image
-            src={image ? URL.createObjectURL(image) : '/placeholder.svg'}
+            src={
+              image
+                ? typeof image === 'string'
+                  ? image
+                  : URL.createObjectURL(image)
+                : '/placeholder.svg'
+            }
             alt={`Gallery image ${index + 1}`}
             fill
             className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
@@ -337,7 +347,9 @@ export function OtherTab({
           <Image
             src={
               backgroundImage
-                ? URL.createObjectURL(backgroundImage)
+                ? typeof backgroundImage === 'string'
+                  ? backgroundImage
+                  : URL.createObjectURL(backgroundImage)
                 : '/placeholder.svg'
             }
             alt="Eco Retreat Timeline Background"
@@ -355,7 +367,9 @@ export function OtherTab({
               <Image
                 src={
                   timelineImage
-                    ? URL.createObjectURL(timelineImage)
+                    ? typeof timelineImage === 'string'
+                      ? timelineImage
+                      : URL.createObjectURL(timelineImage)
                     : '/placeholder.svg'
                 }
                 alt="Eco Retreat Timeline Background"
@@ -371,7 +385,9 @@ export function OtherTab({
           <Image
             src={
               backgroundImage
-                ? URL.createObjectURL(backgroundImage)
+                ? typeof backgroundImage === 'string'
+                  ? backgroundImage
+                  : URL.createObjectURL(backgroundImage)
                 : '/placeholder.svg'
             }
             alt="Eco Retreat Timeline Background"
@@ -400,7 +416,9 @@ export function OtherTab({
             <Image
               src={
                 agencyImage
-                  ? URL.createObjectURL(agencyImage)
+                  ? typeof agencyImage === 'string'
+                    ? agencyImage
+                    : URL.createObjectURL(agencyImage)
                   : '/placeholder.svg'
               }
               alt="Eco Retreat Experience Background"
@@ -662,8 +680,8 @@ export function OtherTab({
                 Ảnh ngắt trang (Tối đa 6 vị trí)
               </Label>
               <p className="text-sm text-gray-600 mt-1">
-                Ảnh sẽ được chèn giữa các section: Giới thiệu → Tổng quan → Vị
-                trí → Sản phẩm → Tiện ích → Chính sách
+                Ảnh sẽ được chèn giữa các section: Giới thiệu → Tổng quan → Tiện
+                ích → Vị trí → Sản phẩm → Chính sách
               </p>
             </div>
 
@@ -672,9 +690,9 @@ export function OtherTab({
                 const sectionNames = [
                   'Sau Giới thiệu',
                   'Sau Tổng quan',
+                  'Sau Tiện ích',
                   'Sau Vị trí',
                   'Sau Sản phẩm',
-                  'Sau Tiện ích',
                   'Sau Chính sách',
                 ];
 

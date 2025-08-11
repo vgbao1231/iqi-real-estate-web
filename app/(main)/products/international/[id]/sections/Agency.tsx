@@ -11,9 +11,9 @@ const Agency = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
       <section
         ref={ref}
         id="agency"
-        className="bg-background mx-auto w-full min-h-screen center-both py-16"
+        className="bg-background mx-auto w-full min-h-screen center-both"
       >
-        <div className="h-full w-full max-w-7xl center-both flex-col md:flex-row py-8 gap-8">
+        <div className="h-full w-full max-w-7xl center-both flex-col md:flex-row py-8 gap-12">
           {/* Left content */}
           <div className="relative w-full md:w-1/2 h-[85vh] center-both">
             <Image
@@ -34,7 +34,7 @@ const Agency = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
               viewport={{ once: true }}
             >
               <div>
-                <h3 className="text-5xl italic text-lime-500 mb-2">
+                <h3 className="text-5xl font-semibold italic text-lime-500 mb-3">
                   {data.title}
                 </h3>
                 <div

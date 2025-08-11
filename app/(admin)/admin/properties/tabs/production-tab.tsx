@@ -57,7 +57,9 @@ function ProductionPreview({ production }: { production: any }) {
                 <Image
                   src={
                     product.image
-                      ? URL.createObjectURL(product.image)
+                      ? typeof product.image === 'string'
+                        ? product.image
+                        : URL.createObjectURL(product.image)
                       : '/placeholder.svg'
                   }
                   alt={product.name}
@@ -147,7 +149,13 @@ function FurniturePreview({ production }: { production: any }) {
                   className="relative h-[60vh] w-full overflow-hidden"
                 >
                   <Image
-                    src={img ? URL.createObjectURL(img) : '/placeholder.svg'}
+                    src={
+                      img
+                        ? typeof img === 'string'
+                          ? img
+                          : URL.createObjectURL(img)
+                        : '/placeholder.svg'
+                    }
                     alt={`Ảnh ${idx + 1}`}
                     fill
                     className="object-cover"

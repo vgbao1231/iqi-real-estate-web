@@ -43,13 +43,15 @@ export default function Contact() {
       <div className="container mx-auto px-4 text-center relative z-30 my-14">
         <FadeIn>
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Sẵn sàng bắt đầu hành trình bất động sản?
+            Cần tư vấn bất động sản? IQI luôn sẵn sàng hỗ trợ!
           </h2>
           <p className="text-xl mb-8 max-w-2xl mx-auto opacity-90">
-            Liên hệ với chúng tôi ngay hôm nay để được tư vấn miễn phí từ các
-            chuyên gia hàng đầu
+            Đội ngũ chuyên gia giàu kinh nghiệm của IQI sẽ liên hệ trong thời
+            gian sớm nhất để hỗ trợ bạn tìm ra giải pháp phù hợp nhất. Hãy để
+            lại thông tin ngay hôm nay!
           </p>
         </FadeIn>
+
         <FadeIn delay={0.4}>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>

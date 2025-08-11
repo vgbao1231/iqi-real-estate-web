@@ -43,7 +43,9 @@ function LocationPreview({ location }: { location: any }) {
       <Image
         src={
           locationBackground
-            ? URL.createObjectURL(locationBackground)
+            ? typeof locationBackground === 'string'
+              ? locationBackground
+              : URL.createObjectURL(locationBackground)
             : '/placeholder.svg'
         }
         alt="Eco Retreat Background"
@@ -67,7 +69,9 @@ function LocationPreview({ location }: { location: any }) {
         <Image
           src={
             locationImage
-              ? URL.createObjectURL(locationImage)
+              ? typeof locationImage === 'string'
+                ? locationImage
+                : URL.createObjectURL(locationImage)
               : '/placeholder.svg'
           }
           alt="Logo"
