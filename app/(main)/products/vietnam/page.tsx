@@ -18,7 +18,6 @@ import { Combobox } from '@/components/ui/combobox';
 import { useGetProvinces } from '@/hooks/use-get-provinces';
 import { AreaFilter } from '@/components/ui/area-filter';
 import { PriceFilter } from '@/components/ui/price-filter';
-import { PropertyCard } from './components/PropertyCard';
 import { ProductIntroSection } from './components/Header';
 import {
   bathroomOptions,
@@ -27,6 +26,7 @@ import {
   propertyTypes,
   statusOptions,
 } from '@/lib/property-data';
+import { PropertyCard } from '@/app/(main)/products/components/PropertyCard';
 
 export default function VietnamPropertiesPage() {
   const [searchTerm, setSearchTerm] = useState('');

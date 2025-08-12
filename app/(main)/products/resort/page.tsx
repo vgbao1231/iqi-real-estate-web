@@ -16,7 +16,6 @@ import { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { AreaFilter } from '@/components/ui/area-filter';
 import { PriceFilter } from '@/components/ui/price-filter';
-import { PropertyCard } from './components/PropertyCard';
 import { ProductIntroSection } from './components/Header';
 import {
   properties,
@@ -25,6 +24,7 @@ import {
   propertyTypes,
   statusOptions,
 } from '@/lib/property-data';
+import { PropertyCard } from '@/app/(main)/products/components/PropertyCard';
 
 export default function ResortPropertiesPage() {
   const [searchTerm, setSearchTerm] = useState('');
