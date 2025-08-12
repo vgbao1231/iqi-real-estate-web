@@ -253,6 +253,34 @@ export const properties = [
     // Mặt bằng
     sitePlan: {
       sitePlanImages: ['/site-plan.jpg', '/break-1.jpg'],
+      view360: [
+        {
+          id: 1,
+          image: '/360-views/panorama.jpg',
+          markers: [
+            {
+              id: 1,
+              longitude: -0.16006401507442203,
+              latitude: -0.1444223478560442,
+              tooltip: 'Đi đến The Beverly',
+              panoramaTarget: '/360-views/beverly.jpg',
+            },
+          ],
+        },
+        {
+          id: 2,
+          image: '/360-views/beverly.jpg',
+          markers: [
+            {
+              id: 1,
+              longitude: -0.12615217817030697,
+              latitude: -0.08113610944477542,
+              tooltip: 'Quay lại tổng thể',
+              panoramaTarget: '/360-views/panorama.jpg',
+            },
+          ],
+        },
+      ],
     },
 
     // Sản phẩm
@@ -666,6 +694,34 @@ export const properties = [
     // Mặt bằng
     sitePlan: {
       sitePlanImages: ['/site-plan.jpg', '/break-1.jpg'],
+      view360: [
+        {
+          id: 1,
+          image: '/360-views/panorama.jpg',
+          markers: [
+            {
+              id: 1,
+              longitude: -0.16006401507442203,
+              latitude: -0.1444223478560442,
+              tooltip: 'Đi đến The Beverly',
+              panoramaTarget: '/360-views/beverly.jpg',
+            },
+          ],
+        },
+        {
+          id: 2,
+          image: '/360-views/beverly.jpg',
+          markers: [
+            {
+              id: 1,
+              longitude: -0.12615217817030697,
+              latitude: -0.08113610944477542,
+              tooltip: 'Quay lại tổng thể',
+              panoramaTarget: '/360-views/panorama.jpg',
+            },
+          ],
+        },
+      ],
     },
 
     // Sản phẩm
@@ -1079,6 +1135,34 @@ export const properties = [
     // Mặt bằng
     sitePlan: {
       sitePlanImages: ['/site-plan.jpg', '/break-1.jpg'],
+      view360: [
+        {
+          id: 1,
+          image: '/360-views/panorama.jpg',
+          markers: [
+            {
+              id: 1,
+              longitude: -0.16006401507442203,
+              latitude: -0.1444223478560442,
+              tooltip: 'Đi đến The Beverly',
+              panoramaTarget: '/360-views/beverly.jpg',
+            },
+          ],
+        },
+        {
+          id: 2,
+          image: '/360-views/beverly.jpg',
+          markers: [
+            {
+              id: 1,
+              longitude: -0.12615217817030697,
+              latitude: -0.08113610944477542,
+              tooltip: 'Quay lại tổng thể',
+              panoramaTarget: '/360-views/panorama.jpg',
+            },
+          ],
+        },
+      ],
     },
 
     // Sản phẩm

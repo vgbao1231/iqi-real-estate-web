@@ -47,9 +47,9 @@ const Production = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
   return (
     <section ref={ref} id="production">
       {/* Sub section 1 */}
-      <div className="min-h-screen max-w-7xl mx-auto px-4 py-24">
-        <h3 className="text-5xl font-bold mb-8 center-both text-orange-400">
-          <Home className="w-10 h-10 mr-3" />
+      <div className="min-h-screen max-w-7xl mx-auto px-4 py-12 md:py-24">
+        <h3 className="text-3xl md:text-5xl font-bold mb-8 center-both text-orange-400 text-center">
+          <Home className="w-8 h-8 md:w-10 md:h-10 mr-3" />
           Sản phẩm & Loại hình
         </h3>
         <div className="center-both flex-wrap gap-8">
@@ -60,7 +60,7 @@ const Production = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 + 0.1 }}
               viewport={{ once: true }}
-              className="relative overflow-hidden rounded-lg group shadow-lg min-w-[45%] max-w-[60%] max-h-[500px] flex-1"
+              className="relative overflow-hidden rounded-lg group shadow-lg min-w-full md:min-w-[45%] md:max-w-[60%] md:max-h-[500px] flex-1"
             >
               <div className="aspect-[4/3] relative">
                 <Image
@@ -87,7 +87,7 @@ const Production = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
       </div>
 
       {/* Sub section 2 */}
-      <div className="min-h-screen w-full center-both">
+      <div className="md:min-h-screen w-full center-both">
         <Carousel
           className="w-full"
           setApi={setCarouselApi}
@@ -100,7 +100,7 @@ const Production = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: idx * 0.08 + 0.4 }}
-                  className="relative h-screen w-full overflow-hidden"
+                  className="relative h-[60vh] md:h-screen w-full overflow-hidden"
                 >
                   <Image
                     src={img || '/placeholder-2.webp'}

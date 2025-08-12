@@ -59,7 +59,7 @@ const SitePlan = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
         <Gallery>
           {data.sitePlanImages.length > 1 ? (
             // 👉 Nhiều ảnh => Carousel
-            <div className="min-h-screen w-full center-both">
+            <div className="md:min-h-screen w-full center-both">
               <Carousel
                 className="w-full"
                 setApi={setCarouselApi}
@@ -72,7 +72,7 @@ const SitePlan = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: idx * 0.08 + 0.4 }}
-                        className="relative h-screen w-full overflow-hidden"
+                        className="relative h-auto md:h-screen w-full overflow-hidden"
                       >
                         {/* PhotoSwipe Item */}
                         <Item
@@ -90,7 +90,6 @@ const SitePlan = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
                               width={1920}
                               height={1080}
                               className="w-full h-auto"
-                              priority
                             />
                           )}
                         </Item>
@@ -138,7 +137,7 @@ const SitePlan = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
         </Gallery>
 
         <div
-          className="absolute inset-x-0 bottom-0 h-60 overflow-hidden cursor-pointer group"
+          className="absolute inset-x-0 bottom-0 h-40 md:h-60 overflow-hidden cursor-pointer group"
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
@@ -155,7 +154,7 @@ const SitePlan = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
             >
               <div className="relative">
                 {/* Main circle container */}
-                <div className="w-16 h-16 rounded-full bg-white/15 backdrop-blur-md border border-white/30 flex items-center justify-center transition-all duration-500 group-hover/button:bg-white/25 group-hover/button:border-white/50 group-hover/button:shadow-2xl group-hover/button:shadow-white/30 relative">
+                <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-white/15 backdrop-blur-md border border-white/30 flex items-center justify-center transition-all duration-500 group-hover/button:bg-white/25 group-hover/button:border-white/50 group-hover/button:shadow-2xl group-hover/button:shadow-white/30 relative">
                   {/* Custom 360° SVG Icon */}
                   <svg
                     width="64"
@@ -176,21 +175,21 @@ const SitePlan = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
                   </svg>
 
                   {/* Lucide icon ở giữa */}
-                  <Globe className="absolute w-6 h-6 text-white" />
+                  <Globe className="absolute w-5 h-5 md:w-6 md:h-6 text-white" />
                 </div>
               </div>
 
               <div className="flex flex-col items-center">
                 <div
-                  className={`w-0.5 bg-white/70 transition-all duration-300 ${isHovered ? 'h-6 bg-white' : 'h-0'}`}
+                  className={`w-0.5 bg-white/70 transition-all duration-300 ${isHovered ? 'h-4 md:h-6 bg-white' : 'h-0'}`}
                 />
                 <div
-                  className={`w-2 h-2 border-r-2 border-b-2 border-white/70 rotate-45 transition-all duration-300 ${isHovered ? 'border-white translate-y-1 scale-110' : ''}`}
+                  className={`w-1.5 h-1.5 md:w-2 md:h-2 border-r-2 border-b-2 border-white/70 rotate-45 transition-all duration-300 ${isHovered ? 'border-white translate-y-1 scale-110' : ''}`}
                 />
               </div>
 
               {/* Text label */}
-              <span className="font-semibold text-white transition-all duration-300 tracking-wide">
+              <span className="text-xs md:text-sm font-medium text-white/90 transition-all duration-300 group-hover/button:text-white tracking-wide">
                 Xem 360°
               </span>
             </button>

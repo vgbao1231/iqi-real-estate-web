@@ -1,24 +1,25 @@
 'use client';
 
-import { Fragment, useMemo } from 'react';
+import { Fragment, useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Arsenal } from 'next/font/google';
 
-import Introduction from './sections/Introduction';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
-import Overview from './sections/Overview';
-import Contact from './sections/Contact';
-import Location from './sections/Location';
-import Production from './sections/Production';
-import Amenity from './sections/Amenity';
-import Policy from './sections/Policy';
-import Timeline from './sections/Timeline';
-import Agency from './sections/Agency';
-import Cover from './sections/Cover';
-import SitePlan from './sections/SitePlan';
 import { properties } from '@/lib/property-data';
 import { usePathname, useRouter } from 'next/navigation';
+import Introduction from '@/app/(main)/products/components/sections/Introduction';
+import Agency from '@/app/(main)/products/components/sections/Agency';
+import Amenity from '@/app/(main)/products/components/sections/Amenity';
+import Cover from '@/app/(main)/products/components/sections/Cover';
+import Overview from '@/app/(main)/products/components/sections/Overview';
+import Policy from '@/app/(main)/products/components/sections/Policy';
+import Production from '@/app/(main)/products/components/sections/Production';
+import SitePlan from '@/app/(main)/products/components/sections/SitePlan';
+import Timeline from '@/app/(main)/products/components/sections/Timeline';
+import Location from '@/app/(main)/products/components/sections/Location';
+import Contact from '@/app/(main)/products/components/sections/Contact';
+import { Menu, X } from 'lucide-react';
 
 const arsenal = Arsenal({
   subsets: ['latin'],
@@ -35,6 +36,20 @@ const property = properties[0];
 /* -------------------------------------------------------------------------- */
 
 export default function ProductDetailPage() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const handleLinkClick = (item: any) => {
+    if (item.action) {
+      item.action();
+    } else {
+      const section = document.getElementById(item.id);
+      if (section) {
+        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+    setIsMenuOpen(false); // Close menu after clicking a link
+  };
+
   /* ---------- Local state ---------- */
   const router = useRouter();
   const pathname = usePathname();
@@ -73,12 +88,16 @@ export default function ProductDetailPage() {
         content: <SitePlan data={property.sitePlan} />,
         label: 'Mặt bằng',
       },
-      {
-        id: '360-view',
-        content: <></>,
-        label: '360 View',
-        action: () => router.push(`${pathname}/360-view`),
-      },
+      ...(property.sitePlan?.view360?.length > 0
+        ? [
+            {
+              id: '360-view',
+              content: <></>,
+              label: '360 View',
+              action: () => router.push(`${pathname}/360-view`),
+            },
+          ]
+        : []),
       {
         id: 'production',
         content: <Production data={property.production} />,
@@ -128,51 +147,78 @@ export default function ProductDetailPage() {
       {/* ----------------------------------------------------------------------- */}
       {/* Header - transparent overlay                                            */}
       {/* ----------------------------------------------------------------------- */}
-      <header className="sticky top-0 z-50 w-full bg-background py-2 shadow-md">
-        <div className="mx-auto overflow-x-auto px-4 scrollbar-hide">
-          <div className="flex items-center justify-between">
-            <div
-              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className="w-24 h-14 relative center-both ml-32 cursor-pointer"
-            >
-              <Image
-                src={
-                  property.introduction.logoImages[
-                    property.introduction.headerLogoIndex
-                  ]
-                }
-                alt="Eco Retreat Logo"
-                fill
-                className="object-contain"
-                priority
-              />
-            </div>
+      <header className="sticky top-0 z-50 w-full border-b bg-background/95 py-2 shadow-md backdrop-blur">
+        <div className="container mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
+          {/* Logo */}
+          <div
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="relative h-14 w-24 cursor-pointer"
+          >
+            <Image
+              src={
+                property.introduction.logoImages[
+                  property.introduction.headerLogoIndex
+                ]
+              }
+              alt="Eco Retreat Logo"
+              fill
+              className="object-contain"
+              priority
+            />
+          </div>
 
-            <nav className="flex justify-end gap-1 mr-24">
-              {sections.map(
-                (item) =>
-                  item.label && (
-                    <Button
-                      key={item.id}
-                      variant="ghost"
-                      className="text-foreground text-base font-bold hover:bg-transparent uppercase p-2"
-                      onClick={() => {
-                        if (item.action) item.action();
-                        else {
-                          const section = document.getElementById(item.id);
-                          if (section) {
-                            section.scrollIntoView({ behavior: 'smooth' }); // Nếu không thì scroll vào phần tử
-                          }
-                        }
-                      }}
-                    >
-                      {item.label}
-                    </Button>
-                  )
+          {/* Desktop Navigation (Hidden on Mobile) */}
+          <nav className="hidden items-center gap-2 md:flex">
+            {sections.map(
+              (item) =>
+                item.label && (
+                  <Button
+                    key={item.id}
+                    variant="ghost"
+                    className="text-sm font-bold uppercase p-2 hover:bg-accent hover:text-accent-foreground lg:text-base"
+                    onClick={() => handleLinkClick(item)}
+                  >
+                    {item.label}
+                  </Button>
+                )
+            )}
+          </nav>
+
+          {/* Mobile Menu Button (Hidden on Desktop) */}
+          <div className="flex items-center md:hidden">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+            >
+              {isMenuOpen ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
               )}
-            </nav>
+              <span className="sr-only">Toggle menu</span>
+            </Button>
           </div>
         </div>
+
+        {/* Mobile Menu (Appears when isMenuOpen is true) */}
+        {isMenuOpen && (
+          <nav className="absolute left-0 top-full flex w-full flex-col border-t bg-background p-4 shadow-lg md:hidden">
+            {sections.map(
+              (item) =>
+                item.label && (
+                  <Button
+                    key={`mobile-${item.id}`}
+                    variant="ghost"
+                    className="justify-start p-4 text-base font-semibold"
+                    onClick={() => handleLinkClick(item)}
+                  >
+                    {item.label}
+                  </Button>
+                )
+            )}
+          </nav>
+        )}
       </header>
 
       {/* ----------------------------------------------------------------------- */}

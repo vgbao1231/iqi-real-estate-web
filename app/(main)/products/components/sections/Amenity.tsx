@@ -47,17 +47,17 @@ const Amenity = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
     <section
       ref={ref}
       id="amenity"
-      className="max-w-7xl min-h-screen mx-auto center-both flex-col gap-8 py-24"
+      className="max-w-7xl min-h-screen mx-auto center-both flex-col gap-8 pt-12 md:py-12"
     >
       <div
-        className="text-center"
+        className="text-center px-4"
         dangerouslySetInnerHTML={{ __html: data.title }}
       />
       <div
-        className="max-w-4xl text-center text-foreground/80 space-y-2"
+        className="max-w-4xl text-center text-foreground/80 space-y-2 px-4"
         dangerouslySetInnerHTML={{ __html: data.description }}
       />
-      <div className="relative w-full h-[80vh] center-both">
+      <div className="relative w-full h-[50vh] center-both md:h-[80vh]">
         <Carousel
           className="w-full"
           setApi={setCarouselApi}
@@ -70,7 +70,7 @@ const Amenity = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: idx * 0.08 + 0.4 }}
-                  className="relative h-[80vh] w-full overflow-hidden"
+                  className="relative h-[50vh] w-full overflow-hidden md:h-[80vh]"
                 >
                   <Image
                     src={img || '/placeholder-2.webp'}

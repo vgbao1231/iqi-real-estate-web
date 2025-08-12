@@ -57,7 +57,7 @@ const Overview = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
           priority
         />
         <div className="absolute z-10 inset-0 bg-gradient-to-b from-black/50 to-transparent"></div>
-        <div className="relative z-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 p-6 px-32">
+        <div className="relative z-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 p-6 md:px-32">
           {data.overviewImages.map((item: any, idx: number) => (
             <FadeIn
               key={idx}
@@ -89,26 +89,27 @@ const Overview = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
           {/* Left content */}
           <SlideIn
             direction="left"
-            className="relative w-full md:w-2/5 h-[85vh] center-both"
+            className="relative w-full md:w-2/5 h-auto md:h-[85vh] center-both"
           >
             <Image
               src={data.experienceImage}
               alt="Eco Retreat Experience Background"
-              fill
-              className="object-contain"
+              width={800}
+              height={600}
+              className="object-contain w-full h-auto"
               priority
             />
           </SlideIn>
 
           {/* Right content */}
-          <div className="md:w-3/5 space-y-6">
+          <div className="w-full md:w-3/5 space-y-6">
             <SlideIn direction="right">
               <div>
-                <h3 className="text-5xl font-bold italic text-orange-300 mb-8">
+                <h3 className="text-4xl md:text-5xl font-bold italic text-orange-300 mb-8">
                   Thông tin tổng quan
                 </h3>
 
-                <div className="grid md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 md:gap-6">
                   {columns.map((column, colIdx) => (
                     <div key={colIdx}>
                       {column.map(({ label, value }: any, idx: any) => (
@@ -117,7 +118,7 @@ const Overview = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
                           className={`flex justify-between items-center py-3 gap-4 ${
                             idx !== column.length - 1
                               ? 'border-b border-border'
-                              : ''
+                              : 'border-b border-border md:border-0'
                           }`}
                         >
                           <span className="text-muted-foreground font-medium text-nowrap">

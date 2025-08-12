@@ -16,7 +16,11 @@ import Image from 'next/image';
 import { formatVnCurrencyShort } from '@/lib/utils';
 import { useState } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 export const PropertyCard = ({ property, index }: any) => {
+  const pathname = usePathname(); // lấy path hiện tại
+
+  const currentPath = pathname.replace(/\/$/, ''); // bỏ dấu / ở cuối
   const [copied, setCopied] = useState(false);
 
   const getValue = (id: string) =>
@@ -35,7 +39,7 @@ export const PropertyCard = ({ property, index }: any) => {
 
   const handleShare = async (e: any) => {
     e.stopPropagation();
-    const fullUrl = `${window.location.origin}/products/vietnam/${property.id}`;
+    const fullUrl = `${window.location.origin}${window.location.pathname}/${property.id}`;
 
     try {
       await navigator.clipboard.writeText(fullUrl);
@@ -50,7 +54,7 @@ export const PropertyCard = ({ property, index }: any) => {
     <ScaleIn key={property.id} delay={index * 0.1}>
       <Card className="overflow-hidden hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group border-0 shadow-md h-full flex flex-col">
         <div className="relative">
-          <Link href={`/products/vietnam/${property.id}`}>
+          <Link href={`${currentPath}/${property.id}`}>
             <Image
               src={property.introduction.coverImage || '/placeholder-2.webp'}
               alt={name}
@@ -99,7 +103,7 @@ export const PropertyCard = ({ property, index }: any) => {
             <div className="flex items-start justify-between">
               <div className="flex-1">
                 <h3 className="text-xl font-bold mb-1 group-hover:text-orange-600 transition-colors line-clamp-2">
-                  <Link href={`/products/vietnam/${property.id}`}>{name}</Link>
+                  <Link href={`${currentPath}/${property.id}`}>{name}</Link>
                 </h3>
                 <p className="text-muted-foreground text-sm flex items-center">
                   <MapPin className="w-4 h-4 mr-1 flex-shrink-0" />
