@@ -3,6 +3,7 @@ import { Badge } from '@/components/ui/badge';
 import { FadeIn } from '@/components/common/animations';
 import { Home } from 'lucide-react';
 import Header from '@/app/(main)/layout/header';
+import { partners } from '@/lib/partner-data';
 
 export const ProductIntroSection = ({ filteredProperties }: any) => (
   <FadeIn>
@@ -38,11 +39,13 @@ export const ProductIntroSection = ({ filteredProperties }: any) => (
               <div className="text-white/80">Dự án</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold">8</div>
+              <div className="text-3xl font-bold">111+</div>
               <div className="text-white/80">Quốc gia</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold">50+</div>
+              <div className="text-3xl font-bold">
+                {partners.developer.length}+
+              </div>
               <div className="text-white/80">Đối tác</div>
             </div>
           </div>
