@@ -154,8 +154,19 @@ const defaultProject = {
     coordinates: { lat: 10.75, lng: 106.4 },
     locationBackground: null as string | File | null, // Updated type
   },
-  sitePlan: {
-    sitePlanImages: [] as (string | File)[], // Updated type
+  siteplan: {
+    siteplanImages: [] as (string | File)[],
+    view360: [] as Array<{
+      id: number;
+      image: string | File;
+      markers: Array<{
+        id: number;
+        longitude: number;
+        latitude: number;
+        tooltip: string;
+        panoramaTarget: string | File;
+      }>;
+    }>,
   },
   production: {
     products: [] as any[],

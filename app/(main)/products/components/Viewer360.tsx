@@ -12,7 +12,7 @@ export default function Viewer360() {
   const isViewerInitialized = useRef(false);
   const params = useParams();
   const property = properties.find((p) => p.id === Number(params.id));
-  const { sitePlan: { view360 = [] } = {} } = property || {};
+  const { siteplan: { view360 = [] } = {} } = property || {};
 
   useEffect(() => {
     if (isViewerInitialized.current) return;
@@ -27,7 +27,7 @@ export default function Viewer360() {
     // 2. Định nghĩa HTML và CSS cho marker để tái sử dụng
     const markerHtml = `
       <div class="relative flex items-center justify-center w-10 h-10 cursor-pointer animate-bounce-scale">
-        <span class="absolute inline-flex w-10 h-10 bg-orange-400 rounded-full opacity-75 animate-[ping_1000ms_linear_infinite]"></span>
+        <span class="absolute inline-flex w-10 h-10 bg-orange-300 rounded-full opacity-75 animate-[ping_1000ms_linear_infinite]"></span>
         <img src="/360-views/icon.png" class="relative inline-flex object-contain rounded-full" alt="icon" />
       </div>
       <style>
@@ -50,10 +50,8 @@ export default function Viewer360() {
           longitude: marker.longitude,
           latitude: marker.latitude,
           html: markerHtml,
-          width: 100,
-          height: 100,
           tooltip: marker.tooltip,
-          scale: [1, 4],
+          scale: [0.5, 2],
           data: { panoramaTargetId: targetId }, // Sử dụng ID để liên kết
         };
       });

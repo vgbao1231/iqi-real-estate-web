@@ -30,7 +30,7 @@ export function TraditionalLayoutPreview({
 }) {
   const { logoImage, contactBackground } = contact;
   return (
-    <div className="relative w-full min-h-96 p-12">
+    <div className="relative w-full min-h-96 p-6 md:p-12">
       {/* Background image full screen */}
       <Image
         src={
@@ -43,10 +43,12 @@ export function TraditionalLayoutPreview({
         className="object-cover object-left"
         priority
       />
-      <div className="relative z-20 flex items-center justify-center gap-8 px-4 md:px-12 md:justify-around">
+
+      {/* Wrapper */}
+      <div className="relative z-20 flex flex-col md:flex-row items-center justify-center gap-8 md:px-12 md:justify-around">
         {/* Left side - Company info */}
-        <div className="p-6 text-white flex flex-col justify-center">
-          <div className="space-y-3">
+        <div className="p-4 md:p-6 text-white flex flex-col justify-center items-center md:items-start">
+          <div className="space-y-3 text-center md:text-left">
             <Image
               src={
                 logoImage
@@ -59,19 +61,19 @@ export function TraditionalLayoutPreview({
               width={120}
               height={40}
               className={cn(
-                'object-contain w-32 h-16',
+                'object-contain w-28 h-14 md:w-32 md:h-16',
                 !logoImage && 'shadow-md'
               )}
             />
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center justify-center md:justify-start space-x-3">
               <Phone className="h-4 w-4" />
               <span>{contactData.hotline}</span>
             </div>
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center justify-center md:justify-start space-x-3">
               <Mail className="h-4 w-4" />
               <span>{contactData.email}</span>
             </div>
-            <div className="flex items-start space-x-3">
+            <div className="flex items-start justify-center md:justify-start space-x-3">
               <MapPin className="h-4 w-4 mt-0.5" />
               <span className={compact ? 'text-sm' : 'text-lg'}>
                 {contactData.address}
@@ -81,8 +83,8 @@ export function TraditionalLayoutPreview({
         </div>
 
         {/* Right side - Contact form */}
-        <div className="p-4 flex items-center">
-          <ContactForm position="right" compact={compact} />
+        <div className="w-full md:w-1/4">
+          <ContactForm position="bottom" compact={compact} />
         </div>
       </div>
     </div>
@@ -101,8 +103,8 @@ export function ModernLayoutPreview({
   const { logoImage, contactBackground } = contact;
 
   return (
-    <div className="relative mx-auto w-full min-h-96 rounded-lg overflow-hidden flex p-12">
-      {/* Background image full screen */}
+    <div className="relative mx-auto w-full min-h-96 overflow-hidden flex flex-col md:flex-row p-6 md:p-12">
+      {/* Background image */}
       <Image
         src={
           contactBackground
@@ -116,36 +118,43 @@ export function ModernLayoutPreview({
         className="object-cover object-left"
         priority
       />
-      <div className="relative z-20 center-both w-full text-white">
+
+      {/* Content */}
+      <div className="relative z-20 flex flex-col md:flex-row md:items-center w-full text-white gap-6 md:gap-12">
         {/* Logo */}
-        <Image
-          src={
-            logoImage
-              ? typeof logoImage === 'string'
-                ? logoImage
-                : URL.createObjectURL(logoImage)
-              : '/placeholder.svg'
-          }
-          alt="logo"
-          width={120}
-          height={40}
-          className={cn('object-contain w-32 h-16', !logoImage && 'shadow-md')}
-        />
+        <div className="flex justify-center md:justify-start">
+          <Image
+            src={
+              logoImage
+                ? typeof logoImage === 'string'
+                  ? logoImage
+                  : URL.createObjectURL(logoImage)
+                : '/placeholder.svg'
+            }
+            alt="logo"
+            width={120}
+            height={40}
+            className={cn(
+              'object-contain w-28 h-14 md:w-32 md:h-16',
+              !logoImage && 'shadow-md'
+            )}
+          />
+        </div>
 
         {/* Contact info */}
-        <div className="w-1/2 space-y-2 px-4">
+        <div className="w-full md:w-1/2 space-y-2 px-2 md:px-4">
           <div className="flex items-center space-x-2">
             <Phone className="h-4 w-4" />
             <span>{contactData.hotline}</span>
           </div>
           <div className="flex items-center space-x-2">
-            <Mail className="h-3 w-3" />
+            <Mail className="h-4 w-4" />
             <span className={compact ? 'text-sm' : 'text-lg'}>
               {contactData.email}
             </span>
           </div>
           <div className="flex items-center space-x-2">
-            <Globe className="h-3 w-3" />
+            <Globe className="h-4 w-4" />
             <span className={compact ? 'text-sm' : 'text-lg'}>
               {contactData.website}
             </span>
@@ -153,7 +162,7 @@ export function ModernLayoutPreview({
         </div>
 
         {/* Contact form */}
-        <div className="w-1/4">
+        <div className="w-full md:w-1/4">
           <ContactForm position="right" compact={compact} />
         </div>
       </div>
@@ -173,7 +182,7 @@ export function MinimalLayoutPreview({
   const { logoImage, contactBackground } = contact;
 
   return (
-    <div className="relative w-full min-h-80 rounded-lg center-both flex-col text-white p-12">
+    <div className="relative w-full min-h-80 rounded-lg center-both flex-col text-white p-6 sm:p-12">
       {/* Background image full screen */}
       <Image
         src={
@@ -188,7 +197,7 @@ export function MinimalLayoutPreview({
         className="object-cover object-left"
         priority
       />
-      <div className="relactive z-20 text-center space-y-6 w-full max-w-md">
+      <div className="relative z-20 text-center space-y-4 sm:space-y-6 w-full max-w-xs sm:max-w-md">
         <div className="center-both">
           <Image
             src={
@@ -202,14 +211,20 @@ export function MinimalLayoutPreview({
             width={120}
             height={40}
             className={cn(
-              'object-contain w-32 h-16',
+              'object-contain w-24 h-12 sm:w-32 sm:h-16',
               !logoImage && 'shadow-md'
             )}
           />
         </div>
-        <div className="space-y-3">
-          <div className="text-xl font-bold">{contactData.hotline}</div>
-          <div className={compact ? 'text-sm' : 'text-lg'}>
+        <div className="space-y-2 sm:space-y-3">
+          <div className="text-lg sm:text-xl font-bold">
+            {contactData.hotline}
+          </div>
+          <div
+            className={cn(
+              compact ? 'text-xs sm:text-sm' : 'text-base sm:text-lg'
+            )}
+          >
             {contactData.email}
           </div>
         </div>
@@ -254,7 +269,7 @@ export function FullLayoutPreview({
     },
   ];
   return (
-    <div className="relative w-full rounded-lg p-12">
+    <div className="relative w-full p-4 md:p-8 lg:p-12">
       <Image
         src={
           contactBackground
@@ -268,10 +283,13 @@ export function FullLayoutPreview({
         className="object-cover object-left"
         priority
       />
+
       {/* Content */}
-      <div className="relative z-20 h-full flex-1 flex justify-center gap-8 px-4 md:px-12 md:justify-around text-white">
+      {/* 2. Thay đổi hướng flex và thêm gap */}
+      <div className="relative z-20 center-both h-full flex-col gap-12 md:flex-row">
         {/* Contact info */}
-        <div className="col-span-2 flex flex-col gap-2">
+        {/* 3. Bỏ col-span và thêm width cho responsive */}
+        <div className="flex w-full flex-col gap-2 text-white md:w-1/2">
           {/* Header */}
           <Image
             src={
@@ -290,26 +308,27 @@ export function FullLayoutPreview({
             )}
           />
           <div className="flex items-center space-x-2">
-            <Mail className="h-3 w-3" />
-            <span className={compact ? 'text-sm' : 'text-lg'}>
+            <Mail className="h-4 w-4" /> {/* Icon to hơn một chút */}
+            <span className={compact ? 'text-sm' : 'text-base md:text-lg'}>
               {contactData.email}
             </span>
           </div>
           <div className="flex items-center space-x-2">
-            <Globe className="h-3 w-3" />
-            <span className={compact ? 'text-sm' : 'text-lg'}>
+            <Globe className="h-4 w-4" />
+            <span className={compact ? 'text-sm' : 'text-base md:text-lg'}>
               {contactData.website}
             </span>
           </div>
           <div className="flex items-center space-x-2">
-            <MapPin className="h-3 w-3 mt-0.5" />
-            <span className={compact ? 'text-sm' : 'text-lg'}>
+            <MapPin className="mt-1 h-4 w-4 flex-shrink-0" />{' '}
+            {/* Căn icon tốt hơn */}
+            <span className={compact ? 'text-sm' : 'text-base md:text-lg'}>
               {contactData.address}
             </span>
           </div>
-          <div className="flex items-center space-x-2 mt-2">
+          <div className="mt-2 flex items-center space-x-2">
             {socialLinks
-              .filter((link) => link.url) // Chỉ giữ lại những link có URL hợp lệ
+              .filter((link) => link.url)
               .map(({ key, url, Icon, className }) => (
                 <a
                   key={key}
@@ -318,20 +337,21 @@ export function FullLayoutPreview({
                   rel="noopener noreferrer"
                 >
                   <Button
-                    className={`w-6 h-6 hover:scale-105 rounded flex items-center justify-center text-white ${className}`}
+                    className={`flex h-8 w-8 items-center justify-center rounded text-white hover:scale-105 ${className}`}
                   >
-                    <Icon className="w-3 h-3" />
+                    <Icon className="h-4 w-4" />
                   </Button>
                 </a>
               ))}
           </div>
-          <div className="font-semibold opacity-90 mt-auto">
+          <div className="mt-auto pt-4 font-semibold opacity-90">
             Hotline 24/7: {contactData.hotline}
           </div>
         </div>
 
         {/* Contact form */}
-        <div className="col-span-1">
+        {/* 3. Bỏ col-span và thêm width cho responsive */}
+        <div className="w-full md:w-2/5 lg:w-1/3">
           <ContactForm position="right" compact={compact} />
         </div>
       </div>

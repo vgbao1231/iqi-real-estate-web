@@ -16,7 +16,7 @@ import 'photoswipe/style.css';
 
 import { forwardRef, useEffect, useState } from 'react';
 
-const SitePlan = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
+const Siteplan = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
   const [isHovered, setIsHovered] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
@@ -55,9 +55,9 @@ const SitePlan = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
 
   return (
     data && (
-      <section ref={ref} id="site-plan" className="w-full relative">
+      <section ref={ref} id="siteplan" className="w-full relative">
         <Gallery>
-          {data.sitePlanImages.length > 1 ? (
+          {data.siteplanImages.length > 1 ? (
             // 👉 Nhiều ảnh => Carousel
             <div className="md:min-h-screen w-full center-both">
               <Carousel
@@ -66,7 +66,7 @@ const SitePlan = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
                 opts={{ loop: true }}
               >
                 <CarouselContent>
-                  {data.sitePlanImages.map((img: any, idx: number) => (
+                  {data.siteplanImages.map((img: any, idx: number) => (
                     <CarouselItem key={idx} className="pl-0">
                       <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -90,6 +90,7 @@ const SitePlan = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
                               width={1920}
                               height={1080}
                               className="w-full h-auto"
+                              priority
                             />
                           )}
                         </Item>
@@ -100,7 +101,7 @@ const SitePlan = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
 
                 {/* Dots */}
                 <div className="z-10 absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-3">
-                  {data.sitePlanImages.map((_: any, i: any) => (
+                  {data.siteplanImages.map((_: any, i: any) => (
                     <div
                       key={i}
                       className={cn(
@@ -115,8 +116,8 @@ const SitePlan = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
           ) : (
             // 👉 1 ảnh => chỉ cần Item của PhotoSwipe
             <Item
-              original={data.sitePlanImages[0] || '/placeholder-2.webp'}
-              thumbnail={data.sitePlanImages[0] || '/placeholder-2.webp'}
+              original={data.siteplanImages[0] || '/placeholder-2.webp'}
+              thumbnail={data.siteplanImages[0] || '/placeholder-2.webp'}
               width="1920"
               height="1080"
             >
@@ -124,7 +125,7 @@ const SitePlan = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
                 <Image
                   ref={ref as any}
                   onClick={open}
-                  src={data.sitePlanImages[0] || '/placeholder-2.webp'}
+                  src={data.siteplanImages[0] || '/placeholder-2.webp'}
                   alt="Ảnh mặt bằng"
                   width={1920}
                   height={1080}
@@ -200,5 +201,5 @@ const SitePlan = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
   );
 });
 
-SitePlan.displayName = 'SitePlan';
-export default SitePlan;
+Siteplan.displayName = 'Siteplan';
+export default Siteplan;

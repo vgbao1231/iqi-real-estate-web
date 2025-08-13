@@ -166,7 +166,7 @@ export default function ResortPropertiesPage() {
       <ProductIntroSection filteredProperties={filteredProperties} />
 
       {/* Search and Filter */}
-      <section className="py-10 px-6 md:px-12">
+      <section className="py-8 md:px-12">
         <div className="container mx-auto px-4">
           <FadeIn>
             <Card className="border-border shadow-lg mb-6">
@@ -344,14 +344,14 @@ export default function ResortPropertiesPage() {
         </div>
       </section>
 
-      <section className="py-10 px-6 md:px-12">
+      <section className="md:px-12">
         <div className="container mx-auto px-4 pb-8">
           {/* Main Content */}
           <div className="lg:col-span-3 space-y-6">
             {/* Results */}
             <FadeIn delay={0.2}>
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold">
+                <h2 className="text-xl md:text-2xl font-bold">
                   {filteredProperties.length} dự án được tìm thấy
                 </h2>
                 <div className="text-sm text-muted-foreground">

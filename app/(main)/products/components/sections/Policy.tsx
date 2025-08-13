@@ -11,12 +11,14 @@ const Policy = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
       <section
         ref={ref}
         id="policy"
-        className="bg-background mx-auto w-full min-h-screen center-both py-16"
+        // Thêm padding ngang cho mobile và tablet
+        className="bg-background mx-auto w-full min-h-screen center-both py-8 md:py-16 px-4 sm:px-6 lg:px-8"
       >
         {data.policyText ? (
           <div className="h-full w-full max-w-7xl grid grid-cols-1 md:grid-cols-2 items-center py-8 gap-8">
             {/* Left content */}
-            <div className="relative w-full h-[85vh] center-both">
+            <div className="relative w-full h-[45vh] md:h-[85vh] center-both">
+              {/* GIẢM chiều cao trên mobile, GIỮ NGUYÊN trên desktop */}
               <Image
                 src={data.policyImage}
                 alt="Eco Retreat Policy Background"
@@ -35,12 +37,13 @@ const Policy = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
                 viewport={{ once: true }}
               >
                 <div>
-                  <h3 className="text-5xl italic font-bold text-orange-300 mb-8">
+                  <h3 className="text-4xl md:text-5xl italic font-bold text-orange-300 mb-8">
+                    {/* GIẢM cỡ chữ trên mobile, GIỮ NGUYÊN trên desktop */}
                     {data.title}
                   </h3>
 
                   <div
-                    className="text-lg text-foreground"
+                    className="text-base md:text-lg text-foreground" // Có thể giảm nhẹ cỡ chữ cho dễ đọc hơn
                     dangerouslySetInnerHTML={{ __html: data.policyText }}
                   />
                 </div>
@@ -49,7 +52,8 @@ const Policy = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
           </div>
         ) : (
           <div className="h-full w-full max-w-6xl center-both flex-col md:flex-row py-8 gap-8">
-            <div className="relative w-full h-[85vh] center-both">
+            {/* Áp dụng thay đổi tương tự cho phần này */}
+            <div className="relative w-full h-[45vh] md:h-[85vh] center-both">
               <Image
                 src={data.policyImage}
                 alt="Eco Retreat Experience Background"

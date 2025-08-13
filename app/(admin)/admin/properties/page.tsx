@@ -13,6 +13,7 @@ import {
   Settings,
   FileText,
   ArrowLeft,
+  LayoutGrid,
 } from 'lucide-react';
 import { useProjectData } from '@/hooks/use-project-data';
 import { ProjectsList } from './components/ProjectsList';
@@ -23,6 +24,7 @@ import { LocationTab } from './tabs/location-tab';
 import { OtherTab } from './tabs/other-tab';
 import { OverviewTab } from './tabs/overview-tab';
 import { ProductionTab } from './tabs/production-tab';
+import { SiteplanTab } from '@/app/(admin)/admin/properties/tabs/siteplan-tab';
 
 export default function Properties() {
   const {
@@ -48,6 +50,101 @@ export default function Properties() {
   if (editingProjectId === null) {
     return <ProjectsList onEditProject={setEditingProjectId} />;
   }
+
+  const tabConfig = [
+    {
+      value: 'introduction',
+      label: 'Giới thiệu',
+      icon: FileText,
+      component: (
+        <IntroductionTab
+          introduction={project.introduction}
+          updateProject={updateProject}
+        />
+      ),
+    },
+    {
+      value: 'overview',
+      label: 'Tổng quan',
+      icon: Building2,
+      component: (
+        <OverviewTab
+          overview={project.overview}
+          updateProject={updateProject}
+        />
+      ),
+    },
+    {
+      value: 'location',
+      label: 'Vị trí',
+      icon: MapPin,
+      component: (
+        <LocationTab
+          location={project.location}
+          updateProject={updateProject}
+          updateNestedProject={updateNestedProject}
+        />
+      ),
+    },
+    {
+      value: 'siteplan',
+      label: 'Mặt bằng',
+      icon: LayoutGrid,
+      component: (
+        <SiteplanTab
+          siteplan={project.siteplan}
+          updateProject={updateProject}
+        />
+      ),
+    },
+    {
+      value: 'production',
+      label: 'Sản phẩm',
+      icon: Package,
+      component: (
+        <ProductionTab
+          production={project.production}
+          updateProject={updateProject}
+          addProduct={addProduct}
+          updateProductField={updateProductField}
+          removeProduct={removeProduct}
+        />
+      ),
+    },
+    {
+      value: 'amenity',
+      label: 'Tiện ích',
+      icon: Wifi,
+      component: (
+        <AmenityTab amenity={project.amenity} updateProject={updateProject} />
+      ),
+    },
+    {
+      value: 'contact',
+      label: 'Liên hệ',
+      icon: Phone,
+      component: (
+        <ContactTab contact={project.contact} updateProject={updateProject} />
+      ),
+    },
+    {
+      value: 'other',
+      label: 'Khác',
+      icon: Settings,
+      component: (
+        <OtherTab
+          other={project.other}
+          updateProject={updateProject}
+          updateNestedProject={updateNestedProject}
+          addArrayItem={addArrayItem}
+          removeArrayItem={removeArrayItem}
+          updateArrayItem={updateArrayItem}
+          editingPolicyIndex={editingPolicyIndex}
+          setEditingPolicyIndex={setEditingPolicyIndex}
+        />
+      ),
+    },
+  ];
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -86,115 +183,24 @@ export default function Properties() {
 
       <div className="container mx-auto px-4 py-6">
         <Tabs defaultValue="introduction" className="space-y-6">
-          {' '}
-          {/* Changed defaultValue to introduction */}
-          <TabsList className="grid w-full grid-cols-7">
-            <TabsTrigger
-              value="introduction"
-              className="flex items-center space-x-2"
-            >
-              <FileText className="h-4 w-4" />
-              <span className="hidden sm:inline">Giới thiệu</span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="overview"
-              className="flex items-center space-x-2"
-            >
-              <Building2 className="h-4 w-4" />
-              <span className="hidden sm:inline">Tổng quan</span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="location"
-              className="flex items-center space-x-2"
-            >
-              <MapPin className="h-4 w-4" />
-              <span className="hidden sm:inline">Vị trí</span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="production"
-              className="flex items-center space-x-2"
-            >
-              <Package className="h-4 w-4" />
-              <span className="hidden sm:inline">Sản phẩm</span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="amenity"
-              className="flex items-center space-x-2"
-            >
-              <Wifi className="h-4 w-4" />
-              <span className="hidden sm:inline">Tiện ích</span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="contact"
-              className="flex items-center space-x-2"
-            >
-              <Phone className="h-4 w-4" />
-              <span className="hidden sm:inline">Liên hệ</span>
-            </TabsTrigger>
-            <TabsTrigger value="other" className="flex items-center space-x-2">
-              <Settings className="h-4 w-4" />
-              <span className="hidden sm:inline">Khác</span>
-            </TabsTrigger>
+          <TabsList className="grid w-full grid-cols-8">
+            {tabConfig.map(({ value, label, icon: Icon }) => (
+              <TabsTrigger
+                key={value}
+                value={value}
+                className="flex items-center space-x-2"
+              >
+                <Icon className="h-4 w-4" />
+                <span className="hidden sm:inline">{label}</span>
+              </TabsTrigger>
+            ))}
           </TabsList>
-          {/* Introduction Tab */}
-          <TabsContent value="introduction">
-            <IntroductionTab
-              introduction={project.introduction}
-              updateProject={updateProject}
-            />
-          </TabsContent>
-          {/* Overview Tab */}
-          <TabsContent value="overview">
-            <OverviewTab
-              overview={project.overview}
-              updateProject={updateProject}
-            />
-          </TabsContent>
-          {/* Location Tab */}
-          <TabsContent value="location">
-            <LocationTab
-              location={project.location}
-              updateProject={updateProject}
-              updateNestedProject={updateNestedProject}
-            />
-          </TabsContent>
-          {/* Production Tab */}
-          <TabsContent value="production">
-            <ProductionTab
-              production={project.production}
-              updateProject={updateProject}
-              addProduct={addProduct}
-              updateProductField={updateProductField}
-              removeProduct={removeProduct}
-            />
-          </TabsContent>
-          {/* Amenity Tab */}
-          <TabsContent value="amenity">
-            <AmenityTab
-              amenity={project.amenity}
-              updateProject={updateProject}
-            />
-          </TabsContent>
-          {/* Contact Tab */}
-          <TabsContent value="contact">
-            <ContactTab
-              contact={project.contact}
-              updateProject={updateProject}
-            />
-          </TabsContent>
-          {/* Other Tab */}
-          <TabsContent value="other">
-            <OtherTab
-              other={project.other}
-              updateProject={updateProject}
-              updateNestedProject={updateNestedProject}
-              addArrayItem={addArrayItem}
-              removeArrayItem={removeArrayItem}
-              updateArrayItem={updateArrayItem}
-              editingPolicyIndex={editingPolicyIndex}
-              setEditingPolicyIndex={setEditingPolicyIndex}
-            />
-          </TabsContent>
+
+          {tabConfig.map(({ value, component }) => (
+            <TabsContent key={value} value={value}>
+              {component}
+            </TabsContent>
+          ))}
         </Tabs>
       </div>
     </div>

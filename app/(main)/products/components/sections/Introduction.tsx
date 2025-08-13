@@ -98,7 +98,7 @@ const Introduction = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
       </div>
 
       {/* Sub section 2 */}
-      <div className="relative flex min-h-screen items-center justify-center bg-gray-50">
+      <div className="relative flex min-h-screen items-center justify-center">
         <div className="relative z-20 flex w-full max-w-7xl flex-col-reverse items-center gap-8 px-4 py-8 md:flex-row md:gap-12 md:px-8">
           {/* Left content (Carousel) - Responsive Height */}
           <SlideIn

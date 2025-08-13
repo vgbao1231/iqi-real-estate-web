@@ -15,7 +15,7 @@ import Cover from '@/app/(main)/products/components/sections/Cover';
 import Overview from '@/app/(main)/products/components/sections/Overview';
 import Policy from '@/app/(main)/products/components/sections/Policy';
 import Production from '@/app/(main)/products/components/sections/Production';
-import SitePlan from '@/app/(main)/products/components/sections/SitePlan';
+import Siteplan from '@/app/(main)/products/components/sections/Siteplan';
 import Timeline from '@/app/(main)/products/components/sections/Timeline';
 import Location from '@/app/(main)/products/components/sections/Location';
 import Contact from '@/app/(main)/products/components/sections/Contact';
@@ -84,11 +84,11 @@ export default function ProductDetailPage() {
       },
       { content: <SectionBreak data={property.other.breakImages[3]} /> },
       {
-        id: 'site-plan',
-        content: <SitePlan data={property.sitePlan} />,
+        id: 'siteplan',
+        content: <Siteplan data={property.siteplan} />,
         label: 'Mặt bằng',
       },
-      ...(property.sitePlan?.view360?.length > 0
+      ...(property.siteplan?.view360?.length > 0
         ? [
             {
               id: '360-view',
@@ -135,7 +135,7 @@ export default function ProductDetailPage() {
   return (
     <div
       className={cn(
-        'min-h-screen bg-gradient-to-r from-gray-50 to-white',
+        'min-h-screen bg-gradient-to-r from-gray-50 to-white overflow-x-clip',
         arsenal.className
       )}
     >
