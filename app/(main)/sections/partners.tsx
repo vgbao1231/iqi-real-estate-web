@@ -97,15 +97,21 @@ export default function Partners() {
         <FadeIn delay={0.8}>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto mb-6">
             <div className="text-center">
-              <div className="text-2xl font-bold text-orange-600">50+</div>
+              <div className="text-2xl font-bold text-orange-600">
+                {Object.values(partners).reduce(
+                  (sum, arr) => sum + arr.length,
+                  0
+                )}
+                +
+              </div>
               <div className="text-sm text-muted-foreground">Đối tác</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-blue-600">20+</div>
+              <div className="text-2xl font-bold text-blue-600">111+</div>
               <div className="text-sm text-muted-foreground">Quốc gia</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-green-600">1000+</div>
+              <div className="text-2xl font-bold text-green-600">100+</div>
               <div className="text-sm text-muted-foreground">Dự án</div>
             </div>
             <div className="text-center">
