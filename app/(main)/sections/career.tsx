@@ -14,19 +14,22 @@ export default function Career() {
           <Badge className="mb-4 bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300">
             CƠ HỘI NGHỀ NGHIỆP
           </Badge>
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
             Tham gia đội ngũ IQI Vietnam
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+          <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
             Khởi đầu sự nghiệp bất động sản với đội ngũ chuyên nghiệp, chương
             trình đào tạo toàn diện và cơ hội thu nhập hấp dẫn.
           </p>
         </FadeIn>
 
-        <div className="grid md:grid-cols-2 gap-12 items-center justify-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
+          {/* Left */}
           <SlideIn direction="left" className="center-both">
             <div>
-              <h3 className="text-2xl font-bold mb-6">Tại sao chọn IQI?</h3>
+              <h3 className="text-xl sm:text-2xl font-bold mb-4 md:mb-6">
+                Tại sao chọn IQI?
+              </h3>
               <div className="space-y-4">
                 {[
                   {
@@ -58,7 +61,9 @@ export default function Career() {
                     <item.icon className="w-5 h-5 text-orange-600 mt-1 flex-shrink-0" />
                     <div>
                       <h4 className="font-semibold">{item.title}</h4>
-                      <p className="text-muted-foreground">{item.desc}</p>
+                      <p className="text-sm sm:text-base text-muted-foreground">
+                        {item.desc}
+                      </p>
                     </div>
                   </motion.div>
                 ))}
@@ -73,22 +78,22 @@ export default function Career() {
               </motion.div>
             </div>
           </SlideIn>
+
+          {/* Right */}
           <SlideIn direction="right" className="center-both">
-            <div>
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                transition={{ duration: 0.3 }}
-                className="w-[500px] h-[400px] relative"
-              >
-                <Image
-                  src="/placeholder-2.webp?height=400&width=500"
-                  alt="IQI Team"
-                  fill
-                  priority
-                  className="rounded-lg shadow-lg"
-                />
-              </motion.div>
-            </div>
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.3 }}
+              className="relative w-full max-w-[500px] h-[250px] sm:h-[300px] md:h-[400px] mx-auto"
+            >
+              <Image
+                src="/placeholder-2.webp"
+                alt="IQI Team"
+                fill
+                priority
+                className="rounded-lg shadow-lg object-cover"
+              />
+            </motion.div>
           </SlideIn>
         </div>
       </div>

@@ -81,8 +81,8 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="bg-accent">
-      <div className="mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-7 gap-8 py-12 max-w-7xl">
+    <footer className="bg-accent p-4">
+      <div className="mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-7 gap-8 py-4 md:py-12 max-w-7xl">
         {/* Company Info */}
         <FadeIn delay={0.1} className="lg:col-span-3">
           <div className="flex items-center mb-6">

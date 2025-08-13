@@ -21,16 +21,16 @@ export default function AchievementSection() {
   const autoplayRef = useRef(Autoplay({ delay: 2000, stopOnMouseEnter: true }));
 
   return (
-    <section className="py-12 md:px-12">
-      <div className="container mx-auto">
-        <div className="text-center mb-16">
+    <section className="py-8 md:py-12 md:px-12">
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-8 md:mb-16">
           <FadeIn>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 md:mb-4">
               Thành tựu của chúng tôi
             </h2>
           </FadeIn>
           <FadeIn delay={0.2}>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-xl md:max-w-2xl mx-auto">
               Những giải thưởng và thành tựu đáng tự hào
             </p>
           </FadeIn>
@@ -39,7 +39,7 @@ export default function AchievementSection() {
         <div
           className="relative"
           onMouseEnter={() => autoplayRef.current.stop()}
-          onMouseLeave={() => autoplayRef.current.play()} // resume sau khi rời chuột
+          onMouseLeave={() => autoplayRef.current.play()}
         >
           <Carousel
             opts={{
@@ -58,7 +58,7 @@ export default function AchievementSection() {
                   className="pl-2 md:pl-4 basis-1/2 md:basis-1/4 lg:basis-1/8"
                 >
                   <div className="group hover:scale-105 transition-all duration-300">
-                    <div className="relative w-full h-48 overflow-hidden rounded-lg bg-white shadow-sm hover:shadow-md transition-shadow">
+                    <div className="relative w-full h-36 sm:h-44 md:h-48 overflow-hidden rounded-lg bg-white shadow-sm hover:shadow-md transition-shadow">
                       <Image
                         src={achievement.image || '/placeholder-2.webp'}
                         alt={achievement.alt}
