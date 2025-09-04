@@ -9,7 +9,7 @@ import Career from '@/app/(main)/sections/career';
 import Hero from '@/app/(main)/sections/hero';
 import News from '@/app/(main)/sections/news';
 import Partners from '@/app/(main)/sections/partners';
-import Products from '@/app/(main)/sections/products';
+import Projects from '@/app/(main)/sections/projects';
 import AchievementSection from '@/app/(main)/components/achievement-section';
 
 export default function HomePage() {
@@ -21,29 +21,31 @@ export default function HomePage() {
       {/* Hero Section with Background */}
       <Hero />
 
-      {/* About IQI Section */}
-      <AboutUs />
+      <section className="bg-background relative z-20">
+        {/* About IQI Section */}
+        <AboutUs />
 
-      {/* Products Section */}
-      <Products />
+        {/* Projects Section */}
+        <Projects />
 
-      {/* News Section */}
-      <News />
+        {/* News Section */}
+        <News />
 
-      {/* Career Section Preview */}
-      <Career />
+        {/* Career Section Preview */}
+        <Career />
 
-      {/* Partners Section - Compact Version */}
-      <Partners />
+        {/* Partners Section - Compact Version */}
+        <Partners />
 
-      {/* Achievement */}
-      <AchievementSection />
+        {/* Achievement */}
+        <AchievementSection />
 
-      {/* Contact CTA */}
-      <Contact />
+        {/* Contact CTA */}
+        <Contact />
 
-      {/* Footer */}
-      <Footer />
+        {/* Footer */}
+        <Footer />
+      </section>
 
       {/* Theme Status (Light/Dark Mode) */}
       <ThemeStatus />

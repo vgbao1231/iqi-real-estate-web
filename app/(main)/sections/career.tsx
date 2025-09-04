@@ -25,7 +25,10 @@ export default function Career() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
           {/* Left */}
-          <SlideIn direction="left" className="center-both">
+          <SlideIn
+            direction="left"
+            className="flex items-center justify-center"
+          >
             <div>
               <h3 className="text-xl sm:text-2xl font-bold mb-4 md:mb-6">
                 Tại sao chọn IQI?
@@ -80,7 +83,10 @@ export default function Career() {
           </SlideIn>
 
           {/* Right */}
-          <SlideIn direction="right" className="center-both">
+          <SlideIn
+            direction="right"
+            className="flex items-center justify-center"
+          >
             <motion.div
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.3 }}

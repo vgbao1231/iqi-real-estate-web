@@ -203,7 +203,7 @@ export function DeveloperTab({
                     </div>
                   </TableCell>
                   <TableCell className="text-center">
-                    <div className="center-both space-x-2">
+                    <div className="flex items-center justify-center space-x-2">
                       <Button
                         variant="outline"
                         size="icon"

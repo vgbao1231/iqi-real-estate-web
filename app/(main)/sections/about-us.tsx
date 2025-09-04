@@ -57,7 +57,7 @@ export default function AboutUs() {
                     <motion.div
                       whileHover={{ rotate: 360 }}
                       transition={{ duration: 0.6 }}
-                      className={`w-16 h-16 bg-${card.color}-100 dark:bg-${card.color}-900/30 rounded-full flex items-center justify-center mx-auto mb-4`}
+                      className={`w-16 h-16 bg-${card.color}-100 dark:bg-${card.color}-900/30 rounded-full center-both mx-auto mb-4`}
                     >
                       <card.icon className={`w-8 h-8 text-${card.color}-600`} />
                     </motion.div>
@@ -74,7 +74,10 @@ export default function AboutUs() {
 
         {/* Company Info */}
         <div className="md:px-12 grid md:grid-cols-2 gap-12 items-center">
-          <SlideIn direction="left" className="center-both">
+          <SlideIn
+            direction="left"
+            className="flex items-center justify-center"
+          >
             <div>
               <h3 className="text-2xl font-bold mb-6 text-center md:text-start">
                 Juwai IQI & IQI Atlas
@@ -131,7 +134,10 @@ export default function AboutUs() {
               </motion.div>
             </div>
           </SlideIn>
-          <SlideIn direction="right" className="center-both">
+          <SlideIn
+            direction="right"
+            className="flex items-center justify-center"
+          >
             <motion.div
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.3 }}

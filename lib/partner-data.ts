@@ -213,7 +213,7 @@ export const partners = {
       name: 'Frasers Property',
       type: 'Chủ đầu tư quốc tế',
       description: 'Nhà phát triển bất động sản quốc tế với các dự án cao cấp.',
-      logo: '/developer-partner/frasers-property.png',
+      logo: '/developer-partner/frasers-project.png',
       projects: 1,
       partnership: '2018',
       revenue: '12.4 triệu USD',

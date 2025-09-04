@@ -101,7 +101,7 @@ export default function PartnersPage() {
                   <Card className="text-center h-full">
                     <CardHeader>
                       <div
-                        className={`w-16 h-16 ${benefit.bg} rounded-full flex items-center justify-center mx-auto mb-4`}
+                        className={`w-16 h-16 ${benefit.bg} rounded-full center-both mx-auto mb-4`}
                       >
                         <benefit.icon className={`w-8 h-8 ${benefit.color}`} />
                       </div>

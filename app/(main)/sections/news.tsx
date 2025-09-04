@@ -34,17 +34,17 @@ export default function News() {
             {
               icon: TrendingUp,
               badge: 'Thị trường',
-              title: 'Giá BDS Q4/2024 tăng 8.5%',
+              title: 'Giá BDS Q4/2025 tăng 8.5%',
               desc: 'Thị trường bất động sản TP.HCM ghi nhận mức tăng trưởng ổn định trong quý 4, với phân khúc căn hộ cao cấp dẫn đầu.',
-              date: '15/12/2024',
+              date: '15/12/2025',
               delay: 0.2,
             },
             {
               icon: Newspaper,
               badge: 'Tin tức',
               title: 'Luật Đất đai mới có hiệu lực',
-              desc: 'Những thay đổi quan trọng trong Luật Đất đai 2024 ảnh hưởng đến quyền lợi của người mua bất động sản.',
-              date: '12/12/2024',
+              desc: 'Những thay đổi quan trọng trong Luật Đất đai 2025 ảnh hưởng đến quyền lợi của người mua bất động sản.',
+              date: '12/12/2025',
               delay: 0.4,
             },
             {
@@ -52,7 +52,7 @@ export default function News() {
               badge: 'Xu hướng',
               title: 'Đầu tư BDS nghỉ dưỡng 2025',
               desc: 'Phân tích xu hướng đầu tư bất động sản nghỉ dưỡng và những cơ hội sinh lời hấp dẫn trong năm 2025.',
-              date: '10/12/2024',
+              date: '10/12/2025',
               delay: 0.6,
             },
           ].map((item, index) => (

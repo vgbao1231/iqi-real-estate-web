@@ -134,7 +134,7 @@ export default function AboutCulturePage() {
                       <motion.div
                         whileHover={{ rotate: 360 }}
                         transition={{ duration: 0.6 }}
-                        className={`w-20 h-20 bg-${value.color}-100 dark:bg-${value.color}-900/30 rounded-full flex items-center justify-center mx-auto mb-4`}
+                        className={`w-20 h-20 bg-${value.color}-100 dark:bg-${value.color}-900/30 rounded-full center-both mx-auto mb-4`}
                       >
                         <value.icon
                           className={`w-10 h-10 text-${value.color}-600`}

@@ -67,7 +67,7 @@ export function MultiFileUpload({
               return (
                 <div
                   key={index}
-                  className="relative group border rounded-lg overflow-hidden aspect-square flex items-center justify-center bg-gray-100"
+                  className="relative group border rounded-lg overflow-hidden aspect-square center-both bg-gray-100"
                 >
                   {isImage ? (
                     <img

@@ -3,9 +3,9 @@ import { Badge } from '@/components/ui/badge';
 import { FadeIn, CountUp } from '@/components/common/animations';
 import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
-import Image from 'next/image';
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 
 export default function Hero() {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -67,26 +67,25 @@ export default function Hero() {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={currentSlide}
-          initial={{ opacity: 0.2 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0.2 }}
-          transition={{ duration: 0.5 }}
-          className="absolute inset-0 z-0"
+      {heroSlides.map((slide: any, index: any) => (
+        <div
+          key={index}
+          className={`fixed inset-0 z-0 transition-all duration-1000 ease-in-out ${
+            index === currentSlide
+              ? 'opacity-100 scale-100 blur-0'
+              : 'opacity-0 scale-105 blur-sm'
+          }`}
         >
           <Image
-            src={heroSlides[currentSlide].image || '/placeholder-2.webp'}
-            alt={`Hero slide ${currentSlide + 1}`}
+            src={slide.image || '/placeholder.svg'}
+            alt={slide.title}
             fill
-            className="object-cover"
             priority
+            className="object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/10 to-background/20" />
-          <div className="absolute inset-0 z-20 bg-black/30 dark:bg-black/40" />
-        </motion.div>
-      </AnimatePresence>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-black/20 to-black/30" />
+        </div>
+      ))}
 
       {/* Content */}
       <div className="relative z-20 container mx-auto px-4 h-full flex flex-col items-center justify-center text-center text-white">
@@ -97,61 +96,59 @@ export default function Hero() {
         </FadeIn>
 
         {/* Animate main content */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={currentSlide}
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -30 }}
-            transition={{ duration: 0.5 }}
-            className="max-w-5xl min-h-[360px] center-both flex-col"
-          >
-            <FadeIn delay={0.2}>
-              <h1 className="text-4xl drop-shadow-lg md:text-6xl font-bold py-6 bg-gradient-to-r !from-white !via-orange-200 !to-white bg-clip-text text-transparent">
-                {heroSlides[currentSlide].title}
-              </h1>
-            </FadeIn>
+        <motion.div
+          key={currentSlide}
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -30 }}
+          transition={{ duration: 0.5 }}
+          className="max-w-5xl min-h-[360px] center-both flex-col"
+        >
+          <FadeIn delay={0.2}>
+            <h1 className="text-4xl drop-shadow-lg md:text-6xl font-bold py-6 bg-gradient-to-r !from-white !via-orange-200 !to-white bg-clip-text text-transparent">
+              {heroSlides[currentSlide].title}
+            </h1>
+          </FadeIn>
 
-            <FadeIn delay={0.3}>
-              <p className="text-xl font-semibold text-shadow-lg text-white mb-8 max-w-2xl mx-auto">
-                {heroSlides[currentSlide].subtitle}
-              </p>
-            </FadeIn>
+          <FadeIn delay={0.3}>
+            <p className="text-xl font-semibold text-shadow-lg text-white mb-8 max-w-2xl mx-auto">
+              {heroSlides[currentSlide].subtitle}
+            </p>
+          </FadeIn>
 
-            <FadeIn delay={0.4}>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <Link href="/consultation">
-                    <Button
-                      size="lg"
-                      className="bg-orange-600 hover:bg-orange-700"
-                    >
-                      Tư vấn miễn phí
-                      <ArrowRight className="ml-2 w-4 h-4" />
-                    </Button>
-                  </Link>
-                </motion.div>
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <Link href="#products-content">
-                    <Button
-                      size="lg"
-                      variant="outline"
-                      className="border-white text-white hover:bg-white hover:text-gray-900 bg-transparent"
-                    >
-                      Xem dự án
-                    </Button>
-                  </Link>
-                </motion.div>
-              </div>
-            </FadeIn>
-          </motion.div>
-        </AnimatePresence>
+          <FadeIn delay={0.4}>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Link href="/consultation">
+                  <Button
+                    size="lg"
+                    className="bg-orange-600 hover:bg-orange-700"
+                  >
+                    Tư vấn miễn phí
+                    <ArrowRight className="ml-2 w-4 h-4" />
+                  </Button>
+                </Link>
+              </motion.div>
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Link href="#projects-content">
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="border-white text-white hover:bg-white hover:text-gray-900 bg-transparent"
+                  >
+                    Xem dự án
+                  </Button>
+                </Link>
+              </motion.div>
+            </div>
+          </FadeIn>
+        </motion.div>
         {/* Quick Stats */}
         <FadeIn delay={0.6}>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-2xl mx-auto transition-all">
@@ -176,15 +173,15 @@ export default function Hero() {
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           onClick={prevSlide}
-          className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-colors pointer-events-auto"
+          className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full center-both text-white hover:bg-white/30 transition-colors pointer-events-auto"
         >
-          <ChevronLeft className="w-6 h-6" />
+          <ChevronLeft className="w-6 h-6 -ml-0.5" />
         </motion.button>
         <motion.button
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           onClick={nextSlide}
-          className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-colors pointer-events-auto"
+          className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full center-both text-white hover:bg-white/30 transition-colors pointer-events-auto"
         >
           <ChevronRight className="w-6 h-6" />
         </motion.button>

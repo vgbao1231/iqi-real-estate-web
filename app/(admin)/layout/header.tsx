@@ -30,7 +30,7 @@ export default function Header({ setSidebarOpen }: any) {
           {/* Notifications */}
           <Button variant="ghost" size="sm" className="relative">
             <Bell className="w-5 h-5 text-foreground" />
-            <Badge className="absolute -top-1 -right-1 w-5 h-5 p-0 flex items-center justify-center bg-red-600 text-white text-xs">
+            <Badge className="absolute -top-1 -right-1 w-5 h-5 p-0 center-both bg-red-600 text-white text-xs">
               3
             </Badge>
           </Button>

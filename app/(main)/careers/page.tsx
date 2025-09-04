@@ -125,7 +125,7 @@ export default function CareersPage() {
                   <Card className="text-center h-full">
                     <CardHeader>
                       <div
-                        className={`w-16 h-16 ${item.bg} rounded-full flex items-center justify-center mx-auto mb-4`}
+                        className={`w-16 h-16 ${item.bg} rounded-full center-both mx-auto mb-4`}
                       >
                         <item.icon className={`w-8 h-8 ${item.color}`} />
                       </div>
@@ -233,7 +233,7 @@ export default function CareersPage() {
 
                 <div className="space-y-4">
                   <div className="flex items-start space-x-3">
-                    <div className="w-8 h-8 bg-orange-100 dark:bg-orange-900/30 rounded-full flex items-center justify-center flex-shrink-0">
+                    <div className="w-8 h-8 bg-orange-100 dark:bg-orange-900/30 rounded-full center-both flex-shrink-0">
                       <span className="text-orange-600 font-bold text-sm">
                         1
                       </span>
@@ -249,7 +249,7 @@ export default function CareersPage() {
                   </div>
 
                   <div className="flex items-start space-x-3">
-                    <div className="w-8 h-8 bg-orange-100 dark:bg-orange-900/30 rounded-full flex items-center justify-center flex-shrink-0">
+                    <div className="w-8 h-8 bg-orange-100 dark:bg-orange-900/30 rounded-full center-both flex-shrink-0">
                       <span className="text-orange-600 font-bold text-sm">
                         2
                       </span>
@@ -265,7 +265,7 @@ export default function CareersPage() {
                   </div>
 
                   <div className="flex items-start space-x-3">
-                    <div className="w-8 h-8 bg-orange-100 dark:bg-orange-900/30 rounded-full flex items-center justify-center flex-shrink-0">
+                    <div className="w-8 h-8 bg-orange-100 dark:bg-orange-900/30 rounded-full center-both flex-shrink-0">
                       <span className="text-orange-600 font-bold text-sm">
                         3
                       </span>
@@ -287,7 +287,7 @@ export default function CareersPage() {
               <div className="relative">
                 <motion.div
                   whileHover={{ scale: 1.05 }}
-                  className="center-both relative w-full h-96"
+                  className="flex items-center justify-center relative w-full h-96"
                 >
                   <Image
                     src="/placeholder-2.webp?height=400&width=500"

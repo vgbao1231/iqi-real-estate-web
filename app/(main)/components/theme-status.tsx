@@ -19,7 +19,7 @@ export function ThemeStatus() {
 
   return (
     <div
-      className="fixed bottom-4 right-4 z-50 cursor-pointer"
+      className="fixed bottom-4 right-4 z-40 cursor-pointer"
       onClick={() => setTheme(isDark ? 'light' : 'dark')}
     >
       <Badge

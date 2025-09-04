@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import { ReactQueryProvider } from '@/components/providers/react-query-provider';
 import React from 'react';
 import 'leaflet/dist/leaflet.css';
+import Providers from './providers';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -32,16 +32,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en">
       <head>
         <meta
           name="google-site-verification"
           content="uaG-e_NkOuXNQMqXLlZxz2-J7JsM3-1J_HbgdbAkzZU"
         />
         <link rel="icon" type="image/png" href="/logo-IQIVN.png" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap"
+          rel="stylesheet"
+        />
       </head>
       <body className={inter.className} suppressHydrationWarning>
-        <ReactQueryProvider>{children}</ReactQueryProvider>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

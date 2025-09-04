@@ -38,13 +38,21 @@ export default function LanguageSwitcher({ isDark = false, className = '' }) {
           className={cn(
             'hover:bg-orange-300/10 dark:hover:bg-orange-900/20 bg-transparent',
             isDark
-              ? 'text-white border-white/60'
+              ? 'text-white border-white/60 hover:text-white'
               : 'text-black dark:text-white border-black/30 dark:border-white/60'
           )}
         >
-          <Languages className="h-4 w-4" />
-          <span className="text-sm font-medium">
-            {languages.find((l) => l.code === language)?.label ?? language}
+          <Languages className="h-4 w-4 hidden md:block" />
+          <span className="text-sm font-medium center-both">
+            {/* Mobile: chỉ hiện icon */}
+            <span className="text-lg md:hidden leading-none mb-0.5">
+              {languages.find((l) => l.code === language)?.icon}
+            </span>
+
+            {/* Desktop: hiện label */}
+            <span className="hidden md:inline">
+              {languages.find((l) => l.code === language)?.label ?? language}
+            </span>
           </span>
           <ChevronDown className="h-3 w-3" />
         </Button>

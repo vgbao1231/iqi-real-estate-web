@@ -19,8 +19,9 @@ import { contact } from '@/lib/contact-data';
 export default function Footer() {
   const navLinks = [
     { href: '/about', label: 'Về chúng tôi' },
-    { href: '/products/vietnam', label: 'Bất động sản Việt Nam' },
-    { href: '/products/international', label: 'Bất động sản Quốc tế' },
+    { href: '/projects/residential', label: 'Bất động sản Việt Nam' },
+    { href: '/projects/international', label: 'Bất động sản Quốc tế' },
+    { href: '/projects/resort', label: 'Bất động sản Nghỉ dưỡng' },
     { href: '/consultation', label: 'Tư vấn miễn phí' },
     { href: '/careers', label: 'Tuyển dụng' },
     { href: '/contact', label: 'Liên hệ' },
@@ -81,14 +82,14 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="bg-accent p-4">
+    <footer className="bg-accent p-4 pb-0">
       <div className="mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-7 gap-8 py-4 md:py-12 max-w-7xl">
         {/* Company Info */}
         <FadeIn delay={0.1} className="lg:col-span-3">
           <div className="flex items-center mb-6">
             <motion.div
               whileHover={{ scale: 1.1, rotate: 5 }}
-              className="center-both relative w-48 h-24"
+              className="flex items-center justify-center relative w-48 h-24"
             >
               <Image
                 src="/logo-detail-light.png"
@@ -125,7 +126,7 @@ export default function Footer() {
                 whileHover={{ x: 5 }}
                 className="flex items-center group"
               >
-                <div className="w-10 h-10 bg-orange-400/20 rounded-lg flex items-center justify-center mr-4 group-hover:bg-orange-400/30 transition-colors">
+                <div className="w-10 h-10 bg-orange-400/20 rounded-lg center-both mr-4 group-hover:bg-orange-400/30 transition-colors">
                   <item.icon className="w-5 h-5 text-orange-400" />
                 </div>
                 <div>

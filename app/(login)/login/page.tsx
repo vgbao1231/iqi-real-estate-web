@@ -66,7 +66,7 @@ export default function AdminLoginPage() {
                 repeat: Number.POSITIVE_INFINITY,
                 ease: 'easeInOut',
               }}
-              className="absolute top-0 left-0 w-16 h-16 bg-yellow-300 rounded-2xl flex items-center justify-center shadow-lg"
+              className="absolute top-0 left-0 w-16 h-16 bg-yellow-300 rounded-2xl center-both shadow-lg"
             >
               <span className="text-2xl">📊</span>
             </motion.div>
@@ -82,7 +82,7 @@ export default function AdminLoginPage() {
                 ease: 'easeInOut',
                 delay: 1,
               }}
-              className="absolute top-4 right-0 w-14 h-14 bg-blue-400 rounded-xl flex items-center justify-center shadow-lg"
+              className="absolute top-4 right-0 w-14 h-14 bg-blue-400 rounded-xl center-both shadow-lg"
             >
               <span className="text-2xl">🏢</span>
             </motion.div>
@@ -98,7 +98,7 @@ export default function AdminLoginPage() {
                 ease: 'easeInOut',
                 delay: 2,
               }}
-              className="absolute bottom-0 left-4 w-12 h-12 bg-green-400 rounded-lg flex items-center justify-center shadow-lg"
+              className="absolute bottom-0 left-4 w-12 h-12 bg-green-400 rounded-lg center-both shadow-lg"
             >
               <span className="text-lg">🚀</span>
             </motion.div>
@@ -114,7 +114,7 @@ export default function AdminLoginPage() {
                   repeat: Number.POSITIVE_INFINITY,
                   ease: 'easeInOut',
                 }}
-                className="w-32 h-32 bg-gradient-to-br from-yellow-400 to-orange-400 rounded-full flex items-center justify-center shadow-2xl"
+                className="w-32 h-32 bg-gradient-to-br from-yellow-400 to-orange-400 rounded-full center-both shadow-2xl"
               >
                 <span className="text-6xl">🐯</span>
               </motion.div>
@@ -131,7 +131,7 @@ export default function AdminLoginPage() {
                 repeat: Number.POSITIVE_INFINITY,
                 ease: 'linear',
               }}
-              className="absolute bottom-0 right-8 w-12 h-12 bg-purple-400 rounded-full flex items-center justify-center shadow-lg"
+              className="absolute bottom-0 right-8 w-12 h-12 bg-purple-400 rounded-full center-both shadow-lg"
             >
               <span className="text-2xl">⭐</span>
             </motion.div>
@@ -145,7 +145,7 @@ export default function AdminLoginPage() {
         <div className="flex justify-between items-center p-6">
           <div className="lg:hidden">
             <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center">
+              <div className="w-8 h-8 bg-orange-500 rounded-lg center-both">
                 <span className="text-white font-bold text-sm">IQI</span>
               </div>
             </div>
@@ -157,7 +157,7 @@ export default function AdminLoginPage() {
         </div>
 
         {/* Main Content */}
-        <div className="flex-1 flex items-center justify-center px-6">
+        <div className="flex-1 center-both px-6">
           <div className="w-full max-w-lg">
             {/* Logo and Title */}
             <div className="text-center mb-8 center-both flex-col">
@@ -295,7 +295,7 @@ export default function AdminLoginPage() {
           <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
-            className="w-12 h-12 bg-orange-500 hover:bg-orange-600 text-white rounded-full shadow-lg flex items-center justify-center"
+            className="w-12 h-12 bg-orange-500 hover:bg-orange-600 text-white rounded-full shadow-lg center-both"
           >
             <MessageCircle className="w-6 h-6" />
           </motion.button>
@@ -306,7 +306,7 @@ export default function AdminLoginPage() {
           <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
-            className="w-12 h-12 bg-gray-600 hover:bg-gray-700 text-white rounded-full shadow-lg flex items-center justify-center"
+            className="w-12 h-12 bg-gray-600 hover:bg-gray-700 text-white rounded-full shadow-lg center-both"
           >
             <HelpCircle className="w-6 h-6" />
           </motion.button>

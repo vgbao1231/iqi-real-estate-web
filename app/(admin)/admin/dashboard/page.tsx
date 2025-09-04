@@ -30,7 +30,7 @@ export default function AdminDashboardPage() {
   // Mock data
   const stats = {
     totalStaff: 156,
-    totalProperties: 1247,
+    totalProjects: 1247,
     totalPartners: 48,
     totalNews: 89,
     monthlyRevenue: '2.4B',
@@ -44,7 +44,7 @@ export default function AdminDashboardPage() {
       action: 'Thêm dự án mới',
       item: 'Marina Bay Residences',
       time: '2 giờ trước',
-      type: 'property',
+      type: 'project',
       user: 'Nguyễn Văn A',
     },
     {
@@ -107,7 +107,7 @@ export default function AdminDashboardPage() {
     },
   ];
 
-  const recentProperties = [
+  const recentProjects = [
     {
       id: 1,
       name: 'Marina Bay Residences',
@@ -193,9 +193,7 @@ export default function AdminDashboardPage() {
                 <Building className="h-4 w-4 opacity-90" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">
-                  {stats.totalProperties}
-                </div>
+                <div className="text-2xl font-bold">{stats.totalProjects}</div>
                 <p className="text-xs opacity-90 flex items-center mt-1">
                   <ArrowUp className="w-3 h-3 mr-1" />
                   +8% so với tháng trước
@@ -253,7 +251,7 @@ export default function AdminDashboardPage() {
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <Link href="/admin/dashboard/properties/new">
+              <Link href="/admin/dashboard/projects/new">
                 <motion.div
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
@@ -336,8 +334,8 @@ export default function AdminDashboardPage() {
                       className="flex items-center space-x-4 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
                     >
                       <div
-                        className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                          activity.type === 'property'
+                        className={`w-10 h-10 rounded-full center-both ${
+                          activity.type === 'project'
                             ? 'bg-green-100 text-green-600'
                             : activity.type === 'news'
                               ? 'bg-blue-100 text-blue-600'
@@ -348,7 +346,7 @@ export default function AdminDashboardPage() {
                                   : 'bg-gray-100 text-gray-600'
                         }`}
                       >
-                        {activity.type === 'property' && (
+                        {activity.type === 'project' && (
                           <Building className="w-5 h-5" />
                         )}
                         {activity.type === 'news' && (
@@ -418,7 +416,7 @@ export default function AdminDashboardPage() {
                           </AvatarFallback>
                         </Avatar>
                         <Badge
-                          className={`absolute -top-1 -right-1 w-5 h-5 p-0 flex items-center justify-center text-xs ${
+                          className={`absolute -top-1 -right-1 w-5 h-5 p-0 center-both text-xs ${
                             index === 0
                               ? 'bg-yellow-500'
                               : index === 1
@@ -464,7 +462,7 @@ export default function AdminDashboardPage() {
         </div>
       </div>
 
-      {/* Recent Properties */}
+      {/* Recent Projects */}
       <FadeIn delay={0.5}>
         <Card>
           <CardHeader>
@@ -473,7 +471,7 @@ export default function AdminDashboardPage() {
                 <Building className="w-5 h-5 mr-2 text-green-600" />
                 Dự án mới nhất
               </CardTitle>
-              <Link href="/admin/dashboard/properties">
+              <Link href="/admin/dashboard/projects">
                 <Button variant="outline" size="sm">
                   Xem tất cả
                 </Button>
@@ -482,9 +480,9 @@ export default function AdminDashboardPage() {
           </CardHeader>
           <CardContent>
             <div className="grid md:grid-cols-3 gap-6">
-              {recentProperties.map((property, index) => (
+              {recentProjects.map((project, index) => (
                 <motion.div
-                  key={property.id}
+                  key={project.id}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
@@ -493,39 +491,37 @@ export default function AdminDashboardPage() {
                   <Card className="overflow-hidden">
                     <div className="relative">
                       <Image
-                        src={property.image || '/placeholder-2.webp'}
-                        alt={property.name}
+                        src={project.image || '/placeholder-2.webp'}
+                        alt={project.name}
                         width={80}
                         height={60}
                         className="w-full h-32 object-cover"
                       />
                       <Badge
                         className={`absolute top-2 right-2 ${
-                          property.status === 'active'
+                          project.status === 'active'
                             ? 'bg-green-600'
                             : 'bg-yellow-600'
                         }`}
                       >
-                        {property.status === 'active'
-                          ? 'Đang bán'
-                          : 'Chờ duyệt'}
+                        {project.status === 'active' ? 'Đang bán' : 'Chờ duyệt'}
                       </Badge>
                     </div>
                     <CardContent className="p-4">
                       <h3 className="font-semibold text-sm mb-1">
-                        {property.name}
+                        {project.name}
                       </h3>
                       <p className="text-xs text-gray-500 mb-3">
-                        {property.location}
+                        {project.location}
                       </p>
                       <div className="flex items-center justify-between text-xs">
                         <div className="flex items-center text-gray-500">
                           <Eye className="w-3 h-3 mr-1" />
-                          {property.views}
+                          {project.views}
                         </div>
                         <div className="flex items-center text-blue-600">
                           <MessageSquare className="w-3 h-3 mr-1" />
-                          {property.inquiries}
+                          {project.inquiries}
                         </div>
                       </div>
                     </CardContent>

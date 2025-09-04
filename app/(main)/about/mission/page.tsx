@@ -50,7 +50,7 @@ export default function AboutMissionPage() {
               <div className="relative">
                 <motion.div
                   whileHover={{ scale: 1.05 }}
-                  className="center-both relative w-full h-96"
+                  className="flex items-center justify-center relative w-full h-96"
                 >
                   <Image
                     src="/iqi-vietnam-office.jpg"
@@ -83,7 +83,7 @@ export default function AboutMissionPage() {
                     <motion.div
                       whileHover={{ rotate: 360 }}
                       transition={{ duration: 0.6 }}
-                      className="w-20 h-20 bg-orange-100 dark:bg-orange-900/30 rounded-full flex items-center justify-center mx-auto mb-4"
+                      className="w-20 h-20 bg-orange-100 dark:bg-orange-900/30 rounded-full center-both mx-auto mb-4"
                     >
                       <Target className="w-10 h-10 text-orange-600" />
                     </motion.div>
@@ -107,7 +107,7 @@ export default function AboutMissionPage() {
                     <motion.div
                       whileHover={{ rotate: 360 }}
                       transition={{ duration: 0.6 }}
-                      className="w-20 h-20 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mx-auto mb-4"
+                      className="w-20 h-20 bg-blue-100 dark:bg-blue-900/30 rounded-full center-both mx-auto mb-4"
                     >
                       <Zap className="w-10 h-10 text-blue-600" />
                     </motion.div>
@@ -130,7 +130,7 @@ export default function AboutMissionPage() {
                     <motion.div
                       whileHover={{ rotate: 360 }}
                       transition={{ duration: 0.6 }}
-                      className="w-20 h-20 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-4"
+                      className="w-20 h-20 bg-green-100 dark:bg-green-900/30 rounded-full center-both mx-auto mb-4"
                     >
                       <Shield className="w-10 h-10 text-green-600" />
                     </motion.div>

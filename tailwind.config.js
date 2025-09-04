@@ -75,7 +75,7 @@ const config = {
         '1/8': '12.5%',
       },
       textShadow: {
-        soft: '2px 2px 6px rgb(36 37 47 / 20%)',
+        soft: '2px 2px 4px rgb(36 37 47 / 10%)',
       },
       keyframes: {
         'accordion-down': {
@@ -90,6 +90,17 @@ const config = {
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
+      },
+      spacing: {
+        100: "25rem",   // 400px
+        104: "26rem",   // 416px
+        108: "27rem",   // 432px
+        112: "28rem",   // 448px
+        116: "29rem",   // 464px
+        120: "30rem",   // 480px
+        128: "32rem",   // 512px
+        160: "40rem",   // 640px
+        192: "48rem",   // 768px
       },
     },
   },

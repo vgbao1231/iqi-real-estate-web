@@ -61,8 +61,8 @@ export function FileUpload({
                   className="max-h-32 max-w-full rounded-md object-contain"
                 />
                 {clickToDelete && (
-                  <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all flex items-center justify-center rounded-md">
-                    <div className="opacity-0 group-hover:opacity-100 transition-opacity bg-red-500 text-white p-1 w-6 h-6 rounded-full text-xs font-medium flex items-center justify-center">
+                  <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all center-both rounded-md">
+                    <div className="opacity-0 group-hover:opacity-100 transition-opacity bg-red-500 text-white p-1 w-6 h-6 rounded-full text-xs font-medium center-both">
                       X
                     </div>
                   </div>

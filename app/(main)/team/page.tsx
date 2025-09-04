@@ -145,9 +145,9 @@ export default function TeamPage() {
 
   const departments = [
     {
-      name: 'Sales (WE Group)',
+      name: 'Sales (WE)',
       head: 'La Kim Mỹ Duyên',
-      members: 1100,
+      members: 1337,
       description:
         'Quản lý hàng nghìn agents, phát triển kinh doanh dự án trên toàn quốc',
       icon: TrendingUp,
@@ -409,7 +409,7 @@ export default function TeamPage() {
                   <Card className="text-center h-full">
                     <CardHeader>
                       <div
-                        className={`w-16 h-16 ${dept.bg} rounded-full flex items-center justify-center mx-auto mb-4`}
+                        className={`w-16 h-16 ${dept.bg} rounded-full center-both mx-auto mb-4`}
                       >
                         <dept.icon className={`w-8 h-8 ${dept.color}`} />
                       </div>

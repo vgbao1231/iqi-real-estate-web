@@ -46,7 +46,7 @@ export default function AboutJuwaiPage() {
               <div className="relative">
                 <motion.div
                   whileHover={{ scale: 1.05 }}
-                  className="center-both relative w-full h-96"
+                  className="flex items-center justify-center relative w-full h-96"
                 >
                   <Image
                     src="/juwai.jpg"
@@ -83,7 +83,7 @@ export default function AboutJuwaiPage() {
                     <motion.div
                       whileHover={{ rotate: 360 }}
                       transition={{ duration: 0.6 }}
-                      className="w-20 h-20 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-4"
+                      className="w-20 h-20 bg-green-100 dark:bg-green-900/30 rounded-full center-both mx-auto mb-4"
                     >
                       <Lightbulb className="w-10 h-10 text-green-600" />
                     </motion.div>
@@ -108,7 +108,7 @@ export default function AboutJuwaiPage() {
                     <motion.div
                       whileHover={{ rotate: 360 }}
                       transition={{ duration: 0.6 }}
-                      className="w-20 h-20 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center mx-auto mb-4"
+                      className="w-20 h-20 bg-purple-100 dark:bg-purple-900/30 rounded-full center-both mx-auto mb-4"
                     >
                       <Network className="w-10 h-10 text-purple-600" />
                     </motion.div>
@@ -133,7 +133,7 @@ export default function AboutJuwaiPage() {
                     <motion.div
                       whileHover={{ rotate: 360 }}
                       transition={{ duration: 0.6 }}
-                      className="w-20 h-20 bg-orange-100 dark:bg-orange-900/30 rounded-full flex items-center justify-center mx-auto mb-4"
+                      className="w-20 h-20 bg-orange-100 dark:bg-orange-900/30 rounded-full center-both mx-auto mb-4"
                     >
                       <TrendingUp className="w-10 h-10 text-orange-600" />
                     </motion.div>

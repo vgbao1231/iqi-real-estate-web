@@ -32,9 +32,9 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: any) {
     },
     {
       name: 'Dự án',
-      href: '/admin/properties',
+      href: '/admin/projects',
       icon: Building,
-      current: pathname.startsWith('/admin/properties'),
+      current: pathname.startsWith('/admin/projects'),
     },
     {
       name: 'Đối tác',
@@ -80,7 +80,7 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: any) {
         {/* Logo */}
         <div className="flex items-center justify-between h-16 px-6 border-b border-border">
           <Link href="/admin/dashboard" className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-to-r from-orange-500 to-orange-600 rounded-lg flex items-center justify-center">
+            <div className="w-8 h-8 bg-gradient-to-r from-orange-500 to-orange-600 rounded-lg center-both">
               <Building className="w-4 h-4 text-white" />
             </div>
             <span className="text-xl font-bold text-gray-900 dark:text-white">

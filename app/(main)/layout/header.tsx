@@ -4,16 +4,16 @@ import {
   Phone,
   ChevronDown,
   Building2,
-  Clock4,
   Globe,
   Landmark,
   Newspaper,
   TreePalm,
-  TrendingUp,
   Users,
   Menu,
   Smile,
   X,
+  ShoppingBag,
+  Cpu,
 } from 'lucide-react';
 import Link from 'next/link';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -24,6 +24,7 @@ import { cn } from '@/lib/utils';
 import { Button } from '../../../components/ui/button';
 import { contact } from '@/lib/contact-data';
 import LanguageSwitcher from '../../../components/common/language-switcher';
+import { Cart } from '@/components/common/cart';
 
 export default function Header({
   heroId = 'hero',
@@ -48,9 +49,10 @@ export default function Header({
           href: '/about/mission',
         },
         {
-          label: 'Juwai IQI và IQI Atlas',
-          description: 'Hành trình hình thành và phát triển của IQI',
-          icon: <Clock4 className="w-5 h-5 text-yellow-500" />,
+          label: 'Nền tảng công nghệ',
+          description:
+            'Khám phá các Atlas Function cốt lõi mà IQI đang triển khai',
+          icon: <Cpu className="w-5 h-5 text-yellow-500" />,
           href: '/about/juwai',
         },
         {
@@ -80,19 +82,25 @@ export default function Header({
           label: 'BDS Quốc tế',
           description: 'Bất động sản cao cấp tại các quốc gia phát triển',
           icon: <Globe className="w-5 h-5 text-blue-500" />,
-          href: '/products/international',
+          href: '/projects/international',
         },
         {
-          label: 'BDS Việt Nam',
-          description: 'Căn hộ, nhà phố, đất nền tại TP.HCM và Hà Nội',
+          label: 'BDS Nhà Ở',
+          description: 'Căn hộ, nhà phố, đất nền tại các thành phố lớn',
           icon: <Building2 className="w-5 h-5 text-orange-500" />,
-          href: '/products/vietnam',
+          href: '/projects/residential',
         },
         {
           label: 'BDS Nghỉ dưỡng',
           description: 'Resort, biệt thự biển, condotel cao cấp',
           icon: <TreePalm className="w-5 h-5 text-green-500" />,
-          href: '/products/resort',
+          href: '/projects/resort',
+        },
+        {
+          label: 'Merchandise',
+          description: 'Sản phẩm, phụ kiện và quà tặng chính hãng từ công ty',
+          icon: <ShoppingBag className="w-5 h-5 text-purple-500" />,
+          href: '/merchandise',
         },
       ],
     },
@@ -100,22 +108,18 @@ export default function Header({
       label: 'Tin tức',
       items: [
         {
-          label: 'Thị trường',
-          description: 'Cập nhật tin tức thị trường bất động sản',
+          label: 'Vĩ mô',
+          description:
+            'Phân tích xu hướng và tin tức thị trường bất động sản ở tầm vĩ mô',
           icon: <Newspaper className="w-5 h-5 text-red-500" />,
-          href: '/market',
+          href: '/macro',
         },
         {
-          label: 'Tin tức BDS',
-          description: 'Tổng hợp thông tin mới nhất về bất động sản',
+          label: 'Vi mô',
+          description:
+            'Thông tin chi tiết, cập nhật nhanh về từng dự án và khu vực bất động sản',
           icon: <Building2 className="w-5 h-5 text-blue-600" />,
-          href: '/news',
-        },
-        {
-          label: 'Xu hướng',
-          description: 'Những xu hướng bất động sản nổi bật hiện nay',
-          icon: <TrendingUp className="w-5 h-5 text-teal-500" />,
-          href: '/trends',
+          href: '/micro',
         },
       ],
     },
@@ -124,7 +128,7 @@ export default function Header({
       href: '/partners',
     },
     {
-      label: 'Cơ hội nghề nghiệp',
+      label: 'Cơ hội',
       href: '/careers',
     },
   ];
@@ -151,11 +155,13 @@ export default function Header({
 
   // Header scroll behavior
   useEffect(() => {
-    if (!enableHidden) return;
-
     const handleScroll = () => {
-      const currentScrollY = window.scrollY;
+      // Set header bgcolor for hero section
+      const heroHeight = document.getElementById(heroId)?.offsetHeight || 0;
+      setIsDark(window.scrollY < heroHeight);
 
+      const currentScrollY = window.scrollY;
+      if (!enableHidden) return;
       if (currentScrollY < lastScrollY || currentScrollY < 100) {
         setIsHeaderVisible(true);
       } else if (currentScrollY > lastScrollY && currentScrollY > 100) {
@@ -164,10 +170,6 @@ export default function Header({
       }
 
       setLastScrollY(currentScrollY);
-
-      // Set header bgcolor for hero section
-      const heroHeight = document.getElementById(heroId)?.offsetHeight || 0;
-      setIsDark(window.scrollY < heroHeight);
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
@@ -187,7 +189,7 @@ export default function Header({
         className
       )}
     >
-      <div className="container mx-auto px-8">
+      <div className="container mx-auto px-2 md:px-8">
         <div className="flex h-16 items-center justify-between">
           {/* Hamburger menu for mobile */}
           <div
@@ -211,14 +213,15 @@ export default function Header({
           {/* Logo */}
           <Link
             href="/"
-            className="center-both hover:scale-105 relative w-[140px] h-[64px]"
+            className="center-both hover:scale-105 transition-transform"
           >
             {/* Logo for dark mode */}
             <Image
               src="/logo-detail-light.png"
               alt="logo"
-              fill
-              className="object-contain hidden dark:block"
+              width={100}
+              height={100}
+              className="w-auto h-[64px] object-contain hidden dark:block"
             />
             <Image
               src={
@@ -227,8 +230,9 @@ export default function Header({
                   : '/logo-detail-dark.png'
               }
               alt="logo"
-              fill
-              className="object-contain dark:hidden"
+              width={100}
+              height={100}
+              className="w-auto h-[64px] object-contain dark:hidden"
             />
           </Link>
 
@@ -263,7 +267,7 @@ export default function Header({
                           className="group/item block transition-all duration-300 hover:bg-card/50"
                         >
                           <div className="px-4 py-3">
-                            <div className="flex items-start gap-2">
+                            <div className="flex items-start gap-2 mb-0.5">
                               {item.icon}
                               <div className="relative">
                                 <p className="font-medium text-sm group-hover/item:text-orange-500">
@@ -315,7 +319,7 @@ export default function Header({
                 <Input
                   placeholder={`Hotline: ${contact.hotlineDisplay}`}
                   className={cn(
-                    'pl-10 w-52 bg-transparent',
+                    'pl-10 w-52 bg-transparent placeholder:text-foreground',
                     enableToggleDark && isDark
                       ? 'placeholder:text-white text-white border-white/60'
                       : 'dark:placeholder:text-white border-black/30 dark:border-white/60'
@@ -331,6 +335,7 @@ export default function Header({
               <LanguageSwitcher isDark={isDark} />
             </div>
             <ThemeToggle isDark={enableToggleDark && isDark} />
+            <Cart isDark={enableToggleDark && isDark} />
           </div>
         </div>
       </div>

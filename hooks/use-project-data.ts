@@ -57,7 +57,7 @@ const defaultProject = {
         type: 'text',
       },
       {
-        id: 'property_type',
+        id: 'project_type',
         key: 'Loại hình',
         value: '',
         type: 'select',
@@ -175,11 +175,7 @@ const defaultProject = {
   amenity: {
     title: '',
     description: '',
-    amenityImages: [
-      '/amenities-1.jpg',
-      '/amenities-2.jpg',
-      '/amenities-3.jpg',
-    ] as (string | File)[], // Updated type
+    amenityImages: [] as (string | File)[], // Updated type
   },
   contact: {
     layoutId: 'layout-1', // Add this field
@@ -208,7 +204,6 @@ const defaultProject = {
     },
     isFeatured: true,
     isExclusive: false,
-    enableLiveSales: true,
     visibleOnWeb: true,
     breakImages: Array(6).fill(null) as (string | File | null)[],
   },

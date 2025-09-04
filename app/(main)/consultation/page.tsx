@@ -38,7 +38,7 @@ export default function ConsultationPage() {
     name: '',
     phone: '',
     email: '',
-    propertyType: '',
+    projectType: '',
     budget: '',
     location: '',
     timeline: '',
@@ -170,7 +170,7 @@ export default function ConsultationPage() {
                   <Card className="h-full text-center">
                     <CardHeader className="flex-1">
                       <div
-                        className={`w-16 h-16 ${service.bg} rounded-full flex items-center justify-center mx-auto mb-4`}
+                        className={`w-16 h-16 ${service.bg} rounded-full center-both mx-auto mb-4`}
                       >
                         <service.icon className={`w-8 h-8 ${service.color}`} />
                       </div>
@@ -257,9 +257,9 @@ export default function ConsultationPage() {
                         Loại BDS quan tâm
                       </label>
                       <Select
-                        value={formData.propertyType}
+                        value={formData.projectType}
                         onValueChange={(value) =>
-                          setFormData({ ...formData, propertyType: value })
+                          setFormData({ ...formData, projectType: value })
                         }
                       >
                         <SelectTrigger>
@@ -491,7 +491,7 @@ export default function ConsultationPage() {
                           key={index}
                           className="flex items-center space-x-3"
                         >
-                          <div className="w-6 h-6 bg-orange-100 dark:bg-orange-900/30 rounded-full flex items-center justify-center">
+                          <div className="w-6 h-6 bg-orange-100 dark:bg-orange-900/30 rounded-full center-both">
                             <span className="text-xs font-bold text-orange-600">
                               {index + 1}
                             </span>

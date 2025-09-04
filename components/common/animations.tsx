@@ -8,6 +8,8 @@ interface FadeInProps {
   delay?: number;
   direction?: 'up' | 'down' | 'left' | 'right' | 'none';
   className?: string;
+  y?: number;
+  x?: number;
 }
 
 export function FadeIn({
@@ -15,12 +17,14 @@ export function FadeIn({
   delay = 0,
   direction = 'up',
   className = '',
+  y = 40,
+  x = 40,
 }: FadeInProps) {
   const directions = {
-    up: { y: 40, x: 0 },
-    down: { y: -40, x: 0 },
-    left: { y: 0, x: 40 },
-    right: { y: 0, x: -40 },
+    up: { y: y, x: 0 },
+    down: { y: -y, x: 0 },
+    left: { y: 0, x: x },
+    right: { y: 0, x: -x },
     none: { y: 0, x: 0 },
   };
 
@@ -66,18 +70,20 @@ export function SlideIn({
 
 interface ScaleInProps extends ComponentProps<typeof motion.div> {
   children: ReactNode;
+  scale?: number;
   delay?: number;
 }
 
 export function ScaleIn({
   children,
+  scale = 0.8,
   delay = 0,
   className = '',
   ...rest
 }: ScaleInProps) {
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.8 }}
+      initial={{ opacity: 0, scale }}
       whileInView={{ opacity: 1, scale: 1 }}
       viewport={{ once: true }}
       transition={{ duration: 0.6, delay }}
@@ -133,5 +139,41 @@ export function CountUp({
     >
       <motion.span>{rounded}</motion.span>
     </motion.span>
+  );
+}
+
+interface DoorOpenProps {
+  children: ReactNode;
+  delay?: number;
+  className?: string;
+  duration?: number;
+}
+
+export function DoorOpen({
+  children,
+  delay = 0,
+  className = '',
+  duration = 1.2,
+}: DoorOpenProps) {
+  return (
+    <motion.div
+      className={className}
+      initial={{
+        clipPath: 'inset(0 50% 0 50%)',
+        opacity: 0,
+      }}
+      whileInView={{
+        clipPath: 'inset(0 0% 0 0%)',
+        opacity: 1,
+      }}
+      viewport={{ once: true }}
+      transition={{
+        duration,
+        delay,
+        ease: 'easeInOut',
+      }}
+    >
+      {children}
+    </motion.div>
   );
 }

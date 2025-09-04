@@ -176,7 +176,7 @@ export function AddPartnerDialog({
             <Label htmlFor="partnership" className="text-right">
               Năm hợp tác
             </Label>
-            <Input id="partnership" className="col-span-3" placeholder="2024" />
+            <Input id="partnership" className="col-span-3" placeholder="2025" />
           </div>
         </div>
         <div className="flex justify-end space-x-2">

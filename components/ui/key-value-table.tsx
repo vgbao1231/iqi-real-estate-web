@@ -38,8 +38,8 @@ interface KeyValuePair {
   value: string | number | [number | string, number | string]; // Updated to support array for range
   type?: 'text' | 'number' | 'select' | 'range'; // Added "range" type
   options?: string[];
-  hidden?: boolean; // Added hidden property
-  isNew?: boolean; // Added isNew property to distinguish new items
+  hidden?: boolean; // Added hidden project
+  isNew?: boolean; // Added isNew project to distinguish new items
 }
 
 interface KeyValueTableProps {

@@ -43,6 +43,7 @@ export function TraditionalLayoutPreview({
         className="object-cover object-left"
         priority
       />
+      <div className="absolute inset-0 z-10 backdrop-blur-sm" />
 
       {/* Wrapper */}
       <div className="relative z-20 flex flex-col md:flex-row items-center justify-center gap-8 md:px-12 md:justify-around">
@@ -118,6 +119,7 @@ export function ModernLayoutPreview({
         className="object-cover object-left"
         priority
       />
+      <div className="absolute inset-0 z-10 backdrop-blur-sm" />
 
       {/* Content */}
       <div className="relative z-20 flex flex-col md:flex-row md:items-center w-full text-white gap-6 md:gap-12">
@@ -197,8 +199,9 @@ export function MinimalLayoutPreview({
         className="object-cover object-left"
         priority
       />
+      <div className="absolute inset-0 z-10 backdrop-blur-sm" />
       <div className="relative z-20 text-center space-y-4 sm:space-y-6 w-full max-w-xs sm:max-w-md">
-        <div className="center-both">
+        <div className="flex items-center justify-center">
           <Image
             src={
               logoImage
@@ -283,6 +286,7 @@ export function FullLayoutPreview({
         className="object-cover object-left"
         priority
       />
+      <div className="absolute inset-0 z-10 backdrop-blur-sm" />
 
       {/* Content */}
       {/* 2. Thay đổi hướng flex và thêm gap */}

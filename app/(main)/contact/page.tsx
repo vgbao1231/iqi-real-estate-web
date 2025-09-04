@@ -7,7 +7,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { FadeIn, ScaleIn } from '@/components/common/animations';
 import {
-  ArrowLeft,
   Phone,
   Mail,
   Clock,
@@ -22,11 +21,11 @@ import {
   Video,
   Youtube,
 } from 'lucide-react';
-import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import OfficeCarousel from './components/OfficeCarousel';
 import { contact } from '@/lib/contact-data';
+import IntroSection from '@/app/(main)/components/intro-section';
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -243,31 +242,10 @@ export default function ContactPage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <section className="py-12 bg-gradient-to-br from-orange-400/90 via-orange-400 to-orange-500 dark:from-orange-400 dark:to-orange-600">
-        <div className="container mx-auto px-4 md:px-12">
-          <FadeIn>
-            <div className="flex items-center gap-2 mb-4">
-              <Link
-                href="/"
-                className="inline-flex items-center text-white hover:text-orange-100"
-              >
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Quay lại trang chủ
-              </Link>
-              <Badge className="bg-orange-200 text-orange-700 dark:bg-orange-900/30 dark:text-orange-300">
-                LIÊN HỆ
-              </Badge>
-            </div>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4 text-white">
-              Liên hệ với IQI Vietnam
-            </h1>
-            <p className="text-xl max-w-3xl text-white/80">
-              Chúng tôi luôn sẵn sàng hỗ trợ bạn 24/7. Liên hệ ngay để được tư
-              vấn miễn phí từ đội ngũ chuyên gia
-            </p>
-          </FadeIn>
-        </div>
-      </section>
+      <IntroSection
+        title="Liên hệ với IQI Vietnam"
+        description="Chúng tôi luôn sẵn sàng hỗ trợ bạn 24/7. Liên hệ ngay để được tư vấn miễn phí từ đội ngũ chuyên gia"
+      />
 
       {/* Quick Contact Methods */}
       <section className="py-16">
@@ -288,7 +266,7 @@ export default function ContactPage() {
                   <Card className="text-center h-full">
                     <CardHeader>
                       <div
-                        className={`w-16 h-16 ${method.bg} rounded-full flex items-center justify-center mx-auto mb-4`}
+                        className={`w-16 h-16 ${method.bg} rounded-full center-both mx-auto mb-4`}
                       >
                         <method.icon className={`w-8 h-8 ${method.color}`} />
                       </div>

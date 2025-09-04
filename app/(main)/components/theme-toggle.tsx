@@ -24,7 +24,7 @@ export function ThemeToggle({ isDark }: { isDark: boolean }) {
           className={cn(
             'hover:bg-orange-300/10 dark:hover:bg-orange-900/20 bg-transparent',
             isDark
-              ? 'text-white border-white/60'
+              ? 'text-white border-white/60 hover:text-white'
               : 'text-black dark:text-white border-black/30 dark:border-white/60'
           )}
         >
