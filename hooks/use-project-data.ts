@@ -26,7 +26,10 @@ type Project = {
 
 export function useProjectData(id: string | null) {
   const [project, setProject] = useState<Project | null>(null);
-  const { data: apiProject } = useGetAdminProjectByIdQuery(id ?? skipToken);
+  const shouldSkip = id === null || id === 'new';
+  const { data: apiProject } = useGetAdminProjectByIdQuery(
+    shouldSkip ? skipToken : id
+  );
 
   useEffect(() => {
     if (apiProject) {
