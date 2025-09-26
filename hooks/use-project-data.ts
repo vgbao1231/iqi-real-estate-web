@@ -1,7 +1,7 @@
 'use client';
 
 import { useGetAdminProjectByIdQuery } from '@/features/project/projectApi';
-import { compressImage, setDeep } from '@/lib/utils';
+import { setDeep } from '@/lib/utils';
 import { skipToken } from '@reduxjs/toolkit/query';
 import { useCallback, useEffect, useState } from 'react';
 
@@ -140,9 +140,10 @@ export function useProjectData(id: string | null) {
       if (files.length > 0) {
         const results = await Promise.all(
           files.map(async ({ key, file }) => {
-            const compressedFile = await compressImage(file);
+            // const compressedFile = await compressImage(file);
             const res = await uploadFile({
-              file: compressedFile,
+              // file: compressedFile,
+              file,
               folder: 'projects',
             }).unwrap();
             return { key, url: res.url, publicId: res.publicId };
