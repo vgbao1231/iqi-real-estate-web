@@ -13,8 +13,6 @@ export function usePagination<T>({
 }: UsePaginationProps<T>) {
   const [currentPage, setCurrentPage] = useState(1);
 
-  console.log('tét');
-
   const totalItems = data.length;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 

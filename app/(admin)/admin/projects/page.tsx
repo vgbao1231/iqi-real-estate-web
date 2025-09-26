@@ -3,18 +3,7 @@
 import { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
-import {
-  Building2,
-  MapPin,
-  Package,
-  Wifi,
-  Phone,
-  Settings,
-  FileText,
-  ArrowLeft,
-  LayoutGrid,
-  Milestone,
-} from 'lucide-react';
+
 import { useProjectData } from '@/hooks/use-project-data';
 import { ProjectsList } from './components/ProjectsList';
 import { AmenityTab } from './tabs/amenity-tab';
@@ -27,7 +16,18 @@ import { ProductionTab } from './tabs/production-tab';
 import { SiteplanTab } from '@/app/(admin)/admin/projects/tabs/siteplan-tab';
 import { TimelineTab } from '@/app/(admin)/admin/projects/tabs/timeline-tab';
 import { Arsenal } from 'next/font/google';
-
+import {
+  Building2,
+  MapPin,
+  Package,
+  Wifi,
+  Phone,
+  Settings,
+  FileText,
+  ArrowLeft,
+  LayoutGrid,
+  Milestone,
+} from 'lucide-react';
 const arsenal = Arsenal({
   subsets: ['latin'],
   weight: ['400', '700'], // Chỉ định độ đậm
