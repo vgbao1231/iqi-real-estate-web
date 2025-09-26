@@ -1,8 +1,8 @@
+'use client';
 import { useRef, useMemo, useEffect } from 'react';
-import ReactQuill, { Quill } from 'react-quill-new';
-import QuillTableBetter from 'quill-table-better';
 import 'react-quill-new/dist/quill.snow.css';
 import 'quill-table-better/dist/quill-table-better.css';
+import dynamic from 'next/dynamic';
 
 const FONT_SIZES = [
   '12px',
@@ -15,25 +15,58 @@ const FONT_SIZES = [
   '40px',
   '44px',
 ];
-const Size: any = Quill.import('attributors/style/size');
-// Thêm các giá trị pixel bạn muốn vào whitelist
-Size.whitelist = FONT_SIZES;
-// Đăng ký lại Size Attributor đã được tùy chỉnh
-Quill.register(Size, true);
-
 const LINE_HEIGHTS = ['1', '1.2', '1.5', '2', '2.5', '3'];
-const Parchment = Quill.import('parchment');
-const LineHeightStyle = new Parchment.StyleAttributor(
-  'lineheight', // Tên thuộc tính sẽ dùng trong toolbar
-  'line-height', // Tên thuộc tính CSS thực tế
+
+const ReactQuill = dynamic(
+  async () => {
+    // 1. IMPORT CÁC THƯ VIỆN CHỈ DÙNG TRÊN CLIENT
+    const [
+      { default: RQ, Quill }, // Lấy default export (RQ) và named export (Quill)
+      { default: QuillTableBetter },
+    ] = await Promise.all([
+      import('react-quill-new'),
+      import('quill-table-better'),
+    ]);
+
+    // 2. ĐĂNG KÝ CÁC MODULE VÀ ATTRIBUTOR CỦA QUILL TRONG ĐÂY
+    // Logic này chỉ chạy 1 lần trên client khi component được tải
+    if (Quill) {
+      // Đăng ký Font Size Attributor
+      const Size: any = Quill.import('attributors/style/size');
+      Size.whitelist = FONT_SIZES;
+      Quill.register(Size, true);
+
+      // Đăng ký Line Height Attributor
+      const Parchment = Quill.import('parchment');
+      const LineHeightStyle = new Parchment.StyleAttributor(
+        'lineheight',
+        'line-height',
+        {
+          scope: Parchment.Scope.BLOCK,
+          whitelist: LINE_HEIGHTS,
+        }
+      );
+      Quill.register(LineHeightStyle, true);
+
+      // Đăng ký Module Bảng (Table Better)
+      Quill.register({ 'modules/table-better': QuillTableBetter }, true);
+    }
+
+    // 3. WRAPPER COMPONENT TRẢ VỀ
+    const ReactQuillWrapper = ({ forwardedRef, ...props }: any) => (
+      <RQ ref={forwardedRef} {...props} />
+    );
+
+    ReactQuillWrapper.displayName = 'ReactQuill';
+
+    return ReactQuillWrapper;
+  },
   {
-    scope: Parchment.Scope.BLOCK, // Áp dụng cho cả khối văn bản (paragraph)
-    whitelist: LINE_HEIGHTS, // Chỉ cho phép các giá trị trong danh sách này
+    // BẮT BUỘC ssr: false vì Quill chỉ chạy trên Browser
+    ssr: false,
+    loading: () => <p>Đang tải trình soạn thảo...</p>, // Thêm loading indicator
   }
 );
-Quill.register(LineHeightStyle, true);
-
-Quill.register({ 'modules/table-better': QuillTableBetter }, true);
 
 interface RichTextEditorProps {
   value?: string;
@@ -81,13 +114,18 @@ export const RichTextEditor = ({
         toolbarTable: true,
       },
       keyboard: {
-        bindings: QuillTableBetter.keyboardBindings,
+        bindings:
+          typeof window !== 'undefined' && quillRef.current?.getEditor()
+            ? quillRef.current.getEditor().getModule('keyboard').bindings
+            : {},
       },
     }),
     []
   );
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+
     const styleId = 'quill-font-size-styles';
     // Chỉ tạo thẻ style nếu nó chưa tồn tại
     if (document.getElementById(styleId)) {
@@ -112,6 +150,8 @@ export const RichTextEditor = ({
   }, []);
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+
     const styleId = 'quill-line-height-styles';
     if (document.getElementById(styleId)) {
       return;
@@ -153,26 +193,46 @@ export const RichTextEditor = ({
   }, []);
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+
     const timer = setTimeout(() => {
       if (!quillRef.current) return;
       const html = initialValue.current;
       const editor = quillRef.current.getEditor();
-      const delta = editor.clipboard.convert({ html });
-      const [range] = editor.selection.getRange() || [];
-      editor.setContents(null, Quill.sources.SILENT);
-      editor.updateContents(delta, Quill.sources.SILENT);
-      editor.setSelection(
-        delta.length() - (range?.length || 0),
-        Quill.sources.SILENT
-      );
-    }, 100); // hoặc 50-100ms nếu cần chắc ăn hơn
+
+      // VÌ BẠN ĐÃ XÓA IMPORT STATIC { Quill }
+      // BẠN PHẢI TẢI LẠI ĐỐI TƯỢNG Quill ĐỂ CÓ THỂ DÙNG Quill.sources.SILENT
+
+      // Nếu không có HTML ban đầu, chỉ cần return để tránh lỗi
+      if (!html) return;
+
+      // Dùng Dynamic Import cho Quill để truy cập Quill.sources
+      import('react-quill-new')
+        .then(({ Quill }) => {
+          if (!Quill) return; // Kiểm tra an toàn
+
+          const delta = editor.clipboard.convert({ html });
+          const [range] = editor.selection.getRange() || [];
+
+          // SỬ DỤNG Quill.sources Ở ĐÂY
+          editor.setContents(null, Quill.sources.SILENT);
+          editor.updateContents(delta, Quill.sources.SILENT);
+          editor.setSelection(
+            delta.length() - (range?.length || 0),
+            Quill.sources.SILENT
+          );
+        })
+        .catch((err) => {
+          console.error('Lỗi khi tải Quill để setContents:', err);
+        });
+    }, 100);
 
     return () => clearTimeout(timer);
   }, [quillRef]);
 
   return (
     <ReactQuill
-      ref={quillRef}
+      forwardedRef={quillRef}
       theme={'snow'}
       modules={modules}
       onChange={onChange}
