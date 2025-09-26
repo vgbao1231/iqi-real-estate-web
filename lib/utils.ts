@@ -78,3 +78,17 @@ export function diffPayload(newData: any, oldData: any) {
     Object.entries(newData).filter(([key, value]) => value !== oldData?.[key])
   );
 }
+
+export function setDeep(obj: any, path: string, value: any) {
+  const parts = path.replace(/\]/g, '').split(/\.|\[/);
+  let current = obj;
+  parts.forEach((part, idx) => {
+    if (idx === parts.length - 1) {
+      current[part] = value;
+    } else {
+      if (!(part in current))
+        current[part] = /^\d+$/.test(parts[idx + 1]) ? [] : {};
+      current = current[part];
+    }
+  });
+}

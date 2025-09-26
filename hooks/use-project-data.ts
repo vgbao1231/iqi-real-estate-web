@@ -1,7 +1,7 @@
 'use client';
 
 import { useGetAdminProjectByIdQuery } from '@/features/project/projectApi';
-import { compressImage } from '@/lib/utils';
+import { compressImage, setDeep } from '@/lib/utils';
 import { skipToken } from '@reduxjs/toolkit/query';
 import { useCallback, useEffect, useState } from 'react';
 
@@ -168,21 +168,6 @@ export function useProjectData(id: string | null) {
       console.error('❌ Lỗi update tab:', err);
     }
   };
-
-  // Helper setDeep để set giá trị vào object từ path dạng "a.b[0].c"
-  function setDeep(obj: any, path: string, value: any) {
-    const parts = path.replace(/\]/g, '').split(/\.|\[/);
-    let current = obj;
-    parts.forEach((part, idx) => {
-      if (idx === parts.length - 1) {
-        current[part] = value;
-      } else {
-        if (!(part in current))
-          current[part] = /^\d+$/.test(parts[idx + 1]) ? [] : {};
-        current = current[part];
-      }
-    });
-  }
 
   return {
     project,
