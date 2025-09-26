@@ -14,9 +14,9 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { useToast } from '@/hooks/use-toast';
 import { Camera, Save, Eye, EyeOff, Loader2, Check, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { toast } from 'react-toastify';
 
 interface FormData {
   name: string;
@@ -44,7 +44,6 @@ interface PasswordValidation {
 }
 
 export default function ProfileSettings() {
-  const { toast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [isLoading, setIsLoading] = useState(false);
@@ -183,21 +182,13 @@ export default function ProfileSettings() {
 
     // Validate file type
     if (!file.type.startsWith('image/')) {
-      toast({
-        title: 'Lỗi',
-        description: 'Vui lòng chọn file ảnh (JPG, PNG, GIF)',
-        variant: 'destructive',
-      });
+      toast.error('Vui lòng chọn file ảnh (JPG, PNG, GIF)');
       return;
     }
 
     // Validate file size (2MB)
     if (file.size > 2 * 1024 * 1024) {
-      toast({
-        title: 'Lỗi',
-        description: 'Kích thước file không được vượt quá 2MB',
-        variant: 'destructive',
-      });
+      toast.error('Kích thước file không được vượt quá 2MB');
       return;
     }
 
@@ -212,16 +203,9 @@ export default function ProfileSettings() {
 
       setAvatarUrl(previewUrl);
 
-      toast({
-        title: 'Thành công',
-        description: 'Cập nhật ảnh đại diện thành công',
-      });
+      toast.success('Cập nhật ảnh đại diện thành công');
     } catch (error) {
-      toast({
-        title: 'Lỗi',
-        description: 'Không thể cập nhật ảnh đại diện',
-        variant: 'destructive',
-      });
+      toast.error('Không thể cập nhật ảnh đại diện');
     } finally {
       setIsUploadingAvatar(false);
     }
@@ -229,18 +213,14 @@ export default function ProfileSettings() {
 
   const handleSave = async () => {
     if (!validateForm()) {
-      toast({
-        title: 'Lỗi',
-        description: 'Vui lòng kiểm tra lại thông tin',
-        variant: 'destructive',
-      });
+      toast.error('Vui lòng kiểm tra lại thông tin');
       return;
     }
 
     setIsLoading(true);
 
     try {
-      // Clear password fields after successful save
+      // Logic dọn dẹp sau khi giả định API thành công
       setFormData((prev) => ({
         ...prev,
         currentPassword: '',
@@ -256,16 +236,9 @@ export default function ProfileSettings() {
         hasNumber: false,
       });
 
-      toast({
-        title: 'Thành công',
-        description: 'Cập nhật thông tin thành công',
-      });
+      toast.success('Cập nhật thông tin thành công');
     } catch (error) {
-      toast({
-        title: 'Lỗi',
-        description: 'Không thể cập nhật thông tin',
-        variant: 'destructive',
-      });
+      toast.error('Không thể cập nhật thông tin');
     } finally {
       setIsLoading(false);
     }
