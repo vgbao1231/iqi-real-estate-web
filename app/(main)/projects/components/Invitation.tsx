@@ -1,13 +1,13 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import html2canvas from 'html2canvas-pro';
 import { useParams } from 'next/navigation';
-import { projects } from '@/lib/project-data';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import Image from 'next/image';
 import Header from '@/app/(main)/layout/header';
+import { useGetPublicProjectTabByIdQuery } from '@/features/project/projectApi';
 
 // Add global type for html2canvas
 declare global {
@@ -22,41 +22,65 @@ declare global {
 export default function Invitation() {
   const [exportedImage, setExportedImage] = useState<null | string>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const previewRef = useRef(null);
-  const params = useParams();
-  const project = projects.find((p) => p.id === Number(params.id));
-  const { other: { invitation = {} } = {} } = project || {};
-  const { invitationImage, fontSize, position }: any = invitation;
-  const [name, setName] = useState('');
+  const previewRef = useRef<HTMLDivElement>(null);
 
-  // Function to export the div as a PNG image
+  const params = useParams();
+  const { data: other = {} } = useGetPublicProjectTabByIdQuery({
+    id: params.id as string,
+    tab: 'other',
+  });
+
+  const { invitation = {} } = other as any;
+  const invitationImage = invitation?.invitationImage ?? null;
+
+  // State lưu dữ liệu form
+  const [formData, setFormData] = useState<Record<string, any>>({
+    name: 'Vo Gia Bao',
+    title: 'Lap Trinh Vien',
+    phone: '0911095800',
+    image: null,
+  });
+  console.log(formData);
+
+  // Memo fields để tránh re-calc nhiều lần
+  const fields = useMemo(() => invitation?.fields ?? [], [invitation]);
+
+  // Init state khi lần đầu có fields
+  // useEffect(() => {
+  //   if (fields.length > 0 && Object.keys(formData).length === 0) {
+  //     const init: Record<string, any> = {};
+  //     fields.forEach((f: any) => {
+  //       init[f.id] = ''; // local state thôi
+  //     });
+  //     setFormData(init);
+  //   }
+  // }, [fields, formData]);
+
+  // Export ra ảnh
   const handleExport = async () => {
-    if (!previewRef.current || !html2canvas) {
-      console.error('Preview element or html2canvas is not available.');
-      return;
-    }
+    if (!previewRef.current || !html2canvas) return;
 
     setIsLoading(true);
-
     try {
-      await document.fonts.ready; // Wait for custom fonts to be loaded
-
+      await document.fonts.ready;
       const canvas = await html2canvas(previewRef.current, {
         useCORS: true,
         allowTaint: true,
         backgroundColor: null,
-        scale: 2, // Render at 2x resolution to fix positioning and improve quality
+        scale: 2,
       });
-      const dataUrl = canvas.toDataURL('image/png');
-      setExportedImage(dataUrl);
-    } catch (error) {
-      console.error('Error exporting canvas:', error);
+      setExportedImage(canvas.toDataURL('image/png'));
+    } catch (err) {
+      console.error('Error exporting canvas:', err);
     } finally {
       setIsLoading(false);
     }
   };
 
-  // Render the final exported image with a download button
+  // Nếu chưa có invitation thì không render gì
+  if (!invitation || fields.length === 0) return <></>;
+
+  // Nếu đã export thì hiển thị ảnh kết quả
   if (exportedImage) {
     return (
       <main className="min-h-screen relative overflow-hidden center-both">
@@ -67,8 +91,8 @@ export default function Invitation() {
           <Image
             src={exportedImage}
             alt="Invitation"
-            width={1200} // đặt width lớn để Next xử lý responsive
-            height={800} // đặt height tạm, sẽ scale theo ảnh thật
+            width={1200}
+            height={800}
             className="w-full h-auto object-contain max-h-screen"
           />
         </div>
@@ -111,85 +135,144 @@ export default function Invitation() {
           </h2>
 
           {/* Form */}
-          <form className="space-y-4 w-full">
-            <Input
-              type="text"
-              placeholder="Họ tên"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="w-full px-4 md:text-lg bg-black/30 border border-white/20 text-white focus:border-white/50 focus:bg-black/40"
-            />
-
-            <Button
-              onClick={handleExport}
-              disabled={!name || isLoading}
-              className="w-full py-3 bg-orange-500 hover:bg-orange-600 disabled:hover:bg-gray-400 text-white font-medium text-lg tracking-wide transition-colors disabled:bg-gray-400 disabled:opacity-100"
+          <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6 shadow-2xl">
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleExport();
+              }}
+              className="space-y-4"
             >
-              {isLoading ? (
-                <>
-                  <svg
-                    className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    ></circle>
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    ></path>
-                  </svg>
-                  Đang xử lý...
-                </>
-              ) : (
-                'Tạo thiệp mời'
-              )}
-            </Button>
-          </form>
+              {fields.map((field: any) => {
+                if (field.type === 'text') {
+                  return (
+                    <div key={field.id}>
+                      <Input
+                        type="text"
+                        placeholder={`Nhập ${field.label.toLowerCase()}`}
+                        value={formData[field.id] || ''}
+                        onChange={(e) => {
+                          const newValue = e.target.value;
+                          setFormData((prev) => ({
+                            ...prev,
+                            [field.id]: newValue,
+                          }));
+                        }}
+                        className="w-full h-11 px-4 text-sm bg-white/20 backdrop-blur-sm border border-white/30 text-white placeholder:text-white/60 focus:border-orange-400 focus:bg-white/30 focus:ring-2 focus:ring-orange-400/20 rounded-lg transition-all duration-200"
+                      />
+                    </div>
+                  );
+                }
+
+                if (field.type === 'image') {
+                  return (
+                    <div key={field.id}>
+                      <div className="bg-white/15 backdrop-blur-sm border border-white/30 rounded-lg p-2 hover:bg-white/20 transition-all duration-200 text-center">
+                        <Input
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file) {
+                              setFormData((prev) => ({
+                                ...prev,
+                                [field.id]: file,
+                              }));
+                            }
+                          }}
+                          className="text-white text-sm file:mr-3 file:py-2 file:px-4 p-0 h-auto file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-orange-500 file:text-white hover:file:bg-orange-600 file:cursor-pointer cursor-pointer bg-transparent border-0 w-full text-center"
+                        />
+                      </div>
+                    </div>
+                  );
+                }
+
+                return null;
+              })}
+
+              <Button
+                type="submit"
+                className="w-full h-12 text-sm font-semibold bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 border-0 mt-6 rounded-lg"
+              >
+                Tạo thiệp mới
+              </Button>
+            </form>
+          </div>
         </div>
       </div>
 
       {/* Preview ẩn để sau khi submit thì tạo canva thiệp mời */}
       <div className="absolute inset-0 -z-20 center-both opacity-0">
-        <div
-          ref={previewRef}
-          className="relative w-fit mx-auto overflow-hidden"
-        >
+        <div ref={previewRef} className="relative w-fit overflow-hidden">
           {invitationImage && (
             <Image
-              src={invitationImage}
+              src={invitationImage?.url}
               alt="Invitation background"
               width={1200} // đặt width lớn để Next xử lý responsive
               height={800} // đặt height tạm, sẽ scale theo ảnh thật
-              className="w-full h-auto object-contain max-h-screen"
+              className="w-auto h-[80vh]"
             />
           )}
-          {name && (
-            <div
-              style={{
-                position: 'absolute',
-                left: `${position.x}%`,
-                top: `${position.y}%`,
-                transform: 'translate(-50%, -50%)',
+
+          {/* Render text theo từng field */}
+          {invitation.fields.map((field: any) => {
+            const value = formData[field.id];
+            if (!value) return null;
+
+            const baseStyle: React.CSSProperties = {
+              position: 'absolute',
+              left: `${field.position.x}%`,
+              top: `${field.position.y}%`,
+              transform: 'translate(-50%, -50%)',
+              ...(field.id === 'name' && {
                 fontFamily: "'Great Vibes', cursive",
-                fontSize: `${fontSize}px`,
-                color: '#2c2c2c',
-                textShadow: '1px 1px 3px rgba(255,255,255,0.7)',
-                pointerEvents: 'none',
-                whiteSpace: 'nowrap',
-              }}
-            >
-              {name}
-            </div>
-          )}
+              }),
+              fontSize: `${field.size}px`,
+              color: '#2c2c2c',
+              textShadow: '1px 1px 3px rgba(255,255,255,0.7)',
+              pointerEvents: 'none',
+              whiteSpace: 'nowrap',
+            };
+
+            if (field.type === 'text') {
+              return (
+                <div key={field.id} style={baseStyle}>
+                  {value}
+                </div>
+              );
+            }
+
+            if (field.type === 'image') {
+              // Tạo previewUrl ngay tại đây
+              let previewUrl = '';
+              if (typeof value === 'string') {
+                previewUrl = value;
+              } else if (value instanceof File) {
+                previewUrl = URL.createObjectURL(value);
+              }
+
+              if (!previewUrl) return null;
+
+              return (
+                <div key={field.id} style={baseStyle}>
+                  <Image
+                    src={previewUrl}
+                    alt={field.label || field.id}
+                    width={0}
+                    height={0}
+                    style={{
+                      maxWidth: `${field.size}px`,
+                      maxHeight: `${field.size}px`,
+                      width: 'auto',
+                      height: 'auto',
+                    }}
+                  />
+                </div>
+              );
+            }
+
+            return null;
+          })}
         </div>
       </div>
     </main>

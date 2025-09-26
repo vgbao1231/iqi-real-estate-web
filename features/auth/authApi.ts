@@ -1,4 +1,3 @@
-// features/auth/authApi.ts
 import { baseApi } from '../api/baseApi';
 
 interface LoginPayload {
@@ -6,10 +5,15 @@ interface LoginPayload {
   password: string;
 }
 
-interface User {
-  id: string;
+export interface User {
+  id: number;
   name: string;
   email: string;
+  phone: string;
+  role: 'admin' | 'user';
+  avatarUrl: string;
+  accessToken: string;
+  refreshToken: string;
 }
 
 export const authApi = baseApi.injectEndpoints({
@@ -19,18 +23,25 @@ export const authApi = baseApi.injectEndpoints({
         url: '/auth/login',
         method: 'POST',
         body,
+        credentials: 'include',
       }),
       invalidatesTags: ['Auth'],
     }),
-    logout: builder.mutation<void, void>({
+
+    logout: builder.mutation<{ message: string }, void>({
       query: () => ({
         url: '/auth/logout',
         method: 'POST',
+        credentials: 'include',
       }),
       invalidatesTags: ['Auth'],
     }),
+
     me: builder.query<User, void>({
-      query: () => '/auth/me',
+      query: () => ({
+        url: '/auth/me',
+        credentials: 'include',
+      }),
       providesTags: ['Auth'],
     }),
   }),

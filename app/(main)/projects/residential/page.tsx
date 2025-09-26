@@ -26,7 +26,7 @@ import {
 } from '@/lib/project-data';
 import { useGetProvincesQuery } from '@/features/location/provincesApi';
 import { ProjectCard } from '@/app/(main)/projects/components/ProjectCard';
-import { useGetProjectsQuery } from '@/features/project/projectApi';
+import { useGetPublicProjectsQuery } from '@/features/project/projectApi';
 import { ProjectIntroSection } from '@/app/(main)/projects/components/ProjectIntroSection';
 
 const bannerData = [
@@ -65,7 +65,7 @@ const stats = [
 ];
 
 export default function ResidentialProjectsPage() {
-  const { data: projects = defaultProjects } = useGetProjectsQuery();
+  const { data: projects = defaultProjects } = useGetPublicProjectsQuery();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCity, setSelectedCity] = useState('all');
   const [selectedDistrict, setSelectedDistrict] = useState('all');

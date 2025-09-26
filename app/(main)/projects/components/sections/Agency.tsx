@@ -19,7 +19,7 @@ const Agency = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
           {/* Thay đổi chiều cao của ảnh cho responsive */}
           <div className="relative w-full md:w-1/2 h-[45vh] md:h-[85vh] center-both">
             <Image
-              src={data.agencyImage}
+              src={data.agencyImage?.url || 'placeholder.svg'}
               alt="Eco Retreat Experience Background"
               fill
               className="object-contain"

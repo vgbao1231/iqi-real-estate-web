@@ -34,9 +34,9 @@ export function TraditionalLayoutPreview({
       {/* Background image full screen */}
       <Image
         src={
-          contactBackground instanceof File || contactBackground instanceof Blob
+          contactBackground instanceof File
             ? URL.createObjectURL(contactBackground)
-            : contactBackground || '/placeholder.svg'
+            : contactBackground?.url || '/placeholder.svg'
         }
         alt="Logo"
         fill
@@ -53,9 +53,9 @@ export function TraditionalLayoutPreview({
             <Image
               src={
                 logoImage
-                  ? typeof logoImage === 'string'
-                    ? logoImage
-                    : URL.createObjectURL(logoImage)
+                  ? logoImage instanceof File
+                    ? URL.createObjectURL(logoImage)
+                    : logoImage.url
                   : '/placeholder.svg'
               }
               alt="logo"
@@ -109,9 +109,9 @@ export function ModernLayoutPreview({
       <Image
         src={
           contactBackground
-            ? typeof contactBackground === 'string'
-              ? contactBackground
-              : URL.createObjectURL(contactBackground)
+            ? contactBackground instanceof File
+              ? URL.createObjectURL(contactBackground)
+              : contactBackground.url
             : '/placeholder.svg'
         }
         alt="Logo"
@@ -128,9 +128,9 @@ export function ModernLayoutPreview({
           <Image
             src={
               logoImage
-                ? typeof logoImage === 'string'
-                  ? logoImage
-                  : URL.createObjectURL(logoImage)
+                ? logoImage instanceof File
+                  ? URL.createObjectURL(logoImage)
+                  : logoImage.url
                 : '/placeholder.svg'
             }
             alt="logo"
@@ -189,9 +189,9 @@ export function MinimalLayoutPreview({
       <Image
         src={
           contactBackground
-            ? typeof contactBackground === 'string'
-              ? contactBackground
-              : URL.createObjectURL(contactBackground)
+            ? contactBackground instanceof File
+              ? URL.createObjectURL(contactBackground)
+              : contactBackground.url
             : '/placeholder.svg'
         }
         alt="Background"
@@ -205,9 +205,9 @@ export function MinimalLayoutPreview({
           <Image
             src={
               logoImage
-                ? typeof logoImage === 'string'
-                  ? logoImage
-                  : URL.createObjectURL(logoImage)
+                ? logoImage instanceof File
+                  ? URL.createObjectURL(logoImage)
+                  : logoImage.url
                 : '/placeholder.svg'
             }
             alt="logo"
@@ -276,9 +276,9 @@ export function FullLayoutPreview({
       <Image
         src={
           contactBackground
-            ? typeof contactBackground === 'string'
-              ? contactBackground
-              : URL.createObjectURL(contactBackground)
+            ? contactBackground instanceof File
+              ? URL.createObjectURL(contactBackground)
+              : contactBackground.url
             : '/placeholder.svg'
         }
         alt="Logo"
@@ -298,9 +298,9 @@ export function FullLayoutPreview({
           <Image
             src={
               logoImage
-                ? typeof logoImage === 'string'
-                  ? logoImage
-                  : URL.createObjectURL(logoImage)
+                ? logoImage instanceof File
+                  ? URL.createObjectURL(logoImage)
+                  : logoImage.url
                 : '/placeholder.svg'
             }
             alt="logo"

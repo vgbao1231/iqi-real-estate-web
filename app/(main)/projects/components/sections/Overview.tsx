@@ -5,6 +5,12 @@ import { forwardRef } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { FadeIn, SlideIn } from '@/components/common/animations';
 import { formatVnCurrencyShort } from '@/lib/utils';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 
 const Overview = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
   const inforColumns = data.basicInfo
@@ -50,7 +56,7 @@ const Overview = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
       <div className="relative min-h-[80vh] center-both">
         {/* Background image full screen */}
         <Image
-          src={data.overviewBackground}
+          src={data.overviewBackground?.url || '/placeholder.svg'}
           alt="Eco Retreat Overview Background"
           fill
           className="object-cover object-right"
@@ -66,7 +72,7 @@ const Overview = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
             >
               <div className="relative w-full aspect-square">
                 <Image
-                  src={item.image}
+                  src={item.image?.url || '/placeholder.svg'}
                   alt="Eco Retreat Overview Background"
                   className="object-contain"
                   fill
@@ -92,7 +98,7 @@ const Overview = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
             className="relative w-full md:w-2/5 h-auto md:h-[85vh] center-both"
           >
             <Image
-              src={data.experienceImage}
+              src={data.experienceImage?.url || '/placeholder.svg'}
               alt="Eco Retreat Experience Background"
               width={800}
               height={600}
@@ -128,9 +134,21 @@ const Overview = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
                             <span className="text-muted-foreground font-medium text-nowrap">
                               {label}
                             </span>
-                            <span className="font-semibold text-right text-ellipsis overflow-hidden whitespace-nowrap">
-                              {value}
-                            </span>
+                            <TooltipProvider delayDuration={300}>
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <span className="font-semibold text-right truncate whitespace-nowrap max-w-[60%] cursor-pointer">
+                                    {value}
+                                  </span>
+                                </TooltipTrigger>
+                                <TooltipContent
+                                  side="top"
+                                  className="max-w-xs break-words"
+                                >
+                                  {value}
+                                </TooltipContent>
+                              </Tooltip>
+                            </TooltipProvider>
                           </SlideIn>
                         );
                       })}

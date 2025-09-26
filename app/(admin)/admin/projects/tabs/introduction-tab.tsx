@@ -17,12 +17,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Upload, X, Play, Save } from 'lucide-react';
+import { Upload, X, Play, Save, ChevronDown } from 'lucide-react';
 import { RichTextEditor } from '@/components/ui/rich-text-editor';
 import { FileUpload } from '@/components/ui/file-upload';
 import { MultiFileUpload } from '@/components/ui/multi-file-upload';
 import { Button } from '@/components/ui/button';
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
 import {
   Carousel,
@@ -31,16 +31,21 @@ import {
   CarouselItem,
 } from '@/components/ui/carousel';
 import { cn, convertToEmbedUrl } from '@/lib/utils';
-import { motion } from 'framer-motion';
-import { useCreateProjectMutation } from '@/features/project/projectApi';
+import { useUpdateProjectTabMutation } from '@/features/project/projectApi';
+import { useUploadImageMutation } from '@/features/upload/uploadApi';
 
 interface IntroductionTabProps {
   introduction: any;
   updateProject: (section: string, field: string, value: any) => void;
+  handleSave: (updateApi: any, uploadApi: any, tab: string, data: any) => void;
 }
 
 // Cover Section Preview Component
-function CoverSectionPreview({ introduction }: { introduction: any }) {
+const CoverSectionPreview = memo(function CoverSectionPreview({
+  introduction,
+}: {
+  introduction: any;
+}) {
   const {
     coverImage,
     logoImages,
@@ -49,33 +54,52 @@ function CoverSectionPreview({ introduction }: { introduction: any }) {
     coverTitle,
   } = introduction;
 
-  const navigationItems = [
-    'GIỚI THIỆU',
-    'TỔNG QUAN',
-    'VỊ TRÍ',
-    'SẢN PHẨM',
-    'TIỆN ÍCH',
-    'CHÍNH SÁCH',
-    'TIẾN ĐỘ',
-    'ĐẠI LÝ',
-  ];
+  const sections = useMemo(
+    () => [
+      { id: 'introduction', label: 'Giới thiệu' },
+      { id: 'overview', label: 'Tổng quan' },
+      { id: 'amenity', label: 'Tiện ích' },
+      { id: 'location', label: 'Vị trí' },
+      { id: 'siteplan', label: 'Mặt bằng' },
+      { id: 'production', label: 'Sản phẩm' },
+      { id: 'policy', label: 'Chính sách' },
+      { id: 'timeline', label: 'Tiến độ' },
+      { id: 'agency', label: 'Đại lý' },
+      {
+        id: 'toolbar',
+        label: 'Công cụ',
+        dropdown: [
+          {
+            href: '/360-view',
+            label: '360 view',
+          },
+          {
+            href: '/invitation',
+            label: 'Thiệp mời',
+          },
+        ],
+      },
+    ],
+    []
+  );
 
   return (
-    <div className="container mx-auto relative h-[60vh] w-full max-w-7xl center-both">
+    <div className="container mx-auto relative min-h-[60vh] w-full max-w-7xl center-both">
       {/* Header */}
       <header className="absolute top-0 z-10 w-full bg-background py-2 shadow-md">
         <div className="mx-auto overflow-x-auto px-4 scrollbar-hide">
           <div className="flex items-center justify-between">
+            {/* Logo */}
             <div
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className="w-24 h-14 relative center-both ml-32 cursor-pointer"
+              className="relative h-14 w-24 cursor-pointer"
             >
               <Image
                 src={
                   logoImages[headerLogoIndex]
-                    ? typeof logoImages[headerLogoIndex] === 'string'
-                      ? logoImages[headerLogoIndex]
-                      : URL.createObjectURL(logoImages[headerLogoIndex])
+                    ? logoImages[headerLogoIndex] instanceof File
+                      ? URL.createObjectURL(logoImages[headerLogoIndex])
+                      : logoImages[headerLogoIndex].url
                     : '/placeholder.svg'
                 }
                 alt="Eco Retreat Logo"
@@ -85,16 +109,39 @@ function CoverSectionPreview({ introduction }: { introduction: any }) {
               />
             </div>
 
-            <nav className="flex justify-end mr-24">
-              {navigationItems.map((item, idx) => (
-                <Button
-                  key={idx}
-                  variant="ghost"
-                  className="text-foreground text-sm font-bold hover:bg-transparent uppercase p-2"
-                >
-                  {item}
-                </Button>
-              ))}
+            <nav className="hidden items-center gap-2 md:flex">
+              {sections.map(
+                (item) =>
+                  item.label && (
+                    <div className="relative group" key={item.id}>
+                      <Button
+                        variant="ghost"
+                        className="text-xs font-bold uppercase p-1 group/menu gap-1"
+                      >
+                        {item.label}
+                        {item.dropdown && (
+                          <ChevronDown className="w-2 h-2 transition-all duration-300 group-hover/menu:rotate-180" />
+                        )}
+                      </Button>
+                      {item.dropdown && (
+                        <div className="absolute top-full left-0 w-fit bg-background border rounded-sm shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity duration-300 text-foreground">
+                          <div className="py-2">
+                            {item.dropdown.map((subnav: any) => (
+                              <div
+                                key={subnav.href}
+                                className="group/item block py-2 px-4"
+                              >
+                                <p className="font-bold text-nowrap uppercase group-hover/item:text-orange-500">
+                                  {subnav.label}
+                                </p>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )
+              )}
             </nav>
           </div>
         </div>
@@ -103,9 +150,9 @@ function CoverSectionPreview({ introduction }: { introduction: any }) {
       <Image
         src={
           coverImage
-            ? typeof coverImage === 'string'
-              ? coverImage
-              : URL.createObjectURL(coverImage)
+            ? coverImage instanceof File
+              ? URL.createObjectURL(coverImage)
+              : coverImage.url
             : '/placeholder.svg'
         }
         alt="Eco Retreat Cover Background"
@@ -117,13 +164,13 @@ function CoverSectionPreview({ introduction }: { introduction: any }) {
       <div className="bg-gradient-to-b from-transparent via-black/20 to-transparent absolute inset-0 z-10"></div>
       <div className="relative z-20 center-both flex-col gap-2 p-8 text-center text-white">
         {/* Logo */}
-        <div className="w-full min-w-24 h-32 relative center-both">
+        <div className="w-full min-w-32 h-32 relative center-both">
           <Image
             src={
               logoImages[coverLogoIndex]
-                ? typeof logoImages[coverLogoIndex] === 'string'
-                  ? logoImages[coverLogoIndex]
-                  : URL.createObjectURL(logoImages[coverLogoIndex])
+                ? logoImages[coverLogoIndex] instanceof File
+                  ? URL.createObjectURL(logoImages[coverLogoIndex])
+                  : logoImages[coverLogoIndex].url
                 : '/placeholder.svg'
             }
             alt="Logo"
@@ -134,17 +181,21 @@ function CoverSectionPreview({ introduction }: { introduction: any }) {
         </div>
 
         <div className="relative z-10 flex flex-col items-center justify-center text-center text-white px-4 max-w-4xl mx-auto">
-          <div className="text-3xl drop-shadow-lg md:text-5xl text-nowrap py-4 font-bold bg-gradient-to-r !from-white !via-orange-200 !to-white bg-clip-text text-transparent">
+          <div className="text-4xl drop-shadow-lg text-nowrap py-2 font-bold bg-gradient-to-r !from-white !via-orange-200 !to-white bg-clip-text text-transparent">
             {coverTitle}
           </div>
         </div>
       </div>
     </div>
   );
-}
+});
 
 // Introduction Section Preview Component
-function IntroductionSectionPreview({ introduction }: { introduction: any }) {
+const IntroductionSectionPreview = memo(function IntroductionSectionPreview({
+  introduction,
+}: {
+  introduction: any;
+}) {
   const {
     introductionBackground,
     introductionImage,
@@ -153,14 +204,14 @@ function IntroductionSectionPreview({ introduction }: { introduction: any }) {
   } = introduction;
 
   return (
-    <div className="container mx-auto relative h-[60vh] w-full max-w-7xl center-both">
+    <div className="container mx-auto relative min-h-[60vh] w-full max-w-7xl center-both">
       {/* Background image full screen */}
       <Image
         src={
           introductionBackground
-            ? typeof introductionBackground === 'string'
-              ? introductionBackground
-              : URL.createObjectURL(introductionBackground)
+            ? introductionBackground instanceof File
+              ? URL.createObjectURL(introductionBackground)
+              : introductionBackground.url
             : '/placeholder.svg'
         }
         alt="Logo"
@@ -188,9 +239,9 @@ function IntroductionSectionPreview({ introduction }: { introduction: any }) {
         <Image
           src={
             introductionImage
-              ? typeof introductionImage === 'string'
-                ? introductionImage
-                : URL.createObjectURL(introductionImage)
+              ? introductionImage instanceof File
+                ? URL.createObjectURL(introductionImage)
+                : introductionImage.url
               : '/placeholder.svg'
           }
           alt="Logo"
@@ -202,11 +253,16 @@ function IntroductionSectionPreview({ introduction }: { introduction: any }) {
       </div>
     </div>
   );
-}
+});
 
 // Launch Section Preview Component (formerly Hero Section)
-function LaunchSectionPreview({ introduction }: { introduction: any }) {
-  const { launchTitle, launchDescription, launchImages } = introduction;
+const LaunchSectionPreview = memo(function LaunchSectionPreview({
+  introduction,
+}: {
+  introduction: any;
+}) {
+  const { launchTitle, launchDescription, launchImages, launchBackground } =
+    introduction;
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [carouselApi, setCarouselApi] = useState<CarouselApi>();
 
@@ -229,8 +285,25 @@ function LaunchSectionPreview({ introduction }: { introduction: any }) {
   }, [carouselApi]);
 
   return (
-    <div className="container mx-auto relative h-[60vh] w-full max-w-7xl center-both">
-      <div className="relative z-20 h-full w-full center-both flex-col md:flex-row max-w-7xl py-8 px-12 gap-6">
+    <div className="container mx-auto relative min-h-[60vh] w-full max-w-7xl center-both">
+      {/* Background image */}
+      <div className="absolute inset-0 z-0">
+        <Image
+          src={
+            launchBackground
+              ? launchBackground instanceof File
+                ? URL.createObjectURL(launchBackground)
+                : launchBackground.url
+              : '/placeholder.svg'
+          }
+          alt="Eco Retreat Background"
+          fill
+          className="object-cover object-center"
+          priority
+        />
+      </div>
+      <div className="absolute -inset-1 z-10 backdrop-blur-md bg-white/80 dark:bg-transparent dark:backdrop-brightness-[40%]" />
+      <div className="relative z-20 h-full w-full center-both flex-col md:flex-row max-w-7xl py-8 px-12 gap-12">
         {/* Left content */}
         <div className="relative md:w-1/2 w-full h-[50vh] center-both">
           {launchImages.length > 0 ? (
@@ -242,25 +315,20 @@ function LaunchSectionPreview({ introduction }: { introduction: any }) {
               <CarouselContent>
                 {launchImages.map((img: any, idx: number) => (
                   <CarouselItem key={idx} className="pl-0">
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: idx * 0.08 + 0.4 }}
-                      className="relative h-[50vh] w-full overflow-hidden"
-                    >
+                    <div className="relative h-[50vh] w-full overflow-hidden">
                       <Image
                         src={
                           img
-                            ? typeof img === 'string'
-                              ? img
-                              : URL.createObjectURL(img)
+                            ? img instanceof File
+                              ? URL.createObjectURL(img)
+                              : img.url
                             : '/placeholder.svg'
                         }
                         alt={`Ảnh ${idx + 1}`}
                         fill
                         className="object-cover"
                       />
-                    </motion.div>
+                    </div>
                   </CarouselItem>
                 ))}
               </CarouselContent>
@@ -291,17 +359,14 @@ function LaunchSectionPreview({ introduction }: { introduction: any }) {
         {/* Right content */}
         <div className="md:w-1/2 space-y-6">
           <div className="space-y-4 text-sm leading-relaxed">
-            <div className="text-center space-y-1">
-              {/* Tên sản phẩm */}
-              <div
-                className="font-bold italic"
-                dangerouslySetInnerHTML={{ __html: launchTitle }}
-              />
-            </div>
-
+            {/* Tên sản phẩm */}
+            <div
+              className="text-2xl font-bold italic md:text-3xl text-shadow-soft"
+              dangerouslySetInnerHTML={{ __html: launchTitle }}
+            />
             {/* Danh sách mô tả chi tiết */}
             <div
-              className="text-lg ml-4 text-center"
+              className="text-base md:text-lg"
               dangerouslySetInnerHTML={{ __html: launchDescription }}
             />
           </div>
@@ -309,10 +374,14 @@ function LaunchSectionPreview({ introduction }: { introduction: any }) {
       </div>
     </div>
   );
-}
+});
 
 // Video Section Preview Component
-function VideoSectionPreview({ introduction }: { introduction: any }) {
+const VideoSectionPreview = memo(function VideoSectionPreview({
+  introduction,
+}: {
+  introduction: any;
+}) {
   const isYouTube =
     introduction.introductionVideo &&
     introduction.introductionVideo.includes('youtube');
@@ -320,7 +389,7 @@ function VideoSectionPreview({ introduction }: { introduction: any }) {
 
   return (
     <div className=" bg-gray-900 rounded-lg overflow-hidden">
-      <div className="w-full h-[60vh] aspect-video center-both">
+      <div className="w-full min-h-[60vh] aspect-video center-both">
         {videoSrc ? (
           isYouTube ? (
             <iframe
@@ -332,9 +401,9 @@ function VideoSectionPreview({ introduction }: { introduction: any }) {
             <video controls className="w-full h-full object-cover">
               <source
                 src={
-                  typeof videoSrc === 'string'
-                    ? videoSrc
-                    : URL.createObjectURL(videoSrc)
+                  videoSrc instanceof File
+                    ? URL.createObjectURL(videoSrc)
+                    : videoSrc.url
                 }
                 type="video/mp4"
               />
@@ -350,12 +419,18 @@ function VideoSectionPreview({ introduction }: { introduction: any }) {
       </div>
     </div>
   );
-}
+});
 
-export function IntroductionTab({
+export const IntroductionTab = memo(function IntroductionTab({
   introduction,
   updateProject,
+  handleSave,
 }: IntroductionTabProps) {
+  console.log(introduction);
+
+  const [updateProjectTab, { isLoading }] = useUpdateProjectTabMutation();
+  const [uploadImage, { isLoading: isUploading }] = useUploadImageMutation();
+
   const handleLogoUpload = () => {
     const input = document.createElement('input');
     input.type = 'file';
@@ -371,21 +446,6 @@ export function IntroductionTab({
     input.click();
   };
 
-  const [createProject] = useCreateProjectMutation();
-  const handleSubmit = async () => {
-    console.log(introduction);
-
-    // try {
-    //   console.log(formData);
-
-    //   await createProject(formData).unwrap();
-    //   alert('Thêm dự án thành công!');
-    // } catch (error) {
-    //   alert('Thêm dự án thất bại!');
-    //   console.error('Lỗi khi tạo dự án:', error);
-    // }
-  };
-
   return (
     <div className="space-y-8">
       {/* Section 1: Cover Section with Logo Management */}
@@ -398,7 +458,7 @@ export function IntroductionTab({
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Live Preview */}
-          <div className="bg-gray-50 p-4 rounded-lg">
+          <div className="bg-gray-50 rounded-lg">
             <Label className="text-sm font-medium text-gray-700 mb-3 block">
               Xem trước:
             </Label>
@@ -407,111 +467,11 @@ export function IntroductionTab({
 
           <Separator />
 
-          {/* Logo Management */}
-          <div className="space-y-4">
-            <Label>Logo (Không giới hạn số lượng)</Label>
-
-            {introduction.logoImages.length === 0 ? (
-              <div
-                className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-gray-400 transition-colors cursor-pointer"
-                onClick={handleLogoUpload}
-              >
-                <Upload className="h-8 w-8 text-gray-400 mx-auto mb-2" />
-                <p className="text-gray-500 text-sm mb-2">
-                  Chưa có logo nào. Nhấn vào đây để thêm logo.
-                </p>
-                <p className="text-xs text-gray-400">
-                  Hỗ trợ chọn nhiều ảnh cùng lúc
-                </p>
-              </div>
-            ) : (
-              <div className="space-y-4">
-                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-                  {introduction.logoImages.map((logo: any, index: number) => {
-                    const logoSrc =
-                      typeof logo === 'string'
-                        ? logo || '/placeholder.svg'
-                        : URL.createObjectURL(logo);
-                    const logoName =
-                      typeof logo === 'string'
-                        ? logo.split('/').pop()
-                        : logo.name;
-
-                    return (
-                      <div
-                        key={index}
-                        className="relative group border rounded-lg overflow-hidden bg-white"
-                      >
-                        <img
-                          src={logoSrc}
-                          alt={`Logo ${index + 1}`}
-                          className="w-full h-20 object-contain p-2"
-                        />
-                        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all center-both">
-                          <Button
-                            variant="destructive"
-                            size="sm"
-                            onClick={() => {
-                              const newLogos = introduction.logoImages.filter(
-                                (_: any, i: number) => i !== index
-                              );
-                              updateProject(
-                                'introduction',
-                                'logoImages',
-                                newLogos
-                              );
-                              // Reset logo indices if they're out of bounds
-                              if (
-                                introduction.headerLogoIndex >= newLogos.length
-                              ) {
-                                updateProject(
-                                  'introduction',
-                                  'headerLogoIndex',
-                                  Math.max(0, newLogos.length - 1)
-                                );
-                              }
-                              if (
-                                introduction.centerLogoIndex >= newLogos.length
-                              ) {
-                                updateProject(
-                                  'introduction',
-                                  'centerLogoIndex',
-                                  Math.max(0, newLogos.length - 1)
-                                );
-                              }
-                            }}
-                            className="opacity-0 group-hover:opacity-100 transition-opacity h-6 w-6 p-0"
-                          >
-                            <X className="h-3 w-3" />
-                          </Button>
-                        </div>
-                        <div className="p-2 bg-gray-50">
-                          <p className="text-xs text-gray-600 truncate">
-                            {logoName}
-                          </p>
-                        </div>
-                      </div>
-                    );
-                  })}
-
-                  {/* Add more logos placeholder */}
-                  <div
-                    className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:border-gray-400 transition-colors cursor-pointer flex flex-col items-center justify-center h-20"
-                    onClick={handleLogoUpload}
-                  >
-                    <Upload className="h-6 w-6 text-gray-400 mb-1" />
-                    <span className="text-xs text-gray-500">Thêm logo</span>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-
           {/* Cover Section Settings */}
           <div className="space-y-6">
             <FileUpload
               label="Ảnh nền bìa (Cover Background)"
-              value={introduction.coverImage}
+              value={introduction.coverImage?.url}
               onChange={(file) =>
                 updateProject('introduction', 'coverImage', file)
               }
@@ -533,10 +493,117 @@ export function IntroductionTab({
 
             {/* Logo Selection */}
             <div className="space-y-4">
+              {/* Logo Management */}
+              <div className="space-y-4">
+                <Label>Logo (Không giới hạn số lượng)</Label>
+
+                {introduction.logoImages.length === 0 ? (
+                  <div
+                    className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-gray-400 transition-colors cursor-pointer"
+                    onClick={handleLogoUpload}
+                  >
+                    <Upload className="h-8 w-8 text-gray-400 mx-auto mb-2" />
+                    <p className="text-gray-500 text-sm mb-2">
+                      Chưa có logo nào. Nhấn vào đây để thêm logo.
+                    </p>
+                    <p className="text-xs text-gray-400">
+                      Hỗ trợ chọn nhiều ảnh cùng lúc
+                    </p>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                      {introduction.logoImages.map(
+                        (logo: any, index: number) => {
+                          const logoName =
+                            logo instanceof File
+                              ? logo.name
+                              : typeof logo === 'string'
+                                ? logo.split('/').pop()
+                                : logo?.url?.split('/').pop() || 'Logo';
+
+                          return (
+                            <div
+                              key={index}
+                              className="relative group border rounded-lg overflow-hidden bg-white"
+                            >
+                              <Image
+                                src={
+                                  logo instanceof File
+                                    ? URL.createObjectURL(logo)
+                                    : logo?.url || logo || '/placeholder.svg'
+                                }
+                                alt={`Logo ${index + 1}`}
+                                className="w-full h-20 object-contain p-2"
+                                width={200} // bạn có thể tuỳ chỉnh width/height
+                                height={80}
+                              />
+                              <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all center-both">
+                                <Button
+                                  variant="destructive"
+                                  size="sm"
+                                  onClick={() => {
+                                    const newLogos =
+                                      introduction.logoImages.filter(
+                                        (_: any, i: number) => i !== index
+                                      );
+                                    updateProject(
+                                      'introduction',
+                                      'logoImages',
+                                      newLogos
+                                    );
+                                    if (
+                                      introduction.headerLogoIndex >=
+                                      newLogos.length
+                                    ) {
+                                      updateProject(
+                                        'introduction',
+                                        'headerLogoIndex',
+                                        Math.max(0, newLogos.length - 1)
+                                      );
+                                    }
+                                    if (
+                                      introduction.centerLogoIndex >=
+                                      newLogos.length
+                                    ) {
+                                      updateProject(
+                                        'introduction',
+                                        'centerLogoIndex',
+                                        Math.max(0, newLogos.length - 1)
+                                      );
+                                    }
+                                  }}
+                                  className="opacity-0 group-hover:opacity-100 transition-opacity h-6 w-6 p-0"
+                                >
+                                  <X className="h-3 w-3" />
+                                </Button>
+                              </div>
+                              <div className="p-2 bg-gray-50">
+                                <p className="text-xs text-gray-600 truncate">
+                                  {logoName}
+                                </p>
+                              </div>
+                            </div>
+                          );
+                        }
+                      )}
+
+                      {/* Add more logos placeholder */}
+                      <div
+                        className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:border-gray-400 transition-colors cursor-pointer flex flex-col items-center justify-center h-20"
+                        onClick={handleLogoUpload}
+                      >
+                        <Upload className="h-6 w-6 text-gray-400 mb-1" />
+                        <span className="text-xs text-gray-500">Thêm logo</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
               {introduction.logoImages.length > 0 && (
-                <>
-                  <div className="space-y-2">
-                    <Label>Logo cho header (bên trái)</Label>
+                <div className="flex items-center gap-8">
+                  <div className="space-y-2 flex-1">
+                    <Label>Logo cho header</Label>
                     <Select
                       value={introduction.headerLogoIndex?.toString() || '0'}
                       onValueChange={(value) =>
@@ -568,7 +635,7 @@ export function IntroductionTab({
                     </Select>
                   </div>
 
-                  <div className="space-y-2">
+                  <div className="space-y-2 flex-1">
                     <Label>Logo cho giữa trang</Label>
                     <Select
                       value={introduction.coverLogoIndex?.toString() || '0'}
@@ -600,7 +667,7 @@ export function IntroductionTab({
                       </SelectContent>
                     </Select>
                   </div>
-                </>
+                </div>
               )}
 
               {introduction.logoImages.length === 0 && (
@@ -714,6 +781,14 @@ export function IntroductionTab({
 
           {/* Form Fields arranged to match preview layout */}
           <div className="space-y-6">
+            {/* Form Fields arranged to match preview layout */}
+            <FileUpload
+              label="Ảnh nền ra mắt (Launch Background)"
+              value={introduction.launchBackground}
+              onChange={(file) =>
+                updateProject('introduction', 'launchBackground', file)
+              }
+            />
             {/* Launch Images (Left) and Content (Right) - matching preview layout */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Left side - Launch Images Carousel */}
@@ -740,17 +815,12 @@ export function IntroductionTab({
                   <Label htmlFor="launchTitle">
                     Tiêu đề ra mắt (Launch Title)
                   </Label>
-                  <Input
-                    id="launchTitle"
+                  <RichTextEditor
                     value={introduction.launchTitle}
-                    onChange={(e) =>
-                      updateProject(
-                        'introduction',
-                        'launchTitle',
-                        e.target.value
-                      )
+                    onChange={(value) =>
+                      updateProject('introduction', 'launchTitle', value)
                     }
-                    placeholder="Nhập tiêu đề ra mắt"
+                    placeholder="Nhập tiêu đề ra mắt..."
                   />
                 </div>
 
@@ -832,12 +902,28 @@ export function IntroductionTab({
           </div>
         </CardContent>
       </Card>
+      {/* Save Button - Fixed at bottom */}
       <div className="flex justify-end">
-        <Button onClick={handleSubmit} className="flex items-center space-x-2">
+        <Button
+          onClick={() =>
+            handleSave(
+              updateProjectTab,
+              uploadImage,
+              'introduction',
+              introduction
+            )
+          }
+          disabled={isLoading || isUploading}
+          className="flex items-center space-x-2"
+        >
           <Save className="h-4 w-4" />
-          <span>Lưu thay đổi</span>
+          <span>
+            {isLoading || isUploading
+              ? 'Đang lưu...'
+              : 'Lưu thông tin giới thiệu'}
+          </span>
         </Button>
       </div>
     </div>
   );
-}
+});

@@ -18,15 +18,20 @@ import {
 } from '@/components/ui/carousel';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo } from 'react';
 import Image from 'next/image';
+import { Button } from '@/components/ui/button';
+import { Save } from 'lucide-react';
+import { useUpdateProjectTabMutation } from '@/features/project/projectApi';
+import { useUploadImageMutation } from '@/features/upload/uploadApi';
 
 interface AmenityTabProps {
   amenity: any;
   updateProject: (section: string, field: string, value: any) => void;
+  handleSave: (updateApi: any, uploadApi: any, tab: string, data: any) => void;
 }
 
-function AmenityPreview({ amenity }: { amenity: any }) {
+const AmenityPreview = memo(function AmenityPreview({ amenity }: any) {
   const { title, description, amenityImages } = amenity;
   const [carouselApi, setCarouselApi] = useState<CarouselApi>();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -60,7 +65,7 @@ function AmenityPreview({ amenity }: { amenity: any }) {
   }, [carouselApi]);
 
   return (
-    <div className="h-[70vh] mx-auto center-both flex-col gap-6 px-8">
+    <div className="min-h-[70vh] mx-auto center-both flex-col gap-6 px-8">
       <div
         className="font-bold text-center"
         dangerouslySetInnerHTML={{ __html: title }}
@@ -87,9 +92,9 @@ function AmenityPreview({ amenity }: { amenity: any }) {
                   <Image
                     src={
                       img
-                        ? typeof img === 'string'
-                          ? img
-                          : URL.createObjectURL(img)
+                        ? img instanceof File
+                          ? URL.createObjectURL(img)
+                          : img.url
                         : '/placeholder.svg'
                     }
                     alt={`Ảnh ${idx + 1}`}
@@ -124,48 +129,77 @@ function AmenityPreview({ amenity }: { amenity: any }) {
       )}
     </div>
   );
-}
+});
 
-export function AmenityTab({ amenity, updateProject }: AmenityTabProps) {
+export function AmenityTab({
+  amenity,
+  updateProject,
+  handleSave,
+}: AmenityTabProps) {
+  const [updateProjectTab, { isLoading }] = useUpdateProjectTabMutation();
+  const [uploadImage, { isLoading: isUploading }] = useUploadImageMutation();
+
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Thông tin tiện ích</CardTitle>
-        <CardDescription>Cập nhật thông tin tiện ích dự án</CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-6">
-        {/* Live Preview */}
-        <div className="bg-gray-50 p-4 rounded-lg">
-          <Label className="text-sm font-medium text-gray-700 mb-3 block">
-            Xem trước:
-          </Label>
-          <AmenityPreview amenity={amenity} />
-        </div>
+    <div className="space-y-8">
+      <Card>
+        <CardHeader>
+          <CardTitle>Thông tin tiện ích</CardTitle>
+          <CardDescription>Cập nhật thông tin tiện ích dự án</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          {/* Live Preview */}
+          <div className="bg-gray-50 p-4 rounded-lg">
+            <Label className="text-sm font-medium text-gray-700 mb-3 block">
+              Xem trước:
+            </Label>
+            <AmenityPreview amenity={amenity} />
+          </div>
 
-        <MultiFileUpload
-          label="Ảnh tiện ích"
-          value={amenity.amenityImages}
-          onChange={(files) => updateProject('amenity', 'amenityImages', files)}
-        />
+          <div className="space-y-2">
+            <Label>Tiêu đề tiện ích</Label>
+            <RichTextEditor
+              value={amenity.title}
+              onChange={(value) => updateProject('amenity', 'title', value)}
+              placeholder="Nhập tiêu đề tiện ích"
+            />
+          </div>
 
-        <div className="space-y-2">
-          <Label>Tiêu đề tiện ích</Label>
-          <RichTextEditor
-            value={amenity.title}
-            onChange={(value) => updateProject('amenity', 'title', value)}
-            placeholder="Nhập tiêu đề tiện ích"
+          <div className="space-y-2">
+            <Label>Mô tả tiện ích</Label>
+            <RichTextEditor
+              value={amenity.description}
+              onChange={(value) =>
+                updateProject('amenity', 'description', value)
+              }
+              placeholder="Nhập mô tả tiện ích"
+            />
+          </div>
+          <MultiFileUpload
+            label="Ảnh tiện ích"
+            value={amenity.amenityImages}
+            onChange={(files) =>
+              updateProject('amenity', 'amenityImages', files)
+            }
           />
-        </div>
-
-        <div className="space-y-2">
-          <Label>Mô tả tiện ích</Label>
-          <RichTextEditor
-            value={amenity.description}
-            onChange={(value) => updateProject('amenity', 'description', value)}
-            placeholder="Nhập mô tả tiện ích"
-          />
-        </div>
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
+      {/* Save Button - Fixed at bottom */}
+      <div className="flex justify-end">
+        <Button
+          onClick={() =>
+            handleSave(updateProjectTab, uploadImage, 'amenity', amenity)
+          }
+          disabled={isLoading || isUploading}
+          className="flex items-center space-x-2"
+        >
+          <Save className="h-4 w-4" />
+          <span>
+            {isLoading || isUploading
+              ? 'Đang lưu...'
+              : 'Lưu thông tin tiện ích'}
+          </span>
+        </Button>
+      </div>
+    </div>
   );
 }

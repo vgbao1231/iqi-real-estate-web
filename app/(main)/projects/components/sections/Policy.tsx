@@ -20,7 +20,7 @@ const Policy = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
             <div className="relative w-full h-[45vh] md:h-[85vh] center-both">
               {/* GIẢM chiều cao trên mobile, GIỮ NGUYÊN trên desktop */}
               <Image
-                src={data.policyImage}
+                src={data.policyImage?.url || '/placeholder.svg'}
                 alt="Eco Retreat Policy Background"
                 fill
                 className="object-contain"
@@ -55,7 +55,7 @@ const Policy = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
             {/* Áp dụng thay đổi tương tự cho phần này */}
             <div className="relative w-full h-[45vh] md:h-[85vh] center-both">
               <Image
-                src={data.policyImage}
+                src={data.policyImage?.url || '/placeholder.svg'}
                 alt="Eco Retreat Experience Background"
                 fill
                 className="object-contain"

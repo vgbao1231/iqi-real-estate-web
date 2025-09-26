@@ -53,7 +53,7 @@ const Introduction = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
       <div className="relative min-h-screen center-both">
         {/* Background image */}
         <Image
-          src={data.introductionBackground}
+          src={data.introductionBackground?.url || '/placeholder.svg'}
           alt="Eco Retreat Background"
           fill
           className="object-cover object-center" // Changed to object-center for better mobile framing
@@ -66,15 +66,8 @@ const Introduction = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
           {/* Left content */}
           <div className="w-full space-y-4 text-white md:w-1/2">
             {/* Logo/title image - Responsive Height */}
-            <FadeIn className="relative h-48 w-full md:h-64">
-              <Image
-                src={data.titleImage}
-                alt="Eco Retreat Title"
-                fill
-                className="object-contain"
-                priority
-              />
-            </FadeIn>
+
+            <div dangerouslySetInnerHTML={{ __html: data.introductionTitle }} />
             <div
               className="space-y-4 text-base leading-relaxed md:text-lg"
               dangerouslySetInnerHTML={{ __html: data.introductionDescription }}
@@ -87,7 +80,7 @@ const Introduction = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
             className="relative h-[50vh] w-full md:h-[70vh] md:w-1/2"
           >
             <Image
-              src={data.introductionImage}
+              src={data.introductionImage?.url || '/placeholder.svg'}
               alt="Eco Retreat Hero"
               fill
               className="rounded-lg object-cover shadow-2xl md:object-contain" // Use object-cover for mobile
@@ -102,7 +95,7 @@ const Introduction = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
         {/* Background image */}
         <div className="absolute inset-0 z-0">
           <Image
-            src={data.launchBackground}
+            src={data.launchBackground?.url || '/placeholder.svg'}
             alt="Eco Retreat Background"
             fill
             className="object-cover object-center"
@@ -126,7 +119,7 @@ const Introduction = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
                   <CarouselItem key={idx} className="h-full pl-0">
                     <div className="relative h-full w-full overflow-hidden">
                       <Image
-                        src={img || '/placeholder-2.webp'}
+                        src={img?.url || 'placeholder.svg'}
                         alt={`Ảnh ${idx + 1}`}
                         fill
                         className="object-cover"
@@ -154,13 +147,11 @@ const Introduction = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
           {/* Right content - Responsive Text Alignment and Padding */}
           <FadeIn className="w-full space-y-6 text-center md:w-1/2 md:text-left">
             <div className="space-y-4 leading-relaxed">
-              <div className="space-y-2">
-                {/* Tên sản phẩm */}
-                <div
-                  className="text-2xl font-bold italic md:text-3xl text-shadow-soft"
-                  dangerouslySetInnerHTML={{ __html: data.launchTitle }}
-                />
-              </div>
+              {/* Tên sản phẩm */}
+              <div
+                className="text-2xl font-bold italic md:text-3xl text-shadow-soft"
+                dangerouslySetInnerHTML={{ __html: data.launchTitle }}
+              />
               {/* Danh sách mô tả chi tiết */}
               <div
                 className="text-base md:text-lg"

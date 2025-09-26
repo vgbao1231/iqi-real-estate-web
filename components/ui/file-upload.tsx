@@ -4,21 +4,26 @@ import type React from 'react';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Upload, X, ImageIcon } from 'lucide-react';
+import { memo } from 'react';
+import Image from 'next/image';
+import { cn } from '@/lib/utils';
 
 interface FileUploadProps {
   label: string;
-  value: string | File | null; // Updated type to accept string (path) or File object
-  onChange: (file: File | null) => void; // Still returns File object for new uploads
+  value: { url: string; publicId: string } | File | null;
+  onChange: (file: File | null) => void;
   accept?: string;
-  clickToDelete?: boolean; // New prop to enable click-to-delete functionality
+  clickToDelete?: boolean;
+  className?: string;
 }
 
-export function FileUpload({
+export const FileUpload = memo(function FileUpload({
   label,
   value,
   onChange,
   accept = 'image/*',
   clickToDelete = false,
+  className,
 }: FileUploadProps) {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] || null;
@@ -34,31 +39,36 @@ export function FileUpload({
 
   // Determine the image source based on whether value is a string (path) or a File object
   const imgSrc =
-    typeof value === 'string'
-      ? value
-      : value
-        ? URL.createObjectURL(value)
-        : '/placeholder.svg';
+    value instanceof File
+      ? URL.createObjectURL(value)
+      : value?.url || '/placeholder.svg';
   const fileName =
-    typeof value === 'string' ? value.split('/').pop() : value?.name;
+    value instanceof File
+      ? value.name
+      : value?.url?.split('/').pop() || 'placeholder';
 
   return (
-    <div className="space-y-2">
+    <div className={cn('space-y-2', className)}>
       <Label>{label}</Label>
       <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:border-gray-400 transition-colors">
         {value ? (
           <div className="flex flex-col items-center space-y-2">
             {/* Check if it's an image type before rendering img tag */}
-            {(typeof value === 'string' || value.type.startsWith('image/')) && (
+            {(value instanceof File ||
+              (value && typeof value === 'object' && 'url' in value)) && (
               <div
                 className={`relative group ${clickToDelete ? 'cursor-pointer' : ''}`}
                 onClick={clickToDelete ? handleImageClick : undefined}
                 title={clickToDelete ? 'Click để xóa ảnh' : undefined}
               >
-                <img
+                <Image
                   src={imgSrc || '/placeholder.svg'}
                   alt="Preview"
-                  className="max-h-32 max-w-full rounded-md object-contain"
+                  width={0}
+                  height={0}
+                  sizes="100vw"
+                  quality={40}
+                  className="max-h-32 w-auto h-auto max-w-full rounded-md object-contain"
                 />
                 {clickToDelete && (
                   <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all center-both rounded-md">
@@ -106,4 +116,4 @@ export function FileUpload({
       </div>
     </div>
   );
-}
+});

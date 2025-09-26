@@ -11,13 +11,179 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
-import { Users } from 'lucide-react';
+import { LocateFixed, Save, X } from 'lucide-react';
 import { RichTextEditor } from '@/components/ui/rich-text-editor';
 import { FileUpload } from '@/components/ui/file-upload';
-import { MultiFileUpload } from '@/components/ui/multi-file-upload';
 import Image from 'next/image';
-import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { useUpdateProjectTabMutation } from '@/features/project/projectApi';
+import { useUploadImageMutation } from '@/features/upload/uploadApi';
+import React, { memo, useRef, useState } from 'react';
+import {
+  SelectItem,
+  Select,
+  SelectContent,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { BreakImageManager } from '@/components/ui/break-image-manager';
+
+const availableFields = [
+  {
+    id: 'name',
+    label: 'Tên trên thiệp',
+    type: 'text',
+    placeholder: 'Nguyễn Văn A',
+  },
+  {
+    id: 'phone',
+    label: 'Số điện thoại',
+    type: 'text',
+    placeholder: '0123456789',
+  },
+  {
+    id: 'title',
+    label: 'Chức danh',
+    type: 'text',
+    placeholder: 'Giám đốc kinh doanh',
+  },
+  {
+    id: 'company',
+    label: 'Công ty',
+    type: 'text',
+    placeholder: 'Công ty BDS ABC',
+  },
+  {
+    id: 'email',
+    label: 'Email',
+    type: 'text',
+    placeholder: 'example@email.com',
+  },
+  {
+    id: 'address',
+    label: 'Địa chỉ',
+    type: 'text',
+    placeholder: '123 Đường ABC, Quận 1',
+  },
+  { id: 'image', label: 'Ảnh đại diện', type: 'image' },
+];
+
+// Preview component for policies
+const PoliciesPreview = memo(function PoliciesPreview({ other }: any) {
+  const { title, policyText, policyImage } = other.policy;
+
+  return (
+    <section
+      id="policy"
+      className="bg-background mx-auto w-full min-h-[60vh] center-both"
+    >
+      {policyText ? (
+        <div className="h-full w-full max-w-7xl center-both flex-col md:flex-row py-8 gap-8">
+          {/* Left content */}
+          <div className="relative w-full md:w-1/2 h-[70vh] center-both">
+            <Image
+              src={
+                policyImage
+                  ? policyImage instanceof File
+                    ? URL.createObjectURL(policyImage)
+                    : policyImage.url
+                  : '/placeholder.svg'
+              }
+              alt="Eco Retreat Policy Background"
+              fill
+              className="object-contain"
+              priority
+            />
+          </div>
+
+          {/* Right content */}
+          <div className="md:w-1/2 space-y-6">
+            <div>
+              <h3 className="text-5xl italic font-bold text-orange-300 mb-8">
+                {title}
+              </h3>
+
+              <div
+                className="text-lg text-foreground"
+                dangerouslySetInnerHTML={{ __html: policyText }}
+              />
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className="h-full w-full max-w-6xl center-both flex-col md:flex-row py-8 gap-8">
+          <div className="relative w-full h-[70vh] center-both">
+            <Image
+              src={
+                policyImage
+                  ? policyImage instanceof File
+                    ? URL.createObjectURL(policyImage)
+                    : policyImage.url
+                  : '/placeholder.svg'
+              }
+              alt="Eco Retreat Policy Background"
+              fill
+              className="object-contain"
+              priority
+            />
+          </div>
+        </div>
+      )}
+    </section>
+  );
+});
+
+const FieldPreview = memo(function FieldPreview({ field, meta }: any) {
+  const value = field.value ?? '';
+
+  if (!meta || !value) return null;
+
+  const baseStyle: React.CSSProperties = {
+    position: 'absolute',
+    left: `${field.position.x}%`,
+    top: `${field.position.y}%`,
+    transform: 'translate(-50%, -50%)',
+    ...(field.id === 'name' && { fontFamily: "'Great Vibes', cursive" }),
+    fontSize: `${field.size}px`,
+    color: '#2c2c2c',
+    textShadow: '1px 1px 3px rgba(255,255,255,0.7)',
+    pointerEvents: 'none',
+    whiteSpace: 'nowrap',
+  };
+
+  if (meta.type === 'image') {
+    const src =
+      value instanceof File
+        ? URL.createObjectURL(value)
+        : typeof value === 'string'
+          ? value
+          : value?.url || '';
+
+    if (!src) return null;
+
+    return (
+      <div style={baseStyle}>
+        <Image
+          src={src}
+          alt={meta.label ?? 'image'}
+          width={0}
+          height={0}
+          sizes="100vw"
+          unoptimized={src.startsWith('blob:')}
+          className="object-contain block"
+          style={{
+            maxWidth: `${field.size}px`,
+            maxHeight: `${field.size}px`,
+            width: 'auto',
+            height: 'auto',
+          }}
+        />
+      </div>
+    );
+  }
+
+  return <div style={baseStyle}>{value}</div>;
+});
 
 interface OtherTabProps {
   other: any;
@@ -28,248 +194,63 @@ interface OtherTabProps {
     field: string,
     value: any
   ) => void;
-  addArrayItem: (section: string, field: string, item?: string) => void;
-  removeArrayItem: (section: string, field: string, index: number) => void;
-  updateArrayItem: (
-    section: string,
-    field: string,
-    index: number,
-    value: string
-  ) => void;
-  editingPolicyIndex: number | null;
-  setEditingPolicyIndex: (index: number | null) => void;
+  handleSave: (updateApi: any, uploadApi: any, tab: string, data: any) => void;
 }
 
 export function OtherTab({
   other,
   updateProject,
   updateNestedProject,
+  handleSave,
 }: OtherTabProps) {
-  // Preview component for policies
-  const PoliciesPreview = () => {
-    const { title, policyText, policyImage } = other.policy;
+  const [updateProjectTab, { isLoading }] = useUpdateProjectTabMutation();
+  const [uploadImage, { isLoading: isUploading }] = useUploadImageMutation();
+  const previewRef = useRef(null);
+  const [selectedElement, setSelectedElement] = useState<string>('');
+  const fontSizes = [16, 18, 20, 24, 28, 32, 36, 40, 44, 48];
 
-    return (
-      <section
-        id="policy"
-        className="bg-background mx-auto w-full h-[60vh] center-both"
-      >
-        {policyText ? (
-          <div className="h-full w-full max-w-7xl center-both flex-col md:flex-row py-8 gap-8">
-            {/* Left content */}
-            <div className="relative w-full md:w-2/5 h-[55vh] center-both">
-              <Image
-                src={
-                  policyImage
-                    ? typeof policyImage === 'string'
-                      ? policyImage
-                      : URL.createObjectURL(policyImage)
-                    : '/placeholder.svg'
-                }
-                alt="Eco Retreat Policy Background"
-                fill
-                className="object-contain"
-                priority
-              />
-            </div>
+  const fields = other.invitation.fields;
 
-            {/* Right content */}
-            <div className="md:w-3/5 space-y-6">
-              <div>
-                <h3 className="text-5xl italic font-bold text-orange-300 mb-8">
-                  {title}
-                </h3>
+  const addField = (fieldId: string) => {
+    const selected = availableFields.find((f) => f.id === fieldId);
+    if (!selected) return;
 
-                <div className="grid md:grid-cols-2 gap-x-6 gap-y-6">
-                  <div
-                    className="text-lg text-foreground"
-                    dangerouslySetInnerHTML={{ __html: policyText }}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        ) : (
-          <div className="h-full w-full max-w-6xl center-both flex-col md:flex-row py-8 gap-8">
-            <div className="relative w-full h-[55vh] center-both">
-              <Image
-                src={
-                  policyImage
-                    ? typeof policyImage === 'string'
-                      ? policyImage
-                      : URL.createObjectURL(policyImage)
-                    : '/placeholder.svg'
-                }
-                alt="Eco Retreat Policy Background"
-                fill
-                className="object-contain"
-                priority
-              />
-            </div>
-          </div>
-        )}
-      </section>
+    updateNestedProject('other', 'invitation', 'fields', [
+      ...fields,
+      {
+        ...selected,
+        position: { x: 52, y: 14 },
+        size: selected.type === 'image' ? 100 : 20,
+        value: '',
+      },
+    ]);
+  };
+
+  const removeField = (fieldId: string) => {
+    updateNestedProject(
+      'other',
+      'invitation',
+      'fields',
+      fields.filter((f: any) => f.id !== fieldId)
     );
   };
 
-  // Preview component for timeline
-  const TimelinePreview = () => {
-    const {
-      backgroundImage,
-      timelineTitle,
-      timelineImage,
-      progressTitle,
-      progressImages,
-    } = other.timeline;
+  const handleFieldPositionClick = (e: React.MouseEvent) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
 
-    const getRandomWidth = () => {
-      const desktopWidthClasses = [
-        'sm:w-[20%]',
-        'sm:w-[25%]',
-        'sm:w-[30%]',
-        'sm:w-[35%]',
-        'sm:w-[40%]',
-      ];
-      const randomIndex = Math.floor(
-        Math.random() * desktopWidthClasses.length
-      );
-      return desktopWidthClasses[randomIndex];
-    };
+    const relativeX = (x / rect.width) * 100;
+    const relativeY = (y / rect.height) * 100;
 
-    return (
-      <>
-        <div className="relative h-[60vh] center-both py-12">
-          {/* Background image full screen */}
-          <Image
-            src={
-              backgroundImage
-                ? typeof backgroundImage === 'string'
-                  ? backgroundImage
-                  : URL.createObjectURL(backgroundImage)
-                : '/placeholder.svg'
-            }
-            alt="Eco Retreat Timeline Background"
-            fill
-            className="object-cover object-left"
-            priority
-          />
-
-          <div className="relative z-20 p-6 space-y-8 center-both flex-col">
-            <div
-              className="text-5xl text-center"
-              dangerouslySetInnerHTML={{ __html: timelineTitle }}
-            />
-            <div className="relative h-[40vh] min-w-[60vw]">
-              <Image
-                src={
-                  timelineImage
-                    ? typeof timelineImage === 'string'
-                      ? timelineImage
-                      : URL.createObjectURL(timelineImage)
-                    : '/placeholder.svg'
-                }
-                alt="Eco Retreat Timeline Background"
-                fill
-                className={cn('object-contain', !timelineImage && 'shadow-md')}
-                priority
-              />
-            </div>
-          </div>
-        </div>
-        <div className="relative min-h-[60vh] py-12">
-          {/* Background image full screen */}
-          <Image
-            src={
-              backgroundImage
-                ? typeof backgroundImage === 'string'
-                  ? backgroundImage
-                  : URL.createObjectURL(backgroundImage)
-                : '/placeholder.svg'
-            }
-            alt="Eco Retreat Timeline Background"
-            fill
-            className="object-cover object-left"
-            priority
-          />
-          <div className="relative z-20 p-6 max-w-7xl w-full mx-auto">
-            <h3 className="text-4xl text-lime-500 mb-8">{progressTitle}</h3>
-            {/* Container chính sử dụng Flexbox */}
-            <div className="flex flex-wrap justify-center gap-4">
-              {progressImages.map((image: any, index: any) => {
-                // Lấy một class width ngẫu nhiên cho mỗi ảnh
-                const randomWidthClass = getRandomWidth();
-
-                return (
-                  // Container cho mỗi ảnh, chịu trách nhiệm về chiều rộng và aspect ratio
-                  <div
-                    key={index}
-                    className={cn(
-                      'relative w-full flex-grow sm:max-w-[500px] sm:min-w-[300px]',
-                      randomWidthClass
-                    )}
-                  >
-                    <div className="w-full h-64 relative">
-                      <Image
-                        src={
-                          image
-                            ? typeof image === 'string'
-                              ? image
-                              : URL.createObjectURL(image)
-                            : '/placeholder.svg'
-                        }
-                        alt={`Gallery image ${index + 1}`}
-                        fill
-                        className="object-cover rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300"
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      />
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-      </>
+    // Cập nhật đúng field trong array
+    const newFields = other.invitation.fields.map((f: any) =>
+      f.id === selectedElement
+        ? { ...f, position: { x: relativeX, y: relativeY } }
+        : f
     );
-  };
 
-  // Preview component for agency
-  const AgencyPreview = () => {
-    const { agencyImage, title, description } = other.agency;
-
-    return (
-      <section className="bg-background mx-auto w-full h-[60vh] center-both py-12">
-        <div className="h-full w-full max-w-7xl center-both flex-col md:flex-row py-8 gap-8">
-          {/* Left content */}
-          <div className="relative w-full md:w-1/2 h-[50vh] center-both">
-            <Image
-              src={
-                agencyImage
-                  ? typeof agencyImage === 'string'
-                    ? agencyImage
-                    : URL.createObjectURL(agencyImage)
-                  : '/placeholder.svg'
-              }
-              alt="Eco Retreat Experience Background"
-              fill
-              className="object-contain"
-              priority
-            />
-          </div>
-
-          {/* Right content */}
-          <div className="md:w-1/2 space-y-6">
-            <div>
-              <h3 className="text-5xl italic text-lime-500 mb-2">{title}</h3>
-              <div
-                className="space-y-2 text-lg text-foreground"
-                dangerouslySetInnerHTML={{ __html: description }}
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-    );
+    updateNestedProject('other', 'invitation', 'fields', newFields);
   };
 
   return (
@@ -282,7 +263,7 @@ export function OtherTab({
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Preview */}
-          <PoliciesPreview />
+          <PoliciesPreview other={other} />
 
           {/* Content Type Selection */}
           <div className="space-y-4">
@@ -292,7 +273,7 @@ export function OtherTab({
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <FileUpload
-                label="Ảnh danh sách chính sách"
+                label="Ảnh chính sách"
                 value={other.policy.policyImage}
                 onChange={(file) =>
                   updateNestedProject('other', 'policy', 'policyImage', file)
@@ -339,157 +320,261 @@ export function OtherTab({
         </CardContent>
       </Card>
 
-      {/* Timeline Section */}
+      {/* Invitation */}
+      <style>
+        {`
+          @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
+        `}
+      </style>
+
       <Card>
         <CardHeader>
-          <CardTitle>Timeline</CardTitle>
-          <CardDescription>Cập nhật thông tin timeline dự án</CardDescription>
-        </CardHeader>
-        <CardContent>
-          {/* Preview */}
-          <TimelinePreview />
-
-          <Separator className="my-4" />
-
-          <div className="space-y-6">
-            <div className="space-y-4">
-              <FileUpload
-                label="Ảnh nền"
-                value={other.timeline.backgroundImage}
-                onChange={(file) =>
-                  updateNestedProject(
-                    'other',
-                    'timeline',
-                    'backgroundImage',
-                    file
-                  )
-                }
-              />
-              <div className="space-y-2">
-                <Label>Tiêu đề timeline</Label>
-                <RichTextEditor
-                  value={other.timeline.timelineTitle}
-                  onChange={(value) =>
-                    updateNestedProject(
-                      'other',
-                      'timeline',
-                      'timelineTitle',
-                      value
-                    )
-                  }
-                  placeholder="Nhập tiêu đề timeline"
-                />
-              </div>
-              <FileUpload
-                label="Ảnh timeline"
-                value={other.timeline.timelineImage}
-                onChange={(file) =>
-                  updateNestedProject(
-                    'other',
-                    'timeline',
-                    'timelineImage',
-                    file
-                  )
-                }
-              />
-            </div>
-
-            <Separator />
-
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="progressTitle">Tiêu đề tiến độ</Label>
-                <Input
-                  id="progressTitle"
-                  value={other.timeline.progressTitle}
-                  onChange={(e) =>
-                    updateNestedProject(
-                      'other',
-                      'timeline',
-                      'progressTitle',
-                      e.target.value
-                    )
-                  }
-                  placeholder="Nhập tiêu đề tiến độ"
-                />
-              </div>
-
-              <MultiFileUpload
-                label="Ảnh tiến độ"
-                value={other.timeline.progressImages}
-                onChange={(files) =>
-                  updateNestedProject(
-                    'other',
-                    'timeline',
-                    'progressImages',
-                    files
-                  )
-                }
-              />
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Agency Section - NEW */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center space-x-2">
-            <Users className="h-5 w-5" />
-            <span>Thông tin đại lý</span>
-          </CardTitle>
+          <CardTitle>Tạo Thiệp Mời</CardTitle>
           <CardDescription>
-            Cập nhật thông tin đại lý phân phối dự án
+            Tải lên ảnh nền, nhập tên, và tạo thiệp mời cá nhân hóa
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          {/* Preview */}
-          <AgencyPreview />
-
-          <Separator />
-
-          {/* Form Fields */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <FileUpload
-              label="Logo/Ảnh đại lý"
-              value={other.agency.agencyImage}
-              onChange={(file) =>
-                updateNestedProject('other', 'agency', 'agencyImage', file)
-              }
-            />
-
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="agencyTitle">Tiêu đề đại lý</Label>
-                <Input
-                  id="agencyTitle"
-                  value={other.agency.title}
-                  onChange={(e) =>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* Cột trái: Các ô nhập liệu */}
+            <div className="flex flex-col space-y-6">
+              <div>
+                <FileUpload
+                  label="Ảnh thiệp mời"
+                  value={other.invitation.invitationImage}
+                  onChange={(file) =>
                     updateNestedProject(
                       'other',
-                      'agency',
-                      'title',
-                      e.target.value
+                      'invitation',
+                      'invitationImage',
+                      file
                     )
                   }
-                  placeholder="VD: Thông Tin Đại Lý"
                 />
               </div>
 
-              <div className="space-y-2">
-                <Label>Mô tả đại lý</Label>
-                <RichTextEditor
-                  value={other.agency.description}
-                  onChange={(value) =>
-                    updateNestedProject('other', 'agency', 'description', value)
-                  }
-                  placeholder="Nhập thông tin chi tiết về đại lý: tên công ty, địa chỉ, hotline, email..."
-                />
-                <p className="text-xs text-gray-500">
-                  Có thể bao gồm: tên công ty, địa chỉ, số điện thoại, email,
-                  website, giấy phép kinh doanh...
-                </p>
-              </div>
+              {fields.map((field: any) => {
+                const meta = availableFields.find((af) => af.id === field.id);
+                if (!meta) return null;
+
+                return (
+                  <div key={field.id}>
+                    {/* Input hoặc Upload */}
+                    {meta.type === 'text' && (
+                      <div>
+                        <Label htmlFor={`${field.id}Input`}>{meta.label}</Label>
+                        <div className="center-both gap-4">
+                          <Input
+                            id={`${field.id}Input`}
+                            className="flex-1 w-full"
+                            type="text"
+                            placeholder={meta.placeholder}
+                            value={field.value ?? ''}
+                            onChange={(e) =>
+                              updateNestedProject(
+                                'other',
+                                'invitation',
+                                'fields',
+                                fields.map((f: any) =>
+                                  f.id === field.id
+                                    ? { ...f, value: e.target.value }
+                                    : f
+                                )
+                              )
+                            }
+                          />
+                          <Select
+                            value={field.size.toString()}
+                            onValueChange={(value) =>
+                              updateNestedProject(
+                                'other',
+                                'invitation',
+                                'fields',
+                                fields.map((f: any) =>
+                                  f.id === field.id
+                                    ? { ...f, size: Number(value) }
+                                    : f
+                                )
+                              )
+                            }
+                          >
+                            <SelectTrigger className="flex-1">
+                              <SelectValue placeholder="Chọn giá trị" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {fontSizes.map((option) => (
+                                <SelectItem
+                                  key={option}
+                                  value={option.toString()}
+                                >
+                                  {option}px
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <Button
+                            onClick={() => setSelectedElement(field.id)}
+                            className={`px-2 py-1 rounded text-xs font-medium transition-colors flex items-center gap-1 ${
+                              selectedElement === field.id
+                                ? 'bg-blue-600 text-white'
+                                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                            }`}
+                            title="Chọn vị trí"
+                          >
+                            <LocateFixed />
+                            {selectedElement === field.id
+                              ? 'Đang chọn'
+                              : 'Vị trí'}
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => removeField(field.id)}
+                            className="h-8 w-8 p-0 text-red-500 hover:text-red-700 z-10"
+                          >
+                            <X className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    )}
+
+                    {meta.type === 'image' && (
+                      <div className="center-both gap-4">
+                        <FileUpload
+                          className="flex-1"
+                          label="Ảnh đại diện"
+                          value={field.value}
+                          onChange={(file) => {
+                            const newFields = fields.map((f: any) =>
+                              f.id === field.id
+                                ? { ...f, value: file || null }
+                                : f
+                            );
+
+                            updateNestedProject(
+                              'other',
+                              'invitation',
+                              'fields',
+                              newFields
+                            );
+                          }}
+                        />
+                        <div className="flex-1">
+                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Kích thước: {field.size}px
+                          </label>
+                          <input
+                            type="range"
+                            min="100"
+                            max="400"
+                            value={field.size}
+                            onChange={(e) =>
+                              updateNestedProject(
+                                'other',
+                                'invitation',
+                                'fields',
+                                fields.map((f: any) =>
+                                  f.id === field.id
+                                    ? { ...f, size: Number(e.target.value) }
+                                    : f
+                                )
+                              )
+                            }
+                            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                          />
+                        </div>
+                        <Button
+                          onClick={() => setSelectedElement(field.id)}
+                          className={`px-2 py-1 rounded text-xs font-medium transition-colors flex items-center gap-1 ${
+                            selectedElement === field.id
+                              ? 'bg-blue-600 text-white'
+                              : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                          }`}
+                          title="Chọn vị trí"
+                        >
+                          <LocateFixed />
+                          {selectedElement === field.id
+                            ? 'Đang chọn'
+                            : 'Vị trí'}
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => removeField(field.id)}
+                          className="h-8 w-8 p-0 text-red-500 hover:text-red-700 z-10"
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+
+              <Select value="" onValueChange={(value) => addField(value)}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Chọn giá trị" />
+                </SelectTrigger>
+                <SelectContent>
+                  {availableFields.map((option) => (
+                    <SelectItem key={option.id} value={option.id}>
+                      {option.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Cột phải: Vùng xem trước */}
+            <div className="flex flex-col items-center justify-center">
+              {other.invitation.invitationImage ? (
+                <div>
+                  <p className="text-md font-semibold text-gray-700 mb-2 text-center">
+                    Bước 3: Nhấp vào ảnh để chọn vị trí tên
+                  </p>
+                  <div
+                    ref={previewRef}
+                    className="relative w-fit mx-auto border-2 border-dashed border-gray-300 rounded-lg overflow-hidden cursor-crosshair"
+                    onClick={handleFieldPositionClick}
+                  >
+                    {/* 4. Thay thế <img> bằng <Image> */}
+                    <Image
+                      src={
+                        other?.invitation?.invitationImage
+                          ? other.invitation.invitationImage instanceof File
+                            ? URL.createObjectURL(
+                                other.invitation.invitationImage
+                              )
+                            : other.invitation.invitationImage.url
+                          : '/placeholder.svg'
+                      }
+                      alt="Invitation background"
+                      width={100}
+                      height={100}
+                      className="w-auto h-[80vh]"
+                    />
+                    {other.invitation.fields.map((field: any) => {
+                      const meta = availableFields.find(
+                        (af) => af.id === field.id
+                      );
+                      return (
+                        <FieldPreview
+                          key={field.id}
+                          field={field}
+                          meta={meta}
+                        />
+                      );
+                    })}
+                  </div>
+                </div>
+              ) : (
+                <div className="w-full h-full flex items-center justify-center bg-gray-50 rounded-lg border-2 border-dashed border-gray-300 p-8 text-center">
+                  <p className="text-sm text-gray-500">
+                    Xem trước thiệp mời sẽ hiển thị ở đây sau khi bạn tải ảnh
+                    lên.
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         </CardContent>
@@ -509,55 +594,16 @@ export function OtherTab({
                 Ảnh ngắt trang (Tối đa 6 vị trí)
               </Label>
               <p className="text-sm text-gray-600 mt-1">
-                Ảnh sẽ được chèn giữa các section: Giới thiệu → Tổng quan → Tiện
-                ích → Vị trí → Sản phẩm → Chính sách
+                Quản lý ảnh ngắt trang hiển thị giữa các tab
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 gap-y-8">
-              {Array.from({ length: 6 }, (_, index) => {
-                const sectionNames = [
-                  'Sau Giới thiệu',
-                  'Sau Tổng quan',
-                  'Sau Tiện ích',
-                  'Sau Vị trí',
-                  'Sau Sản phẩm',
-                  'Sau Chính sách',
-                ];
-
-                return (
-                  <div key={index} className="space-y-1">
-                    <div className="text-center">
-                      <Label className="text-sm font-medium text-gray-700">
-                        Vị trí {index + 1}
-                      </Label>
-                      <p className="text-xs text-gray-500">
-                        {sectionNames[index]}
-                      </p>
-                    </div>
-
-                    <FileUpload
-                      label={`Ảnh ngắt trang ${index + 1} (Tùy chọn)`}
-                      value={other.breakImages[index]}
-                      onChange={(file) => {
-                        const newBreakImages = [...other.breakImages];
-                        newBreakImages[index] = file;
-                        updateProject('other', 'breakImages', newBreakImages);
-                      }}
-                      clickToDelete={true}
-                    />
-                  </div>
-                );
-              })}
-            </div>
-
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-              <p className="text-sm text-blue-800">
-                <strong>Lưu ý:</strong> Bạn có thể để trống các vị trí không
-                muốn chèn ảnh ngắt trang. Ảnh sẽ chỉ hiển thị ở những vị trí đã
-                upload. Click vào ảnh để xóa.
-              </p>
-            </div>
+            <BreakImageManager
+              breakImages={other.breakImages}
+              onChange={(newBreakImages) =>
+                updateProject('other', 'breakImages', newBreakImages)
+              }
+            />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -616,6 +662,21 @@ export function OtherTab({
           </div>
         </CardContent>
       </Card>
+      {/* Save Button - Fixed at bottom */}
+      <div className="flex justify-end pt-6 border-t">
+        <Button
+          onClick={() =>
+            handleSave(updateProjectTab, uploadImage, 'other', other)
+          }
+          disabled={isLoading || isUploading}
+          className="flex items-center space-x-2"
+        >
+          <Save className="h-4 w-4" />
+          <span>
+            {isLoading || isUploading ? 'Đang lưu...' : 'Lưu thông tin khác'}
+          </span>
+        </Button>
+      </div>
     </div>
   );
 }

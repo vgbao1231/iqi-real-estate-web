@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import imageCompression from 'browser-image-compression';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -61,4 +62,19 @@ export function formatViews(num: number) {
     return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
   }
   return num.toString();
+}
+
+export async function compressImage(file: File) {
+  const options = {
+    maxSizeMB: 1, // target dưới 1MB
+    maxWidthOrHeight: 1920, // scale về chiều dài max 1920px
+    useWebWorker: true,
+  };
+  return await imageCompression(file, options);
+}
+
+export function diffPayload(newData: any, oldData: any) {
+  return Object.fromEntries(
+    Object.entries(newData).filter(([key, value]) => value !== oldData?.[key])
+  );
 }

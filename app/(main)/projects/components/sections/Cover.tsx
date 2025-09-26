@@ -29,7 +29,7 @@ const Cover = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
       )}
       {/* Background image full screen */}
       <Image
-        src={data.coverImage}
+        src={data.coverImage?.url || 'placeholder.svg'}
         alt="Eco Retreat Cover Background"
         fill
         className="object-cover" // Removed text/shadow classes
@@ -43,7 +43,7 @@ const Cover = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
         {/* Logo with responsive sizing */}
         <FadeIn className="relative w-48 h-32 md:w-72 md:h-44">
           <Image
-            src={data.logoImages[data.coverLogoIndex]}
+            src={data.logoImages[data.coverLogoIndex]?.url || 'placeholder.svg'}
             alt="Eco Retreat Logo"
             fill
             className="object-contain"

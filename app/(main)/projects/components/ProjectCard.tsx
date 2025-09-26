@@ -57,7 +57,9 @@ export const ProjectCard = ({ project, index }: any) => {
         <div className="relative">
           <Link href={`${currentPath}/${project.id}`}>
             <Image
-              src={project.introduction.coverImage || '/placeholder-2.webp'}
+              src={
+                project.introduction.coverImage?.url || '/placeholder-2.webp'
+              }
               alt={name}
               width={400}
               height={280}
@@ -67,13 +69,13 @@ export const ProjectCard = ({ project, index }: any) => {
 
           {/* Badges */}
           <div className="absolute top-3 left-3 flex flex-col gap-2">
-            {project.other.isFeatured && (
+            {project.isFeatured && (
               <Badge className="bg-gradient-to-r !from-yellow-500 !to-orange-500 text-white border-0">
                 <Star className="w-3 h-3 mr-1" />
                 Nổi bật
               </Badge>
             )}
-            {project.other.isExclusive && (
+            {project.isExclusive && (
               <Badge className="bg-gradient-to-r !from-green-500 !to-green-600 text-white border-0">
                 Độc quyền
               </Badge>

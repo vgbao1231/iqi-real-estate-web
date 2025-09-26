@@ -13,7 +13,7 @@ const Location = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
     >
       {/* Background image full screen */}
       <Image
-        src={data.locationBackground}
+        src={data.locationBackground?.url || '/placeholder.svg'}
         alt="Eco Retreat Background"
         fill
         className="object-cover object-right"
@@ -37,7 +37,7 @@ const Location = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
           className="relative w-full md:w-1/2 h-[50vh] md:h-[85vh] center-both"
         >
           <Image
-            src={data.locationImage}
+            src={data.locationImage?.url || '/placeholder.svg'}
             alt="Eco Retreat Hero"
             fill
             className="object-contain shadow-lg rounded-sm"

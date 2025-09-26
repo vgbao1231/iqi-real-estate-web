@@ -6,8 +6,7 @@ import { Arsenal } from 'next/font/google';
 
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
-import { projects } from '@/lib/project-data';
-import { usePathname, useRouter } from 'next/navigation';
+import { useParams, usePathname } from 'next/navigation';
 import Introduction from '@/app/(main)/projects/components/sections/Introduction';
 import Agency from '@/app/(main)/projects/components/sections/Agency';
 import Amenity from '@/app/(main)/projects/components/sections/Amenity';
@@ -22,6 +21,7 @@ import Contact from '@/app/(main)/projects/components/sections/Contact';
 import { ChevronDown, Menu, X } from 'lucide-react';
 import Link from 'next/link';
 import { SectionBreak } from '@/app/(main)/projects/components/sections/SectionBreak';
+import { useGetPublicProjectByIdQuery } from '@/features/project/projectApi';
 
 const arsenal = Arsenal({
   subsets: ['latin'],
@@ -30,14 +30,11 @@ const arsenal = Arsenal({
   display: 'swap',
 });
 
-/* -------------------------------------------------------------------------- */
-/*                         DUMMY PROPERTY - STATIC DATA                       */
-/* -------------------------------------------------------------------------- */
-const project = projects[0];
-
-/* -------------------------------------------------------------------------- */
-
 export default function ProjectDetail() {
+  const { id } = useParams();
+  const { data: project } = useGetPublicProjectByIdQuery(id as string, {
+    skip: !id,
+  });
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -54,38 +51,34 @@ export default function ProjectDetail() {
   };
 
   /* ---------- Local state ---------- */
-  const router = useRouter();
   const pathname = usePathname();
 
-  const sections = useMemo(
-    () => [
+  const sections = useMemo(() => {
+    if (!project) return [];
+
+    // sections cơ bản theo thứ tự
+    const baseSections = [
       {
         id: 'introduction',
         content: <Introduction data={project.introduction} />,
         label: 'Giới thiệu',
       },
-      { content: <SectionBreak data={project.other.breakImages[0]} /> },
       {
         id: 'overview',
         content: <Overview data={project.overview} />,
         label: 'Tổng quan',
       },
-      { content: <SectionBreak data={project.other.breakImages[1]} /> },
-      {
-        content: <Contact data={project.contact} />,
-      },
+      { id: 'contact1', content: <Contact data={project.contact} /> },
       {
         id: 'amenity',
         content: <Amenity data={project.amenity} />,
         label: 'Tiện ích',
       },
-      { content: <SectionBreak data={project.other.breakImages[2]} /> },
       {
         id: 'location',
         content: <Location data={project.location} />,
         label: 'Vị trí',
       },
-      { content: <SectionBreak data={project.other.breakImages[3]} /> },
       {
         id: 'siteplan',
         content: <Siteplan data={project.siteplan} />,
@@ -97,47 +90,52 @@ export default function ProjectDetail() {
         label: 'Sản phẩm',
       },
       {
-        content: <Contact data={project.contact} />,
-      },
-      { content: <SectionBreak data={project.other.breakImages[4]} /> },
-
-      {
         id: 'policy',
         content: <Policy data={project.other.policy} />,
         label: 'Chính sách',
       },
-      { content: <SectionBreak data={project.other.breakImages[5]} /> },
       {
         id: 'timeline',
-        content: <Timeline data={project.other.timeline} />,
+        content: <Timeline data={project.timeline} />,
         label: 'Tiến độ',
       },
-      { content: <SectionBreak data={project.other.breakImages[6]} /> },
       {
         id: 'agency',
-        content: <Agency data={project.other.agency} />,
+        content: <Agency data={project.contact.agency} />,
         label: 'Đại lý',
       },
       {
         id: 'toolbar',
         label: 'Công cụ',
         dropdown: [
-          {
-            href: '/360-view',
-            label: '360 view',
-          },
-          {
-            href: '/invitation',
-            label: 'Thiệp mời',
-          },
+          { href: '/360-view', label: '360 view' },
+          { href: '/invitation', label: 'Thiệp mời' },
         ],
       },
-      {
-        content: <Contact data={project.contact} />,
-      },
-    ],
-    []
-  );
+      { id: 'contact2', content: <Contact data={project.contact} /> },
+    ];
+
+    // map breakImages theo position
+    const breakMap: Record<string, any> = {};
+    project.other.breakImages.forEach((breakImg: any) => {
+      breakMap[breakImg.position] = breakImg;
+    });
+
+    // chèn SectionBreak nếu có breakMap tương ứng với section.id
+    const finalSections = baseSections.flatMap((section) => {
+      const result: any[] = [section];
+      if (section.id && breakMap[section.id]) {
+        result.push({
+          content: <SectionBreak data={breakMap[section.id].image} />,
+        });
+      }
+      return result;
+    });
+
+    return finalSections;
+  }, [project]);
+
+  if (!project) return <div>Loading...</div>;
 
   return (
     <div
@@ -165,7 +163,7 @@ export default function ProjectDetail() {
               src={
                 project.introduction.logoImages[
                   project.introduction.headerLogoIndex
-                ]
+                ]?.url || 'placeholder.svg'
               }
               alt="Eco Retreat Logo"
               fill

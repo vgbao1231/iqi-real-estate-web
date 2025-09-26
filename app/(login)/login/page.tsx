@@ -17,6 +17,9 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import Image from 'next/image';
+import { useLoginMutation } from '@/features/auth/authApi';
+import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
 
 export default function AdminLoginPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -25,11 +28,33 @@ export default function AdminLoginPage() {
     password: '',
     rememberMe: false,
   });
+  const router = useRouter();
+  const [login, { isLoading }] = useLoginMutation();
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate login - redirect to dashboard
-    window.location.href = '/admin/dashboard';
+
+    try {
+      const user = await login({
+        email: formData.email,
+        password: formData.password,
+      }).unwrap();
+
+      // Lưu token (session cookie)
+      Cookies.set('accessToken', user.accessToken);
+      Cookies.set('refreshToken', user.refreshToken);
+
+      // Nếu tick rememberMe → tạo flag
+      if (formData.rememberMe) {
+        Cookies.set('remember_me', 'true');
+      } else {
+        Cookies.remove('remember_me');
+      }
+
+      router.push('/admin/dashboard');
+    } catch (err) {
+      console.error('Login failed:', err);
+    }
   };
 
   return (
@@ -185,6 +210,7 @@ export default function AdminLoginPage() {
                   <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
                   <Input
                     type="email"
+                    name="email"
                     placeholder="admin@iqi.com"
                     className="pl-10 placeholder:text-gray-400"
                     value={formData.email}
@@ -206,6 +232,7 @@ export default function AdminLoginPage() {
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
                   <Input
+                    name="password"
                     type={showPassword ? 'text' : 'password'}
                     placeholder="••••••••"
                     className="pl-10 pr-10 placeholder:text-gray-400"
@@ -255,9 +282,10 @@ export default function AdminLoginPage() {
 
               <Button
                 type="submit"
+                disabled={isLoading}
                 className="w-full h-12 bg-orange-500 hover:bg-orange-600 text-white font-medium rounded-lg transition-colors"
               >
-                ĐĂNG NHẬP
+                {isLoading ? 'Đang đăng nhập' : 'ĐĂNG NHẬP'}
               </Button>
             </form>
           </div>

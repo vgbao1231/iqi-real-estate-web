@@ -20,13 +20,14 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import OutroSection from '@/app/(main)/components/outro-section';
-import { partners } from '@/lib/partner-data';
 import IntroSection from '@/app/(main)/components/intro-section';
+import { useGetAllPartnersQuery } from '@/features/partner/partnerApi';
 
 export default function PartnersPage() {
   const [showAllDevelopers, setShowAllDevelopers] = useState(false);
   const [showAllInternational, setShowAllInternational] = useState(false);
   const [showAllBanking, setShowAllBanking] = useState(false);
+  const { data: partners = [] } = useGetAllPartnersQuery();
 
   const partnershipBenefits = [
     {
@@ -63,15 +64,17 @@ export default function PartnersPage() {
     },
   ];
 
+  const developer = partners.filter((p) => p.category === 'DEVELOPER');
+  const international = partners.filter((p) => p.category === 'INTERNATIONAL');
+  const bank = partners.filter((p) => p.category === 'BANK');
+
   const displayedDevelopers = showAllDevelopers
-    ? partners.developer
-    : partners.developer.slice(0, 4);
+    ? developer
+    : developer.slice(0, 4);
   const displayedInternational = showAllInternational
-    ? partners.international
-    : partners.international.slice(0, 4);
-  const displayedBanking = showAllBanking
-    ? partners.bank
-    : partners.bank.slice(0, 4);
+    ? international
+    : international.slice(0, 4);
+  const displayedBanking = showAllBanking ? bank : bank.slice(0, 4);
 
   return (
     <div className="min-h-screen bg-background">
@@ -151,7 +154,7 @@ export default function PartnersPage() {
                       </motion.div>
                       <CardTitle className="text-lg">{partner.name}</CardTitle>
                       <p className="text-muted-foreground text-sm">
-                        {partner.type}
+                        {partner.shortDescription}
                       </p>
                     </CardHeader>
 
@@ -163,9 +166,9 @@ export default function PartnersPage() {
                       <div className="grid grid-cols-3 gap-2 mb-4 text-center">
                         <div>
                           <div className="text-sm font-bold text-blue-600">
-                            {Number(partner.projects) === 0
+                            {Number(partner.projectCount) === 0
                               ? 'Đang cập nhật'
-                              : partner.projects}
+                              : partner.projectCount}
                           </div>
                           <div className="text-xs text-muted-foreground">
                             Dự án
@@ -194,7 +197,7 @@ export default function PartnersPage() {
                       <div className="flex flex-wrap gap-1 mb-4">
                         {partner.specialties
                           .slice(0, 2)
-                          .map((specialty, idx) => (
+                          .map((specialty: any, idx: any) => (
                             <Badge
                               key={idx}
                               variant="outline"
@@ -208,7 +211,7 @@ export default function PartnersPage() {
                       <div className="space-y-1">
                         {partner.achievements
                           .slice(0, 1)
-                          .map((achievement, idx) => (
+                          .map((achievement: any, idx: any) => (
                             <div
                               key={idx}
                               className="flex items-center text-xs text-muted-foreground"
@@ -225,7 +228,7 @@ export default function PartnersPage() {
             ))}
           </div>
 
-          {partners.developer.length > 4 && (
+          {developer.length > 4 && (
             <div className="text-center mt-8">
               <Button
                 onClick={() => setShowAllDevelopers(!showAllDevelopers)}
@@ -238,7 +241,7 @@ export default function PartnersPage() {
                   </>
                 ) : (
                   <>
-                    Xem thêm ({partners.developer.length - 4} đối tác){' '}
+                    Xem thêm ({developer.length - 4} đối tác){' '}
                     <ChevronDown className="w-4 h-4" />
                   </>
                 )}
@@ -279,7 +282,7 @@ export default function PartnersPage() {
                       </motion.div>
                       <CardTitle className="text-lg">{partner.name}</CardTitle>
                       <p className="text-muted-foreground text-sm">
-                        {partner.type}
+                        {partner.shortDescription}
                       </p>
                     </CardHeader>
 
@@ -291,7 +294,7 @@ export default function PartnersPage() {
                       <div className="grid grid-cols-2 gap-4 mb-4">
                         <div>
                           <div className="text-lg font-bold text-blue-600">
-                            {partner.countries}
+                            {partner.countryCount}
                           </div>
                           <div className="text-sm text-muted-foreground">
                             Quốc gia
@@ -310,7 +313,7 @@ export default function PartnersPage() {
                       <div className="space-y-1">
                         {partner.achievements
                           .slice(0, 1)
-                          .map((achievement, idx) => (
+                          .map((achievement: any, idx: any) => (
                             <div
                               key={idx}
                               className="flex items-center justify-center text-sm text-muted-foreground"
@@ -327,7 +330,7 @@ export default function PartnersPage() {
             ))}
           </div>
 
-          {partners.international.length > 4 && (
+          {international.length > 4 && (
             <div className="text-center mt-8">
               <Button
                 onClick={() => setShowAllInternational(!showAllInternational)}
@@ -340,7 +343,7 @@ export default function PartnersPage() {
                   </>
                 ) : (
                   <>
-                    Xem thêm ({partners.international.length - 4} đối tác){' '}
+                    Xem thêm ({international.length - 4} đối tác){' '}
                     <ChevronDown className="w-4 h-4" />
                   </>
                 )}
@@ -406,12 +409,17 @@ export default function PartnersPage() {
                       </div>
 
                       <div className="space-y-1">
-                        {bank.benefits.slice(0, 2).map((benefit, idx) => (
-                          <div key={idx} className="flex items-center text-xs">
-                            <CheckCircle className="w-3 h-3 mr-2 text-green-600 flex-shrink-0" />
-                            <span className="text-left">{benefit}</span>
-                          </div>
-                        ))}
+                        {bank.benefits
+                          .slice(0, 2)
+                          .map((benefit: any, idx: any) => (
+                            <div
+                              key={idx}
+                              className="flex items-center text-xs"
+                            >
+                              <CheckCircle className="w-3 h-3 mr-2 text-green-600 flex-shrink-0" />
+                              <span className="text-left">{benefit}</span>
+                            </div>
+                          ))}
                       </div>
                     </CardContent>
                   </Card>
@@ -420,7 +428,7 @@ export default function PartnersPage() {
             ))}
           </div>
 
-          {partners.bank.length > 4 && (
+          {bank.length > 4 && (
             <div className="text-center mt-8">
               <Button
                 onClick={() => setShowAllBanking(!showAllBanking)}
@@ -433,7 +441,7 @@ export default function PartnersPage() {
                   </>
                 ) : (
                   <>
-                    Xem thêm ({partners.bank.length - 4} đối tác){' '}
+                    Xem thêm ({bank.length - 4} đối tác){' '}
                     <ChevronDown className="w-4 h-4" />
                   </>
                 )}

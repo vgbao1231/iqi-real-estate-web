@@ -76,8 +76,8 @@ const Siteplan = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
                       >
                         {/* PhotoSwipe Item */}
                         <Item
-                          original={img || '/placeholder-2.webp'} // ảnh gốc
-                          thumbnail={img || '/placeholder-2.webp'} // ảnh thumbnail
+                          original={img || '/placeholder.svg'} // ảnh gốc
+                          thumbnail={img || '/placeholder.svg'} // ảnh thumbnail
                           width="1920"
                           height="1080"
                         >
@@ -85,7 +85,7 @@ const Siteplan = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
                             <Image
                               ref={ref as any}
                               onClick={open}
-                              src={img || '/placeholder-2.webp'}
+                              src={img?.url || '/placeholder.svg'}
                               alt={`Ảnh ${idx + 1}`}
                               width={1920}
                               height={1080}
@@ -116,8 +116,8 @@ const Siteplan = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
           ) : (
             // 👉 1 ảnh => chỉ cần Item của PhotoSwipe
             <Item
-              original={data.siteplanImages[0] || '/placeholder-2.webp'}
-              thumbnail={data.siteplanImages[0] || '/placeholder-2.webp'}
+              original={data.siteplanImages[0] || '/placeholder.svg'}
+              thumbnail={data.siteplanImages[0] || '/placeholder.svg'}
               width="1920"
               height="1080"
             >
@@ -125,7 +125,7 @@ const Siteplan = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
                 <Image
                   ref={ref as any}
                   onClick={open}
-                  src={data.siteplanImages[0] || '/placeholder-2.webp'}
+                  src={data.siteplanImages[0]?.url || '/placeholder.svg'}
                   alt="Ảnh mặt bằng"
                   width={1920}
                   height={1080}

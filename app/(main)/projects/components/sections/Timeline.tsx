@@ -25,7 +25,7 @@ const Timeline = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
       <div className="relative min-h-screen center-both py-16">
         {/* Background image full screen */}
         <Image
-          src={data.backgroundImage}
+          src={data.backgroundImage?.url || '/placeholder.svg'}
           alt="Eco Retreat Timeline Background"
           fill
           className="object-cover object-left"
@@ -39,7 +39,7 @@ const Timeline = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
           />
           <FadeIn delay={0.4}>
             <Image
-              src={data.timelineImage}
+              src={data.timelineImage?.url || '/placeholder.svg'}
               alt="Eco Retreat Timeline Background"
               width={600}
               height={600}
@@ -54,7 +54,7 @@ const Timeline = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
       <div className="relative min-h-screen py-12">
         {/* Background image full screen */}
         <Image
-          src={data.backgroundImage}
+          src={data.backgroundImage?.url || '/placeholder.svg'}
           alt="Eco Retreat Timeline Background"
           fill
           className="object-cover object-left"
@@ -79,7 +79,7 @@ const Timeline = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
                 >
                   <div className="w-full h-64 relative">
                     <Image
-                      src={image}
+                      src={image?.url || '/placeholder.svg'}
                       alt={`Gallery image ${index + 1}`}
                       fill
                       className="object-cover rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300"

@@ -4,10 +4,11 @@ import type React from 'react';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Upload, X, ImageIcon } from 'lucide-react';
+import Image from 'next/image';
 
 interface MultiFileUploadProps {
   label: string;
-  value: (string | File)[]; // Updated type to accept array of strings (paths) or File objects
+  value: ({ url: string; publicId: string } | File)[]; // Updated type to accept array of strings (paths) or File objects
   onChange: (files: File[]) => void; // Still returns File objects for new uploads
   accept?: string;
 }
@@ -57,12 +58,14 @@ export function MultiFileUpload({
         {value.length > 0 && (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 mt-4">
             {value.map((file, index) => {
-              const imgSrc =
-                typeof file === 'string' ? file : URL.createObjectURL(file);
               const fileName =
-                typeof file === 'string' ? file.split('/').pop() : file.name;
+                file instanceof File
+                  ? file.name
+                  : (file?.url?.split('/').pop() ?? 'unknown');
+
               const isImage =
-                typeof file === 'string' || file.type.startsWith('image/');
+                file instanceof File ||
+                (file && typeof file === 'object' && 'url' in file);
 
               return (
                 <div
@@ -70,10 +73,19 @@ export function MultiFileUpload({
                   className="relative group border rounded-lg overflow-hidden aspect-square center-both bg-gray-100"
                 >
                   {isImage ? (
-                    <img
-                      src={imgSrc || '/placeholder-2.webp'}
+                    <Image
+                      src={
+                        file instanceof File
+                          ? URL.createObjectURL(file)
+                          : (file?.url ?? '/placeholder.svg')
+                      }
                       alt={`Preview ${fileName}`}
-                      className="object-cover w-full h-full"
+                      fill // tự fill theo parent (aspect-square giữ tỷ lệ vuông)
+                      className="object-cover"
+                      quality={40} // 👈 giảm chất lượng ảnh cho nhẹ
+                      sizes="150px" // 👈 báo browser chỉ cần load ảnh ~150px (thumbnail)
+                      placeholder="blur"
+                      blurDataURL="/tiny-placeholder.png" // ảnh siêu nhỏ giúp UX mượt
                     />
                   ) : (
                     <div className="text-center text-gray-500 text-xs p-2">
@@ -81,6 +93,7 @@ export function MultiFileUpload({
                       {fileName}
                     </div>
                   )}
+
                   <Button
                     variant="destructive"
                     size="sm"

@@ -2,7 +2,7 @@
 
 import type React from 'react';
 
-import { useState, useRef, useEffect, useMemo } from 'react';
+import { useState, useRef, useEffect, useMemo, memo } from 'react';
 import {
   Card,
   CardContent,
@@ -32,6 +32,8 @@ import {
 } from '@/components/ui/carousel';
 import { cn } from '@/lib/utils';
 import { throttle } from 'lodash';
+import { useUpdateProjectTabMutation } from '@/features/project/projectApi';
+import { useUploadImageMutation } from '@/features/upload/uploadApi';
 
 interface Marker {
   id: number;
@@ -50,14 +52,10 @@ interface View360Item {
 interface SiteplanTabProps {
   siteplan: any;
   updateProject: (section: string, field: string, value: any) => void;
+  handleSave: (updateApi: any, uploadApi: any, tab: string, data: any) => void;
 }
 
-export function SiteplanTab({ siteplan, updateProject }: SiteplanTabProps) {
-  const [current360Index, setCurrent360Index] = useState(0);
-  const [editingMarker, setEditingMarker] = useState<number | null>(null);
-  const imageRef = useRef<HTMLImageElement>(null);
-  const [imageRect, setImageRect] = useState<DOMRect | null>(null);
-
+const SiteplanPreview = memo(function SiteplanPreview({ siteplanImages }: any) {
   const [carouselApi, setCarouselApi] = useState<CarouselApi>();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
@@ -79,50 +77,81 @@ export function SiteplanTab({ siteplan, updateProject }: SiteplanTabProps) {
     };
   }, [carouselApi]);
 
-  // Handle siteplan images change
-  const handleSiteplanImagesChange = (files: File[]) => {
-    updateProject('siteplan', 'siteplanImages', files);
-  };
+  return (
+    <>
+      {siteplanImages.length > 1 ? (
+        // 👉 Nhiều ảnh => Carousel
+        <div className="min-h-[60vh] w-full center-both">
+          <Carousel
+            className="w-full"
+            setApi={setCarouselApi}
+            opts={{ loop: true }}
+          >
+            <CarouselContent>
+              {siteplanImages.map((img: any, idx: number) => (
+                <CarouselItem key={idx} className="pl-0">
+                  <div className="relative h-[70vh] w-full overflow-hidden">
+                    <Image
+                      src={
+                        img
+                          ? img instanceof File
+                            ? URL.createObjectURL(img)
+                            : img.url
+                          : '/placeholder.svg'
+                      }
+                      alt={`Ảnh ${idx + 1}`}
+                      fill
+                      priority
+                      className="object-cover"
+                    />
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
 
-  // Handle 360 images change - preserve existing markers and clean up invalid panoramaTargets
-  const handle360ImagesChange = (files: File[]) => {
-    const existingView360 = siteplan.view360 || [];
+            {/* Dots */}
+            <div className="z-10 absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-3">
+              {siteplanImages.map((_: any, i: any) => (
+                <div
+                  key={i}
+                  className={cn(
+                    'h-2 w-2 rounded-full bg-white transition-all',
+                    i === currentImageIndex ? 'w-4' : 'bg-gray-300'
+                  )}
+                />
+              ))}
+            </div>
+          </Carousel>
+        </div>
+      ) : (
+        <Image
+          src={
+            siteplanImages[0]
+              ? siteplanImages[0] instanceof File
+                ? URL.createObjectURL(siteplanImages[0])
+                : siteplanImages[0].url
+              : '/placeholder.svg'
+          }
+          alt="Ảnh mặt bằng"
+          width={1920}
+          height={1080}
+          className="w-full h-auto"
+          priority
+        />
+      )}
+    </>
+  );
+});
 
-    // Create new view360 array, preserving existing markers where possible
-    const newView360: View360Item[] = files.map((file, index) => {
-      // Try to find existing view360 item at this index
-      const existingItem = existingView360[index];
-
-      return {
-        id: index + 1,
-        image: file,
-        markers: existingItem?.markers || [], // Preserve existing markers
-      };
-    });
-
-    // Clean up panoramaTargets that reference deleted images
-    const cleanedView360 = newView360.map((viewItem, viewIndex) => ({
-      ...viewItem,
-      markers: viewItem.markers.map((marker: Marker) => {
-        // Check if panoramaTarget still exists in the new view360 array
-        const targetExists = newView360.some(
-          (v, idx) => getImageId(v.image, idx) === marker.panoramaTarget
-        );
-
-        return {
-          ...marker,
-          panoramaTarget: targetExists ? marker.panoramaTarget : '', // Clear if target doesn't exist
-        };
-      }),
-    }));
-
-    updateProject('siteplan', 'view360', cleanedView360);
-
-    // Reset current index if it's out of bounds
-    if (current360Index >= files.length) {
-      setCurrent360Index(Math.max(0, files.length - 1));
-    }
-  };
+const Viewer360Preview = memo(function Viewer360Preview({
+  siteplan,
+  updateProject,
+  current360Index,
+  setCurrent360Index,
+}: any) {
+  const [editingMarker, setEditingMarker] = useState<number | null>(null);
+  const imageRef = useRef<HTMLImageElement>(null);
+  const [imageRect, setImageRect] = useState<DOMRect | null>(null);
 
   // Handle click on 360 image to add marker
   const handleImageClick = (e: React.MouseEvent<HTMLImageElement>) => {
@@ -165,6 +194,217 @@ export function SiteplanTab({ siteplan, updateProject }: SiteplanTabProps) {
     setEditingMarker(newMarker.id);
   };
 
+  // Render marker on image
+  const renderMarker = (marker: Marker) => {
+    // Dùng imageRect từ state thay vì biến rect cũ
+    if (!imageRect || !imageRef.current?.naturalWidth) return null;
+
+    const imageWidth = imageRef.current.naturalWidth;
+    const imageHeight = imageRef.current.naturalHeight;
+
+    const actualX =
+      (((marker.longitude * 180) / Math.PI + 180) / 360) * imageWidth;
+    const actualY =
+      ((90 - (marker.latitude * 180) / Math.PI) / 180) * imageHeight;
+
+    // Sử dụng imageRect.width và imageRect.height từ state
+    const displayX = (actualX / imageWidth) * imageRect.width;
+    const displayY = (actualY / imageHeight) * imageRect.height;
+
+    // JSX để render marker không thay đổi
+    return (
+      <div
+        key={marker.id}
+        className="absolute transform -translate-x-1/2 -translate-y-1/2 z-10"
+        style={{
+          left: `${displayX}px`,
+          top: `${displayY}px`,
+        }}
+      >
+        <div className="relative group">
+          <div className="w-4 h-4 bg-orange-500 rounded-full border-2 border-white shadow-lg center-both cursor-pointer hover:bg-orange-600 transition-colors">
+            <MapPin className="w-2 h-2 text-white" />
+          </div>
+          <div className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-75 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+            {marker.tooltip}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // Handle clicking on 360 image thumbnail to switch editing
+  const handle360ImageSelect = (index: number) => {
+    setCurrent360Index(index);
+    setEditingMarker(null);
+  };
+
+  const view360 = siteplan.view360 || [];
+  const currentView = view360?.[current360Index];
+  const currentImageMarkers = currentView?.markers || [];
+  const imageUrl = useMemo(
+    () =>
+      // Sử dụng optional chaining (?.) bên trong hook để an toàn hơn
+      currentView?.image
+        ? currentView.image instanceof File
+          ? URL.createObjectURL(currentView.image)
+          : currentView.image.url || '/placeholder.svg'
+        : '/placeholder.svg',
+    // Phụ thuộc vào `currentView?.image` để chỉ tính toán lại khi ảnh thay đổi
+    [currentView?.image]
+  );
+
+  useEffect(() => {
+    const imageElement = imageRef.current;
+
+    // Chỉ thực thi nếu có element và có một ảnh hợp lệ (không phải placeholder)
+    if (!imageElement || !currentView?.image) {
+      return; // Dừng lại nếu chưa có ảnh thật
+    }
+
+    const updateRect = throttle(() => {
+      setImageRect(imageElement.getBoundingClientRect());
+    }, 100);
+    const observer = new ResizeObserver(updateRect);
+
+    observer.observe(imageElement);
+
+    // Dọn dẹp khi component unmount hoặc KHI imageUrl THAY ĐỔI
+    return () => {
+      observer.disconnect();
+    };
+  }, [imageUrl, currentView?.image]);
+
+  return (
+    <>
+      {view360.length > 1 && (
+        <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2">
+          {view360.map((viewItem: any, index: any) => (
+            <div
+              key={viewItem.id}
+              className={`relative aspect-square rounded-lg overflow-hidden cursor-pointer border-2 transition-colors ${
+                index === current360Index
+                  ? 'border-orange-500'
+                  : 'border-gray-200 hover:border-gray-300'
+              }`}
+              onClick={() => handle360ImageSelect(index)}
+            >
+              <Image
+                src={
+                  viewItem.image
+                    ? viewItem.image instanceof File
+                      ? URL.createObjectURL(viewItem.image)
+                      : viewItem.image.url || '/placeholder.svg'
+                    : '/placeholder.svg'
+                }
+                alt={`360 View ${index + 1}`}
+                fill
+                className="object-cover"
+              />
+              {/* Marker count badge */}
+              {viewItem.markers.length > 0 && (
+                <div className="absolute top-1 right-1 bg-orange-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  {viewItem.markers.length}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* 360 Image with Markers */}
+      {currentView && (
+        <div className="relative bg-gray-100">
+          <Image
+            ref={imageRef}
+            src={imageUrl}
+            alt="360 View"
+            width={1920}
+            height={1080}
+            className="w-full h-auto cursor-crosshair"
+            onClick={handleImageClick}
+            onLoad={() => {
+              if (imageRef.current) {
+                setImageRect(imageRef.current.getBoundingClientRect());
+              }
+            }}
+          />
+
+          {/* Render Markers for current image only */}
+          {imageRect &&
+            currentImageMarkers.map((marker: Marker) => renderMarker(marker))}
+        </div>
+      )}
+
+      <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+        <p className="text-sm text-blue-800">
+          <strong>Hướng dẫn:</strong> Click vào ảnh 360 để thêm marker. Click
+          vào thumbnail ảnh khác để chuyển sang chỉnh sửa ảnh đó. Marker sẽ liên
+          kết đến các ảnh 360 khác để tạo tour ảo.
+        </p>
+      </div>
+    </>
+  );
+});
+
+export function SiteplanTab({
+  siteplan,
+  updateProject,
+  handleSave,
+}: SiteplanTabProps) {
+  const [current360Index, setCurrent360Index] = useState(0);
+  const [editingMarker, setEditingMarker] = useState<number | null>(null);
+  const imageRef = useRef<HTMLImageElement>(null);
+  const [imageRect, setImageRect] = useState<DOMRect | null>(null);
+
+  const [updateProjectTab, { isLoading }] = useUpdateProjectTabMutation();
+  const [uploadImage, { isLoading: isUploading }] = useUploadImageMutation();
+
+  // Handle siteplan images change
+  const handleSiteplanImagesChange = (files: File[]) => {
+    updateProject('siteplan', 'siteplanImages', files);
+  };
+
+  // Handle 360 images change - preserve existing markers and clean up invalid panoramaTargets
+  const handle360ImagesChange = (files: File[]) => {
+    const existingView360 = siteplan.view360 || [];
+
+    // Create new view360 array, preserving existing markers where possible
+    const newView360: View360Item[] = files.map((file, index) => {
+      // Try to find existing view360 item at this index
+      const existingItem = existingView360[index];
+
+      return {
+        id: index + 1,
+        image: file,
+        markers: existingItem?.markers || [], // Preserve existing markers
+      };
+    });
+
+    // Clean up panoramaTargets that reference deleted images
+    const cleanedView360 = newView360.map((viewItem) => ({
+      ...viewItem,
+      markers: viewItem.markers.map((marker: Marker) => {
+        // Check if panoramaTarget still exists in the new view360 array
+        const targetExists = newView360.some(
+          (v, idx) => getImageId(v.image, idx) === marker.panoramaTarget
+        );
+
+        return {
+          ...marker,
+          panoramaTarget: targetExists ? marker.panoramaTarget : '', // Clear if target doesn't exist
+        };
+      }),
+    }));
+
+    updateProject('siteplan', 'view360', cleanedView360);
+
+    // Reset current index if it's out of bounds
+    if (current360Index >= files.length) {
+      setCurrent360Index(Math.max(0, files.length - 1));
+    }
+  };
+
   // Update marker
   const updateMarker = (markerId: number, field: keyof Marker, value: any) => {
     const updatedView360 = [...siteplan.view360];
@@ -194,20 +434,6 @@ export function SiteplanTab({ siteplan, updateProject }: SiteplanTabProps) {
 
     updateProject('siteplan', 'view360', updatedView360);
     setEditingMarker(null);
-  };
-
-  // Save siteplan data
-  const saveSiteplanData = () => {
-    const data = {
-      siteplanImages: siteplan.siteplanImages || [],
-      view360: siteplan.view360 || [],
-    };
-    console.log('Siteplan Data:', data);
-  };
-
-  // Get image source for display
-  const getImageSrc = (image: string | File) => {
-    return typeof image === 'string' ? image : URL.createObjectURL(image);
   };
 
   // Get image identifier for comparison (used for panoramaTarget matching)
@@ -269,16 +495,12 @@ export function SiteplanTab({ siteplan, updateProject }: SiteplanTabProps) {
   const currentView = view360?.[current360Index];
   const currentImageMarkers = currentView?.markers || [];
   const imageUrl = useMemo(() => {
-    // Sử dụng optional chaining (?.) bên trong hook để an toàn hơn
-    const imageSource = currentView?.image;
-    if (!imageSource) {
-      return '/placeholder.svg';
-    }
-    if (typeof imageSource === 'string') {
-      return imageSource;
-    }
-    return URL.createObjectURL(imageSource);
-    // Phụ thuộc vào `currentView?.image` để chỉ tính toán lại khi ảnh thay đổi
+    const img = currentView?.image;
+    return img
+      ? img instanceof File
+        ? URL.createObjectURL(img)
+        : img.url || '/placeholder.svg'
+      : '/placeholder.svg';
   }, [currentView?.image]);
 
   useEffect(() => {
@@ -313,12 +535,6 @@ export function SiteplanTab({ siteplan, updateProject }: SiteplanTabProps) {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          <MultiFileUpload
-            label="Ảnh mặt bằng"
-            value={siteplanImages}
-            onChange={handleSiteplanImagesChange}
-          />
-
           {/* Siteplan Carousel */}
           {siteplanImages.length > 0 && (
             <div className="space-y-4">
@@ -327,69 +543,14 @@ export function SiteplanTab({ siteplan, updateProject }: SiteplanTabProps) {
               </Label>
 
               {/* Main Image Display */}
-              {siteplanImages.length > 1 ? (
-                // 👉 Nhiều ảnh => Carousel
-                <div className="min-h-[60vh] w-full center-both">
-                  <Carousel
-                    className="w-full"
-                    setApi={setCarouselApi}
-                    opts={{ loop: true }}
-                  >
-                    <CarouselContent>
-                      {siteplanImages.map((img: any, idx: number) => (
-                        <CarouselItem key={idx} className="pl-0">
-                          <div className="relative h-auto md:h-[60vh] w-full overflow-hidden">
-                            <Image
-                              src={
-                                img
-                                  ? typeof img === 'string'
-                                    ? img
-                                    : URL.createObjectURL(img)
-                                  : '/placeholder.svg'
-                              }
-                              alt={`Ảnh ${idx + 1}`}
-                              width={1920}
-                              height={1080}
-                              priority
-                              className="w-full h-auto"
-                            />
-                          </div>
-                        </CarouselItem>
-                      ))}
-                    </CarouselContent>
-
-                    {/* Dots */}
-                    <div className="z-10 absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-3">
-                      {siteplanImages.map((_: any, i: any) => (
-                        <div
-                          key={i}
-                          className={cn(
-                            'h-2 w-2 rounded-full bg-white transition-all',
-                            i === currentImageIndex ? 'w-4' : 'bg-gray-300'
-                          )}
-                        />
-                      ))}
-                    </div>
-                  </Carousel>
-                </div>
-              ) : (
-                <Image
-                  src={
-                    siteplanImages[0]
-                      ? typeof siteplanImages[0] === 'string'
-                        ? siteplanImages[0]
-                        : URL.createObjectURL(siteplanImages[0])
-                      : '/placeholder.svg'
-                  }
-                  alt="Ảnh mặt bằng"
-                  width={1920}
-                  height={1080}
-                  className="w-full h-auto"
-                  priority
-                />
-              )}
+              <SiteplanPreview siteplanImages={siteplanImages} />
             </div>
           )}
+          <MultiFileUpload
+            label="Ảnh mặt bằng"
+            value={siteplanImages}
+            onChange={handleSiteplanImagesChange}
+          />
         </CardContent>
       </Card>
 
@@ -426,67 +587,12 @@ export function SiteplanTab({ siteplan, updateProject }: SiteplanTabProps) {
               </div>
 
               {/* 360 Images Thumbnail Grid */}
-              {view360.length > 1 && (
-                <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2">
-                  {view360.map((viewItem: any, index: any) => (
-                    <div
-                      key={viewItem.id}
-                      className={`relative aspect-square rounded-lg overflow-hidden cursor-pointer border-2 transition-colors ${
-                        index === current360Index
-                          ? 'border-orange-500'
-                          : 'border-gray-200 hover:border-gray-300'
-                      }`}
-                      onClick={() => handle360ImageSelect(index)}
-                    >
-                      <img
-                        src={getImageSrc(viewItem.image) || '/placeholder.svg'}
-                        alt={`360 View ${index + 1}`}
-                        className="w-full h-full object-cover"
-                      />
-                      {/* Marker count badge */}
-                      {viewItem.markers.length > 0 && (
-                        <div className="absolute top-1 right-1 bg-orange-500 text-white text-xs rounded-full w-5 h-5 center-both">
-                          {viewItem.markers.length}
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* 360 Image with Markers */}
-              {currentView && (
-                <div className="relative bg-gray-100">
-                  <Image
-                    ref={imageRef}
-                    src={imageUrl}
-                    alt="360 View"
-                    width={1920}
-                    height={1080}
-                    className="w-full h-auto cursor-crosshair"
-                    onClick={handleImageClick}
-                    onLoad={() => {
-                      if (imageRef.current) {
-                        setImageRect(imageRef.current.getBoundingClientRect());
-                      }
-                    }}
-                  />
-
-                  {/* Render Markers for current image only */}
-                  {imageRect &&
-                    currentImageMarkers.map((marker: Marker) =>
-                      renderMarker(marker)
-                    )}
-                </div>
-              )}
-
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-                <p className="text-sm text-blue-800">
-                  <strong>Hướng dẫn:</strong> Click vào ảnh 360 để thêm marker.
-                  Click vào thumbnail ảnh khác để chuyển sang chỉnh sửa ảnh đó.
-                  Marker sẽ liên kết đến các ảnh 360 khác để tạo tour ảo.
-                </p>
-              </div>
+              <Viewer360Preview
+                siteplan={siteplan}
+                updateProject={updateProject}
+                current360Index={current360Index}
+                setCurrent360Index={setCurrent360Index}
+              />
 
               {/* Marker List for current image */}
               {currentImageMarkers.length > 0 && (
@@ -619,19 +725,25 @@ export function SiteplanTab({ siteplan, updateProject }: SiteplanTabProps) {
               )}
             </div>
           )}
-
-          {/* Save Button */}
-          <div className="flex justify-end pt-4">
-            <Button
-              onClick={saveSiteplanData}
-              className="flex items-center space-x-2"
-            >
-              <Save className="h-4 w-4" />
-              <span>Lưu siteplan</span>
-            </Button>
-          </div>
         </CardContent>
       </Card>
+      {/* Save Button - Fixed at bottom */}
+      <div className="flex justify-end pt-6 border-t">
+        <Button
+          onClick={() =>
+            handleSave(updateProjectTab, uploadImage, 'siteplan', siteplan)
+          }
+          disabled={isLoading || isUploading}
+          className="flex items-center space-x-2"
+        >
+          <Save className="h-4 w-4" />
+          <span>
+            {isLoading || isUploading
+              ? 'Đang lưu...'
+              : 'Lưu thông tin mặt bằng'}
+          </span>
+        </Button>
+      </div>
     </div>
   );
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { memo, useState } from 'react';
 import {
   Card,
   CardContent,
@@ -21,13 +21,34 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { FileUpload } from '@/components/ui/file-upload';
 import { Separator } from '@/components/ui/separator';
-import { Layout, Phone, Mail, MapPin, Globe, Check } from 'lucide-react';
+import {
+  Layout,
+  Phone,
+  Mail,
+  MapPin,
+  Globe,
+  Check,
+  Save,
+  Users,
+} from 'lucide-react';
 import { contact as contactData } from '@/lib/contact-data';
 import { LayoutPreview } from '@/components/common/contact-layout';
+import { useUpdateProjectTabMutation } from '@/features/project/projectApi';
+import { useUploadImageMutation } from '@/features/upload/uploadApi';
+import { RichTextEditor } from '@/components/ui/rich-text-editor';
+import { Input } from '@/components/ui/input';
+import Image from 'next/image';
 
 interface ContactTabProps {
   contact: any;
   updateProject: (section: string, field: string, value: any) => void;
+  updateNestedProject: (
+    section: string,
+    subsection: string,
+    field: string,
+    value: any
+  ) => void;
+  handleSave: (updateApi: any, uploadApi: any, tab: string, data: any) => void;
 }
 
 // Mock contact data from contact management
@@ -219,7 +240,53 @@ function LayoutDemo({ layoutId }: { layoutId: string }) {
   }
 }
 
-export function ContactTab({ contact, updateProject }: ContactTabProps) {
+// Preview component for agency
+const AgencyPreview = memo(function AgencyPreview({ agency }: any) {
+  const { agencyImage, title, description } = agency;
+
+  return (
+    <section className="bg-background mx-auto w-full min-h-[60vh] center-both py-12">
+      <div className="h-full w-full max-w-7xl center-both flex-col md:flex-row py-8 gap-8">
+        {/* Left content */}
+        <div className="relative w-full md:w-1/2 h-[50vh] center-both">
+          <Image
+            src={
+              agencyImage
+                ? agencyImage instanceof File
+                  ? URL.createObjectURL(agencyImage)
+                  : agencyImage.url
+                : '/placeholder.svg'
+            }
+            alt="Eco Retreat Experience Background"
+            fill
+            className="object-contain"
+            priority
+          />
+        </div>
+
+        {/* Right content */}
+        <div className="md:w-1/2 space-y-6">
+          <div>
+            <h3 className="text-4xl font-bold italic text-lime-500 mb-4">
+              {title}
+            </h3>
+            <div
+              className="space-y-2 text-lg text-foreground"
+              dangerouslySetInnerHTML={{ __html: description }}
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+});
+
+export function ContactTab({
+  contact,
+  updateProject,
+  updateNestedProject,
+  handleSave,
+}: ContactTabProps) {
   const [isLayoutDialogOpen, setIsLayoutDialogOpen] = useState(false);
   const currentLayout = contact.layoutId || 'layout-1';
   const selectedLayoutConfig =
@@ -230,157 +297,251 @@ export function ContactTab({ contact, updateProject }: ContactTabProps) {
     updateProject('contact', 'layoutId', layoutId);
     setIsLayoutDialogOpen(false);
   };
+  const [updateProjectTab, { isLoading }] = useUpdateProjectTabMutation();
+  const [uploadImage, { isLoading: isUploading }] = useUploadImageMutation();
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Thông tin liên hệ & Bố cục</CardTitle>
-        <CardDescription>
-          Cấu hình hiển thị thông tin liên hệ và form đăng ký tư vấn cho dự án
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-6">
-        {/* Live Preview */}
-        <div className="bg-gray-50 rounded-lg">
-          <div className="flex items-center justify-between mb-3">
-            <Label className="text-sm font-medium text-gray-700">
-              Xem trước bố cục hiện tại:
-            </Label>
-            <Badge variant="secondary" className="flex items-center space-x-1">
-              <Layout className="h-3 w-3" />
-              <span>{selectedLayoutConfig.name}</span>
-            </Badge>
-          </div>
-          <LayoutPreview
-            layoutId={currentLayout}
-            contact={contact}
-            contactData={mockContactData}
-            compact
-          />
-        </div>
+    <div className="space-y-8">
+      {/* Agency Section */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center space-x-2">
+            <Users className="h-5 w-5" />
+            <span>Thông tin đại lý</span>
+          </CardTitle>
+          <CardDescription>
+            Cập nhật thông tin đại lý phân phối dự án
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          {/* Preview */}
+          <AgencyPreview agency={contact.agency} />
 
-        <Separator />
+          <Separator />
 
-        {/* Layout Selection */}
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <Label className="text-base font-semibold">Bố cục hiển thị</Label>
-              <p className="text-sm text-gray-600 mt-1">
-                {selectedLayoutConfig.description}
-              </p>
+          {/* Form Fields */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <FileUpload
+              label="Logo/Ảnh đại lý"
+              value={contact.agency.agencyImage}
+              onChange={(file) =>
+                updateNestedProject('contact', 'agency', 'agencyImage', file)
+              }
+            />
+
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="agencyTitle">Tiêu đề đại lý</Label>
+                <Input
+                  id="agencyTitle"
+                  value={contact.agency.title}
+                  onChange={(e) =>
+                    updateNestedProject(
+                      'contact',
+                      'agency',
+                      'title',
+                      e.target.value
+                    )
+                  }
+                  placeholder="VD: Thông Tin Đại Lý"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label>Mô tả đại lý</Label>
+                <RichTextEditor
+                  value={contact.agency.description}
+                  onChange={(value) =>
+                    updateNestedProject(
+                      'contact',
+                      'agency',
+                      'description',
+                      value
+                    )
+                  }
+                  placeholder="Nhập thông tin chi tiết về đại lý: tên công ty, địa chỉ, hotline, email..."
+                />
+                <p className="text-xs text-gray-500">
+                  Có thể bao gồm: tên công ty, địa chỉ, số điện thoại, email,
+                  website, giấy phép kinh doanh...
+                </p>
+              </div>
             </div>
-            <Dialog
-              open={isLayoutDialogOpen}
-              onOpenChange={setIsLayoutDialogOpen}
-            >
-              <DialogTrigger asChild>
-                <Button
-                  variant="outline"
-                  className="flex items-center space-x-2"
-                >
-                  <Layout className="h-4 w-4" />
-                  <span>Chọn bố cục</span>
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="max-w-3xl">
-                <DialogHeader>
-                  <DialogTitle className="flex items-center space-x-2">
-                    <Layout className="h-5 w-5" />
-                    <span>Chọn bố cục hiển thị</span>
-                  </DialogTitle>
-                  <DialogDescription>Nhấn vào bố cục để chọn</DialogDescription>
-                </DialogHeader>
-
-                <div className="grid grid-cols-2 gap-4 mt-6">
-                  {layoutConfigs.map((layout) => (
-                    <div
-                      key={layout.id}
-                      className={`relative cursor-pointer transition-all duration-200 rounded-lg overflow-hidden border-2 ${
-                        currentLayout === layout.id
-                          ? 'border-blue-500 shadow-lg'
-                          : 'border-gray-200 hover:border-gray-300 hover:shadow-md'
-                      }`}
-                      onClick={() => handleLayoutSelect(layout.id)}
-                    >
-                      {/* Demo Preview */}
-                      <div className="p-3">
-                        <LayoutDemo layoutId={layout.id} />
-                        {currentLayout === layout.id && (
-                          <div className="absolute top-2 right-2">
-                            <Badge className="bg-blue-500 text-white flex items-center space-x-1">
-                              <Check className="h-3 w-3" />
-                              <span>Đang chọn</span>
-                            </Badge>
-                          </div>
-                        )}
-                      </div>
-
-                      {/* Info */}
-                      <div className="p-3 bg-gray-50 border-t">
-                        <h4 className="font-medium text-sm">{layout.name}</h4>
-                        <p className="text-xs text-gray-600 mt-1">
-                          {layout.description}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </DialogContent>
-            </Dialog>
           </div>
-        </div>
+        </CardContent>
+      </Card>
+      <Card>
+        <CardHeader>
+          <CardTitle>Thông tin liên hệ & Bố cục</CardTitle>
+          <CardDescription>
+            Cấu hình hiển thị thông tin liên hệ và form đăng ký tư vấn cho dự án
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          {/* Live Preview */}
+          <div className="bg-gray-50 rounded-lg">
+            <div className="flex items-center justify-between mb-3">
+              <Label className="text-sm font-medium text-gray-700">
+                Xem trước bố cục hiện tại:
+              </Label>
+              <Badge
+                variant="secondary"
+                className="flex items-center space-x-1"
+              >
+                <Layout className="h-3 w-3" />
+                <span>{selectedLayoutConfig.name}</span>
+              </Badge>
+            </div>
+            <LayoutPreview
+              layoutId={currentLayout}
+              contact={contact}
+              contactData={mockContactData}
+              compact
+            />
+          </div>
 
-        <Separator />
+          <Separator />
 
-        {/* Image Uploads */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <FileUpload
-            label="Logo công ty"
-            value={contact.logoImage}
-            onChange={(file) => updateProject('contact', 'logoImage', file)}
-          />
-          <FileUpload
-            label="Ảnh nền"
-            value={contact.contactBackground}
-            onChange={(file) =>
-              updateProject('contact', 'contactBackground', file)
-            }
-          />
-        </div>
+          {/* Layout Selection */}
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <Label className="text-base font-semibold">
+                  Bố cục hiển thị
+                </Label>
+                <p className="text-sm text-gray-600 mt-1">
+                  {selectedLayoutConfig.description}
+                </p>
+              </div>
+              <Dialog
+                open={isLayoutDialogOpen}
+                onOpenChange={setIsLayoutDialogOpen}
+              >
+                <DialogTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className="flex items-center space-x-2"
+                  >
+                    <Layout className="h-4 w-4" />
+                    <span>Chọn bố cục</span>
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-3xl">
+                  <DialogHeader>
+                    <DialogTitle className="flex items-center space-x-2">
+                      <Layout className="h-5 w-5" />
+                      <span>Chọn bố cục hiển thị</span>
+                    </DialogTitle>
+                    <DialogDescription>
+                      Nhấn vào bố cục để chọn
+                    </DialogDescription>
+                  </DialogHeader>
 
-        {/* Contact Data Source Info */}
-        <div className="bg-gray-50 border rounded-lg p-4">
-          <div className="flex items-start space-x-3">
-            <Phone className="h-5 w-5 text-gray-600 mt-0.5" />
-            <div>
-              <h4 className="font-medium text-gray-900">
-                Nguồn dữ liệu liên hệ
-              </h4>
-              <p className="text-sm text-gray-600 mt-1">
-                Thông tin liên hệ được lấy từ trang{' '}
-                <strong>Quản lý liên hệ</strong>. Để thay đổi thông tin như
-                hotline, email, địa chỉ, vui lòng cập nhật tại trang quản lý
-                liên hệ.
-              </p>
-              <div className="mt-3 grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-gray-700">
-                <div>
-                  <strong>Hotline:</strong> {mockContactData.hotline}
-                </div>
-                <div>
-                  <strong>Email:</strong> {mockContactData.email}
-                </div>
-                <div>
-                  <strong>Website:</strong> {mockContactData.website}
-                </div>
-                <div>
-                  <strong>Địa chỉ:</strong> {mockContactData.address}
+                  <div className="grid grid-cols-2 gap-4 mt-6">
+                    {layoutConfigs.map((layout) => (
+                      <div
+                        key={layout.id}
+                        className={`relative cursor-pointer transition-all duration-200 rounded-lg overflow-hidden border-2 ${
+                          currentLayout === layout.id
+                            ? 'border-blue-500 shadow-lg'
+                            : 'border-gray-200 hover:border-gray-300 hover:shadow-md'
+                        }`}
+                        onClick={() => handleLayoutSelect(layout.id)}
+                      >
+                        {/* Demo Preview */}
+                        <div className="p-3">
+                          <LayoutDemo layoutId={layout.id} />
+                          {currentLayout === layout.id && (
+                            <div className="absolute top-2 right-2">
+                              <Badge className="bg-blue-500 text-white flex items-center space-x-1">
+                                <Check className="h-3 w-3" />
+                                <span>Đang chọn</span>
+                              </Badge>
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Info */}
+                        <div className="p-3 bg-gray-50 border-t">
+                          <h4 className="font-medium text-sm">{layout.name}</h4>
+                          <p className="text-xs text-gray-600 mt-1">
+                            {layout.description}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </DialogContent>
+              </Dialog>
+            </div>
+          </div>
+
+          <Separator />
+
+          {/* Image Uploads */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <FileUpload
+              label="Logo công ty"
+              value={contact.logoImage}
+              onChange={(file) => updateProject('contact', 'logoImage', file)}
+            />
+            <FileUpload
+              label="Ảnh nền"
+              value={contact.contactBackground}
+              onChange={(file) =>
+                updateProject('contact', 'contactBackground', file)
+              }
+            />
+          </div>
+
+          {/* Contact Data Source Info */}
+          <div className="bg-gray-50 border rounded-lg p-4">
+            <div className="flex items-start space-x-3">
+              <Phone className="h-5 w-5 text-gray-600 mt-0.5" />
+              <div>
+                <h4 className="font-medium text-gray-900">
+                  Nguồn dữ liệu liên hệ
+                </h4>
+                <p className="text-sm text-gray-600 mt-1">
+                  Thông tin liên hệ được lấy từ trang{' '}
+                  <strong>Quản lý liên hệ</strong>. Để thay đổi thông tin như
+                  hotline, email, địa chỉ, vui lòng cập nhật tại trang quản lý
+                  liên hệ.
+                </p>
+                <div className="mt-3 grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-gray-700">
+                  <div>
+                    <strong>Hotline:</strong> {mockContactData.hotline}
+                  </div>
+                  <div>
+                    <strong>Email:</strong> {mockContactData.email}
+                  </div>
+                  <div>
+                    <strong>Website:</strong> {mockContactData.website}
+                  </div>
+                  <div>
+                    <strong>Địa chỉ:</strong> {mockContactData.address}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
+      {/* Save Button - Fixed at bottom */}
+      <div className="flex justify-end">
+        <Button
+          onClick={() =>
+            handleSave(updateProjectTab, uploadImage, 'contact', contact)
+          }
+          disabled={isLoading || isUploading}
+          className="flex items-center space-x-2"
+        >
+          <Save className="h-4 w-4" />
+          <span>
+            {isLoading || isUploading ? 'Đang lưu...' : 'Lưu thông tin liên hệ'}
+          </span>
+        </Button>
+      </div>
+    </div>
   );
 }

@@ -6,7 +6,6 @@ export default function App() {
   const [image, setImage] = useState<null | string>(null);
   const [name, setName] = useState('');
   const [fontSize, setFontSize] = useState(48);
-  // **FIX:** Use relative positioning (percentages) instead of absolute pixels.
   const [relativePos, setRelativePos] = useState({ x: 50, y: 50 }); // Default to center
   const [exportedImage, setExportedImage] = useState<null | string>(null);
   const [isLoading, setIsLoading] = useState(false);

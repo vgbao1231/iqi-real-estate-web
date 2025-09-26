@@ -190,11 +190,11 @@ export default function Partners() {
                     )}
 
                     {/* TÙY THEO LOẠI PARTNER */}
-                    {selectedPartner.projects && (
+                    {selectedPartner.projectCount && (
                       <div className="mb-4">
                         <div className="font-bold">Số dự án</div>
                         <div className="text-muted-foreground">
-                          {selectedPartner.projects}
+                          {selectedPartner.projectCount}
                         </div>
                       </div>
                     )}
@@ -208,11 +208,11 @@ export default function Partners() {
                       </div>
                     )}
 
-                    {selectedPartner.countries && (
+                    {selectedPartner.countryCount && (
                       <div className="mb-4">
                         <div className="font-bold">Quốc gia hoạt động</div>
                         <div className="text-muted-foreground">
-                          {selectedPartner.countries}
+                          {selectedPartner.countryCount}
                         </div>
                       </div>
                     )}

@@ -5,24 +5,28 @@ import 'photo-sphere-viewer/dist/photo-sphere-viewer.css';
 import 'photo-sphere-viewer/dist/plugins/markers.css';
 import { Viewer } from 'photo-sphere-viewer';
 import { useParams } from 'next/navigation';
-import { projects } from '@/lib/project-data';
+import { useGetPublicProjectTabByIdQuery } from '@/features/project/projectApi';
 
 export default function Viewer360() {
   const viewerRef = useRef<HTMLDivElement>(null);
   const isViewerInitialized = useRef(false);
   const params = useParams();
-  const project = projects.find((p) => p.id === Number(params.id));
-  const { siteplan: { view360 = [] } = {} } = project || {};
+  const { data: siteplan = {}, isLoading } = useGetPublicProjectTabByIdQuery({
+    id: params.id as string,
+    tab: 'siteplan',
+  });
+
+  const { view360 = [] } = siteplan;
 
   useEffect(() => {
-    if (isViewerInitialized.current) return;
+    if (isViewerInitialized.current || view360.length === 0) return;
     isViewerInitialized.current = true;
 
     let viewer: any = null;
 
     // 1. Tạo các Map để tra cứu dữ liệu hiệu quả
     const idToPanoramaMap = new Map(view360.map((p: any) => [p.id, p]));
-    const imageToIdMap = new Map(view360.map((p: any) => [p.image, p.id]));
+    const imageToIdMap = new Map(view360.map((p: any) => [p.image?.url, p.id]));
 
     // 2. Định nghĩa HTML và CSS cho marker để tái sử dụng
     const markerHtml = `
@@ -70,7 +74,7 @@ export default function Viewer360() {
       const initialPanorama = view360[0];
       viewer = new Viewer({
         container: viewerRef.current,
-        panorama: initialPanorama.image, // Panorama ban đầu
+        panorama: initialPanorama.image?.url, // Panorama ban đầu
         plugins: [[MarkersPlugin, {}]], // Chỉ cần khởi tạo plugin
         autorotateSpeed: '1rpm',
       });
@@ -94,10 +98,10 @@ export default function Viewer360() {
       markersPlugin.on('select-marker', (_e: any, marker: any) => {
         const targetId = marker.data?.panoramaTargetId;
         if (targetId) {
-          const targetPanorama = idToPanoramaMap.get(targetId);
+          const targetPanorama = idToPanoramaMap.get(targetId) as any;
           if (targetPanorama) {
             // Chuyển panorama và *sau đó* cập nhật lại marker
-            viewer?.setPanorama(targetPanorama.image).then(() => {
+            viewer?.setPanorama(targetPanorama.image?.url).then(() => {
               setMarkersForPanorama(targetId);
             });
           }
@@ -121,6 +125,12 @@ export default function Viewer360() {
     };
   }, [view360]);
 
+  if (isLoading)
+    return (
+      <div className="flex h-screen w-full items-center justify-center bg-gray-100">
+        <p className="text-xl text-gray-600">Đang tải dữ liệu 360 View.</p>
+      </div>
+    );
   if (view360.length === 0) {
     return (
       <div className="flex h-screen w-full items-center justify-center bg-gray-100">

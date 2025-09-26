@@ -15,14 +15,30 @@ import { FileUpload } from '@/components/ui/file-upload';
 import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
 import { formatVnCurrencyShort } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { Save } from 'lucide-react';
+import { useUpdateProjectTabMutation } from '@/features/project/projectApi';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
+import { memo } from 'react';
+import { useUploadImageMutation } from '@/features/upload/uploadApi';
 
 interface OverviewTabProps {
   overview: any;
   updateProject: (section: string, field: string, value: any) => void;
+  handleSave: (updateApi: any, uploadApi: any, tab: string, data: any) => void;
 }
 
 // Section 1: 4-Card Grid Preview Component
-function FourCardGridPreview({ overview }: { overview: any }) {
+const FourCardGridPreview = memo(function FourCardGridPreview({
+  overview,
+}: {
+  overview: any;
+}) {
   const { overviewBackground, overviewImages } = overview;
 
   return (
@@ -31,9 +47,9 @@ function FourCardGridPreview({ overview }: { overview: any }) {
       <Image
         src={
           overviewBackground
-            ? typeof overviewBackground === 'string'
-              ? overviewBackground
-              : URL.createObjectURL(overviewBackground)
+            ? overviewBackground instanceof File
+              ? URL.createObjectURL(overviewBackground)
+              : overviewBackground.url
             : '/placeholder.svg'
         }
         alt="Eco Retreat Overview Background"
@@ -42,7 +58,7 @@ function FourCardGridPreview({ overview }: { overview: any }) {
         priority
       />
       <div className="absolute z-10 inset-0 bg-gradient-to-b from-black/50 to-transparent"></div>
-      <div className="relative z-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 p-6 px-32">
+      <div className="relative z-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 p-6 px-24">
         {overviewImages.map((item: any, idx: number) => (
           <div
             key={idx}
@@ -52,9 +68,9 @@ function FourCardGridPreview({ overview }: { overview: any }) {
               <Image
                 src={
                   item.image
-                    ? typeof item.image === 'string'
-                      ? item.image
-                      : URL.createObjectURL(item.image)
+                    ? item.image instanceof File
+                      ? URL.createObjectURL(item.image)
+                      : item.image.url
                     : '/placeholder.svg'
                 }
                 alt="Eco Retreat Overview Background"
@@ -65,7 +81,7 @@ function FourCardGridPreview({ overview }: { overview: any }) {
             </div>
 
             <div
-              className="text-base text-white px-6 py-4 italic"
+              className="text-white p-3 italic"
               dangerouslySetInnerHTML={{ __html: item.description }}
             />
           </div>
@@ -73,10 +89,14 @@ function FourCardGridPreview({ overview }: { overview: any }) {
       </div>
     </div>
   );
-}
+});
 
 // Section 2: Two Column Layout Preview Component
-function TwoColumnLayoutPreview({ overview }: { overview: any }) {
+const TwoColumnLayoutPreview = memo(function TwoColumnLayoutPreview({
+  overview,
+}: {
+  overview: any;
+}) {
   const { experienceImage, basicInfo } = overview;
 
   const inforColumns = basicInfo
@@ -117,16 +137,16 @@ function TwoColumnLayoutPreview({ overview }: { overview: any }) {
   const columns = [inforColumns.slice(0, half), inforColumns.slice(half)];
 
   return (
-    <div className="relative h-[70vh] center-both">
+    <div className="relative min-h-[70vh] center-both">
       <div className="h-full w-full center-both flex-col md:flex-row max-w-[85vw] py-8 gap-12">
         {/* Left content */}
-        <div className="relative w-full md:w-2/5 h-[85vh] center-both">
+        <div className="relative w-full md:w-2/5 h-[80vh] center-both">
           <Image
             src={
               experienceImage
-                ? typeof experienceImage === 'string'
-                  ? experienceImage
-                  : URL.createObjectURL(experienceImage)
+                ? experienceImage instanceof File
+                  ? URL.createObjectURL(experienceImage)
+                  : experienceImage.url
                 : '/placeholder.svg'
             }
             alt="Eco Retreat Experience Background"
@@ -137,7 +157,7 @@ function TwoColumnLayoutPreview({ overview }: { overview: any }) {
         </div>
 
         {/* Right content */}
-        <div className="h-full md:w-3/5 space-y-6">
+        <div className="min-h-full md:w-3/5 space-y-6">
           <div>
             <div>
               <h3 className="text-4xl font-bold italic text-orange-300 mb-8">
@@ -150,7 +170,7 @@ function TwoColumnLayoutPreview({ overview }: { overview: any }) {
                     {column.map(({ label, value }: any, idx: any) => (
                       <div
                         key={idx}
-                        className={`flex justify-between items-center py-2 gap-4 ${
+                        className={`flex justify-between items-center py-3 gap-4 ${
                           idx !== column.length - 1
                             ? 'border-b border-border'
                             : ''
@@ -159,9 +179,21 @@ function TwoColumnLayoutPreview({ overview }: { overview: any }) {
                         <span className="text-muted-foreground font-medium text-nowrap">
                           {label}
                         </span>
-                        <span className="font-semibold text-right text-ellipsis overflow-hidden whitespace-nowrap">
-                          {value}
-                        </span>
+                        <TooltipProvider delayDuration={300}>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <span className="font-semibold text-right truncate whitespace-nowrap max-w-[60%] cursor-pointer">
+                                {value}
+                              </span>
+                            </TooltipTrigger>
+                            <TooltipContent
+                              side="top"
+                              className="max-w-xs break-words"
+                            >
+                              {value}
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
                       </div>
                     ))}
                   </div>
@@ -173,9 +205,16 @@ function TwoColumnLayoutPreview({ overview }: { overview: any }) {
       </div>
     </div>
   );
-}
+});
 
-export function OverviewTab({ overview, updateProject }: OverviewTabProps) {
+export function OverviewTab({
+  overview,
+  updateProject,
+  handleSave,
+}: OverviewTabProps) {
+  const [updateProjectTab, { isLoading }] = useUpdateProjectTabMutation();
+  const [uploadImage, { isLoading: isUploading }] = useUploadImageMutation();
+
   return (
     <div className="space-y-8">
       {/* Section 1: 4-Card Grid Layout */}
@@ -233,8 +272,9 @@ export function OverviewTab({ overview, updateProject }: OverviewTabProps) {
                   <div className="space-y-2">
                     <Label>Mô tả danh mục {index + 1}</Label>
                     <RichTextEditor
-                      value={item.description || ''}
+                      value={item.description}
                       onChange={(value) => {
+                        if (value === item.description) return; // không đổi thì thôi
                         const newOverviewImages = [...overview.overviewImages];
                         newOverviewImages[index] = {
                           ...newOverviewImages[index],
@@ -301,6 +341,23 @@ export function OverviewTab({ overview, updateProject }: OverviewTabProps) {
           </div>
         </CardContent>
       </Card>
+      {/* Save Button - Fixed at bottom */}
+      <div className="flex justify-end pt-6 border-t">
+        <Button
+          onClick={() =>
+            handleSave(updateProjectTab, uploadImage, 'overview', overview)
+          }
+          disabled={isLoading || isUploading}
+          className="flex items-center space-x-2"
+        >
+          <Save className="h-4 w-4" />
+          <span>
+            {isLoading || isUploading
+              ? 'Đang lưu...'
+              : 'Lưu thông tin tổng quan'}
+          </span>
+        </Button>
+      </div>
     </div>
   );
 }

@@ -2,6 +2,10 @@ import { BankTab } from '@/app/(admin)/admin/partners/tabs/bank-tab';
 import { DeveloperTab } from '@/app/(admin)/admin/partners/tabs/developer-tab';
 import { InternationalTab } from '@/app/(admin)/admin/partners/tabs/international-tab';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import {
+  useDeletePartnerMutation,
+  useGetAllPartnersQuery,
+} from '@/features/partner/partnerApi';
 import { Building2, Globe, Landmark } from 'lucide-react';
 
 interface PartnersTabsProps {
@@ -34,6 +38,10 @@ export function PartnersTabs({
   filters,
   itemsPerPage,
 }: PartnersTabsProps) {
+  const { data: partners } = useGetAllPartnersQuery();
+  const [deletePartner] = useDeletePartnerMutation();
+
+  if (!partners) return <></>;
   return (
     <Tabs defaultValue="developer" className="space-y-4">
       <TabsList className="w-full flex items-center bg-white border border-gray-200">
@@ -62,8 +70,10 @@ export function PartnersTabs({
 
       <TabsContent value="developer">
         <DeveloperTab
+          partners={partners}
           searchTerm={searchTerm}
           onEdit={onEdit}
+          onDelete={deletePartner}
           currentPage={currentPages.developer}
           setCurrentPage={(page) => setCurrentPage('developer', page)}
           itemsPerPage={itemsPerPage}
@@ -73,8 +83,10 @@ export function PartnersTabs({
 
       <TabsContent value="international">
         <InternationalTab
+          partners={partners}
           searchTerm={searchTerm}
           onEdit={onEdit}
+          onDelete={deletePartner}
           currentPage={currentPages.international}
           setCurrentPage={(page) => setCurrentPage('international', page)}
           itemsPerPage={itemsPerPage}
@@ -84,8 +96,10 @@ export function PartnersTabs({
 
       <TabsContent value="bank">
         <BankTab
+          partners={partners}
           searchTerm={searchTerm}
           onEdit={onEdit}
+          onDelete={deletePartner}
           currentPage={currentPages.bank}
           setCurrentPage={(page) => setCurrentPage('bank', page)}
           itemsPerPage={itemsPerPage}

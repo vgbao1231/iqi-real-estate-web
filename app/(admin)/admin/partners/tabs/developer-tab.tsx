@@ -20,10 +20,11 @@ import { Badge } from '@/components/ui/badge';
 import { Edit, Trash2 } from 'lucide-react';
 import { Pagination } from '@/components/ui/pagination';
 import Image from 'next/image';
-import { partners } from '@/lib/partner-data';
 interface DeveloperTabProps {
+  partners: any;
   searchTerm: string;
   onEdit: (partner: any) => void;
+  onDelete: (id: any) => void;
   currentPage: number;
   setCurrentPage: (page: number) => void;
   itemsPerPage: number;
@@ -37,15 +38,17 @@ interface DeveloperTabProps {
 }
 
 export function DeveloperTab({
+  partners,
   searchTerm,
   onEdit,
+  onDelete,
   currentPage,
   setCurrentPage,
   itemsPerPage,
   filters,
 }: DeveloperTabProps) {
   const filteredAndSortedData = useMemo(() => {
-    let data = partners.developer.filter((partner) => {
+    let data = partners.filter((partner: any) => {
       // Search filter
       const matchesSearch =
         partner.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -65,13 +68,13 @@ export function DeveloperTab({
       const matchesSpecialty =
         filters.specialty.length === 0 ||
         (partner.specialties &&
-          partner.specialties.some((s) => filters.specialty.includes(s)));
+          partner.specialties.some((s: any) => filters.specialty.includes(s)));
 
       return matchesSearch && matchesYear && matchesType && matchesSpecialty;
     });
 
     // Sort data
-    data.sort((a, b) => {
+    data.sort((a: any, b: any) => {
       let aValue: any, bValue: any;
 
       switch (filters.sortBy) {
@@ -103,7 +106,7 @@ export function DeveloperTab({
     });
 
     return data;
-  }, [searchTerm, filters]);
+  }, [searchTerm, filters, partners]);
 
   const totalPages = Math.ceil(filteredAndSortedData.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -148,7 +151,7 @@ export function DeveloperTab({
               </TableRow>
             </TableHeader>
             <TableBody>
-              {paginatedData.map((partner) => (
+              {paginatedData.map((partner: any) => (
                 <TableRow
                   key={partner.id}
                   className="border-gray-100 hover:bg-gray-50"
@@ -156,7 +159,7 @@ export function DeveloperTab({
                   <TableCell>
                     <div className="flex items-center space-x-3">
                       <Image
-                        src={partner.logo || '/placeholder.svg'}
+                        src={partner.logoUrl || '/placeholder.svg'}
                         alt={partner.name}
                         width={80}
                         height={80}
@@ -167,16 +170,16 @@ export function DeveloperTab({
                           {partner.name}
                         </div>
                         <div className="text-sm text-gray-500">
-                          Từ {partner.partnership}
+                          Từ {partner.partnershipYear}
                         </div>
                       </div>
                     </div>
                   </TableCell>
                   <TableCell className="text-gray-600">
-                    {partner.type}
+                    {partner.shortDescription}
                   </TableCell>
                   <TableCell className="text-gray-600 text-center">
-                    {partner.projects}
+                    {partner.projectCount}
                   </TableCell>
                   <TableCell className="font-medium text-gray-900 text-center">
                     {partner.revenue}
@@ -185,7 +188,7 @@ export function DeveloperTab({
                     <div className="flex flex-wrap gap-1">
                       {partner.specialties
                         ?.slice(0, 2)
-                        .map((specialty, index) => (
+                        .map((specialty: any, index: any) => (
                           <Badge
                             key={index}
                             variant="secondary"
@@ -216,6 +219,7 @@ export function DeveloperTab({
                         variant="destructive"
                         size="icon"
                         className="h-8 w-8"
+                        onClick={() => onDelete(partner.id)}
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>

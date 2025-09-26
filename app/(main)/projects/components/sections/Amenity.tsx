@@ -79,7 +79,7 @@ const Amenity = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
                   className="relative h-auto overflow-hidden md:min-h-[70vh]"
                 >
                   <Image
-                    src={img || '/placeholder-2.webp'}
+                    src={img?.url || '/placeholder.svg'}
                     alt={`Ảnh ${idx + 1}`}
                     width={800}
                     height={600}

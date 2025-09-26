@@ -66,7 +66,7 @@ const Production = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
         {/* Background image */}
         <div className="absolute inset-0 z-0">
           <Image
-            src={data.productBackground}
+            src={data.productBackground?.url || '/placeholder.svg'}
             alt="Eco Retreat Background"
             fill
             className="object-cover object-center"
@@ -89,7 +89,7 @@ const Production = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
               >
                 <div className="aspect-[4/3] relative">
                   <Image
-                    src={product.image || '/placeholder-2.webp'}
+                    src={product.image?.url || '/placeholder.svg'}
                     alt={product.name}
                     fill
                     priority
@@ -114,11 +114,11 @@ const Production = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
       </div>
 
       {/* Sub section 2 */}
-      <div className="relative md:min-h-screen w-full px-4 md:px-12 flex flex-col justify-center gap-8">
+      <div className="relative md:min-h-screen w-full px-4 md:px-12 py-12 md:py-24 flex flex-col justify-center gap-8">
         {/* Background image */}
         <div className="absolute inset-0 z-0">
           <Image
-            src={data.furnitureBackground}
+            src={data.furnitureBackground?.url || '/placeholder.svg'}
             alt="Eco Retreat Background"
             fill
             className="object-cover object-center"
@@ -129,101 +129,151 @@ const Production = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
 
         {/* Content */}
         <div className="relative z-20 flex items-end w-full gap-4 overflow-x-visible">
-          <Gallery>
-            <Carousel
-              className="w-1/2 shrink-0"
-              setApi={setCarouselApi1}
-              opts={{ loop: true, slidesToScroll: 1 }}
-            >
-              <CarouselContent>
-                {data.furnitures.map((item: any, idx: number) => (
-                  <CarouselItem key={idx}>
-                    <h4 className="font-bold text-3xl mb-4">{item.title}</h4>
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: idx * 0.08 + 0.4 }}
-                      className="relative h-[60vh] w-full overflow-hidden"
-                    >
-                      <Item
-                        original={item.image || '/placeholder-2.webp'} // ảnh gốc
-                        thumbnail={item.image || '/placeholder-2.webp'} // ảnh thumbnail
-                        width="1920"
-                        height="1080"
+          {data.furnitures.length <= 3 ? (
+            <Gallery>
+              <Carousel
+                className="w-full"
+                setApi={setCarouselApi1}
+                opts={{ loop: true, slidesToScroll: 1 }}
+              >
+                <CarouselContent>
+                  {data.furnitures.map((item: any, idx: number) => (
+                    <CarouselItem key={idx}>
+                      <h4 className="font-bold text-3xl mb-4">{item.title}</h4>
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: idx * 0.08 + 0.4 }}
+                        className="relative h-[80vh] w-full overflow-hidden"
                       >
-                        {({ ref, open }) => (
-                          <Image
-                            ref={ref as any}
-                            onClick={open}
-                            src={item.image || '/placeholder-2.webp'}
-                            alt={item.title || `Ảnh ${idx + 1}`}
-                            fill
-                            priority
-                            className="object-cover"
-                          />
-                        )}
-                      </Item>
-                    </motion.div>
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
+                        <Item
+                          original={item.image || '/placeholder.svg'}
+                          thumbnail={item.image || '/placeholder.svg'}
+                          width="1920"
+                          height="1080"
+                        >
+                          {({ ref, open }) => (
+                            <Image
+                              ref={ref as any}
+                              onClick={open}
+                              src={item.image?.url || '/placeholder.svg'}
+                              alt={item.title || `Ảnh ${idx + 1}`}
+                              fill
+                              priority
+                              className="object-cover"
+                            />
+                          )}
+                        </Item>
+                      </motion.div>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+              </Carousel>
+            </Gallery>
+          ) : (
+            <>
+              <Gallery>
+                <Carousel
+                  className="w-1/2 shrink-0"
+                  setApi={setCarouselApi1}
+                  opts={{ loop: true, slidesToScroll: 1 }}
+                >
+                  <CarouselContent>
+                    {data.furnitures.map((item: any, idx: number) => (
+                      <CarouselItem key={idx}>
+                        <h4 className="font-bold text-3xl mb-4">
+                          {item.title}
+                        </h4>
+                        <motion.div
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: idx * 0.08 + 0.4 }}
+                          className="relative h-[60vh] w-full overflow-hidden"
+                        >
+                          <Item
+                            original={item.image || '/placeholder.svg'} // ảnh gốc
+                            thumbnail={item.image || '/placeholder.svg'} // ảnh thumbnail
+                            width="1920"
+                            height="1080"
+                          >
+                            {({ ref, open }) => (
+                              <Image
+                                ref={ref as any}
+                                onClick={open}
+                                src={item.image?.url || '/placeholder.svg'}
+                                alt={item.title || `Ảnh ${idx + 1}`}
+                                fill
+                                priority
+                                className="object-cover"
+                              />
+                            )}
+                          </Item>
+                        </motion.div>
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
 
-              {/* Dots */}
-              <div className="z-10 absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-3 md:hidden">
-                {data.furnitures.map((_: any, i: any) => (
-                  <div
-                    key={i}
-                    className={cn(
-                      'h-2 w-2 rounded-full bg-white transition-all',
-                      i === currentImageIndex ? 'w-4' : 'bg-gray-300'
-                    )}
-                  />
-                ))}
-              </div>
-            </Carousel>
-          </Gallery>
-
-          <Gallery>
-            <Carousel
-              className="w-2/3 shrink-0 hidden md:block"
-              setApi={setCarouselApi2}
-              opts={{ loop: true, slidesToScroll: 1 }}
-            >
-              <CarouselContent>
-                {rotate(data.furnitures).map((item: any, idx: number) => (
-                  <CarouselItem key={idx} className="pl-4 basis-[33.4%]">
-                    <h4 className="font-bold text-2xl mb-2">{item.title}</h4>
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: idx * 0.08 + 0.4 }}
-                      className="relative h-[60vh] w-full overflow-hidden"
-                    >
-                      <Item
-                        original={item.image || '/placeholder-2.webp'} // ảnh gốc
-                        thumbnail={item.image || '/placeholder-2.webp'} // ảnh thumbnail
-                        width="1920"
-                        height="1080"
-                      >
-                        {({ ref, open }) => (
-                          <Image
-                            ref={ref as any}
-                            onClick={open}
-                            src={item.image || '/placeholder-2.webp'}
-                            alt={`Ảnh ${idx + 1}`}
-                            fill
-                            priority
-                            className="object-cover"
-                          />
+                  {/* Dots */}
+                  <div className="z-10 absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-3 md:hidden">
+                    {data.furnitures.map((_: any, i: any) => (
+                      <div
+                        key={i}
+                        className={cn(
+                          'h-2 w-2 rounded-full bg-white transition-all',
+                          i === currentImageIndex ? 'w-4' : 'bg-gray-300'
                         )}
-                      </Item>
-                    </motion.div>
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-            </Carousel>
-          </Gallery>
+                      />
+                    ))}
+                  </div>
+                </Carousel>
+              </Gallery>
+
+              <Gallery>
+                <Carousel
+                  className="w-2/3 shrink-0 hidden md:block"
+                  setApi={setCarouselApi2}
+                  opts={{ loop: true, slidesToScroll: 1 }}
+                >
+                  <CarouselContent>
+                    {rotate(data.furnitures).map((item: any, idx: number) => (
+                      <CarouselItem key={idx} className="pl-4 basis-[33.4%]">
+                        <h4 className="font-bold text-2xl mb-2">
+                          {item.title}
+                        </h4>
+                        <motion.div
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: idx * 0.08 + 0.4 }}
+                          className="relative h-[60vh] w-full overflow-hidden"
+                        >
+                          <Item
+                            original={item.image || '/placeholder.svg'} // ảnh gốc
+                            thumbnail={item.image || '/placeholder.svg'} // ảnh thumbnail
+                            width="1920"
+                            height="1080"
+                          >
+                            {({ ref, open }) => (
+                              <Image
+                                ref={ref as any}
+                                onClick={open}
+                                src={item.image?.url || '/placeholder.svg'}
+                                alt={`Ảnh ${idx + 1}`}
+                                fill
+                                priority
+                                className="object-cover"
+                              />
+                            )}
+                          </Item>
+                        </motion.div>
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                </Carousel>
+              </Gallery>
+            </>
+          )}
         </div>
+
         {/* Custom nút điều khiển cả 2 */}
         <div className="relative z-20 flex items-center gap-4">
           <Button
@@ -233,7 +283,6 @@ const Production = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
             }}
           >
             <ArrowLeft className="h-4 w-4" />
-            <span className="sr-only">Next slide</span>
           </Button>
           <Button
             className="w-11 h-11 bg-muted-foreground/30 backdrop-blur-sm rounded-full center-both text-white hover:bg-muted-foreground/50 transition-colors pointer-events-auto"
@@ -242,7 +291,6 @@ const Production = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
             }}
           >
             <ArrowRight className="h-4 w-4" />
-            <span className="sr-only">Next slide</span>
           </Button>
           <h4 className="font-bold text-2xl">
             {currentImageIndex + 1}/{data.furnitures.length}

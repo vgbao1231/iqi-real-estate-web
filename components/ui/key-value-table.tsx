@@ -311,17 +311,29 @@ export function KeyValueTable({ title, data, onChange }: KeyValueTableProps) {
           >
             <SortableContext items={data.map((item) => item.id)}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 p-3">
-                {data.map((item, index) => (
-                  <SortableItem
-                    key={item.id}
-                    item={item}
-                    index={index}
-                    updateItem={updateItem}
-                    onToggleHidden={toggleItemHidden}
-                    onRemove={removeItem}
-                    renderValueInput={renderValueInput}
-                  />
-                ))}
+                {(() => {
+                  const half = Math.ceil(data.length / 2);
+                  const columns = [data.slice(0, half), data.slice(half)];
+                  return columns.map((column, colIdx) => (
+                    <div key={colIdx} className="flex flex-col gap-3">
+                      {column.map((item, idx) => {
+                        // index global để DnD và animation nếu cần
+                        const globalIndex = colIdx * half + idx;
+                        return (
+                          <SortableItem
+                            key={item.id}
+                            item={item}
+                            index={globalIndex}
+                            updateItem={updateItem}
+                            onToggleHidden={toggleItemHidden}
+                            onRemove={removeItem}
+                            renderValueInput={renderValueInput}
+                          />
+                        );
+                      })}
+                    </div>
+                  ));
+                })()}
               </div>
             </SortableContext>
           </DndContext>

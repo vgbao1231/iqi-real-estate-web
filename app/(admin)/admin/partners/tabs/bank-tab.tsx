@@ -20,11 +20,12 @@ import { Badge } from '@/components/ui/badge';
 import { Edit, Trash2 } from 'lucide-react';
 import { Pagination } from '@/components/ui/pagination';
 import Image from 'next/image';
-import { partners } from '@/lib/partner-data';
 
 interface BankTabProps {
+  partners: any;
   searchTerm: string;
   onEdit: (partner: any) => void;
+  onDelete: (id: any) => void;
   currentPage: number;
   setCurrentPage: (page: number) => void;
   itemsPerPage: number;
@@ -38,15 +39,17 @@ interface BankTabProps {
 }
 
 export function BankTab({
+  partners,
   searchTerm,
   onEdit,
+  onDelete,
   currentPage,
   setCurrentPage,
   itemsPerPage,
   filters,
 }: BankTabProps) {
   const filteredAndSortedData = useMemo(() => {
-    let data = partners.bank.filter((partner) => {
+    let data = partners.filter((partner: any) => {
       // Search filter
       const matchesSearch =
         partner.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -65,7 +68,7 @@ export function BankTab({
       // Benefits filter (specialty field for banks)
       const matchesBenefits =
         filters.specialty.length === 0 ||
-        partner.benefits.some((b) => filters.specialty.includes(b));
+        partner.benefits.some((b: any) => filters.specialty.includes(b));
 
       return matchesSearch && matchesYear && matchesType && matchesBenefits;
     });
@@ -104,7 +107,7 @@ export function BankTab({
     });
 
     return data;
-  }, [searchTerm, filters]);
+  }, [searchTerm, filters, partners]);
 
   const totalPages = Math.ceil(filteredAndSortedData.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -149,7 +152,7 @@ export function BankTab({
               </TableRow>
             </TableHeader>
             <TableBody>
-              {paginatedData.map((partner) => (
+              {paginatedData.map((partner: any) => (
                 <TableRow
                   key={partner.id}
                   className="border-gray-100 hover:bg-gray-50"
@@ -157,7 +160,7 @@ export function BankTab({
                   <TableCell>
                     <div className="flex items-center space-x-3">
                       <Image
-                        src={partner.logo || '/placeholder.svg'}
+                        src={partner.logoUrl || '/placeholder.svg'}
                         alt={partner.name}
                         width={80}
                         height={80}
@@ -168,13 +171,13 @@ export function BankTab({
                           {partner.name}
                         </div>
                         <div className="text-sm text-gray-500">
-                          Từ {partner.partnership}
+                          Từ {partner.partnershipYear}
                         </div>
                       </div>
                     </div>
                   </TableCell>
                   <TableCell className="text-gray-600">
-                    {partner.type}
+                    {partner.shortDescription}
                   </TableCell>
                   <TableCell className="font-medium text-green-600 text-center">
                     {partner.loanRate}
@@ -184,16 +187,19 @@ export function BankTab({
                   </TableCell>
                   <TableCell>
                     <div className="flex flex-wrap gap-1">
-                      {partner.benefits.slice(0, 2).map((benefit, index) => (
-                        <Badge
-                          key={index}
-                          variant="secondary"
-                          className="text-xs"
-                        >
-                          {benefit}
-                        </Badge>
-                      ))}
-                      {partner.benefits.length > 2 && (
+                      {partner.benefits
+                        ?.slice(0, 2)
+                        .map((benefit: any, index: any) => (
+                          <Badge
+                            key={index}
+                            variant="secondary"
+                            className="text-xs"
+                          >
+                            {benefit}
+                          </Badge>
+                        ))}
+
+                      {partner.benefits && partner.benefits.length > 2 && (
                         <Badge variant="secondary" className="text-xs">
                           +{partner.benefits.length - 2}
                         </Badge>
@@ -214,6 +220,7 @@ export function BankTab({
                         variant="destructive"
                         size="icon"
                         className="h-8 w-8"
+                        onClick={() => onDelete(partner.id)}
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>

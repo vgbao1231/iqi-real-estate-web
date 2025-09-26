@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -22,21 +22,51 @@ import {
   FileText,
   Building2,
 } from 'lucide-react';
-import { projects } from '@/lib/project-data';
+import {
+  useCreateProjectMutation,
+  useDeleteProjectMutation,
+  useGetAdminProjectsQuery,
+} from '@/features/project/projectApi';
 
 interface ProjectsListProps {
-  onEditProject: (projectId: string | number | null) => void; // null for new project
+  onEditProject: (projectId: string | null) => void; // null for new project
 }
 
 export function ProjectsList({ onEditProject }: ProjectsListProps) {
+  const { data: projects = [], isLoading } = useGetAdminProjectsQuery();
   const [searchTerm, setSearchTerm] = useState('');
+  const [createProject] = useCreateProjectMutation();
+  const [deleteProject] = useDeleteProjectMutation();
+
+  const handleCreate = useCallback(async () => {
+    try {
+      const newProject = await createProject().unwrap();
+      console.log('Created draft project:', newProject);
+    } catch (err) {
+      console.error('Error creating project:', err);
+    }
+  }, [createProject]);
+
+  const handleDelete = useCallback(
+    async (id: string) => {
+      try {
+        await deleteProject(id).unwrap();
+        console.log('Deleted project with id:', id);
+      } catch (err) {
+        console.error('Error deleting project:', err);
+      }
+    },
+    [deleteProject]
+  );
 
   // Modified getValue to use 'id' instead of 'key'
   const getValue = (project: any, id: string) =>
-    project.overview.basicInfo.find((item: any) => item.id === id)?.value;
+    project?.overview?.basicInfo?.find((item: any) => item.id === id)?.value;
 
   const filteredProjects = projects.filter((project) => {
-    // Use the new IDs for filtering
+    // nếu chưa có overview.basicInfo → vẫn cho hiển thị
+    if (!project?.overview?.basicInfo) return true;
+
     const name = getValue(project, 'project_name')?.toLowerCase() || '';
     const address = getValue(project, 'address')?.toLowerCase() || '';
     const developer = getValue(project, 'developer')?.toLowerCase() || '';
@@ -56,7 +86,7 @@ export function ProjectsList({ onEditProject }: ProjectsListProps) {
         </h1>
         <Button
           className="flex items-center space-x-2 bg-orange-500 hover:bg-orange-600 text-white"
-          onClick={() => onEditProject('new')}
+          onClick={handleCreate}
         >
           <Plus className="h-4 w-4" />
           <span>Thêm dự án mới</span>
@@ -95,7 +125,16 @@ export function ProjectsList({ onEditProject }: ProjectsListProps) {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredProjects.length === 0 ? (
+                {isLoading ? (
+                  <TableRow>
+                    <TableCell
+                      colSpan={6}
+                      className="text-center text-gray-500 py-8"
+                    >
+                      Đang tải danh sách dự án
+                    </TableCell>
+                  </TableRow>
+                ) : filteredProjects.length === 0 ? (
                   <TableRow>
                     <TableCell
                       colSpan={6}
@@ -107,11 +146,16 @@ export function ProjectsList({ onEditProject }: ProjectsListProps) {
                 ) : (
                   filteredProjects.map((project) => {
                     // Use the new IDs for display
-                    const name = getValue(project, 'project_name');
-                    const address = getValue(project, 'address');
-                    const developer = getValue(project, 'developer');
-                    const status = getValue(project, 'status');
-                    const projectType = getValue(project, 'project_type');
+                    const name =
+                      getValue(project, 'project_name') || 'Bản nháp';
+                    const address =
+                      getValue(project, 'address') || 'Chưa cập nhật';
+                    const developer =
+                      getValue(project, 'developer') || 'Chưa cập nhật';
+                    const status =
+                      getValue(project, 'status') || 'Chưa cập nhật';
+                    const projectType =
+                      getValue(project, 'project_type') || 'Chưa cập nhật';
 
                     return (
                       <TableRow key={project.id}>
@@ -119,7 +163,7 @@ export function ProjectsList({ onEditProject }: ProjectsListProps) {
                         <TableCell>
                           <Badge
                             variant="secondary"
-                            className="bg-blue-100 text-blue-800"
+                            className="bg-blue-100 text-center text-blue-800"
                           >
                             {projectType} {/* Display projectType */}
                           </Badge>
@@ -158,6 +202,7 @@ export function ProjectsList({ onEditProject }: ProjectsListProps) {
                               variant="destructive"
                               size="icon"
                               className="h-8 w-8"
+                              onClick={() => handleDelete(project.id)}
                             >
                               <Trash2 className="h-4 w-4" />
                             </Button>

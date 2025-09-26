@@ -52,7 +52,7 @@ export default [
         { allowConstantExport: true },
       ],
       'react/prop-types': 'off',
-      '@typescript-eslint/no-unused-vars': 'off',
+      // '@typescript-eslint/no-unused-vars': 'off',
       'react-hooks/exhaustive-deps': 'error',
       'unused-imports/no-unused-imports': 'error',
       'react/no-unknown-property': 'off',

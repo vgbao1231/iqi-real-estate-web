@@ -13,7 +13,7 @@ import { RichTextEditor } from '@/components/ui/rich-text-editor';
 import { FileUpload } from '@/components/ui/file-upload';
 import Image from 'next/image';
 
-import { ReactNode } from 'react';
+import { memo, ReactNode } from 'react';
 import {
   Select,
   SelectContent,
@@ -22,6 +22,10 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Save } from 'lucide-react';
+import { useUpdateProjectTabMutation } from '@/features/project/projectApi';
+import { useUploadImageMutation } from '@/features/upload/uploadApi';
 
 interface LocationTabProps {
   location: any;
@@ -32,20 +36,25 @@ interface LocationTabProps {
     field: string,
     value: any
   ) => void;
+  handleSave: (updateApi: any, uploadApi: any, tab: string, data: any) => void;
 }
 
-function LocationPreview({ location }: { location: any }) {
+const LocationPreview = memo(function LocationPreview({
+  location,
+}: {
+  location: any;
+}) {
   const { locationImage, locationBackground, title, description } = location;
 
   return (
-    <div className="relative h-[70vh] center-both py-16">
+    <div className="relative min-h-[70vh] center-both py-16">
       {/* Background image full screen */}
       <Image
         src={
           locationBackground
-            ? typeof locationBackground === 'string'
-              ? locationBackground
-              : URL.createObjectURL(locationBackground)
+            ? locationBackground instanceof File
+              ? URL.createObjectURL(locationBackground)
+              : locationBackground.url
             : '/placeholder.svg'
         }
         alt="Eco Retreat Background"
@@ -69,9 +78,9 @@ function LocationPreview({ location }: { location: any }) {
         <Image
           src={
             locationImage
-              ? typeof locationImage === 'string'
-                ? locationImage
-                : URL.createObjectURL(locationImage)
+              ? locationImage instanceof File
+                ? URL.createObjectURL(locationImage)
+                : locationImage.url
               : '/placeholder.svg'
           }
           alt="Logo"
@@ -83,9 +92,9 @@ function LocationPreview({ location }: { location: any }) {
       </div>
     </div>
   );
-}
+});
 
-function GoogleMapPreview({
+const GoogleMapPreview = memo(function GoogleMapPreview({
   lat,
   lng,
   mapInputType,
@@ -175,13 +184,17 @@ function GoogleMapPreview({
       </p>
     </div>
   );
-}
+});
 
 export function LocationTab({
   location,
   updateProject,
   updateNestedProject,
+  handleSave,
 }: LocationTabProps) {
+  const [updateProjectTab, { isLoading }] = useUpdateProjectTabMutation();
+  const [uploadImage, { isLoading: isUploading }] = useUploadImageMutation();
+
   const handleMapInputTypeChange = (value: 'coordinates' | 'embed') => {
     updateProject('location', 'mapInputType', value);
     // Clear the other input when switching types to avoid conflicting data
@@ -213,7 +226,7 @@ export function LocationTab({
 
           {/* Form Fields arranged as requested */}
           <FileUpload
-            label="Ảnh nền"
+            label="Ảnh nền vị trí"
             value={location.locationBackground}
             onChange={(file) =>
               updateProject('location', 'locationBackground', file)
@@ -348,6 +361,21 @@ export function LocationTab({
           />
         </CardContent>
       </Card>
+      {/* Save Button - Fixed at bottom */}
+      <div className="flex justify-end pt-6 border-t">
+        <Button
+          onClick={() =>
+            handleSave(updateProjectTab, uploadImage, 'location', location)
+          }
+          disabled={isLoading || isUploading}
+          className="flex items-center space-x-2"
+        >
+          <Save className="h-4 w-4" />
+          <span>
+            {isLoading || isUploading ? 'Đang lưu...' : 'Lưu thông tin vị trí'}
+          </span>
+        </Button>
+      </div>
     </div>
   );
 }

@@ -4,8 +4,7 @@ import { useState } from 'react';
 
 export function usePartners() {
   const [searchTerm, setSearchTerm] = useState('');
-  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedPartner, setSelectedPartner] = useState(null);
   const [activeTab, setActiveTab] = useState('developer');
 
@@ -29,7 +28,7 @@ export function usePartners() {
 
   const handleEdit = (partner: any) => {
     setSelectedPartner(partner);
-    setIsEditDialogOpen(true);
+    setIsDialogOpen(true);
   };
 
   const setCurrentPage = (
@@ -55,14 +54,12 @@ export function usePartners() {
   return {
     searchTerm,
     setSearchTerm,
-    isAddDialogOpen,
-    setIsAddDialogOpen,
-    isEditDialogOpen,
-    setIsEditDialogOpen,
+    isDialogOpen,
+    setIsDialogOpen,
     selectedPartner,
     setSelectedPartner,
-    handleEdit,
     currentPages,
+    handleEdit,
     setCurrentPage,
     itemsPerPage,
     activeTab,
