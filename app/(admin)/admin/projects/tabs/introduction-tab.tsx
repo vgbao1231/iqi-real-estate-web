@@ -426,8 +426,6 @@ export const IntroductionTab = memo(function IntroductionTab({
   updateProject,
   handleSave,
 }: IntroductionTabProps) {
-  console.log(introduction);
-
   const [updateProjectTab, { isLoading }] = useUpdateProjectTabMutation();
   const [uploadImage, { isLoading: isUploading }] = useUploadImageMutation();
 
@@ -462,7 +460,7 @@ export const IntroductionTab = memo(function IntroductionTab({
             <Label className="text-sm font-medium text-gray-700 mb-3 block">
               Xem trước:
             </Label>
-            <CoverSectionPreview introduction={introduction} />
+            {/* <CoverSectionPreview introduction={introduction} /> */}
           </div>
 
           <Separator />
@@ -774,7 +772,7 @@ export const IntroductionTab = memo(function IntroductionTab({
             <Label className="text-sm font-medium text-gray-700 mb-3 block">
               Xem trước:
             </Label>
-            <LaunchSectionPreview introduction={introduction} />
+            {/* <LaunchSectionPreview introduction={introduction} /> */}
           </div>
 
           <Separator />
@@ -852,7 +850,7 @@ export const IntroductionTab = memo(function IntroductionTab({
             <Label className="text-sm font-medium text-gray-700 mb-3 block">
               Xem trước:
             </Label>
-            <VideoSectionPreview introduction={introduction} />
+            {/* <VideoSectionPreview introduction={introduction} /> */}
           </div>
 
           <Separator />
