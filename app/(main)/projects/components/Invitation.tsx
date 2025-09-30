@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import html2canvas from 'html2canvas-pro';
 import { useParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
@@ -34,27 +34,21 @@ export default function Invitation() {
   const invitationImage = invitation?.invitationImage ?? null;
 
   // State lưu dữ liệu form
-  const [formData, setFormData] = useState<Record<string, any>>({
-    name: 'Vo Gia Bao',
-    title: 'Lap Trinh Vien',
-    phone: '0911095800',
-    image: null,
-  });
-  console.log(formData);
+  const [formData, setFormData] = useState<Record<string, any>>({});
 
   // Memo fields để tránh re-calc nhiều lần
   const fields = useMemo(() => invitation?.fields ?? [], [invitation]);
 
   // Init state khi lần đầu có fields
-  // useEffect(() => {
-  //   if (fields.length > 0 && Object.keys(formData).length === 0) {
-  //     const init: Record<string, any> = {};
-  //     fields.forEach((f: any) => {
-  //       init[f.id] = ''; // local state thôi
-  //     });
-  //     setFormData(init);
-  //   }
-  // }, [fields, formData]);
+  useEffect(() => {
+    if (fields.length > 0 && Object.keys(formData).length === 0) {
+      const init: Record<string, any> = {};
+      fields.forEach((f: any) => {
+        init[f.id] = ''; // local state thôi
+      });
+      setFormData(init);
+    }
+  }, [fields, formData]);
 
   // Export ra ảnh
   const handleExport = async () => {
@@ -192,9 +186,11 @@ export default function Invitation() {
 
               <Button
                 type="submit"
-                className="w-full h-12 text-sm font-semibold bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 border-0 mt-6 rounded-lg"
+                disabled={isLoading}
+                className="w-full h-12 text-sm font-semibold text-white shadow-lg transition-all duration-200 border-0 mt-6 rounded-lg bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 
+               disabled:bg-gray-600 disabled:cursor-not-allowed disabled:hover:from-gray-600 disabled:hover:to-gray-600"
               >
-                Tạo thiệp mới
+                {isLoading ? 'Đang tạo' : 'Tạo thiệp mới'}
               </Button>
             </form>
           </div>

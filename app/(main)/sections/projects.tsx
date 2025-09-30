@@ -129,7 +129,7 @@ export default function Projects() {
                       Việt Nam
                     </Badge>
                   </div>
-                  <h3 className="text-2xl font-bold mb-3">BĐS Việt Nam</h3>
+                  <h3 className="text-2xl font-bold mb-3">BĐS Nhà Ở</h3>
                   <p className="text-white/90 text-sm mb-3">
                     TP.HCM, Hà Nội, Đà Nẵng, Phú Quốc và các thị trường tiềm
                     năng.
