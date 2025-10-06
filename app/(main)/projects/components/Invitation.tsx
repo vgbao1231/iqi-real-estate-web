@@ -2,9 +2,12 @@
 
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import html2canvas from 'html2canvas-pro';
+import { useParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import Image from 'next/image';
+import Header from '@/app/(main)/layout/header';
+import { useGetPublicProjectTabByIdQuery } from '@/features/project/projectApi';
 
 // Add global type for html2canvas
 declare global {
@@ -16,60 +19,16 @@ declare global {
   }
 }
 
-const defaultValue = {
-  policy: {
-    title: '',
-    policyText: '<p><br></p>',
-    policyImage: null,
-  },
-  invitation: {
-    fields: [
-      {
-        id: 'name',
-        size: 30,
-        type: 'text',
-        label: 'Tên trên thiệp',
-        position: {
-          x: 26.671876589208765,
-          y: 18.053248569577693,
-        },
-        value: 'Nguyễn Thành Trung',
-      },
-      {
-        id: 'image',
-        size: 80,
-        type: 'image',
-        label: 'Logo đại lý',
-        position: {
-          x: 10.218752373754866,
-          y: 7.318423953500148,
-        },
-        value: {
-          url: 'https://res.cloudinary.com/dpinnqt92/image/upload/v1759744643/IQI/projects/pyels9t7jcd0o9k4f3uk.png',
-          publicId: 'IQI/projects/pyels9t7jcd0o9k4f3uk',
-        },
-      },
-    ],
-    invitationImage: {
-      url: 'https://res.cloudinary.com/dpinnqt92/image/upload/v1759744646/IQI/projects/j1dc3ls6uhltbmcwqoo8.jpg',
-      publicId: 'IQI/projects/j1dc3ls6uhltbmcwqoo8',
-    },
-  },
-  breakImages: [],
-};
-
 export default function Invitation() {
   const [exportedImage, setExportedImage] = useState<null | string>(null);
   const [isLoading, setIsLoading] = useState(false);
   const previewRef = useRef<HTMLDivElement>(null);
 
-  // const params = useParams();
-  // const { data: other = {} } = useGetPublicProjectTabByIdQuery({
-  //   id: params.id as string,
-  //   tab: 'other',
-  // });
-
-  const other = defaultValue;
+  const params = useParams();
+  const { data: other = {} } = useGetPublicProjectTabByIdQuery({
+    id: params.id as string,
+    tab: 'other',
+  });
 
   const { invitation = {} } = other as any;
   const invitationImage = invitation?.invitationImage ?? null;
@@ -139,7 +98,7 @@ export default function Invitation() {
   return (
     <main className="min-h-screen relative overflow-hidden">
       {/* Header */}
-      {/* <Header /> */}
+      <Header />
       {/* Background Image */}
       <Image
         src="/hero-1.png"
@@ -262,7 +221,7 @@ export default function Invitation() {
               top: `${field.position.y}%`,
               transform: 'translate(-50%, -50%)',
               ...(field.id === 'name' && {
-                fontFamily: "'DFVN Menata', sans-serif",
+                fontFamily: "'Great Vibes', cursive",
               }),
               fontSize: `${field.size}px`,
               color: '#2c2c2c',
