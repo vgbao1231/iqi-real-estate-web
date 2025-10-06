@@ -5,6 +5,7 @@ import html2canvas from 'html2canvas-pro';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import Image from 'next/image';
+import { Plus } from 'lucide-react';
 
 // Add global type for html2canvas
 declare global {
@@ -61,6 +62,8 @@ const defaultValue = {
 export default function Invitation() {
   const [exportedImage, setExportedImage] = useState<null | string>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedFileName, setSelectedFileName] = useState<string>('');
+  const [imagePreview, setImagePreview] = useState<string>('');
   const previewRef = useRef<HTMLDivElement>(null);
 
   // const params = useParams();
@@ -112,24 +115,46 @@ export default function Invitation() {
     }
   };
 
+  const handleDownload = () => {
+    if (!exportedImage) return;
+    const link = document.createElement('a');
+    link.href = exportedImage;
+    link.download = 'thiep-moi.png';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   // Nếu chưa có invitation thì không render gì
   if (!invitation || fields.length === 0) return <></>;
 
   // Nếu đã export thì hiển thị ảnh kết quả
   if (exportedImage) {
     return (
-      <main className="min-h-screen relative overflow-hidden center-both">
+      <main className="min-h-screen relative overflow-hidden">
         <div
           ref={previewRef}
-          className="relative w-fit mx-auto overflow-hidden"
+          className="relative w-fit mx-auto overflow-hidden center-both flex-col mt-20"
         >
           <Image
             src={exportedImage}
             alt="Invitation"
             width={1200}
             height={800}
-            className="w-full h-auto object-contain max-h-screen"
+            className="w-full h-auto object-contain max-h-[70vh]"
           />
+        </div>
+        <div className="center-both gap-8 mt-8">
+          <Button
+            onClick={() => setExportedImage(null)}
+            className="bg-transparent border border-primary text-primary hover:bg-primary hover:text-white transition-colors"
+          >
+            <Plus />
+            Tạo thiệp mới
+          </Button>
+          <Button onClick={handleDownload} className="hover:bg-orange-500">
+            Tải ảnh xuống
+          </Button>
         </div>
       </main>
     );
@@ -152,7 +177,7 @@ export default function Invitation() {
 
       {/* Content */}
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4">
-        <div className="text-center space-y-6 max-w-md w-full">
+        <div className="text-center space-y-6 max-w-100 w-full">
           {/* Logo */}
           <div className="flex justify-center">
             <Image
@@ -202,21 +227,63 @@ export default function Invitation() {
                 if (field.type === 'image') {
                   return (
                     <div key={field.id}>
-                      <div className="bg-white/15 backdrop-blur-sm border border-white/30 rounded-lg p-2 hover:bg-white/20 transition-all duration-200 text-center">
-                        <Input
-                          type="file"
-                          accept="image/*"
-                          onChange={(e) => {
-                            const file = e.target.files?.[0];
-                            if (file) {
-                              setFormData((prev) => ({
-                                ...prev,
-                                [field.id]: file,
-                              }));
-                            }
-                          }}
-                          className="text-white text-sm file:mr-3 file:py-2 file:px-4 p-0 h-auto file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-orange-500 file:text-white hover:file:bg-orange-600 file:cursor-pointer cursor-pointer bg-transparent border-0 w-full text-center"
-                        />
+                      <div className="bg-white/15 backdrop-blur-sm border border-white/30 rounded-lg p-4 hover:bg-white/20 transition-all duration-200">
+                        <label className="flex flex-col items-center justify-center cursor-pointer">
+                          {imagePreview ? (
+                            <div className="w-full mb-3 center-both border-2 border-white/30 rounded-lg">
+                              <img
+                                src={imagePreview || '/placeholder.svg'}
+                                alt="Preview"
+                                className="h-24 object-cover"
+                              />
+                            </div>
+                          ) : (
+                            <svg
+                              className="mx-auto h-10 w-10 text-white/70 mb-2"
+                              stroke="currentColor"
+                              fill="none"
+                              viewBox="0 0 48 48"
+                              aria-hidden="true"
+                            >
+                              <path
+                                d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                                strokeWidth={2}
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                            </svg>
+                          )}
+                          <div className="text-center">
+                            <p className="text-sm text-white/80 font-medium">
+                              {selectedFileName || 'Chọn ảnh nền'}
+                            </p>
+                            <p className="text-xs text-white/60 mt-1">
+                              {selectedFileName
+                                ? 'Nhấn để thay đổi'
+                                : 'PNG, JPG, GIF tối đa 10MB'}
+                            </p>
+                          </div>
+                          <Input
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => {
+                              const file = e.target.files?.[0];
+                              if (file) {
+                                setFormData((prev) => ({
+                                  ...prev,
+                                  [field.id]: file,
+                                }));
+                                setSelectedFileName(file.name);
+                                const reader = new FileReader();
+                                reader.onloadend = () => {
+                                  setImagePreview(reader.result as string);
+                                };
+                                reader.readAsDataURL(file);
+                              }
+                            }}
+                            className="hidden"
+                          />
+                        </label>
                       </div>
                     </div>
                   );
