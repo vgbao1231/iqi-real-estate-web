@@ -1,8 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { FadeIn } from '@/components/common/animations';
-import { ArrowRight, Building2, Newspaper } from 'lucide-react';
-import Link from 'next/link';
+import { Building2, Newspaper } from 'lucide-react';
 import { SpotlightCard } from '@/components/ui/spotlight-card';
 import { cn } from '@/lib/utils';
 import { useTheme } from 'next-themes';
@@ -30,7 +29,7 @@ export default function Article() {
         <div className="grid lg:grid-cols-2 gap-16 max-w-6xl mx-auto mb-12">
           <SpotlightCard
             className={cn(
-              'group cursor-pointer transition-all duration-300 h-full',
+              'group cursor-pointer transition-all h-full',
               theme === 'dark'
                 ? 'bg-gradient-to-br from-cyan-500/20 to-blue-600/30 border border-cyan-500/30 hover:from-cyan-500/30 hover:to-blue-600/40'
                 : 'bg-gradient-to-br from-cyan-100 to-blue-200 border border-cyan-300 hover:from-cyan-200/90 hover:to-blue-300/90'
@@ -81,10 +80,10 @@ export default function Article() {
 
           <SpotlightCard
             className={cn(
-              'group cursor-pointer transition-all duration-300 h-full',
+              'group cursor-pointer transition-all h-full',
               theme === 'dark'
                 ? 'bg-gradient-to-br from-teal-500/20 to-green-600/30 border border-teal-500/30 hover:from-teal-500/30 hover:to-green-600/40'
-                : 'bg-gradient-to-br from-teal-100 to-green-200 border border-teal-300 hover:from-teal-200/90 hover:to-green-300/90'
+                : 'bg-gradient-to-br from-teal-300/20 to-green-400/30 border border-teal-300/30 hover:from-teal-300/30 hover:to-green-400/40'
             )}
             onClick={() => (window.location.href = '/micro')}
           >
@@ -130,15 +129,6 @@ export default function Article() {
             </div>
           </SpotlightCard>
         </div>
-
-        <FadeIn delay={0.8} className="text-center">
-          <Link href="/article">
-            <Button className="bg-green-600 hover:bg-green-700">
-              Xem tất cả tin tức
-              <ArrowRight className="ml-2 w-4 h-4" />
-            </Button>
-          </Link>
-        </FadeIn>
       </div>
     </section>
   );

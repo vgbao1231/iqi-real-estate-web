@@ -33,7 +33,7 @@ export function SpotlightCard({
   };
 
   const spotlightColor =
-    theme === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.25)';
+    theme === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.5)';
 
   return (
     <div
@@ -48,9 +48,9 @@ export function SpotlightCard({
       onClick={onClick}
     >
       <div
-        className="pointer-events-none absolute inset-0 z-10 transition-opacity duration-300"
+        className="pointer-events-none absolute inset-0 z-10 transition-opacity"
         style={{
-          background: `radial-gradient(500px circle at ${mousePosition.x}px ${mousePosition.y}px, ${spotlightColor}, transparent 40%)`,
+          background: `radial-gradient(400px circle at ${mousePosition.x}px ${mousePosition.y}px, ${spotlightColor}, transparent 40%)`,
           opacity: isHovering ? 1 : 0,
         }}
       />
