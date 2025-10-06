@@ -465,7 +465,7 @@ export function OtherTab({
                           </label>
                           <input
                             type="range"
-                            min="100"
+                            min="50"
                             max="400"
                             value={field.size}
                             onChange={(e) =>

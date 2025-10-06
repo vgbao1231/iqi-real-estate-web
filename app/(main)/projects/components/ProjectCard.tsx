@@ -40,7 +40,7 @@ export const ProjectCard = ({ project, index }: any) => {
 
   const handleShare = async (e: any) => {
     e.stopPropagation();
-    const fullUrl = `${window.location.origin}${window.location.pathname}/${project.id}`;
+    const fullUrl = `${window.location.href}/${project.id}`;
 
     try {
       await navigator.clipboard.writeText(fullUrl);

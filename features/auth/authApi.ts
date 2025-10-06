@@ -1,4 +1,4 @@
-import { baseApi } from '../api/baseApi';
+import { baseApi, tagTypes } from '../api/baseApi';
 
 interface LoginPayload {
   email: string;
@@ -25,7 +25,7 @@ export const authApi = baseApi.injectEndpoints({
         body,
         credentials: 'include',
       }),
-      invalidatesTags: ['Auth'],
+      invalidatesTags: [tagTypes.Auth],
     }),
 
     logout: builder.mutation<{ message: string }, void>({
@@ -34,7 +34,7 @@ export const authApi = baseApi.injectEndpoints({
         method: 'POST',
         credentials: 'include',
       }),
-      invalidatesTags: ['Auth'],
+      invalidatesTags: [tagTypes.Auth],
     }),
 
     me: builder.query<User, void>({
@@ -42,7 +42,7 @@ export const authApi = baseApi.injectEndpoints({
         url: '/auth/me',
         credentials: 'include',
       }),
-      providesTags: ['Auth'],
+      providesTags: [tagTypes.Auth],
     }),
   }),
 });

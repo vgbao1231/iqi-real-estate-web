@@ -3,7 +3,7 @@
 import type React from 'react';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { Upload, X, ImageIcon } from 'lucide-react';
+import { X, ImageIcon } from 'lucide-react';
 import { memo } from 'react';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
@@ -15,6 +15,7 @@ interface FileUploadProps {
   accept?: string;
   clickToDelete?: boolean;
   className?: string;
+  placeholder?: string | React.ReactNode;
 }
 
 export const FileUpload = memo(function FileUpload({
@@ -24,6 +25,7 @@ export const FileUpload = memo(function FileUpload({
   accept = 'image/*',
   clickToDelete = false,
   className,
+  placeholder,
 }: FileUploadProps) {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] || null;
@@ -68,6 +70,7 @@ export const FileUpload = memo(function FileUpload({
                   height={0}
                   sizes="100vw"
                   quality={40}
+                  priority
                   className="max-h-32 w-auto h-auto max-w-full rounded-md object-contain"
                 />
                 {clickToDelete && (
@@ -80,9 +83,9 @@ export const FileUpload = memo(function FileUpload({
               </div>
             )}
             <div className="flex items-center justify-between w-full px-2">
-              <div className="flex items-center space-x-2">
-                <ImageIcon className="h-4 w-4" />
-                <span className="text-sm text-gray-600 truncate">
+              <div className="flex-grow flex-shrink min-w-0 flex items-center space-x-2">
+                <ImageIcon className="h-4 w-4 flex-none" />
+                <span className="text-sm text-gray-600 flex-grow flex-shrink min-w-0 truncate">
                   {fileName}
                 </span>
               </div>
@@ -91,6 +94,7 @@ export const FileUpload = memo(function FileUpload({
                   variant="ghost"
                   size="sm"
                   onClick={() => onChange(null)}
+                  className="flex-none"
                 >
                   <X className="h-4 w-4" />
                 </Button>
@@ -106,10 +110,13 @@ export const FileUpload = memo(function FileUpload({
               onChange={handleFileChange}
             />
             <div className="flex flex-col items-center space-y-2">
-              <Upload className="h-8 w-8 text-gray-400" />
-              <span className="text-sm text-gray-500">
-                Tải lên {label.toLowerCase()}
-              </span>
+              {/* <Upload className="h-8 w-8 text-gray-400" /> */}
+              <ImageIcon className="w-12 h-12 text-gray-400" />
+              {placeholder || (
+                <span className="text-sm text-gray-500">
+                  Tải lên {label.toLowerCase()}
+                </span>
+              )}
             </div>
           </label>
         )}

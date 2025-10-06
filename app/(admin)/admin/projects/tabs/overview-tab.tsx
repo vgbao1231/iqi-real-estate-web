@@ -214,6 +214,7 @@ export function OverviewTab({
 }: OverviewTabProps) {
   const [updateProjectTab, { isLoading }] = useUpdateProjectTabMutation();
   const [uploadImage, { isLoading: isUploading }] = useUploadImageMutation();
+  console.log(overview);
 
   return (
     <div className="space-y-8">
@@ -262,11 +263,7 @@ export function OverviewTab({
                         ...newOverviewImages[index],
                         image: file,
                       };
-                      updateProject(
-                        'overview',
-                        'overviewImages',
-                        newOverviewImages
-                      );
+                      updateProject('overview', 'overviewImages', file);
                     }}
                   />
                   <div className="space-y-2">
@@ -274,7 +271,6 @@ export function OverviewTab({
                     <RichTextEditor
                       value={item.description}
                       onChange={(value) => {
-                        if (value === item.description) return; // không đổi thì thôi
                         const newOverviewImages = [...overview.overviewImages];
                         newOverviewImages[index] = {
                           ...newOverviewImages[index],

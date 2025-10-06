@@ -232,7 +232,6 @@ export default function AdminLoginPage() {
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
                   <Input
-                    name="password"
                     type={showPassword ? 'text' : 'password'}
                     placeholder="••••••••"
                     className="pl-10 pr-10 placeholder:text-gray-400"

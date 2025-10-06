@@ -52,17 +52,19 @@ export function DeveloperTab({
       // Search filter
       const matchesSearch =
         partner.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        partner.type.toLowerCase().includes(searchTerm.toLowerCase());
+        partner.shortDescription
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase());
 
       // Year filter
       const matchesYear =
         filters.partnershipYear.length === 0 ||
-        filters.partnershipYear.includes(partner.partnership);
+        filters.partnershipYear.includes(partner.partnershipYear);
 
       // Type filter
       const matchesType =
         filters.partnerType.length === 0 ||
-        filters.partnerType.includes(partner.type);
+        filters.partnerType.includes(partner.shortDescription);
 
       // Specialty filter
       const matchesSpecialty =
@@ -159,7 +161,7 @@ export function DeveloperTab({
                   <TableCell>
                     <div className="flex items-center space-x-3">
                       <Image
-                        src={partner.logoUrl || '/placeholder.svg'}
+                        src={partner.image?.url || '/placeholder.svg'}
                         alt={partner.name}
                         width={80}
                         height={80}

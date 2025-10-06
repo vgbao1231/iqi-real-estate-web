@@ -53,23 +53,25 @@ export function InternationalTab({
       // Search filter
       const matchesSearch =
         partner.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        partner.type.toLowerCase().includes(searchTerm.toLowerCase());
+        partner.shortDescription
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase());
+
+      // Type filter
+      const matchesType =
+        filters.partnerType.length === 0 ||
+        filters.partnerType.includes(partner.shortDescription);
 
       // Year filter
       const matchesYear =
         filters.partnershipYear.length === 0 ||
         filters.partnershipYear.includes(partner.partnership);
 
-      // Type filter
-      const matchesType =
-        filters.partnerType.length === 0 ||
-        filters.partnerType.includes(partner.type);
-
       // Specialty filter
       const matchesSpecialty =
         filters.specialty.length === 0 ||
-        (partner.specialties &&
-          partner.specialties.some((s: any) => filters.specialty.includes(s)));
+        (partner.achievements &&
+          partner.achievements.some((s: any) => filters.specialty.includes(s)));
 
       return matchesSearch && matchesYear && matchesType && matchesSpecialty;
     });
@@ -144,7 +146,7 @@ export function InternationalTab({
                   Đại lý
                 </TableHead>
                 <TableHead className="font-medium text-gray-700">
-                  Chuyên môn
+                  Thành tựu
                 </TableHead>
                 <TableHead className="font-medium text-gray-700 text-center">
                   Thao tác
@@ -160,7 +162,7 @@ export function InternationalTab({
                   <TableCell>
                     <div className="flex items-center space-x-3">
                       <Image
-                        src={partner.logoUrl || '/placeholder.svg'}
+                        src={partner.image?.url || '/placeholder.svg'}
                         alt={partner.name}
                         width={80}
                         height={80}
@@ -183,11 +185,11 @@ export function InternationalTab({
                     {partner.countryCount}
                   </TableCell>
                   <TableCell className="font-medium text-gray-900 text-center">
-                    {partner.agents}
+                    {partner.agentCount}
                   </TableCell>
                   <TableCell>
                     <div className="flex flex-wrap gap-1">
-                      {partner.specialties
+                      {partner.achievements
                         ?.slice(0, 2)
                         .map((specialty: any, index: any) => (
                           <Badge
@@ -198,10 +200,10 @@ export function InternationalTab({
                             {specialty}
                           </Badge>
                         ))}
-                      {partner.specialties &&
-                        partner.specialties.length > 2 && (
+                      {partner.achievements &&
+                        partner.achievements.length > 2 && (
                           <Badge variant="secondary" className="text-xs">
-                            +{partner.specialties.length - 2}
+                            +{partner.achievements.length - 2}
                           </Badge>
                         )}
                     </div>

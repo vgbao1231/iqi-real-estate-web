@@ -22,6 +22,7 @@ export default function PartnersPage() {
     activeTab,
     filters,
     onFiltersChange,
+    setSelectedPartner,
   } = usePartners();
 
   return (
@@ -39,7 +40,10 @@ export default function PartnersPage() {
         <div className="flex items-center space-x-2">
           <Button
             className="bg-orange-600 hover:bg-orange-700"
-            onClick={() => setIsDialogOpen(true)}
+            onClick={() => {
+              setSelectedPartner(null);
+              setIsDialogOpen(true);
+            }}
           >
             <Plus className="mr-2 h-4 w-4" />
             Thêm đối tác

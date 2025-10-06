@@ -26,145 +26,150 @@ import {
   CarouselItem,
 } from '@/components/ui/carousel';
 import { motion } from 'framer-motion';
-import { formatViews } from '@/lib/utils';
+import { formatPriceRange, formatViews } from '@/lib/utils';
 import { Pagination } from '@/components/ui/pagination';
 import { Separator } from '@/components/ui/separator';
 import { usePathname } from 'next/navigation';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store';
+import { useGetPublicArticlesQuery } from '@/features/article/articleApi';
 
-const allNews = [
-  {
-    id: 1,
-    title: 'Dự án Vinhomes Grand Park: Cập nhật tiến độ tháng 12',
-    excerpt:
-      'Thông tin chi tiết về tiến độ xây dựng, bàn giao và các chính sách bán hàng mới nhất của dự án. Hiện tại, dự án đã hoàn thành 85% hạ tầng kỹ thuật và dự kiến bàn giao đợt đầu vào quý 2/2025...',
-    category: 'Hạ tầng',
-    date: '14/12/2025',
-    readTime: '5 phút đọc',
-    views: 3200,
-    price: '2.8 - 4.2 tỷ',
-    image: '/placeholder.svg',
-    isFeatured: true,
-  },
-  {
-    id: 2,
-    title: 'Masteri Thảo Điền: Giá bán và chính sách ưu đãi Q4',
-    excerpt:
-      'Cập nhật bảng giá mới nhất và các chương trình khuyến mãi hấp dẫn cho khách hàng quan tâm. Chủ đầu tư đưa ra gói hỗ trợ lãi suất 0% trong 24 tháng đầu cho khách hàng mua trong tháng 12...',
-    category: 'Tài chính',
-    date: '13/12/2025',
-    readTime: '4 phút đọc',
-    views: 2800,
-    price: '3.5 - 6.8 tỷ',
-    image: '/placeholder.svg',
-    isFeatured: true,
-  },
-  {
-    id: 3,
-    title: 'Căn hộ The Sun Avenue: Phân tích lợi nhuận cho thuê',
-    excerpt:
-      'Bài viết phân tích chi tiết về khả năng sinh lời từ việc cho thuê căn hộ tại dự án The Sun Avenue, bao gồm giá thuê trung bình, tỷ lệ lấp đầy, ưu thế về vị trí, cùng những yếu tố ảnh hưởng trực tiếp đến lợi nhuận lâu dài của nhà đầu tư.',
-    category: 'Đầu tư',
-    date: '11/12/2025',
-    readTime: '6 phút đọc',
-    views: 2100,
-    price: '2.2 - 3.8 tỷ',
-    image: '/placeholder.svg',
-    isFeatured: true,
-  },
-  {
-    id: 4,
-    title: 'Shophouse Phú Mỹ Hưng: Cơ hội đầu tư cuối năm',
-    excerpt:
-      'Bài viết khảo sát thị trường shophouse tại khu vực Phú Mỹ Hưng, phân tích sức hút về vị trí, tiềm năng kinh doanh và khả năng tăng giá, từ đó đưa ra đánh giá về những cơ hội đầu tư đáng chú ý vào cuối năm 2025.',
-    category: 'Thị trường',
-    date: '09/12/2025',
-    readTime: '7 phút đọc',
-    views: 1900,
-    price: '8 - 15 tỷ',
-    image: '/placeholder.svg',
-    isFeatured: false,
-  },
-  {
-    id: 5,
-    title: 'Biệt thự Ecopark: So sánh giá với các dự án cùng phân khúc',
-    excerpt:
-      'Bài viết phân tích và so sánh giá bán, hệ thống tiện ích, không gian sống và tiềm năng phát triển của biệt thự Ecopark so với các dự án biệt thự khác trong cùng phân khúc cao cấp tại khu vực lân cận.',
-    category: 'Xu hướng',
-    date: '07/12/2025',
-    readTime: '8 phút đọc',
-    views: 1700,
-    price: '12 - 25 tỷ',
-    image: '/placeholder.svg',
-    isFeatured: false,
-  },
-  {
-    id: 6,
-    title: 'Căn hộ Landmark 81: Thị trường cho thuê cao cấp',
-    excerpt:
-      'Bài viết cung cấp cái nhìn tổng quan về thị trường cho thuê căn hộ cao cấp tại Landmark 81, phân tích nhóm khách hàng mục tiêu, mức giá thuê phổ biến, cùng những yếu tố tạo nên sức hút vượt trội so với các dự án khác.',
-    category: 'Pháp lý',
-    date: '05/12/2025',
-    readTime: '5 phút đọc',
-    views: 1500,
-    price: '8 - 20 tỷ',
-    image: '/placeholder.svg',
-    isFeatured: true,
-  },
-  {
-    id: 7,
-    title: 'Ứng dụng AI trong quản lý bất động sản',
-    excerpt:
-      'Bài viết tìm hiểu về những ứng dụng thực tiễn của trí tuệ nhân tạo trong lĩnh vực bất động sản, từ quản lý dữ liệu khách hàng, tối ưu hóa giá bán cho đến dự đoán xu hướng thị trường và nâng cao trải nghiệm của nhà đầu tư.',
-    category: 'Công nghệ',
-    date: '03/12/2025',
-    readTime: '6 phút đọc',
-    views: 1300,
-    price: 'N/A',
-    image: '/placeholder.svg?height=250&width=400',
-    isFeatured: true,
-  },
-];
+// const allNews = [
+//   {
+//     id: 1,
+//     title: 'Dự án Vinhomes Grand Park: Cập nhật tiến độ tháng 12',
+//     description:
+//       'Thông tin chi tiết về tiến độ xây dựng, bàn giao và các chính sách bán hàng mới nhất của dự án. Hiện tại, dự án đã hoàn thành 85% hạ tầng kỹ thuật và dự kiến bàn giao đợt đầu vào quý 2/2025...',
+//     category: 'Hạ tầng',
+//     date: '14/12/2025',
+//     readTime: '5 phút đọc',
+//     views: 3200,
+//     price: '2.8 - 4.2 tỷ',
+//     image: '/placeholder.svg',
+//     isFeatured: true,
+//   },
+//   {
+//     id: 2,
+//     title: 'Masteri Thảo Điền: Giá bán và chính sách ưu đãi Q4',
+//     description:
+//       'Cập nhật bảng giá mới nhất và các chương trình khuyến mãi hấp dẫn cho khách hàng quan tâm. Chủ đầu tư đưa ra gói hỗ trợ lãi suất 0% trong 24 tháng đầu cho khách hàng mua trong tháng 12...',
+//     category: 'Tài chính',
+//     date: '13/12/2025',
+//     readTime: '4 phút đọc',
+//     views: 2800,
+//     price: '3.5 - 6.8 tỷ',
+//     image: '/placeholder.svg',
+//     isFeatured: true,
+//   },
+//   {
+//     id: 3,
+//     title: 'Căn hộ The Sun Avenue: Phân tích lợi nhuận cho thuê',
+//     description:
+//       'Bài viết phân tích chi tiết về khả năng sinh lời từ việc cho thuê căn hộ tại dự án The Sun Avenue, bao gồm giá thuê trung bình, tỷ lệ lấp đầy, ưu thế về vị trí, cùng những yếu tố ảnh hưởng trực tiếp đến lợi nhuận lâu dài của nhà đầu tư.',
+//     category: 'Đầu tư',
+//     date: '11/12/2025',
+//     readTime: '6 phút đọc',
+//     views: 2100,
+//     price: '2.2 - 3.8 tỷ',
+//     image: '/placeholder.svg',
+//     isFeatured: true,
+//   },
+//   {
+//     id: 4,
+//     title: 'Shophouse Phú Mỹ Hưng: Cơ hội đầu tư cuối năm',
+//     description:
+//       'Bài viết khảo sát thị trường shophouse tại khu vực Phú Mỹ Hưng, phân tích sức hút về vị trí, tiềm năng kinh doanh và khả năng tăng giá, từ đó đưa ra đánh giá về những cơ hội đầu tư đáng chú ý vào cuối năm 2025.',
+//     category: 'Thị trường',
+//     date: '09/12/2025',
+//     readTime: '7 phút đọc',
+//     views: 1900,
+//     price: '8 - 15 tỷ',
+//     image: '/placeholder.svg',
+//     isFeatured: false,
+//   },
+//   {
+//     id: 5,
+//     title: 'Biệt thự Ecopark: So sánh giá với các dự án cùng phân khúc',
+//     description:
+//       'Bài viết phân tích và so sánh giá bán, hệ thống tiện ích, không gian sống và tiềm năng phát triển của biệt thự Ecopark so với các dự án biệt thự khác trong cùng phân khúc cao cấp tại khu vực lân cận.',
+//     category: 'Xu hướng',
+//     date: '07/12/2025',
+//     readTime: '8 phút đọc',
+//     views: 1700,
+//     price: '12 - 25 tỷ',
+//     image: '/placeholder.svg',
+//     isFeatured: false,
+//   },
+//   {
+//     id: 6,
+//     title: 'Căn hộ Landmark 81: Thị trường cho thuê cao cấp',
+//     description:
+//       'Bài viết cung cấp cái nhìn tổng quan về thị trường cho thuê căn hộ cao cấp tại Landmark 81, phân tích nhóm khách hàng mục tiêu, mức giá thuê phổ biến, cùng những yếu tố tạo nên sức hút vượt trội so với các dự án khác.',
+//     category: 'Pháp lý',
+//     date: '05/12/2025',
+//     readTime: '5 phút đọc',
+//     views: 1500,
+//     price: '8 - 20 tỷ',
+//     image: '/placeholder.svg',
+//     isFeatured: true,
+//   },
+//   {
+//     id: 7,
+//     title: 'Ứng dụng AI trong quản lý bất động sản',
+//     description:
+//       'Bài viết tìm hiểu về những ứng dụng thực tiễn của trí tuệ nhân tạo trong lĩnh vực bất động sản, từ quản lý dữ liệu khách hàng, tối ưu hóa giá bán cho đến dự đoán xu hướng thị trường và nâng cao trải nghiệm của nhà đầu tư.',
+//     category: 'Công nghệ',
+//     date: '03/12/2025',
+//     readTime: '6 phút đọc',
+//     views: 1300,
+//     price: 'N/A',
+//     image: '/placeholder.svg?height=250&width=400',
+//     isFeatured: true,
+//   },
+// ];
 
-const popularArticles = [...allNews]
-  .sort((a, b) => b.views - a.views) // sắp xếp giảm dần theo views
-  .slice(0, 3); // lấy top 3 bài viết
-
-const filterCategories = [
-  'Tất cả',
-  'Thị trường',
-  'Pháp lý',
-  'Xu hướng',
-  'Tài chính',
-  'Hạ tầng',
-  'Đầu tư',
-  'Công nghệ',
-];
+// const filterCategories = [
+//   'Tất cả',
+//   'Thị trường',
+//   'Pháp lý',
+//   'Xu hướng',
+//   'Tài chính',
+//   'Hạ tầng',
+//   'Đầu tư',
+//   'Công nghệ',
+// ];
 
 export default function MicroNewsPage() {
-  const [activeFilter, setActiveFilter] = useState('Tất cả');
+  const articleCategories: any =
+    useSelector((state: RootState) => state.enum.articleCategories) ?? [];
+  const { data: { articles = [], featuredProjects = [] } = {}, isLoading } =
+    useGetPublicArticlesQuery();
+  const [activeFilter, setActiveFilter] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
   const pathname = usePathname();
 
   const filteredNews = useMemo(
     () =>
-      allNews.filter((article) => {
+      articles.filter((article: any) => {
         const matchesFilter =
-          activeFilter === 'Tất cả' || article.category === activeFilter;
+          activeFilter === 'all' || article.category === activeFilter;
         const matchesSearch =
           searchTerm === '' ||
           article.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          article.excerpt.toLowerCase().includes(searchTerm.toLowerCase());
+          article.description.toLowerCase().includes(searchTerm.toLowerCase());
         return matchesFilter && matchesSearch;
       }),
-    [activeFilter, searchTerm]
+    [activeFilter, searchTerm, articles]
   );
 
   const featuredNews = useMemo(
-    () => filteredNews.filter((article) => article.isFeatured),
+    () => filteredNews.filter((article: any) => article.isFeatured),
     [filteredNews]
   );
 
-  // useEffect(() => console.log(123), [filteredNews]);
+  const popularArticles = [...articles]
+    .sort((a, b) => b.views - a.views) // sắp xếp giảm dần theo views
+    .slice(0, 3); // lấy top 3 bài viết
 
   const {
     currentPage,
@@ -178,12 +183,6 @@ export default function MicroNewsPage() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [canScrollPrev, setCanScrollPrev] = useState(false);
   const [canScrollNext, setCanScrollNext] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 1000);
-    return () => clearTimeout(timer);
-  }, []);
 
   useEffect(() => {
     if (!carouselApi) return;
@@ -206,6 +205,9 @@ export default function MicroNewsPage() {
 
   const scrollPrev = () => carouselApi?.scrollPrev();
   const scrollNext = () => carouselApi?.scrollNext();
+
+  const getValue = (project: any, id: string) =>
+    project.overview.basicInfo.find((item: any) => item.id === id)?.value;
 
   if (isLoading) {
     return (
@@ -261,19 +263,21 @@ export default function MicroNewsPage() {
         <div className="container mx-auto px-4">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
             <div className="flex flex-wrap gap-2">
-              {filterCategories.map((category) => (
+              {articleCategories.map((category: any) => (
                 <Button
-                  key={category}
-                  variant={activeFilter === category ? 'default' : 'outline'}
+                  key={category.value}
+                  variant={
+                    activeFilter === category.value ? 'default' : 'outline'
+                  }
                   size="sm"
-                  onClick={() => setActiveFilter(category)}
+                  onClick={() => setActiveFilter(category.value)}
                   className={`${
-                    activeFilter === category
+                    activeFilter === category.value
                       ? 'bg-orange-500 hover:bg-orange-600 text-white'
                       : 'border-border hover:border-orange-500 hover:text-orange-500'
                   }`}
                 >
-                  {category}
+                  {category.label}
                 </Button>
               ))}
             </div>
@@ -333,7 +337,7 @@ export default function MicroNewsPage() {
                     }}
                   >
                     <CarouselContent className="-ml-6 py-2">
-                      {featuredNews.map((article, index) => (
+                      {featuredNews.map((article: any) => (
                         <CarouselItem
                           key={article.id}
                           className="pl-6 md:basis-1/2 lg:basis-1/3"
@@ -376,12 +380,14 @@ export default function MicroNewsPage() {
                               </CardHeader>
                               <CardContent>
                                 <p className="text-muted-foreground text-sm line-clamp-2 mb-4">
-                                  {article.excerpt}
+                                  {article.description}
                                 </p>
                                 <div className="flex items-center justify-between text-xs text-muted-foreground mb-4 mt-auto">
                                   <span className="flex items-center">
                                     <Calendar className="w-3 h-3 mr-1" />
-                                    {article.date}
+                                    {new Date(
+                                      article.createdAt
+                                    ).toLocaleDateString('vi-VN')}
                                   </span>
                                   <span className="flex items-center">
                                     <Eye className="w-3 h-3 mr-1" />
@@ -465,7 +471,7 @@ export default function MicroNewsPage() {
                   </div>
                 ) : (
                   <div className="space-y-6">
-                    {paginatedNews.map((article, idx) => (
+                    {paginatedNews.map((article: any, idx) => (
                       <>
                         <motion.div
                           key={article.id}
@@ -513,14 +519,16 @@ export default function MicroNewsPage() {
                                 </Link>
 
                                 <p className="text-muted-foreground mb-4 line-clamp-2">
-                                  {article.excerpt}
+                                  {article.description}
                                 </p>
 
                                 <div className="flex items-center justify-between">
                                   <div className="flex items-center text-xs text-muted-foreground space-x-3">
                                     <span className="flex items-center">
                                       <Calendar className="w-3 h-3 mr-1" />
-                                      {article.date}
+                                      {new Date(
+                                        article.createdAt
+                                      ).toLocaleDateString('vi-VN')}
                                     </span>
                                     <span className="flex items-center">
                                       <Eye className="w-3 h-3 mr-1" />
@@ -628,58 +636,33 @@ export default function MicroNewsPage() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4 px-4">
-                    {[
-                      {
-                        id: 1,
-                        name: 'Vinhomes Grand Park',
-                        location: 'TP.HCM',
-                        category: 'residential',
-                        type: 'Siêu đô thị',
-                        price: '2.5 - 4.2 tỷ',
-                      },
-                      {
-                        id: 2,
-                        name: 'The Manor Central Park',
-                        location: 'Hà Nội',
-                        category: 'international',
-                        type: 'Căn hộ cao cấp',
-                        price: '3.8 - 6.5 tỷ',
-                      },
-                      {
-                        id: 3,
-                        name: 'Aqua City',
-                        location: 'Đồng Nai',
-                        category: 'resort',
-                        type: 'Đô thị sinh thái',
-                        price: '1.8 - 3.2 tỷ',
-                      },
-                    ].map((project) => (
+                    {featuredProjects.map((project: any) => (
                       <motion.div
-                        key={project.name}
+                        key={project.id}
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         whileHover={{ x: 5 }}
                         className="group cursor-pointer p-2 px-3 rounded-lg hover:bg-orange-50 dark:hover:bg-orange-900/10 border border-transparent hover:border-orange-200 dark:hover:border-orange-600 transition-colors"
                       >
                         <Link
-                          href={`/projects/${project.category}/${project.id}`}
+                          href={`/projects/${getValue(project, 'category')}/${project.id}`}
                         >
                           <div className="flex items-center justify-between">
                             <div className="flex-1">
                               <h4 className="font-semibold group-hover:text-orange-500 transition-colors duration-300">
-                                {project.name}
+                                {getValue(project, 'project_name')}
                               </h4>
                               <div className="flex items-center gap-2 mt-1">
                                 <span className="text-xs text-muted-foreground">
-                                  {project.location}
+                                  {getValue(project, 'city')}
                                 </span>
                                 <span className="w-1 h-1 bg-gray-300 rounded-full"></span>
                                 <span className="text-xs text-muted-foreground">
-                                  {project.type}
+                                  {getValue(project, 'project_type')}
                                 </span>
                               </div>
                               <p className="text-xs font-medium text-orange-500 mt-1">
-                                {project.price}
+                                {formatPriceRange(getValue(project, 'price'))}
                               </p>
                             </div>
                             <motion.div

@@ -1,4 +1,4 @@
-import { baseApi } from '../api/baseApi';
+import { baseApi, tagTypes } from '../api/baseApi';
 
 export const userApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -7,15 +7,15 @@ export const userApi = baseApi.injectEndpoints({
       providesTags: (result) =>
         result
           ? [
-              { type: 'User', id: 'LIST' },
-              ...result.map((user) => ({ type: 'User' as const, id: user.id })),
+              { type: tagTypes.User, id: 'LIST' },
+              ...result.map((user) => ({ type: tagTypes.User, id: user.id })),
             ]
-          : [{ type: 'User', id: 'LIST' }],
+          : [{ type: tagTypes.User, id: 'LIST' }],
     }),
 
     getUserById: builder.query<any, string>({
       query: (id) => `/users/${id}`,
-      providesTags: (result, error, id) => [{ type: 'User', id }],
+      providesTags: (result, error, id) => [{ type: tagTypes.User, id }],
     }),
 
     createUser: builder.mutation<any, any>({
@@ -24,7 +24,7 @@ export const userApi = baseApi.injectEndpoints({
         method: 'POST',
         body,
       }),
-      invalidatesTags: ['User'],
+      invalidatesTags: [tagTypes.User],
     }),
 
     updateUser: builder.mutation<any, { id: string; body: any }>({
@@ -34,8 +34,8 @@ export const userApi = baseApi.injectEndpoints({
         body,
       }),
       invalidatesTags: (result, error, { id }) => [
-        { type: 'User', id },
-        { type: 'User', id: 'LIST' },
+        { type: tagTypes.User, id },
+        { type: tagTypes.User, id: 'LIST' },
       ],
     }),
 
@@ -44,7 +44,7 @@ export const userApi = baseApi.injectEndpoints({
         url: `/users/${id}`,
         method: 'DELETE',
       }),
-      invalidatesTags: ['User'],
+      invalidatesTags: [tagTypes.User],
     }),
   }),
 });

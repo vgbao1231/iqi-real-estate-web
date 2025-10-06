@@ -8,6 +8,7 @@ interface RichTextEditorProps {
   value?: string;
   onChange: (content: string) => void;
   placeholder?: string;
+  id?: string;
   className?: string;
 }
 
@@ -51,6 +52,7 @@ export const RichTextEditor = dynamic(
     }
 
     const ReactQuillWrapper = ({
+      id,
       value,
       onChange,
       placeholder = 'Nhập nội dung...',
@@ -126,7 +128,6 @@ export const RichTextEditor = dynamic(
         if (!quillRef.current) return;
         const editor = quillRef.current.getEditor();
         const html = initialValue.current;
-        console.log(initialValue.current);
 
         try {
           const delta = editor.clipboard.convert({ html });
@@ -151,6 +152,7 @@ export const RichTextEditor = dynamic(
           modules={modules}
           onChange={onChange}
           placeholder={placeholder}
+          id={id}
           className={className}
         />
       );

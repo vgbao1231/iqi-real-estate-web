@@ -84,8 +84,17 @@ function clearAuthCookies() {
   Cookies.remove('remember_me');
 }
 
+export const tagTypes = {
+  Auth: 'Auth',
+  Project: 'Project',
+  User: 'User',
+  Partner: 'Partner',
+  Article: 'Article',
+  Contact: 'Contact',
+} as const;
+
 export const baseApi = createApi({
   baseQuery: baseQueryWithAuth,
-  tagTypes: ['Auth', 'Project', 'User', 'Partner'],
+  tagTypes: Object.values(tagTypes),
   endpoints: () => ({}),
 });

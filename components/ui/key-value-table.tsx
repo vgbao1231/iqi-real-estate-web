@@ -37,7 +37,7 @@ interface KeyValuePair {
   key: string;
   value: string | number | [number | string, number | string]; // Updated to support array for range
   type?: 'text' | 'number' | 'select' | 'range'; // Added "range" type
-  options?: string[];
+  options?: { label: string; value: string }[]; // For select type
   hidden?: boolean; // Added hidden project
   isNew?: boolean; // Added isNew project to distinguish new items
 }
@@ -227,8 +227,8 @@ export function KeyValueTable({ title, data, onChange }: KeyValueTableProps) {
           </SelectTrigger>
           <SelectContent>
             {item.options.map((option) => (
-              <SelectItem key={option} value={option}>
-                {option}
+              <SelectItem key={option.value} value={option.value}>
+                {option.label}
               </SelectItem>
             ))}
           </SelectContent>

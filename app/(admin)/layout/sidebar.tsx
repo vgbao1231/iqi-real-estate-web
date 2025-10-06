@@ -44,9 +44,9 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: any) {
     },
     {
       name: 'Tin tức',
-      href: '/admin/news',
+      href: '/admin/article',
       icon: Newspaper,
-      current: pathname.startsWith('/admin/news'),
+      current: pathname.startsWith('/admin/article'),
     },
     {
       name: 'Liên hệ',

@@ -92,3 +92,27 @@ export function setDeep(obj: any, path: string, value: any) {
     }
   });
 }
+export const formatPriceRange = (
+  priceArray: number[] | null | undefined
+): string => {
+  if (!priceArray || priceArray.length < 2) return 'Liên hệ';
+
+  const [minPrice, maxPrice] = priceArray;
+
+  const convertAndFormat = (price: number): string => {
+    if (price >= 1_000_000_000) {
+      const value = (price / 1_000_000_000).toFixed(1).replace(/\.0$/, '');
+      return `${value} Tỷ`;
+    }
+    if (price >= 1_000_000) {
+      const value = (price / 1_000_000).toFixed(0);
+      return `${value} Triệu`;
+    }
+    return price.toLocaleString('vi-VN');
+  };
+
+  const min = convertAndFormat(minPrice);
+  const max = convertAndFormat(maxPrice);
+
+  return min === max ? min : `Từ ${min} - ${max}`;
+};

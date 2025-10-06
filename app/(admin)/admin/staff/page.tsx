@@ -44,10 +44,7 @@ import {
   useGetAllUsersQuery,
   useUpdateUserMutation,
 } from '@/features/user/userApi';
-import {
-  useDeleteImageMutation,
-  useUploadImageMutation,
-} from '@/features/upload/uploadApi';
+import { useUploadImageMutation } from '@/features/upload/uploadApi';
 import { compressImage, diffPayload } from '@/lib/utils';
 
 const roles = [
@@ -209,7 +206,7 @@ export default function UserManagementPage() {
                           <div className="flex items-center space-x-3">
                             <Avatar className="w-12 h-12">
                               <AvatarImage
-                                src={us.avatarUrl || '/placeholder.svg'}
+                                src={us.image?.url || '/placeholder.svg'}
                                 className="w-full h-full object-cover"
                                 alt="User Avatar"
                               />
@@ -380,7 +377,6 @@ function UserForm({ initialData = null, setIsDialogOpen }: any) {
   const [updateUser, { isLoading: isUpdating }] = useUpdateUserMutation();
   const [createUser, { isLoading: isCreating }] = useCreateUserMutation();
   const [uploadImage, { isLoading: isUploading }] = useUploadImageMutation();
-  const [deleteImage] = useDeleteImageMutation();
 
   const [formData, setFormData] = useState<any>({
     name: initialData?.name || '',
@@ -389,12 +385,9 @@ function UserForm({ initialData = null, setIsDialogOpen }: any) {
     role: initialData?.role || 'ADMIN',
     isActive: initialData?.isActive ?? true,
     password: '',
-    avatarUrl: initialData?.avatarUrl || '/placeholder.svg',
+    image: initialData?.image,
   });
 
-  const [avatarPreview, setAvatarPreview] = useState(
-    initialData?.avatarUrl || ''
-  );
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = async (e: any) => {
@@ -408,14 +401,13 @@ function UserForm({ initialData = null, setIsDialogOpen }: any) {
       if (!payload.password) delete payload.password;
 
       // Nếu avatar là file -> upload
-      if (formData.avatarUrl instanceof File) {
-        const compressedFile = await compressImage(formData.avatarUrl);
+      if (formData.image instanceof File) {
+        const compressedFile = await compressImage(formData.image);
         uploadRes = await uploadImage({
           file: compressedFile,
           folder: 'users',
         }).unwrap();
-        payload.avatarUrl = uploadRes.url;
-        payload.avatarPublicId = uploadRes.publicId;
+        payload.image = uploadRes;
       }
 
       if (initialData) {
@@ -437,14 +429,12 @@ function UserForm({ initialData = null, setIsDialogOpen }: any) {
     const file = e.target.files?.[0];
     if (file) {
       const previewUrl = URL.createObjectURL(file);
-      setAvatarPreview(previewUrl);
-      setFormData({ ...formData, avatarUrl: file });
+      setFormData({ ...formData, image: file });
     }
   };
 
   const removeAvatar = () => {
-    setAvatarPreview('');
-    setFormData({ ...formData, avatarUrl: '' });
+    setFormData({ ...formData, image: '' });
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
@@ -456,13 +446,17 @@ function UserForm({ initialData = null, setIsDialogOpen }: any) {
         <div className="relative">
           <Avatar className="w-24 h-24 rounded-full overflow-hidden">
             <AvatarImage
-              src={avatarPreview || '/placeholder.svg'}
+              src={
+                formData.image instanceof File
+                  ? URL.createObjectURL(formData.image)
+                  : formData.image?.url || '/placeholder.svg'
+              }
               className="w-full h-full object-cover"
               alt="User Avatar"
             />
           </Avatar>
 
-          {avatarPreview && (
+          {formData.image && (
             <Button
               type="button"
               variant="destructive"
@@ -482,7 +476,7 @@ function UserForm({ initialData = null, setIsDialogOpen }: any) {
             onClick={() => fileInputRef.current?.click()}
           >
             <Camera className="w-4 h-4 mr-2" />
-            {avatarPreview ? 'Thay đổi avatar' : 'Thêm avatar'}
+            {formData.image ? 'Thay đổi avatar' : 'Thêm avatar'}
           </Button>
           <input
             ref={fileInputRef}
@@ -576,10 +570,9 @@ function UserForm({ initialData = null, setIsDialogOpen }: any) {
         )}
       </div>
       <div className="flex justify-end space-x-3 pt-4">
-        <Button type="button" variant="outline">
-          Hủy
-        </Button>
+        <Button variant="outline">Hủy</Button>
         <Button
+          type="submit"
           disabled={isUpdating || isCreating || isUploading}
           className="bg-orange-600 hover:bg-orange-700"
         >

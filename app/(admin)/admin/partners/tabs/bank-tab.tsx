@@ -53,7 +53,9 @@ export function BankTab({
       // Search filter
       const matchesSearch =
         partner.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        partner.type.toLowerCase().includes(searchTerm.toLowerCase());
+        partner.shortDescription
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase());
 
       // Year filter
       const matchesYear =
@@ -63,7 +65,7 @@ export function BankTab({
       // Type filter
       const matchesType =
         filters.partnerType.length === 0 ||
-        filters.partnerType.includes(partner.type);
+        filters.partnerType.includes(partner.shortDescription);
 
       // Benefits filter (specialty field for banks)
       const matchesBenefits =
@@ -160,7 +162,7 @@ export function BankTab({
                   <TableCell>
                     <div className="flex items-center space-x-3">
                       <Image
-                        src={partner.logoUrl || '/placeholder.svg'}
+                        src={partner.image?.url || '/placeholder.svg'}
                         alt={partner.name}
                         width={80}
                         height={80}

@@ -1,5 +1,5 @@
 // features/partner/partnerApi.ts
-import { baseApi } from '../api/baseApi';
+import { baseApi, tagTypes } from '../api/baseApi';
 
 export const partnerApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -12,30 +12,35 @@ export const partnerApi = baseApi.injectEndpoints({
       providesTags: (result) =>
         result
           ? [
-              ...result.map(({ id }) => ({ type: 'Partner' as const, id })),
-              { type: 'Partner', id: 'LIST' },
+              ...result.map(({ id }) => ({
+                type: tagTypes.Partner,
+                id,
+              })),
+              { type: tagTypes.Partner, id: 'LIST' },
             ]
-          : [{ type: 'Partner', id: 'LIST' }],
+          : [{ type: tagTypes.Partner, id: 'LIST' }],
     }),
 
     // Tạo partner mới
     createPartner: builder.mutation<any, Partial<any>>({
-      query: (data) => ({
+      query: (body) => ({
         url: '/partners',
         method: 'POST',
-        body: data,
+        body,
       }),
-      invalidatesTags: [{ type: 'Partner', id: 'LIST' }],
+      invalidatesTags: [{ type: tagTypes.Partner, id: 'LIST' }],
     }),
 
     // Cập nhật partner
-    updatePartner: builder.mutation<any, { id: string; data: Partial<any> }>({
-      query: ({ id, data }) => ({
+    updatePartner: builder.mutation<any, { id: string; body: Partial<any> }>({
+      query: ({ id, body }) => ({
         url: `/partners/${id}`,
         method: 'PATCH',
-        body: data,
+        body,
       }),
-      invalidatesTags: (result, error, { id }) => [{ type: 'Partner', id }],
+      invalidatesTags: (result, error, { id }) => [
+        { type: tagTypes.Partner, id },
+      ],
     }),
 
     // Xóa partner
@@ -45,8 +50,8 @@ export const partnerApi = baseApi.injectEndpoints({
         method: 'DELETE',
       }),
       invalidatesTags: (result, error, id) => [
-        { type: 'Partner', id },
-        { type: 'Partner', id: 'LIST' },
+        { type: tagTypes.Partner, id },
+        { type: tagTypes.Partner, id: 'LIST' },
       ],
     }),
   }),

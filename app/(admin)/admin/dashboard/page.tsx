@@ -279,7 +279,7 @@ export default function AdminDashboardPage() {
                   </Button>
                 </motion.div>
               </Link>
-              <Link href="/admin/dashboard/news/new">
+              <Link href="/admin/dashboard/article/new">
                 <motion.div
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}

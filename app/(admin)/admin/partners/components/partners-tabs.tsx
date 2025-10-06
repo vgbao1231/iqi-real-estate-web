@@ -70,7 +70,9 @@ export function PartnersTabs({
 
       <TabsContent value="developer">
         <DeveloperTab
-          partners={partners}
+          partners={partners.filter(
+            (partner) => partner.category === 'DEVELOPER'
+          )}
           searchTerm={searchTerm}
           onEdit={onEdit}
           onDelete={deletePartner}
@@ -83,7 +85,9 @@ export function PartnersTabs({
 
       <TabsContent value="international">
         <InternationalTab
-          partners={partners}
+          partners={partners.filter(
+            (partner) => partner.category === 'INTERNATIONAL'
+          )}
           searchTerm={searchTerm}
           onEdit={onEdit}
           onDelete={deletePartner}
@@ -96,7 +100,7 @@ export function PartnersTabs({
 
       <TabsContent value="bank">
         <BankTab
-          partners={partners}
+          partners={partners.filter((partner) => partner.category === 'BANK')}
           searchTerm={searchTerm}
           onEdit={onEdit}
           onDelete={deletePartner}

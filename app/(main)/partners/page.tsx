@@ -22,12 +22,13 @@ import { useState } from 'react';
 import OutroSection from '@/app/(main)/components/outro-section';
 import IntroSection from '@/app/(main)/components/intro-section';
 import { useGetAllPartnersQuery } from '@/features/partner/partnerApi';
+import { partners as defaultPartner } from '@/lib/partner-data';
 
 export default function PartnersPage() {
   const [showAllDevelopers, setShowAllDevelopers] = useState(false);
   const [showAllInternational, setShowAllInternational] = useState(false);
   const [showAllBanking, setShowAllBanking] = useState(false);
-  const { data: partners = [] } = useGetAllPartnersQuery();
+  const { data: partners } = useGetAllPartnersQuery();
 
   const partnershipBenefits = [
     {
@@ -64,9 +65,17 @@ export default function PartnersPage() {
     },
   ];
 
-  const developer = partners.filter((p) => p.category === 'DEVELOPER');
-  const international = partners.filter((p) => p.category === 'INTERNATIONAL');
-  const bank = partners.filter((p) => p.category === 'BANK');
+  const developer = partners
+    ? partners.filter((p) => p.category === 'DEVELOPER')
+    : defaultPartner.developer;
+
+  const international = partners
+    ? partners.filter((p) => p.category === 'INTERNATIONAL')
+    : defaultPartner.international;
+
+  const bank = partners
+    ? partners.filter((p) => p.category === 'BANK')
+    : defaultPartner.bank;
 
   const displayedDevelopers = showAllDevelopers
     ? developer
@@ -146,7 +155,7 @@ export default function PartnersPage() {
                         className="relative h-40 w-full"
                       >
                         <Image
-                          src={partner.logo || '/placeholder-2.webp'}
+                          src={partner.image?.url || '/placeholder-2.webp'}
                           alt={partner.name}
                           fill
                           className="object-contain px-4"
@@ -186,7 +195,7 @@ export default function PartnersPage() {
                         </div>
                         <div>
                           <div className="text-sm font-bold text-orange-600">
-                            {partner.partnership}
+                            {partner.partnershipYear}
                           </div>
                           <div className="text-xs text-muted-foreground">
                             Từ năm
@@ -195,23 +204,20 @@ export default function PartnersPage() {
                       </div>
 
                       <div className="flex flex-wrap gap-1 mb-4">
-                        {partner.specialties
-                          .slice(0, 2)
-                          .map((specialty: any, idx: any) => (
-                            <Badge
-                              key={idx}
-                              variant="outline"
-                              className="text-xs"
-                            >
-                              {specialty}
-                            </Badge>
-                          ))}
+                        {partner.specialties.map((specialty: any, idx: any) => (
+                          <Badge
+                            key={idx}
+                            variant="outline"
+                            className="text-xs"
+                          >
+                            {specialty}
+                          </Badge>
+                        ))}
                       </div>
 
                       <div className="space-y-1">
-                        {partner.achievements
-                          .slice(0, 1)
-                          .map((achievement: any, idx: any) => (
+                        {partner.achievements.map(
+                          (achievement: any, idx: any) => (
                             <div
                               key={idx}
                               className="flex items-center text-xs text-muted-foreground"
@@ -219,7 +225,8 @@ export default function PartnersPage() {
                               <Star className="w-3 h-3 mr-1 text-yellow-500" />
                               {achievement}
                             </div>
-                          ))}
+                          )
+                        )}
                       </div>
                     </CardContent>
                   </Card>
@@ -274,7 +281,7 @@ export default function PartnersPage() {
                         className="relative h-40 w-full"
                       >
                         <Image
-                          src={partner.logo || '/placeholder-2.webp'}
+                          src={partner.image?.url || '/placeholder-2.webp'}
                           alt={partner.name}
                           fill
                           className="object-contain px-4"
@@ -291,7 +298,7 @@ export default function PartnersPage() {
                         {partner.description}
                       </p>
 
-                      <div className="grid grid-cols-2 gap-4 mb-4">
+                      <div className="grid grid-cols-3 gap-2 mb-4 items-center text-center">
                         <div>
                           <div className="text-lg font-bold text-blue-600">
                             {partner.countryCount}
@@ -302,18 +309,25 @@ export default function PartnersPage() {
                         </div>
                         <div>
                           <div className="text-lg font-bold text-green-600">
-                            {partner.agents}
+                            {partner.agentCount}
                           </div>
                           <div className="text-sm text-muted-foreground">
                             Đại lý
                           </div>
                         </div>
+                        <div>
+                          <div className="text-sm font-bold text-orange-600">
+                            {partner.partnershipYear}
+                          </div>
+                          <div className="text-xs text-muted-foreground">
+                            Từ năm
+                          </div>
+                        </div>
                       </div>
 
                       <div className="space-y-1">
-                        {partner.achievements
-                          .slice(0, 1)
-                          .map((achievement: any, idx: any) => (
+                        {partner.achievements.map(
+                          (achievement: any, idx: any) => (
                             <div
                               key={idx}
                               className="flex items-center justify-center text-sm text-muted-foreground"
@@ -321,7 +335,8 @@ export default function PartnersPage() {
                               <Award className="w-4 h-4 mr-2 text-orange-500" />
                               {achievement}
                             </div>
-                          ))}
+                          )
+                        )}
                       </div>
                     </CardContent>
                   </Card>
@@ -366,8 +381,8 @@ export default function PartnersPage() {
           </FadeIn>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {displayedBanking.map((bank, index) => (
-              <ScaleIn key={bank.id} delay={index * 0.1}>
+            {displayedBanking.map((partner, index) => (
+              <ScaleIn key={partner.id} delay={index * 0.1}>
                 <motion.div whileHover={{ y: -5 }} className="h-full">
                   <Card className="text-center h-full">
                     <CardHeader className="pb-4">
@@ -376,15 +391,15 @@ export default function PartnersPage() {
                         className="relative h-32 w-full"
                       >
                         <Image
-                          src={bank.logo || '/placeholder-2.webp'}
-                          alt={bank.name}
+                          src={partner.image?.url || '/placeholder-2.webp'}
+                          alt={partner.name}
                           fill
                           className="object-contain px-16"
                         />
                       </motion.div>
-                      <CardTitle className="text-lg">{bank.name}</CardTitle>
+                      <CardTitle className="text-lg">{partner.name}</CardTitle>
                       <p className="text-muted-foreground text-sm">
-                        {bank.type}
+                        {partner.shortDescription}
                       </p>
                     </CardHeader>
 
@@ -395,7 +410,7 @@ export default function PartnersPage() {
                             Lãi suất:
                           </span>
                           <span className="font-bold text-green-600 text-sm">
-                            {bank.loanRate}
+                            {partner.loanRate}
                           </span>
                         </div>
                         <div className="flex justify-between items-center">
@@ -403,23 +418,18 @@ export default function PartnersPage() {
                             Vay tối đa:
                           </span>
                           <span className="font-bold text-blue-600 text-sm">
-                            {bank.maxLoan}
+                            {partner.maxLoan}
                           </span>
                         </div>
                       </div>
 
-                      <div className="space-y-1">
-                        {bank.benefits
-                          .slice(0, 2)
-                          .map((benefit: any, idx: any) => (
-                            <div
-                              key={idx}
-                              className="flex items-center text-xs"
-                            >
-                              <CheckCircle className="w-3 h-3 mr-2 text-green-600 flex-shrink-0" />
-                              <span className="text-left">{benefit}</span>
-                            </div>
-                          ))}
+                      <div className="grid grid-cols-2 gap-x-4 gap-y-2">
+                        {partner.benefits.map((benefit: any, idx: any) => (
+                          <div key={idx} className="flex items-center text-xs">
+                            <CheckCircle className="w-3 h-3 mr-2 text-green-600 flex-shrink-0" />
+                            <span className="text-left">{benefit}</span>
+                          </div>
+                        ))}
                       </div>
                     </CardContent>
                   </Card>

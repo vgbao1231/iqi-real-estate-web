@@ -22,6 +22,7 @@ import { ChevronDown, Menu, X } from 'lucide-react';
 import Link from 'next/link';
 import { SectionBreak } from '@/app/(main)/projects/components/sections/SectionBreak';
 import { useGetPublicProjectByIdQuery } from '@/features/project/projectApi';
+import LoadingScreen from '@/components/common/loading-screen';
 
 const arsenal = Arsenal({
   subsets: ['latin'],
@@ -108,8 +109,8 @@ export default function ProjectDetail() {
         id: 'toolbar',
         label: 'Công cụ',
         dropdown: [
-          { href: '/360-view', label: '360 view' },
-          { href: '/invitation', label: 'Thiệp mời' },
+          { href: project.siteplan.view360, label: '360 view' },
+          { href: `${pathname}/invitation`, label: 'Thiệp mời' },
         ],
       },
       { id: 'contact2', content: <Contact data={project.contact} /> },
@@ -133,9 +134,10 @@ export default function ProjectDetail() {
     });
 
     return finalSections;
-  }, [project]);
+  }, [project, pathname]);
 
-  if (!project) return <div>Loading...</div>;
+  if (!project)
+    return <LoadingScreen loadingText="Đang tải thông tin chi tiết dự án" />;
 
   return (
     <div
@@ -194,7 +196,7 @@ export default function ProjectDetail() {
                           {item.dropdown.map((subnav: any) => (
                             <Link
                               key={subnav.href}
-                              href={`${pathname}${subnav.href}`}
+                              href={subnav.href}
                               className="group/item block py-2 px-4"
                             >
                               <p className="font-bold text-nowrap uppercase group-hover/item:text-orange-500">

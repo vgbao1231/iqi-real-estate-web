@@ -1,32 +1,41 @@
-import { baseApi } from '../api/baseApi';
+import { baseApi, tagTypes } from '../api/baseApi';
 
 export const projectApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     // ===== PUBLIC =====
     getPublicProjects: builder.query<any[], void>({
       query: () => '/projects/public',
-      providesTags: ['Project'],
+      providesTags: [tagTypes.Project],
     }),
 
     getPublicProjectById: builder.query<any, string>({
       query: (id) => `/projects/public/${id}`,
-      providesTags: (result, error, id) => [{ type: 'Project', id }],
+      providesTags: (result, error, id) => [{ type: tagTypes.Project, id }],
     }),
 
     getPublicProjectTabById: builder.query<any, { id: string; tab: string }>({
       query: ({ id, tab }) => `/projects/public/${id}/${tab}`,
-      providesTags: (result, error, { id }) => [{ type: 'Project', id }],
+      providesTags: (result, error, { id }) => [{ type: tagTypes.Project, id }],
     }),
 
     // ===== ADMIN =====
     getAdminProjects: builder.query<any[], void>({
       query: () => '/projects',
-      providesTags: ['Project'],
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.map(({ id }) => ({
+                type: tagTypes.Project,
+                id,
+              })),
+              { type: tagTypes.Project, id: 'LIST' },
+            ]
+          : [{ type: tagTypes.Project, id: 'LIST' }],
     }),
 
     getAdminProjectById: builder.query<any, string>({
       query: (id) => `/projects/${id}`,
-      providesTags: (result, error, id) => [{ type: 'Project', id }],
+      providesTags: (result, error, id) => [{ type: tagTypes.Project, id }],
     }),
 
     createProject: builder.mutation<any, void>({
@@ -34,7 +43,7 @@ export const projectApi = baseApi.injectEndpoints({
         url: '/projects',
         method: 'POST',
       }),
-      invalidatesTags: ['Project'],
+      invalidatesTags: [tagTypes.Project],
     }),
 
     updateProjectTab: builder.mutation<
@@ -46,7 +55,9 @@ export const projectApi = baseApi.injectEndpoints({
         method: 'PUT',
         body,
       }),
-      invalidatesTags: (result, error, { id }) => [{ type: 'Project', id }],
+      invalidatesTags: (result, error, { id }) => [
+        { type: tagTypes.Project, id },
+      ],
     }),
 
     deleteProject: builder.mutation<void, string>({
@@ -54,7 +65,7 @@ export const projectApi = baseApi.injectEndpoints({
         url: `/projects/${id}`,
         method: 'DELETE',
       }),
-      invalidatesTags: ['Project'],
+      invalidatesTags: [tagTypes.Project],
     }),
   }),
 });

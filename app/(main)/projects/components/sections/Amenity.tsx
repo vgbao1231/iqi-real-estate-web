@@ -62,7 +62,7 @@ const Amenity = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
       />
       <FadeIn
         delay={0.5}
-        className="relative w-full h-auto center-both md:min-h-[70vh]"
+        className="relative w-full h-auto center-both max-w-5xl"
       >
         <Carousel
           className="w-full"
@@ -76,14 +76,14 @@ const Amenity = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: idx * 0.08 + 0.4 }}
-                  className="relative h-auto overflow-hidden md:min-h-[70vh]"
+                  className="relative h-auto overflow-hidden md:min-h-[72vh] w-full"
                 >
                   <Image
                     src={img?.url || '/placeholder.svg'}
                     alt={`Ảnh ${idx + 1}`}
-                    width={800}
-                    height={600}
-                    className="object-contain w-auto h-full"
+                    fill
+                    className="object-contain"
+                    priority
                   />
                 </motion.div>
               </CarouselItem>

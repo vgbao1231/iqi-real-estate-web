@@ -1,6 +1,5 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -14,221 +13,25 @@ import { Pagination } from '@/components/ui/pagination';
 import { FadeIn, SlideIn } from '@/components/common/animations';
 import { usePathname } from 'next/navigation';
 import { Separator } from '@/components/ui/separator';
-
-// Articles data
-const articles = [
-  {
-    id: 1,
-    title: 'Thị trường BDS Việt Nam Q4/2025: Tăng trưởng ổn định 8.5%',
-    description:
-      'Báo cáo tổng quan thị trường bất động sản toàn quốc với những con số và xu hướng đáng chú ý trong quý 4/2025. Phân khúc căn hộ cao cấp dẫn đầu với mức tăng giá 12%.',
-    category: 'Thị trường',
-    date: '15/12/2025',
-    readTime: '8 phút đọc',
-    views: 5200,
-    image:
-      '/placeholder.svg?height=400&width=600&text=Vietnam+real+estate+market+growth+chart+analysis',
-    isFeatured: true,
-  },
-  {
-    id: 2,
-    title: 'Chính sách tiền tệ 2025: Tác động đến thị trường BDS',
-    description:
-      'Phân tích sâu về các quyết định lãi suất của Ngân hàng Nhà nước và tác động trực tiếp đến khả năng tiếp cận vốn vay mua nhà.',
-    category: 'Chính sách',
-    date: '14/12/2025',
-    readTime: '6 phút đọc',
-    views: 4800,
-    image:
-      '/placeholder.svg?height=400&width=600&text=monetary+policy+interest+rates+economic+impact',
-    isFeatured: true,
-  },
-  {
-    id: 3,
-    title: 'Đầu tư BDS khu vực Đông Nam Á: Cơ hội và thách thức',
-    description:
-      'Tổng quan về dòng vốn FDI vào lĩnh vực bất động sản các nước ASEAN, với Việt Nam dẫn đầu về tốc độ tăng trưởng.',
-    category: 'Đầu tư',
-    date: '13/12/2025',
-    readTime: '10 phút đọc',
-    views: 6100,
-    image:
-      '/placeholder.svg?height=400&width=600&text=Southeast+Asia+real+estate+investment+trends',
-    isFeatured: true,
-  },
-  {
-    id: 4,
-    title: 'GDP Việt Nam tăng 6.8%: Động lực từ bất động sản',
-    description:
-      'Phân tích mối tương quan giữa tăng trưởng GDP và thị trường bất động sản trong 9 tháng đầu năm 2025.',
-    category: 'Kinh tế',
-    date: '12/12/2025',
-    readTime: '5 phút đọc',
-    views: 3200,
-    image:
-      '/placeholder.svg?height=300&width=400&text=GDP+growth+economic+indicators+real+estate+correlation',
-    isFeatured: false,
-  },
-  {
-    id: 5,
-    title: 'Lạm phát và sức mua bất động sản: Báo cáo tháng 12',
-    description:
-      'Tác động của chỉ số CPI đến khả năng mua nhà của các tầng lớp thu nhập khác nhau.',
-    category: 'Thị trường',
-    date: '11/12/2025',
-    readTime: '7 phút đọc',
-    views: 2900,
-    image:
-      '/placeholder.svg?height=300&width=400&text=inflation+impact+real+estate+purchasing+power',
-    isFeatured: false,
-  },
-  {
-    id: 6,
-    title: 'FDI vào BDS tăng 15%: Xu hướng đầu tư nước ngoài',
-    description:
-      'Thống kê chi tiết về nguồn vốn đầu tư trực tiếp nước ngoài vào lĩnh vực bất động sản.',
-    category: 'Đầu tư',
-    date: '10/12/2025',
-    readTime: '6 phút đọc',
-    views: 4100,
-    image:
-      '/placeholder.svg?height=300&width=400&text=foreign+direct+investment+FDI+real+estate+Vietnam',
-    isFeatured: false,
-  },
-  {
-    id: 7,
-    title: 'Trái phiếu doanh nghiệp BDS: Rủi ro và cơ hội',
-    description:
-      'Đánh giá thị trường trái phiếu bất động sản sau các quy định mới của Chính phủ.',
-    category: 'Tài chính',
-    date: '09/12/2025',
-    readTime: '8 phút đọc',
-    views: 3700,
-    image:
-      '/placeholder.svg?height=300&width=400&text=corporate+bonds+real+estate+financial+market',
-    isFeatured: false,
-  },
-  {
-    id: 8,
-    title: 'Chính sách đất đai mới: Tác động đến giá BDS',
-    description:
-      'Phân tích các thay đổi trong Luật Đất đai và ảnh hưởng đến thị trường bất động sản.',
-    category: 'Chính sách',
-    date: '08/12/2025',
-    readTime: '9 phút đọc',
-    views: 5300,
-    image:
-      '/placeholder.svg?height=300&width=400&text=land+policy+regulations+real+estate+impact',
-    isFeatured: false,
-  },
-  {
-    id: 9,
-    title: 'Thị trường cho thuê văn phòng: Phục hồi mạnh mẽ',
-    description:
-      'Tỷ lệ lấp đầy văn phòng tại TP.HCM và Hà Nội đạt mức cao nhất trong 2 năm qua.',
-    category: 'Thị trường',
-    date: '07/12/2025',
-    readTime: '4 phút đọc',
-    views: 2800,
-    image:
-      '/placeholder.svg?height=300&width=400&text=office+rental+market+recovery+occupancy+rates',
-    isFeatured: false,
-  },
-  {
-    id: 10,
-    title: 'Xu hướng đầu tư BDS công nghiệp 2025',
-    description:
-      'Dự báo về các khu công nghiệp và nhà xưởng cho thuê trong năm tới.',
-    category: 'Đầu tư',
-    date: '06/12/2025',
-    readTime: '7 phút đọc',
-    views: 3500,
-    image:
-      '/placeholder.svg?height=300&width=400&text=industrial+real+estate+investment+trends+2025',
-    isFeatured: false,
-  },
-  {
-    id: 11,
-    title: 'Tín dụng BDS: Ngân hàng nới lỏng điều kiện',
-    description:
-      'Các chính sách tín dụng mới của ngân hàng đối với vay mua nhà và đầu tư BDS.',
-    category: 'Tài chính',
-    date: '05/12/2025',
-    readTime: '6 phút đọc',
-    views: 4200,
-    image:
-      '/placeholder.svg?height=300&width=400&text=real+estate+credit+bank+lending+policies',
-    isFeatured: false,
-  },
-  {
-    id: 12,
-    title: 'Phân tích chu kỳ thị trường BDS Việt Nam',
-    description:
-      'Nghiên cứu về các chu kỳ tăng trưởng và điều chỉnh của thị trường bất động sản.',
-    category: 'Phân tích',
-    date: '04/12/2025',
-    readTime: '10 phút đọc',
-    views: 6800,
-    image:
-      '/placeholder.svg?height=300&width=400&text=real+estate+market+cycle+analysis+Vietnam',
-    isFeatured: true,
-  },
-  {
-    id: 13,
-    title: 'Smart City và tương lai BDS đô thị',
-    description:
-      'Tác động của công nghệ thông minh đến quy hoạch và phát triển bất động sản.',
-    category: 'Công nghệ',
-    date: '03/12/2025',
-    readTime: '8 phút đọc',
-    views: 3900,
-    image:
-      '/placeholder.svg?height=300&width=400&text=smart+city+urban+real+estate+technology+future',
-    isFeatured: false,
-  },
-  {
-    id: 14,
-    title: 'Thị trường BDS nghỉ dưỡng: Phục hồi sau COVID',
-    description:
-      'Xu hướng đầu tư vào bất động sản du lịch và nghỉ dưỡng trong giai đoạn mới.',
-    category: 'Du lịch',
-    date: '02/12/2025',
-    readTime: '5 phút đọc',
-    views: 2600,
-    image:
-      '/placeholder.svg?height=300&width=400&text=resort+real+estate+tourism+recovery+post+covid',
-    isFeatured: false,
-  },
-  {
-    id: 15,
-    title: 'ESG trong đầu tư BDS: Xu hướng bền vững',
-    description:
-      'Tiêu chí môi trường, xã hội và quản trị trong các dự án bất động sản hiện đại.',
-    category: 'Bền vững',
-    date: '01/12/2025',
-    readTime: '9 phút đọc',
-    views: 4700,
-    image:
-      '/placeholder.svg?height=300&width=400&text=ESG+sustainable+real+estate+investment+green+building',
-    isFeatured: false,
-  },
-];
-
-// Featured articles từ articles
-const featuredArticles = articles.filter((article) => article.isFeatured);
-
-const popularArticles = [...articles]
-  .sort((a, b) => b.views - a.views)
-  .slice(0, 3);
+import { useGetPublicArticlesQuery } from '@/features/article/articleApi';
+import LoadingScreen from '@/components/common/loading-screen';
+import { cn, formatPriceRange } from '@/lib/utils';
+import { RootState } from '@/store';
+import { useSelector } from 'react-redux';
 
 export default function MacroNewsPage() {
-  const [isLoading, setIsLoading] = useState(true);
-  const pathname = usePathname();
+  const articleCategories: any =
+    useSelector((state: RootState) => state.enum.articleCategories) ?? [];
 
-  useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 1000);
-    return () => clearTimeout(timer);
-  }, []);
+  const { data: { articles = [], featuredProjects = [] } = {}, isLoading } =
+    useGetPublicArticlesQuery();
+  const featuredArticles = articles.filter(
+    (article: any) => article.isFeatured
+  );
+  const popularArticles = [...articles]
+    .sort((a, b) => b.views - a.views)
+    .slice(0, 3);
+  const pathname = usePathname();
 
   const {
     currentPage,
@@ -239,23 +42,11 @@ export default function MacroNewsPage() {
     itemsPerPage,
   } = usePagination({ data: articles, itemsPerPage: 6 });
 
+  const getValue = (project: any, id: string) =>
+    project.overview.basicInfo.find((item: any) => item.id === id)?.value;
+
   if (isLoading) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <FadeIn className="text-center">
-          <motion.div
-            animate={{ rotate: 360 }}
-            transition={{
-              duration: 1,
-              repeat: Number.POSITIVE_INFINITY,
-              ease: 'linear',
-            }}
-            className="w-12 h-12 border-4 border-orange-500 border-t-transparent rounded-full mx-auto mb-4"
-          />
-          <p className="text-muted-foreground">Đang tải tin tức vĩ mô...</p>
-        </FadeIn>
-      </div>
-    );
+    return <LoadingScreen loadingText="Đang tải tin tức vĩ mô..." />;
   }
 
   return (
@@ -291,18 +82,26 @@ export default function MacroNewsPage() {
 
       <section className="pt-12">
         <div className="container mx-auto">
-          <FadeIn className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <FadeIn
+            className={cn(
+              'grid grid-cols-1 lg:grid-cols-3 gap-6 h-80',
+              featuredArticles.length > 1
+                ? 'lg:grid-cols-3'
+                : 'lg:grid-cols-1 h-104'
+            )}
+          >
             {/* Main Featured Article */}
-            <FadeIn className="lg:col-span-2 pl-4">
-              <Card className="overflow-hidden h-full group hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
+            <FadeIn className="lg:col-span-2 pl-4 h-full">
+              <Card className="overflow-hidden h-full group hover:shadow-2xl transition-all duration-500">
                 <Link
                   href={`${pathname}/${featuredArticles[0].id}`}
-                  className="relative h-80 overflow-hidden"
+                  className="relative h-full overflow-hidden"
                 >
                   <Image
-                    src={featuredArticles[0].image || '/placeholder.svg'}
+                    src={featuredArticles[0].image?.url || '/placeholder.svg'}
                     alt={featuredArticles[0].title}
                     fill
+                    priority
                     className="object-cover group-hover:scale-110 transition-transform duration-700"
                   />
                   <motion.div
@@ -318,7 +117,9 @@ export default function MacroNewsPage() {
                     className="absolute bottom-6 left-6 right-6"
                   >
                     <Badge className="mb-3 text-white bg-orange-500">
-                      {featuredArticles[0].category}
+                      {articleCategories.find(
+                        (ac: any) => ac.value === featuredArticles[0].category
+                      )?.label || featuredArticles[0].category}
                     </Badge>
                     <h2 className="text-2xl md:text-3xl font-bold text-white mb-3 leading-tight group-hover:text-orange-100 transition-colors">
                       {featuredArticles[0].title}
@@ -348,53 +149,63 @@ export default function MacroNewsPage() {
             </FadeIn>
 
             {/* Side Featured Articles */}
-            <FadeIn className="space-y-3.5 max-h-[calc(2*10rem)] overflow-hidden hover:overflow-y-auto pr-4">
-              {featuredArticles.slice(1).map((article, idx) => (
-                <>
-                  <motion.div
-                    key={article.id}
-                    whileHover={{ x: 5 }}
-                    transition={{ type: 'spring', stiffness: 300 }}
-                  >
-                    <Card className="overflow-hidden group border-0 shadow-none">
-                      <Link href={`${pathname}/${article.id}`} className="flex">
-                        <div className="relative w-36 aspect-square">
-                          <Image
-                            src={article.image || '/placeholder.svg'}
-                            alt={article.title}
-                            fill
-                            className="object-cover"
-                          />
-                        </div>
-
-                        {/* Nội dung bên phải */}
-                        <div className="p-4 flex flex-col flex-1">
-                          <Badge className="mb-3 text-white bg-orange-500 w-fit center-both">
-                            {article.category}
-                          </Badge>
-                          <h3 className="font-semibold line-clamp-2 group-hover:text-orange-500 transition-colors">
-                            {article.title}
-                          </h3>
-                          <div className="flex items-center gap-3 text-xs text-muted-foreground mt-auto pt-2">
-                            <span className="flex items-center gap-1">
-                              <Calendar className="h-3 w-3" />
-                              {article.date}
-                            </span>
-                            <span className="flex items-center gap-1">
-                              <Eye className="h-3 w-3" />
-                              {article.views}
-                            </span>
+            {featuredArticles.length > 1 && (
+              <FadeIn className="space-y-3.5 max-h-[calc(2*10rem)] overflow-hidden hover:overflow-y-auto pr-4">
+                {featuredArticles.slice(1).map((article: any, idx: any) => (
+                  <>
+                    <motion.div
+                      key={article.id}
+                      whileHover={{ x: 5 }}
+                      transition={{ type: 'spring', stiffness: 300 }}
+                    >
+                      <Card className="overflow-hidden group border-0 shadow-none">
+                        <Link
+                          href={`${pathname}/${article.id}`}
+                          className="flex"
+                        >
+                          <div className="relative w-36 aspect-square">
+                            <Image
+                              src={article.image?.url || '/placeholder.svg'}
+                              alt={article.title}
+                              fill
+                              priority
+                              className="object-cover"
+                            />
                           </div>
-                        </div>
-                      </Link>
-                    </Card>
-                  </motion.div>
-                  {idx !== featuredArticles.length - 2 && (
-                    <Separator className="bg-border/60" />
-                  )}
-                </>
-              ))}
-            </FadeIn>
+
+                          {/* Nội dung bên phải */}
+                          <div className="p-4 flex flex-col flex-1">
+                            <Badge className="mb-3 text-white bg-orange-500 w-fit center-both">
+                              {articleCategories.find(
+                                (ac: any) => ac.value === article.category
+                              )?.label || article.category}
+                            </Badge>
+                            <h3 className="font-semibold line-clamp-2 group-hover:text-orange-500 transition-colors">
+                              {article.title}
+                            </h3>
+                            <div className="flex items-center gap-3 text-xs text-muted-foreground mt-auto pt-2">
+                              <span className="flex items-center gap-1">
+                                <Calendar className="h-3 w-3" />
+                                {new Date(article.createdAt).toLocaleDateString(
+                                  'vi-VN'
+                                )}
+                              </span>
+                              <span className="flex items-center gap-1">
+                                <Eye className="h-3 w-3" />
+                                {article.views}
+                              </span>
+                            </div>
+                          </div>
+                        </Link>
+                      </Card>
+                    </motion.div>
+                    {idx !== featuredArticles.length - 2 && (
+                      <Separator className="bg-border/60" />
+                    )}
+                  </>
+                ))}
+              </FadeIn>
+            )}
           </FadeIn>
         </div>
       </section>
@@ -419,7 +230,7 @@ export default function MacroNewsPage() {
                   key={currentPage}
                   className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8"
                 >
-                  {paginatedArticles.map((article) => (
+                  {paginatedArticles.map((article: any) => (
                     <motion.div
                       key={article.id}
                       variants={{
@@ -438,10 +249,11 @@ export default function MacroNewsPage() {
                           className="relative h-48 overflow-hidden rounded-t-lg"
                         >
                           <Image
-                            src={article.image || '/placeholder.svg'}
+                            src={article.image?.url || '/placeholder.svg'}
                             alt={article.title}
                             fill
-                            className="object-cover group-hover:scale-110 transition-transform duration-500"
+                            priority
+                            className="object-cover transition-transform duration-500"
                           />
                           <motion.div
                             initial={{ opacity: 0 }}
@@ -449,7 +261,9 @@ export default function MacroNewsPage() {
                             className="absolute inset-0 bg-gradient-to-t from-orange-500/10 to-transparent"
                           />
                           <Badge className="absolute top-3 left-3 text-white bg-orange-500 hover:bg-orange-600 transition-colors">
-                            {article.category}
+                            {articleCategories.find(
+                              (ac: any) => ac.value === article.category
+                            )?.label || article.category}
                           </Badge>
                         </Link>
                         <CardContent className="p-6">
@@ -466,7 +280,9 @@ export default function MacroNewsPage() {
                             <div className="flex items-center gap-4 text-sm text-muted-foreground">
                               <span className="flex items-center gap-1">
                                 <Calendar className="h-4 w-4" />
-                                {article.date}
+                                {new Date(article.createdAt).toLocaleDateString(
+                                  'vi-VN'
+                                )}
                               </span>
                               <span className="flex items-center gap-1">
                                 <Eye className="h-4 w-4" />
@@ -574,58 +390,33 @@ export default function MacroNewsPage() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4 px-4">
-                    {[
-                      {
-                        id: 1,
-                        name: 'Vinhomes Grand Park',
-                        location: 'TP.HCM',
-                        category: 'residential',
-                        type: 'Siêu đô thị',
-                        price: '2.5 - 4.2 tỷ',
-                      },
-                      {
-                        id: 2,
-                        name: 'The Manor Central Park',
-                        location: 'Hà Nội',
-                        category: 'international',
-                        type: 'Căn hộ cao cấp',
-                        price: '3.8 - 6.5 tỷ',
-                      },
-                      {
-                        id: 3,
-                        name: 'Aqua City',
-                        location: 'Đồng Nai',
-                        category: 'resort',
-                        type: 'Đô thị sinh thái',
-                        price: '1.8 - 3.2 tỷ',
-                      },
-                    ].map((project) => (
+                    {featuredProjects.map((project: any) => (
                       <motion.div
-                        key={project.name}
+                        key={project.id}
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         whileHover={{ x: 5 }}
                         className="group cursor-pointer p-2 px-3 rounded-lg hover:bg-orange-50 dark:hover:bg-orange-900/10 border border-transparent hover:border-orange-200 dark:hover:border-orange-600 transition-colors"
                       >
                         <Link
-                          href={`/projects/${project.category}/${project.id}`}
+                          href={`/projects/${getValue(project, 'category')}/${project.id}`}
                         >
                           <div className="flex items-center justify-between">
                             <div className="flex-1">
                               <h4 className="font-semibold group-hover:text-orange-500 transition-colors duration-300">
-                                {project.name}
+                                {getValue(project, 'project_name')}
                               </h4>
                               <div className="flex items-center gap-2 mt-1">
                                 <span className="text-xs text-muted-foreground">
-                                  {project.location}
+                                  {getValue(project, 'city')}
                                 </span>
                                 <span className="w-1 h-1 bg-gray-300 rounded-full"></span>
                                 <span className="text-xs text-muted-foreground">
-                                  {project.type}
+                                  {getValue(project, 'project_type')}
                                 </span>
                               </div>
                               <p className="text-xs font-medium text-orange-500 mt-1">
-                                {project.price}
+                                {formatPriceRange(getValue(project, 'price'))}
                               </p>
                             </div>
                             <motion.div

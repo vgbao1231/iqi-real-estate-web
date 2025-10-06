@@ -158,4 +158,24 @@ body {
   .card-hover:hover {
     transform: translateY(-4px);
   }
+
+  .prose ul,
+  .prose ol {
+    padding-left: 1.5em;
+    list-style-position: outside;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+
+  .prose ol {
+    list-style-type: decimal;
+  }
+
+  .prose ul {
+    list-style-type: disc;
+  }
+
+  .prose li[data-list='bullet'] {
+    list-style-type: disc !important;
+  }
 }
