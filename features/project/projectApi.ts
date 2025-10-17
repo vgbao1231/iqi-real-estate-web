@@ -60,6 +60,17 @@ export const projectApi = baseApi.injectEndpoints({
       ],
     }),
 
+    updateProjectScalarData: builder.mutation<any, { id: string; body: any }>({
+      query: ({ id, body }) => ({
+        url: `/projects/${id}`,
+        method: 'PATCH',
+        body,
+      }),
+      invalidatesTags: (result, error, { id }) => [
+        { type: tagTypes.Project, id },
+      ],
+    }),
+
     deleteProject: builder.mutation<void, string>({
       query: (id) => ({
         url: `/projects/${id}`,
@@ -78,5 +89,6 @@ export const {
   useGetAdminProjectByIdQuery,
   useCreateProjectMutation,
   useUpdateProjectTabMutation,
+  useUpdateProjectScalarDataMutation,
   useDeleteProjectMutation,
 } = projectApi;

@@ -206,8 +206,19 @@ export default function MicroNewsPage() {
   const scrollPrev = () => carouselApi?.scrollPrev();
   const scrollNext = () => carouselApi?.scrollNext();
 
-  const getValue = (project: any, id: string) =>
+  const getRawValue = (project: any, id: string) =>
     project.overview.basicInfo.find((item: any) => item.id === id)?.value;
+
+  const getValue = (project: any, id: string) => {
+    const item = project?.overview?.basicInfo?.find((it: any) => it.id === id);
+    if (!item) return '';
+
+    const { value, options } = item;
+    if (!options?.length) return value || '';
+
+    const found = options.find((opt: any) => opt.value === value);
+    return found ? found.label : value;
+  };
 
   if (isLoading) {
     return (
@@ -645,7 +656,7 @@ export default function MicroNewsPage() {
                         className="group cursor-pointer p-2 px-3 rounded-lg hover:bg-orange-50 dark:hover:bg-orange-900/10 border border-transparent hover:border-orange-200 dark:hover:border-orange-600 transition-colors"
                       >
                         <Link
-                          href={`/projects/${getValue(project, 'category')}/${project.id}`}
+                          href={`/projects/${getRawValue(project, 'category')}/${project.id}`}
                         >
                           <div className="flex items-center justify-between">
                             <div className="flex-1">

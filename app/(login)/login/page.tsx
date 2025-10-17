@@ -51,7 +51,7 @@ export default function AdminLoginPage() {
         Cookies.remove('remember_me');
       }
 
-      router.push('/admin/dashboard');
+      router.push('/admin/accounts');
     } catch (err) {
       console.error('Login failed:', err);
     }

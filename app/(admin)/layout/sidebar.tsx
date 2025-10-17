@@ -2,7 +2,6 @@ import Link from 'next/link';
 import {
   Building,
   Globe,
-  Home,
   Newspaper,
   Phone,
   Settings,
@@ -13,22 +12,17 @@ import { cn } from '@/lib/utils';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Separator } from '@/components/ui/separator';
 
 export default function Sidebar({ sidebarOpen, setSidebarOpen }: any) {
   const pathname = usePathname();
 
   const navigation = [
     {
-      name: 'Dashboard',
-      href: '/admin/dashboard',
-      icon: Home,
-      current: pathname === '/admin/dashboard',
-    },
-    {
       name: 'Nhân sự',
-      href: '/admin/staff',
+      href: '/admin/accounts',
       icon: Users,
-      current: pathname.startsWith('/admin/staff'),
+      current: pathname.startsWith('/admin/accounts'),
     },
     {
       name: 'Dự án',
@@ -44,15 +38,15 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: any) {
     },
     {
       name: 'Tin tức',
-      href: '/admin/article',
+      href: '/admin/articles',
       icon: Newspaper,
-      current: pathname.startsWith('/admin/article'),
+      current: pathname.startsWith('/admin/articles'),
     },
     {
       name: 'Liên hệ',
-      href: '/admin/contact',
+      href: '/admin/contacts',
       icon: Phone,
-      current: pathname.startsWith('/admin/contact'),
+      current: pathname.startsWith('/admin/contacts'),
     },
   ];
   return (
@@ -79,7 +73,7 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: any) {
       >
         {/* Logo */}
         <div className="flex items-center justify-between h-16 px-6 border-b border-border">
-          <Link href="/admin/dashboard" className="flex items-center space-x-2">
+          <Link href="/admin/accounts" className="flex items-center space-x-2">
             <div className="w-8 h-8 bg-gradient-to-r from-orange-500 to-orange-600 rounded-lg center-both">
               <Building className="w-4 h-4 text-white" />
             </div>
@@ -115,18 +109,21 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: any) {
               </div>
             </Link>
           ))}
-        </nav>
-
-        {/* Settings */}
-        <div className="p-4 border-t border-border">
+          <Separator />
           <Link
             href="/admin/settings"
-            className="flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
+            className={`flex items-center justify-between px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+              pathname.startsWith('/admin/settings')
+                ? 'bg-orange-100 text-orange-700 dark:bg-orange-900/20 dark:text-orange-400'
+                : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700'
+            }`}
           >
-            <Settings className="w-5 h-5 mr-3" />
-            Cài đặt
+            <div className="flex items-center">
+              <Settings className="w-5 h-5 mr-3" />
+              Cài đặt
+            </div>
           </Link>
-        </div>
+        </nav>
       </div>
     </>
   );

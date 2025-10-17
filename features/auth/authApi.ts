@@ -11,7 +11,7 @@ export interface User {
   email: string;
   phone: string;
   role: 'admin' | 'user';
-  avatarUrl: string;
+  image: { url: string; publicId: string } | File | null;
   accessToken: string;
   refreshToken: string;
 }
@@ -44,7 +44,28 @@ export const authApi = baseApi.injectEndpoints({
       }),
       providesTags: [tagTypes.Auth],
     }),
+    updateProfile: builder.mutation<any, any>({
+      query: (body) => ({
+        url: `/auth/profile`,
+        method: 'PATCH',
+        body,
+      }),
+      invalidatesTags: [tagTypes.Auth],
+    }),
+    changePassword: builder.mutation<any, any>({
+      query: (body) => ({
+        url: '/auth/password',
+        method: 'PATCH',
+        body,
+      }),
+    }),
   }),
 });
 
-export const { useLoginMutation, useLogoutMutation, useMeQuery } = authApi;
+export const {
+  useLoginMutation,
+  useLogoutMutation,
+  useMeQuery,
+  useUpdateProfileMutation,
+  useChangePasswordMutation,
+} = authApi;

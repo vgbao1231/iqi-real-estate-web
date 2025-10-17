@@ -24,8 +24,16 @@ export const ProjectCard = ({ project, index }: any) => {
   const currentPath = pathname.replace(/\/$/, ''); // bỏ dấu / ở cuối
   const [copied, setCopied] = useState(false);
 
-  const getValue = (id: string) =>
-    project.overview.basicInfo.find((item: any) => item.id === id)?.value;
+  const getValue = (id: string) => {
+    const item = project?.overview?.basicInfo?.find((it: any) => it.id === id);
+    if (!item) return '';
+
+    const { value, options } = item;
+    if (!options?.length) return value || '';
+
+    const found = options.find((opt: any) => opt.value === value);
+    return found ? found.label : value;
+  };
 
   const name = getValue('project_name') || '';
   const address = getValue('address') || '';

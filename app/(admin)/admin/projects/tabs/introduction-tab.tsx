@@ -17,415 +17,36 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Upload, X, Play, Save, ChevronDown } from 'lucide-react';
+import { Upload, X, Save, Building2 } from 'lucide-react';
 import { RichTextEditor } from '@/components/ui/rich-text-editor';
 import { FileUpload } from '@/components/ui/file-upload';
 import { MultiFileUpload } from '@/components/ui/multi-file-upload';
 import { Button } from '@/components/ui/button';
-import { memo, useEffect, useMemo, useState } from 'react';
+import { memo } from 'react';
 import Image from 'next/image';
-import {
-  Carousel,
-  CarouselApi,
-  CarouselContent,
-  CarouselItem,
-} from '@/components/ui/carousel';
-import { cn, convertToEmbedUrl } from '@/lib/utils';
+
 import { useUpdateProjectTabMutation } from '@/features/project/projectApi';
 import { useUploadImageMutation } from '@/features/upload/uploadApi';
+import { Switch } from '@/components/ui/switch';
+import { Badge } from '@/components/ui/badge';
+import { RootState } from '@/store';
+import { useSelector } from 'react-redux';
 
 interface IntroductionTabProps {
-  introduction: any;
-  updateProject: (section: string, field: string, value: any) => void;
+  project: any;
+  updateProject: (...args: (string | any)[]) => void;
   handleSave: (updateApi: any, uploadApi: any, tab: string, data: any) => void;
 }
 
-// Cover Section Preview Component
-const CoverSectionPreview = memo(function CoverSectionPreview({
-  introduction,
-}: {
-  introduction: any;
-}) {
-  const {
-    coverImage,
-    logoImages,
-    headerLogoIndex,
-    coverLogoIndex,
-    coverTitle,
-  } = introduction;
-
-  const sections = useMemo(
-    () => [
-      { id: 'introduction', label: 'Giới thiệu' },
-      { id: 'overview', label: 'Tổng quan' },
-      { id: 'amenity', label: 'Tiện ích' },
-      { id: 'location', label: 'Vị trí' },
-      { id: 'siteplan', label: 'Mặt bằng' },
-      { id: 'production', label: 'Sản phẩm' },
-      { id: 'policy', label: 'Chính sách' },
-      { id: 'timeline', label: 'Tiến độ' },
-      { id: 'agency', label: 'Đại lý' },
-      {
-        id: 'toolbar',
-        label: 'Công cụ',
-        dropdown: [
-          {
-            href: '/360-view',
-            label: '360 view',
-          },
-          {
-            href: '/invitation',
-            label: 'Thiệp mời',
-          },
-        ],
-      },
-    ],
-    []
-  );
-
-  return (
-    <div className="container mx-auto relative min-h-[60vh] w-full max-w-7xl center-both">
-      {/* Header */}
-      <header className="absolute top-0 z-10 w-full bg-background py-2 shadow-md">
-        <div className="mx-auto overflow-x-auto px-4 scrollbar-hide">
-          <div className="flex items-center justify-between">
-            {/* Logo */}
-            <div
-              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className="relative h-14 w-24 cursor-pointer"
-            >
-              <Image
-                src={
-                  logoImages[headerLogoIndex]
-                    ? logoImages[headerLogoIndex] instanceof File
-                      ? URL.createObjectURL(logoImages[headerLogoIndex])
-                      : logoImages[headerLogoIndex].url
-                    : '/placeholder.svg'
-                }
-                alt="Eco Retreat Logo"
-                fill
-                className="object-contain"
-                priority
-              />
-            </div>
-
-            <nav className="hidden items-center gap-2 md:flex">
-              {sections.map(
-                (item) =>
-                  item.label && (
-                    <div className="relative group" key={item.id}>
-                      <Button
-                        variant="ghost"
-                        className="text-xs font-bold uppercase p-1 group/menu gap-1"
-                      >
-                        {item.label}
-                        {item.dropdown && (
-                          <ChevronDown className="w-2 h-2 transition-all duration-300 group-hover/menu:rotate-180" />
-                        )}
-                      </Button>
-                      {item.dropdown && (
-                        <div className="absolute top-full left-0 w-fit bg-background border rounded-sm shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity duration-300 text-foreground">
-                          <div className="py-2">
-                            {item.dropdown.map((subnav: any) => (
-                              <div
-                                key={subnav.href}
-                                className="group/item block py-2 px-4"
-                              >
-                                <p className="font-bold text-nowrap uppercase group-hover/item:text-orange-500">
-                                  {subnav.label}
-                                </p>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  )
-              )}
-            </nav>
-          </div>
-        </div>
-      </header>
-      {/* Background image full screen */}
-      <Image
-        src={
-          coverImage
-            ? coverImage instanceof File
-              ? URL.createObjectURL(coverImage)
-              : coverImage.url
-            : '/placeholder.svg'
-        }
-        alt="Eco Retreat Cover Background"
-        fill
-        className="object-cover text-shadow-lg shadow-md"
-        priority
-      />
-
-      <div className="bg-gradient-to-b from-transparent via-black/20 to-transparent absolute inset-0 z-10"></div>
-      <div className="relative z-20 center-both flex-col gap-2 p-8 text-center text-white">
-        {/* Logo */}
-        <div className="w-full min-w-32 h-32 relative center-both">
-          <Image
-            src={
-              logoImages[coverLogoIndex]
-                ? logoImages[coverLogoIndex] instanceof File
-                  ? URL.createObjectURL(logoImages[coverLogoIndex])
-                  : logoImages[coverLogoIndex].url
-                : '/placeholder.svg'
-            }
-            alt="Logo"
-            fill
-            className="object-contain"
-            priority
-          />
-        </div>
-
-        <div className="relative z-10 flex flex-col items-center justify-center text-center text-white px-4 max-w-4xl mx-auto">
-          <div className="text-4xl drop-shadow-lg text-nowrap py-2 font-bold bg-gradient-to-r !from-white !via-orange-200 !to-white bg-clip-text text-transparent">
-            {coverTitle}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-});
-
-// Introduction Section Preview Component
-const IntroductionSectionPreview = memo(function IntroductionSectionPreview({
-  introduction,
-}: {
-  introduction: any;
-}) {
-  const {
-    introductionBackground,
-    introductionImage,
-    introductionTitle,
-    introductionDescription,
-  } = introduction;
-
-  return (
-    <div className="container mx-auto relative min-h-[60vh] w-full max-w-7xl center-both">
-      {/* Background image full screen */}
-      <Image
-        src={
-          introductionBackground
-            ? introductionBackground instanceof File
-              ? URL.createObjectURL(introductionBackground)
-              : introductionBackground.url
-            : '/placeholder.svg'
-        }
-        alt="Logo"
-        fill
-        className="object-cover object-left"
-        priority
-      />
-
-      {/* Content */}
-      <div className="relative z-20 h-full w-full center-both flex-col md:flex-row max-w-7xl py-8 px-16 gap-8">
-        {/* Left content */}
-        <div className="md:w-1/2 text-white space-y-4">
-          <div
-            className="text-lg space-y-2 leading-relaxed"
-            dangerouslySetInnerHTML={{ __html: introductionTitle }}
-          />
-
-          <div
-            className="text-lg space-y-2 leading-relaxed"
-            dangerouslySetInnerHTML={{ __html: introductionDescription }}
-          />
-        </div>
-
-        {/* Right hero image */}
-        <Image
-          src={
-            introductionImage
-              ? introductionImage instanceof File
-                ? URL.createObjectURL(introductionImage)
-                : introductionImage.url
-              : '/placeholder.svg'
-          }
-          alt="Logo"
-          width={500}
-          height={400}
-          className="object-contain w-auto h-[50vh] shadow-lg rounded-sm"
-          priority
-        />
-      </div>
-    </div>
-  );
-});
-
-// Launch Section Preview Component (formerly Hero Section)
-const LaunchSectionPreview = memo(function LaunchSectionPreview({
-  introduction,
-}: {
-  introduction: any;
-}) {
-  const { launchTitle, launchDescription, launchImages, launchBackground } =
-    introduction;
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [carouselApi, setCarouselApi] = useState<CarouselApi>();
-
-  useEffect(() => {
-    if (!carouselApi) return;
-
-    const onSelect = () => {
-      const index = carouselApi.selectedScrollSnap();
-      setCurrentImageIndex(index);
-    };
-
-    onSelect();
-    carouselApi.on('select', onSelect);
-    carouselApi.on('reInit', onSelect);
-
-    return () => {
-      carouselApi.off('select', onSelect);
-      carouselApi.off('reInit', onSelect);
-    };
-  }, [carouselApi]);
-
-  return (
-    <div className="container mx-auto relative min-h-[60vh] w-full max-w-7xl center-both">
-      {/* Background image */}
-      <div className="absolute inset-0 z-0">
-        <Image
-          src={
-            launchBackground
-              ? launchBackground instanceof File
-                ? URL.createObjectURL(launchBackground)
-                : launchBackground.url
-              : '/placeholder.svg'
-          }
-          alt="Eco Retreat Background"
-          fill
-          className="object-cover object-center"
-          priority
-        />
-      </div>
-      <div className="absolute -inset-1 z-10 backdrop-blur-md bg-white/80 dark:bg-transparent dark:backdrop-brightness-[40%]" />
-      <div className="relative z-20 h-full w-full center-both flex-col md:flex-row max-w-7xl py-8 px-12 gap-12">
-        {/* Left content */}
-        <div className="relative md:w-1/2 w-full h-[50vh] center-both">
-          {launchImages.length > 0 ? (
-            <Carousel
-              className="w-full"
-              setApi={setCarouselApi}
-              opts={{ loop: true }}
-            >
-              <CarouselContent>
-                {launchImages.map((img: any, idx: number) => (
-                  <CarouselItem key={idx} className="pl-0">
-                    <div className="relative h-[50vh] w-full overflow-hidden">
-                      <Image
-                        src={
-                          img
-                            ? img instanceof File
-                              ? URL.createObjectURL(img)
-                              : img.url
-                            : '/placeholder.svg'
-                        }
-                        alt={`Ảnh ${idx + 1}`}
-                        fill
-                        className="object-cover"
-                      />
-                    </div>
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-              <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-3 z-10">
-                {launchImages.map((_: any, i: any) => (
-                  <div
-                    key={i}
-                    className={cn(
-                      'h-2 w-2 rounded-full bg-white transition-all',
-                      i === currentImageIndex ? 'w-4' : 'bg-gray-300'
-                    )}
-                  />
-                ))}
-              </div>
-            </Carousel>
-          ) : (
-            <Image
-              src="/placeholder.svg"
-              alt="Logo"
-              width={500}
-              height={400}
-              className="object-contain w-auto h-[50vh] shadow-lg rounded-sm"
-              priority
-            />
-          )}
-        </div>
-
-        {/* Right content */}
-        <div className="md:w-1/2 space-y-6">
-          <div className="space-y-4 text-sm leading-relaxed">
-            {/* Tên sản phẩm */}
-            <div
-              className="text-2xl font-bold italic md:text-3xl text-shadow-soft"
-              dangerouslySetInnerHTML={{ __html: launchTitle }}
-            />
-            {/* Danh sách mô tả chi tiết */}
-            <div
-              className="text-base md:text-lg"
-              dangerouslySetInnerHTML={{ __html: launchDescription }}
-            />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-});
-
-// Video Section Preview Component
-const VideoSectionPreview = memo(function VideoSectionPreview({
-  introduction,
-}: {
-  introduction: any;
-}) {
-  const isYouTube =
-    introduction.introductionVideo &&
-    introduction.introductionVideo.includes('youtube');
-  const videoSrc = introduction.introductionVideo || '';
-
-  return (
-    <div className=" bg-gray-900 rounded-lg overflow-hidden">
-      <div className="w-full min-h-[60vh] aspect-video center-both">
-        {videoSrc ? (
-          isYouTube ? (
-            <iframe
-              src={convertToEmbedUrl(videoSrc) ?? ''}
-              className="w-full h-full"
-              allowFullScreen
-            />
-          ) : (
-            <video controls className="w-full h-full object-cover">
-              <source
-                src={
-                  videoSrc instanceof File
-                    ? URL.createObjectURL(videoSrc)
-                    : videoSrc.url
-                }
-                type="video/mp4"
-              />
-            </video>
-          )
-        ) : (
-          <div className="text-center text-gray-400">
-            <Play className="h-16 w-16 mx-auto mb-4" />
-            <p className="text-lg">Video giới thiệu sẽ hiển thị ở đây</p>
-            <p className="text-sm">Hỗ trợ YouTube URL hoặc file video</p>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-});
-
 export const IntroductionTab = memo(function IntroductionTab({
-  introduction,
+  project,
   updateProject,
   handleSave,
 }: IntroductionTabProps) {
+  const { introduction } = project;
+  const articleCategories: any = useSelector(
+    (state: RootState) => state.enum.articleCategories ?? []
+  );
   const [updateProjectTab, { isLoading }] = useUpdateProjectTabMutation();
   const [uploadImage, { isLoading: isUploading }] = useUploadImageMutation();
 
@@ -446,6 +67,217 @@ export const IntroductionTab = memo(function IntroductionTab({
 
   return (
     <div className="space-y-8">
+      {/* Section 0: Core Project Info */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center space-x-2">
+            <Building2 className="h-5 w-5" />
+            <span>Thông tin cơ bản dự án</span>
+          </CardTitle>
+          <CardDescription>
+            Thông tin chính của dự án (bắt buộc)
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          {/* Project Name & Slug */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <Label htmlFor="projectName" className="flex items-center">
+                Tên dự án <span className="text-red-500 ml-1">*</span>
+              </Label>
+              <Input
+                id="projectName"
+                value={project.name}
+                onChange={(e) => updateProject('name', e.target.value)}
+                placeholder="VD: Eco Retreat"
+                className="font-medium"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="projectSlug" className="flex items-center">
+                Slug (URL) <span className="text-red-500 ml-1">*</span>
+              </Label>
+              <Input
+                id="projectSlug"
+                value={project.slug}
+                onChange={(e) => updateProject('slug', e.target.value)}
+                placeholder="eco-retreat"
+                className="font-mono text-sm"
+              />
+              <p className="text-xs text-gray-500">
+                URL: /projects/{project.slug || '...'}
+              </p>
+            </div>
+          </div>
+
+          {/* Category & Project Type */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <Label htmlFor="category" className="flex items-center">
+                Danh mục <span className="text-red-500 ml-1">*</span>
+              </Label>
+              <Select
+                value={project.category}
+                onValueChange={(value) => updateProject('category', value)}
+              >
+                <SelectTrigger id="category">
+                  <SelectValue placeholder="Chọn danh mục" />
+                </SelectTrigger>
+                <SelectContent>
+                  {}
+                  <SelectItem value="Việt Nam">Việt Nam</SelectItem>
+                  <SelectItem value="Quốc tế">Quốc tế</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="projectType" className="flex items-center">
+                Loại hình dự án <span className="text-red-500 ml-1">*</span>
+              </Label>
+              <Select
+                value={project.projectType}
+                onValueChange={(value) => updateProject('projectType', value)}
+              >
+                <SelectTrigger id="projectType">
+                  <SelectValue placeholder="Chọn loại hình" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Căn hộ">Căn hộ</SelectItem>
+                  <SelectItem value="Biệt thự">Biệt thự</SelectItem>
+                  <SelectItem value="Nhà phố">Nhà phố</SelectItem>
+                  <SelectItem value="Đất nền">Đất nền</SelectItem>
+                  <SelectItem value="Khu đô thị">Khu đô thị</SelectItem>
+                  <SelectItem value="Khu đô thị sinh thái">
+                    Khu đô thị sinh thái
+                  </SelectItem>
+                  <SelectItem value="Khu nghỉ dưỡng">Khu nghỉ dưỡng</SelectItem>
+                  <SelectItem value="Văn phòng">Văn phòng</SelectItem>
+                  <SelectItem value="Khác">Khác</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          {/* Location */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="space-y-2">
+              <Label htmlFor="country" className="flex items-center">
+                Quốc gia <span className="text-red-500 ml-1">*</span>
+              </Label>
+              <Select
+                value={project.country}
+                onValueChange={(value) => updateProject('country', value)}
+              >
+                <SelectTrigger id="country">
+                  <SelectValue placeholder="Chọn quốc gia" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Vietnam">Việt Nam</SelectItem>
+                  <SelectItem value="Singapore">Singapore</SelectItem>
+                  <SelectItem value="Thailand">Thái Lan</SelectItem>
+                  <SelectItem value="Malaysia">Malaysia</SelectItem>
+                  <SelectItem value="Philippines">Philippines</SelectItem>
+                  <SelectItem value="Australia">Australia</SelectItem>
+                  <SelectItem value="USA">Mỹ</SelectItem>
+                  <SelectItem value="Canada">Canada</SelectItem>
+                  <SelectItem value="UK">Anh</SelectItem>
+                  <SelectItem value="Other">Khác</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="city" className="flex items-center">
+                Thành phố <span className="text-red-500 ml-1">*</span>
+              </Label>
+              <Input
+                id="city"
+                value={project.city}
+                onChange={(e) => updateProject('city', e.target.value)}
+                placeholder="VD: TP.HCM"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="district" className="flex items-center">
+                Quận/Huyện <span className="text-red-500 ml-1">*</span>
+              </Label>
+              <Input
+                id="district"
+                value={project.district}
+                onChange={(e) => updateProject('district', e.target.value)}
+                placeholder="VD: Quận 9"
+              />
+            </div>
+          </div>
+
+          <Separator />
+
+          {/* Display Settings */}
+          <div className="space-y-4">
+            <Label className="text-base font-semibold">Cài đặt hiển thị</Label>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="flex items-center justify-between">
+                <div className="space-y-0.5">
+                  <Label>Dự án nổi bật</Label>
+                  <p className="text-sm text-muted-foreground">
+                    Hiển thị dự án trong danh sách nổi bật
+                  </p>
+                </div>
+                <Switch
+                  checked={project.isFeatured}
+                  onCheckedChange={(checked) =>
+                    updateProject('isFeatured', checked)
+                  }
+                />
+              </div>
+
+              <div className="flex items-center justify-between">
+                <div className="space-y-0.5">
+                  <Label>Dự án độc quyền</Label>
+                  <p className="text-sm text-muted-foreground">
+                    Đánh dấu là dự án độc quyền
+                  </p>
+                </div>
+                <Switch
+                  checked={project.isExclusive}
+                  onCheckedChange={(checked) =>
+                    updateProject('isExclusive', checked)
+                  }
+                />
+              </div>
+
+              <div className="flex items-center justify-between">
+                <div className="space-y-0.5">
+                  <Label>Hiển thị trên web</Label>
+                  <p className="text-sm text-muted-foreground">
+                    Cho phép hiển thị dự án trên website
+                  </p>
+                </div>
+                <Switch
+                  checked={project.visibleOnWeb}
+                  onCheckedChange={(checked) =>
+                    updateProject('visibleOnWeb', checked)
+                  }
+                />
+              </div>
+            </div>
+
+            <div className="flex flex-wrap gap-2">
+              {project.isFeatured && <Badge variant="secondary">Nổi bật</Badge>}
+              {project.isExclusive && (
+                <Badge variant="secondary">Độc quyền</Badge>
+              )}
+              {project.visibleOnWeb && (
+                <Badge variant="secondary">Hiển thị web</Badge>
+              )}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Section 1: Cover Section with Logo Management */}
       <Card>
         <CardHeader>
@@ -455,16 +287,6 @@ export const IntroductionTab = memo(function IntroductionTab({
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          {/* Live Preview */}
-          <div className="bg-gray-50 rounded-lg">
-            <Label className="text-sm font-medium text-gray-700 mb-3 block">
-              Xem trước:
-            </Label>
-            <CoverSectionPreview introduction={introduction} />
-          </div>
-
-          <Separator />
-
           {/* Cover Section Settings */}
           <div className="space-y-6">
             <FileUpload
@@ -688,16 +510,6 @@ export const IntroductionTab = memo(function IntroductionTab({
           <CardDescription>Nội dung giới thiệu chi tiết</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          {/* Live Preview */}
-          <div className="bg-gray-50 p-4 rounded-lg">
-            <Label className="text-sm font-medium text-gray-700 mb-3 block">
-              Xem trước:
-            </Label>
-            <IntroductionSectionPreview introduction={introduction} />
-          </div>
-
-          <Separator />
-
           {/* Form Fields arranged to match preview layout */}
           <FileUpload
             label="Ảnh nền giới thiệu (Introduction Background)"
@@ -709,10 +521,6 @@ export const IntroductionTab = memo(function IntroductionTab({
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Left side - Content */}
             <div className="space-y-4">
-              <Label className="text-base font-semibold text-gray-900">
-                Bên trái - Nội dung
-              </Label>
-
               <div className="space-y-2">
                 <Label htmlFor="introductionTitle">
                   Tiêu đề giới thiệu (Introduction Title)
@@ -744,10 +552,6 @@ export const IntroductionTab = memo(function IntroductionTab({
 
             {/* Right side - Image */}
             <div className="space-y-4">
-              <Label className="text-base font-semibold text-gray-900">
-                Bên phải - Ảnh
-              </Label>
-
               <FileUpload
                 label="Ảnh giới thiệu (Introduction Image)"
                 value={introduction.introductionImage}
@@ -767,16 +571,6 @@ export const IntroductionTab = memo(function IntroductionTab({
           <CardDescription>Nội dung ra mắt với carousel ảnh</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          {/* Live Preview */}
-          <div className="bg-gray-50 p-4 rounded-lg">
-            <Label className="text-sm font-medium text-gray-700 mb-3 block">
-              Xem trước:
-            </Label>
-            <LaunchSectionPreview introduction={introduction} />
-          </div>
-
-          <Separator />
-
           {/* Form Fields arranged to match preview layout */}
           <div className="space-y-6">
             {/* Form Fields arranged to match preview layout */}
@@ -791,9 +585,6 @@ export const IntroductionTab = memo(function IntroductionTab({
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Left side - Launch Images Carousel */}
               <div className="space-y-4">
-                <Label className="text-base font-semibold text-gray-900">
-                  Bên trái - Ảnh ra mắt (Carousel)
-                </Label>
                 <MultiFileUpload
                   label="Ảnh ra mắt (Launch Images)"
                   value={introduction.launchImages}
@@ -805,10 +596,6 @@ export const IntroductionTab = memo(function IntroductionTab({
 
               {/* Right side - Content */}
               <div className="space-y-4">
-                <Label className="text-base font-semibold text-gray-900">
-                  Bên phải - Nội dung
-                </Label>
-
                 <div className="space-y-2">
                   <Label htmlFor="launchTitle">
                     Tiêu đề ra mắt (Launch Title)
@@ -845,16 +632,6 @@ export const IntroductionTab = memo(function IntroductionTab({
           <CardDescription>Video giới thiệu dự án</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          {/* Live Preview */}
-          <div className="bg-gray-50 p-4 rounded-lg">
-            <Label className="text-sm font-medium text-gray-700 mb-3 block">
-              Xem trước:
-            </Label>
-            <VideoSectionPreview introduction={introduction} />
-          </div>
-
-          <Separator />
-
           {/* Video Input */}
           <div className="space-y-2">
             <Label htmlFor="introductionVideo">

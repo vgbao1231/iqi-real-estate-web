@@ -18,7 +18,7 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { useUpdateProjectTabMutation } from '@/features/project/projectApi';
 import { useUploadImageMutation } from '@/features/upload/uploadApi';
-import React, { memo, useRef, useState } from 'react';
+import React, { memo, useEffect, useRef, useState } from 'react';
 import {
   SelectItem,
   Select,
@@ -27,46 +27,6 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { BreakImageManager } from '@/components/ui/break-image-manager';
-
-const availableFields = [
-  {
-    id: 'name',
-    label: 'Tên trên thiệp',
-    type: 'text',
-    placeholder: 'Nguyễn Văn A',
-  },
-  {
-    id: 'phone',
-    label: 'Số điện thoại',
-    type: 'text',
-    placeholder: '0123456789',
-  },
-  {
-    id: 'title',
-    label: 'Chức danh',
-    type: 'text',
-    placeholder: 'Giám đốc kinh doanh',
-  },
-  {
-    id: 'company',
-    label: 'Công ty',
-    type: 'text',
-    placeholder: 'Công ty BDS ABC',
-  },
-  {
-    id: 'email',
-    label: 'Email',
-    type: 'text',
-    placeholder: 'example@email.com',
-  },
-  {
-    id: 'address',
-    label: 'Địa chỉ',
-    type: 'text',
-    placeholder: '123 Đường ABC, Quận 1',
-  },
-  { id: 'image', label: 'Ảnh đại diện', type: 'image' },
-];
 
 // Preview component for policies
 const PoliciesPreview = memo(function PoliciesPreview({ other }: any) {
@@ -133,97 +93,131 @@ const PoliciesPreview = memo(function PoliciesPreview({ other }: any) {
   );
 });
 
-const FieldPreview = memo(function FieldPreview({ field, meta }: any) {
-  const value = field.value ?? '';
-
-  if (!meta || !value) return null;
-
+const FieldPreview = memo(function FieldPreview({ field, scaleFactor }: any) {
   const baseStyle: React.CSSProperties = {
     position: 'absolute',
     left: `${field.position.x}%`,
     top: `${field.position.y}%`,
     transform: 'translate(-50%, -50%)',
-    ...(field.id === 'name' && { fontFamily: "'Great Vibes', cursive" }),
-    fontSize: `${field.size}px`,
+    fontFamily: field.fontFamily,
+    fontSize: `${field.size * scaleFactor}px`,
     color: '#2c2c2c',
-    textShadow: '1px 1px 3px rgba(255,255,255,0.7)',
     pointerEvents: 'none',
     whiteSpace: 'nowrap',
   };
 
-  if (meta.type === 'image') {
-    const src =
-      value instanceof File
-        ? URL.createObjectURL(value)
-        : typeof value === 'string'
-          ? value
-          : value?.url || '';
-
-    if (!src) return null;
-
+  if (field.type === 'image') {
     return (
-      <div style={baseStyle}>
-        <Image
-          src={src}
-          alt={meta.label ?? 'image'}
-          width={0}
-          height={0}
-          sizes="100vw"
-          unoptimized={src.startsWith('blob:')}
-          className="object-contain block"
-          style={{
-            maxWidth: `${field.size}px`,
-            maxHeight: `${field.size}px`,
-            width: 'auto',
-            height: 'auto',
-          }}
-        />
-      </div>
+      <Image
+        src={
+          field.value instanceof File
+            ? URL.createObjectURL(field.value)
+            : field.value.url
+        }
+        alt={field.label ?? 'image'}
+        width={0}
+        height={0}
+        priority
+        className="object-contain w-full"
+        style={{
+          ...baseStyle,
+          maxWidth: `${field.size * scaleFactor}px`,
+        }}
+      />
     );
   }
 
-  return <div style={baseStyle}>{value}</div>;
+  return <div style={baseStyle}>{field.value}</div>;
 });
 
 interface OtherTabProps {
-  other: any;
-  updateProject: (section: string, field: string, value: any) => void;
+  project: any;
+  updateProject: (...args: (string | any)[]) => void;
   updateNestedProject: (
     section: string,
     subsection: string,
     field: string,
     value: any
   ) => void;
-  handleSave: (updateApi: any, uploadApi: any, tab: string, data: any) => void;
+  handleSave: (
+    updateApi: any,
+    uploadApi: any,
+    tab: string,
+    data: any,
+    scalarData: any
+  ) => void;
 }
 
+const fontSizes = [16, 18, 20, 22, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60];
+const fontFamilies = ['Inherit', 'Great Vibes', 'DFVN Menata'];
+
 export function OtherTab({
-  other,
+  project,
   updateProject,
   updateNestedProject,
   handleSave,
 }: OtherTabProps) {
+  const { other } = project;
+  const scalarData = {
+    isFeatured: project.isFeatured,
+    isExclusive: project.isExclusive,
+    visibleOnWeb: project.visibleOnWeb,
+  };
   const [updateProjectTab, { isLoading }] = useUpdateProjectTabMutation();
   const [uploadImage, { isLoading: isUploading }] = useUploadImageMutation();
-  const previewRef = useRef(null);
+  const previewRef = useRef<HTMLDivElement | null>(null);
+  const imageRef = useRef<HTMLImageElement | null>(null);
   const [selectedElement, setSelectedElement] = useState<string>('');
-  const fontSizes = [16, 18, 20, 24, 28, 32, 36, 40, 44, 48];
+  const [scaleFactor, setScaleFactor] = useState<number>(1);
 
   const fields = other.invitation.fields;
 
-  const addField = (fieldId: string) => {
-    const selected = availableFields.find((f) => f.id === fieldId);
-    if (!selected) return;
+  useEffect(() => {
+    const calculateScale = () => {
+      if (imageRef.current) {
+        const referenceWidth = 800; // Reference width for size calculations
+        const displayedWidth = imageRef.current.clientWidth;
+        const scale = displayedWidth / referenceWidth;
+        setScaleFactor(scale);
+      }
+    };
 
+    if (other.invitation.invitationImage) {
+      const img = imageRef.current;
+      if (img) {
+        if (img.complete) {
+          calculateScale();
+        } else {
+          img.addEventListener('load', calculateScale);
+        }
+      }
+
+      window.addEventListener('resize', calculateScale);
+
+      return () => {
+        window.removeEventListener('resize', calculateScale);
+        if (img) {
+          img.removeEventListener('load', calculateScale);
+        }
+      };
+    }
+  }, [other.invitation.invitationImage]);
+
+  const addField = (value: string) => {
+    const fieldId = `field_${Date.now()}`;
     updateNestedProject('other', 'invitation', 'fields', [
       ...fields,
       {
-        ...selected,
+        id: fieldId,
+        label: '',
+        fontFamily: 'Inherit',
+        type: value,
         position: { x: 52, y: 14 },
-        size: selected.type === 'image' ? 100 : 20,
+        size: value === 'image' ? 200 : 20,
         value: '',
       },
     ]);
+    setSelectedElement(fieldId);
   };
 
   const removeField = (fieldId: string) => {
@@ -354,92 +348,128 @@ export function OtherTab({
               </div>
 
               {fields.map((field: any) => {
-                const meta = availableFields.find((af) => af.id === field.id);
-                if (!meta) return null;
-
                 return (
                   <div key={field.id}>
                     {/* Input hoặc Upload */}
-                    {meta.type === 'text' && (
-                      <div>
-                        <Label htmlFor={`${field.id}Input`}>{meta.label}</Label>
-                        <div className="center-both gap-4">
-                          <Input
-                            id={`${field.id}Input`}
-                            className="flex-1 w-full"
-                            type="text"
-                            placeholder={meta.placeholder}
-                            value={field.value ?? ''}
-                            onChange={(e) =>
-                              updateNestedProject(
-                                'other',
-                                'invitation',
-                                'fields',
-                                fields.map((f: any) =>
-                                  f.id === field.id
-                                    ? { ...f, value: e.target.value }
-                                    : f
-                                )
+                    {field.type === 'text' && (
+                      <div className="center-both gap-2">
+                        <Input
+                          id={`${field.id}Label`}
+                          className="flex-1 w-full"
+                          type="text"
+                          placeholder="Nhập tên trường..."
+                          value={field.label ?? ''}
+                          onChange={(e) =>
+                            updateNestedProject(
+                              'other',
+                              'invitation',
+                              'fields',
+                              fields.map((f: any) =>
+                                f.id === field.id
+                                  ? { ...f, label: e.target.value }
+                                  : f
                               )
-                            }
-                          />
-                          <Select
-                            value={field.size.toString()}
-                            onValueChange={(value) =>
-                              updateNestedProject(
-                                'other',
-                                'invitation',
-                                'fields',
-                                fields.map((f: any) =>
-                                  f.id === field.id
-                                    ? { ...f, size: Number(value) }
-                                    : f
-                                )
+                            )
+                          }
+                        />
+                        <Input
+                          id={`${field.id}Input`}
+                          className="flex-1 w-full"
+                          type="text"
+                          placeholder="Nhập nội dung..."
+                          value={field.value ?? ''}
+                          onChange={(e) =>
+                            updateNestedProject(
+                              'other',
+                              'invitation',
+                              'fields',
+                              fields.map((f: any) =>
+                                f.id === field.id
+                                  ? { ...f, value: e.target.value }
+                                  : f
                               )
-                            }
-                          >
-                            <SelectTrigger className="flex-1">
-                              <SelectValue placeholder="Chọn giá trị" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {fontSizes.map((option) => (
-                                <SelectItem
-                                  key={option}
-                                  value={option.toString()}
-                                >
-                                  {option}px
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                          <Button
-                            onClick={() => setSelectedElement(field.id)}
-                            className={`px-2 py-1 rounded text-xs font-medium transition-colors flex items-center gap-1 ${
-                              selectedElement === field.id
-                                ? 'bg-blue-600 text-white'
-                                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                            }`}
-                            title="Chọn vị trí"
-                          >
-                            <LocateFixed />
-                            {selectedElement === field.id
-                              ? 'Đang chọn'
-                              : 'Vị trí'}
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => removeField(field.id)}
-                            className="h-8 w-8 p-0 text-red-500 hover:text-red-700 z-10"
-                          >
-                            <X className="h-4 w-4" />
-                          </Button>
-                        </div>
+                            )
+                          }
+                        />
+                        <Select
+                          value={field.fontFamily.toString()}
+                          onValueChange={(value) =>
+                            updateNestedProject(
+                              'other',
+                              'invitation',
+                              'fields',
+                              fields.map((f: any) =>
+                                f.id === field.id
+                                  ? { ...f, fontFamily: value }
+                                  : f
+                              )
+                            )
+                          }
+                        >
+                          <SelectTrigger className="flex-1">
+                            <SelectValue placeholder="Chọn font" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {fontFamilies.map((option) => (
+                              <SelectItem key={option} value={option}>
+                                {option}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <Select
+                          value={field.size.toString()}
+                          onValueChange={(value) =>
+                            updateNestedProject(
+                              'other',
+                              'invitation',
+                              'fields',
+                              fields.map((f: any) =>
+                                f.id === field.id
+                                  ? { ...f, size: Number(value) }
+                                  : f
+                              )
+                            )
+                          }
+                        >
+                          <SelectTrigger className="flex-1">
+                            <SelectValue placeholder="Chọn giá trị" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {fontSizes.map((option) => (
+                              <SelectItem
+                                key={option}
+                                value={option.toString()}
+                              >
+                                {option}px
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <Button
+                          onClick={() => setSelectedElement(field.id)}
+                          className={`px-2 py-1 rounded text-xs font-medium transition-colors flex items-center gap-1 ${
+                            selectedElement === field.id
+                              ? 'bg-blue-600 text-white'
+                              : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                          }`}
+                          title="Chọn vị trí"
+                        >
+                          <LocateFixed />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => removeField(field.id)}
+                          className="h-8 w-8 p-0 text-red-500 hover:text-red-700 z-10"
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
                       </div>
                     )}
 
-                    {meta.type === 'image' && (
-                      <div className="center-both gap-4">
+                    {field.type === 'image' && (
+                      <div className="center-both gap-2">
                         <FileUpload
                           className="flex-1"
                           label="Ảnh đại diện"
@@ -458,6 +488,25 @@ export function OtherTab({
                               newFields
                             );
                           }}
+                        />
+                        <Input
+                          id={`${field.id}Label`}
+                          className="flex-1 w-full"
+                          type="text"
+                          placeholder="Nhập tên trường..."
+                          value={field.label ?? ''}
+                          onChange={(e) =>
+                            updateNestedProject(
+                              'other',
+                              'invitation',
+                              'fields',
+                              fields.map((f: any) =>
+                                f.id === field.id
+                                  ? { ...f, label: e.target.value }
+                                  : f
+                              )
+                            )
+                          }
                         />
                         <div className="flex-1">
                           <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -493,9 +542,6 @@ export function OtherTab({
                           title="Chọn vị trí"
                         >
                           <LocateFixed />
-                          {selectedElement === field.id
-                            ? 'Đang chọn'
-                            : 'Vị trí'}
                         </Button>
                         <Button
                           variant="ghost"
@@ -516,11 +562,8 @@ export function OtherTab({
                   <SelectValue placeholder="Chọn giá trị" />
                 </SelectTrigger>
                 <SelectContent>
-                  {availableFields.map((option) => (
-                    <SelectItem key={option.id} value={option.id}>
-                      {option.label}
-                    </SelectItem>
-                  ))}
+                  <SelectItem value="text">Text</SelectItem>
+                  <SelectItem value="image">Image</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -528,44 +571,37 @@ export function OtherTab({
             {/* Cột phải: Vùng xem trước */}
             <div className="flex flex-col items-center justify-center">
               {other.invitation.invitationImage ? (
-                <div>
-                  <p className="text-md font-semibold text-gray-700 mb-2 text-center">
-                    Bước 3: Nhấp vào ảnh để chọn vị trí tên
-                  </p>
-                  <div
-                    ref={previewRef}
-                    className="relative w-fit mx-auto border-2 border-dashed border-gray-300 rounded-lg overflow-hidden cursor-crosshair"
-                    onClick={handleFieldPositionClick}
-                  >
-                    {/* 4. Thay thế <img> bằng <Image> */}
-                    <Image
-                      src={
-                        other?.invitation?.invitationImage
-                          ? other.invitation.invitationImage instanceof File
-                            ? URL.createObjectURL(
-                                other.invitation.invitationImage
-                              )
-                            : other.invitation.invitationImage.url
-                          : '/placeholder.svg'
-                      }
-                      alt="Invitation background"
-                      width={100}
-                      height={100}
-                      className="w-auto h-[80vh]"
-                    />
-                    {other.invitation.fields.map((field: any) => {
-                      const meta = availableFields.find(
-                        (af) => af.id === field.id
-                      );
-                      return (
-                        <FieldPreview
-                          key={field.id}
-                          field={field}
-                          meta={meta}
-                        />
-                      );
-                    })}
-                  </div>
+                <div
+                  ref={previewRef}
+                  className="relative w-fit mx-auto border-2 border-dashed border-gray-300 rounded-lg overflow-hidden cursor-crosshair"
+                  onClick={handleFieldPositionClick}
+                >
+                  <Image
+                    ref={imageRef}
+                    src={
+                      other?.invitation?.invitationImage
+                        ? other?.invitation?.invitationImage instanceof File
+                          ? URL.createObjectURL(
+                              other?.invitation?.invitationImage
+                            )
+                          : other?.invitation?.invitationImage.url
+                        : '/placeholder.svg'
+                    }
+                    alt="Invitation background"
+                    width={100}
+                    height={100}
+                    priority
+                    className="object-contain w-auto max-h-[80vh]"
+                  />
+                  {other.invitation.fields.map((field: any) => {
+                    return (
+                      <FieldPreview
+                        key={field.id}
+                        field={field}
+                        scaleFactor={scaleFactor}
+                      />
+                    );
+                  })}
                 </div>
               ) : (
                 <div className="w-full h-full flex items-center justify-center bg-gray-50 rounded-lg border-2 border-dashed border-gray-300 p-8 text-center">
@@ -615,9 +651,9 @@ export function OtherTab({
                 </p>
               </div>
               <Switch
-                checked={other.isFeatured}
+                checked={scalarData.isFeatured}
                 onCheckedChange={(checked) =>
-                  updateProject('other', 'isFeatured', checked)
+                  updateProject('isFeatured', checked)
                 }
               />
             </div>
@@ -630,9 +666,9 @@ export function OtherTab({
                 </p>
               </div>
               <Switch
-                checked={other.isExclusive}
+                checked={scalarData.isExclusive}
                 onCheckedChange={(checked) =>
-                  updateProject('other', 'isExclusive', checked)
+                  updateProject('isExclusive', checked)
                 }
               />
             </div>
@@ -645,18 +681,22 @@ export function OtherTab({
                 </p>
               </div>
               <Switch
-                checked={other.visibleOnWeb}
+                checked={scalarData.visibleOnWeb}
                 onCheckedChange={(checked) =>
-                  updateProject('other', 'visibleOnWeb', checked)
+                  updateProject('visibleOnWeb', checked)
                 }
               />
             </div>
           </div>
 
           <div className="flex flex-wrap gap-2">
-            {other.isFeatured && <Badge variant="secondary">Nổi bật</Badge>}
-            {other.isExclusive && <Badge variant="secondary">Độc quyền</Badge>}
-            {other.visibleOnWeb && (
+            {scalarData.isFeatured && (
+              <Badge variant="secondary">Nổi bật</Badge>
+            )}
+            {scalarData.isExclusive && (
+              <Badge variant="secondary">Độc quyền</Badge>
+            )}
+            {scalarData.visibleOnWeb && (
               <Badge variant="secondary">Hiển thị web</Badge>
             )}
           </div>
@@ -666,7 +706,13 @@ export function OtherTab({
       <div className="flex justify-end pt-6 border-t">
         <Button
           onClick={() =>
-            handleSave(updateProjectTab, uploadImage, 'other', other)
+            handleSave(
+              updateProjectTab,
+              uploadImage,
+              'other',
+              other,
+              scalarData
+            )
           }
           disabled={isLoading || isUploading}
           className="flex items-center space-x-2"

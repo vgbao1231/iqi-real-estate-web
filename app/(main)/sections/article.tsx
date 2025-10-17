@@ -5,6 +5,7 @@ import { Building2, Newspaper } from 'lucide-react';
 import { SpotlightCard } from '@/components/ui/spotlight-card';
 import { cn } from '@/lib/utils';
 import { useTheme } from 'next-themes';
+import Link from 'next/link';
 
 export default function Article() {
   const { theme, setTheme } = useTheme();
@@ -29,12 +30,11 @@ export default function Article() {
         <div className="grid lg:grid-cols-2 gap-16 max-w-6xl mx-auto mb-12">
           <SpotlightCard
             className={cn(
-              'group cursor-pointer transition-all h-full',
+              'group transition-all h-full bg-gradient-to-br',
               theme === 'dark'
-                ? 'bg-gradient-to-br from-cyan-500/20 to-blue-600/30 border border-cyan-500/30 hover:from-cyan-500/30 hover:to-blue-600/40'
-                : 'bg-gradient-to-br from-cyan-100 to-blue-200 border border-cyan-300 hover:from-cyan-200/90 hover:to-blue-300/90'
+                ? 'from-cyan-500/20 to-blue-600/30 border border-cyan-500/30'
+                : 'from-cyan-100/80 to-blue-200/90 border border-cyan-300'
             )}
-            onClick={() => (window.location.href = '/macro')}
           >
             <div className="p-6 h-full flex flex-col">
               <div className="pb-4">
@@ -64,28 +64,29 @@ export default function Article() {
                   Phân tích chính sách, xu hướng thị trường và các yếu tố kinh
                   tế vĩ mô ảnh hưởng đến BĐS Việt Nam
                 </p>
-                <Button
-                  className={cn(
-                    'px-6 py-2 rounded-full shadow-lg hover:shadow-xl transition-all w-full',
-                    theme === 'dark'
-                      ? 'bg-cyan-500 hover:bg-cyan-400 text-white'
-                      : 'bg-cyan-600 hover:bg-cyan-700 text-white'
-                  )}
-                >
-                  Xem tin vĩ mô
-                </Button>
+                <Link href="/macro" passHref legacyBehavior>
+                  <Button
+                    className={cn(
+                      'px-6 py-2 rounded-full shadow-lg hover:shadow-xl transition-all w-full',
+                      theme === 'dark'
+                        ? 'bg-cyan-500 hover:bg-cyan-400 text-white'
+                        : 'bg-cyan-600 hover:bg-cyan-700 text-white'
+                    )}
+                  >
+                    Xem tin vĩ mô
+                  </Button>
+                </Link>
               </div>
             </div>
           </SpotlightCard>
 
           <SpotlightCard
             className={cn(
-              'group cursor-pointer transition-all h-full',
+              'group transition-all h-full bg-gradient-to-br',
               theme === 'dark'
-                ? 'bg-gradient-to-br from-teal-500/20 to-green-600/30 border border-teal-500/30 hover:from-teal-500/30 hover:to-green-600/40'
-                : 'bg-gradient-to-br from-teal-300/20 to-green-400/30 border border-teal-300/30 hover:from-teal-300/30 hover:to-green-400/40'
+                ? 'from-teal-500/20 to-green-600/30 border border-teal-500/30'
+                : 'from-teal-100/80 to-teal-200/90 border border-teal-300/30'
             )}
-            onClick={() => (window.location.href = '/micro')}
           >
             <div className="p-6 h-full flex flex-col">
               <div className="pb-4">
@@ -115,16 +116,18 @@ export default function Article() {
                   Thông tin chi tiết về dự án, giao dịch thực tế, giá cả và tin
                   tức từng khu vực, phân khúc
                 </p>
-                <Button
-                  className={cn(
-                    'px-6 py-2 rounded-full shadow-lg hover:shadow-xl transition-all w-full',
-                    theme === 'dark'
-                      ? 'bg-teal-500 hover:bg-teal-400 text-white'
-                      : 'bg-teal-600 hover:bg-teal-700 text-white'
-                  )}
-                >
-                  Xem tin vi mô
-                </Button>
+                <Link href="/micro" passHref legacyBehavior>
+                  <Button
+                    className={cn(
+                      'px-6 py-2 rounded-full shadow-lg hover:shadow-xl transition-all w-full',
+                      theme === 'dark'
+                        ? 'bg-teal-500 hover:bg-teal-400 text-white'
+                        : 'bg-teal-600 hover:bg-teal-700 text-white'
+                    )}
+                  >
+                    Xem tin vi mô
+                  </Button>
+                </Link>
               </div>
             </div>
           </SpotlightCard>

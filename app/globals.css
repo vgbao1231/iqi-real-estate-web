@@ -17,7 +17,7 @@
     --muted: 210 40% 96%; /* #f1f5f9 */
     --muted-foreground: 0 0% 33%; /* #555555 */
     --muted-card: 0 0% 98%; /* #fafafa */
-    --accent: 30 100% 97.1%; /* #fff8f1 */
+    --accent: 29 100% 93%; /* #ffebd8 */
     --accent-foreground: 222.2 47.4% 11.2%; /* #0f172a */
     --accent-card: 0 0% 90%; /* #e5e5e5 */
     --destructive: 0 84.2% 60.2%; /* #ef4444 */
@@ -94,6 +94,17 @@
   input[type='number'] {
     -moz-appearance: textfield;
   }
+}
+
+.pswp__img {
+  object-fit: contain !important;
+  max-width: none !important;
+  max-height: none !important;
+  cursor: zoom-in !important;
+}
+
+.pswp--zoomed-in .pswp__img {
+  cursor: grab !important;
 }
 
 .goog-logo-link,
@@ -178,4 +189,25 @@ body {
   .prose li[data-list='bullet'] {
     list-style-type: disc !important;
   }
+}
+
+@font-face {
+  font-family: 'DFVN Menata';
+
+  src:
+    url('/fonts/DFVNMenata-Regular.woff2') format('woff2'),
+    url('/fonts/DFVNMenata-Regular.woff') format('woff');
+
+  font-weight: normal;
+  font-style: normal;
+
+  font-display: swap; /* Cho phép text hiển thị bằng font mặc định trong khi font tải */
+}
+
+@font-face {
+  font-family: 'Great Vibes';
+  src: url('https://fonts.gstatic.com/s/greatvibes/v21/RWmMoKWR9v4ksMfaWd_JN9XFiaQoDmlrMlY.woff2')
+    format('woff2');
+  font-weight: 400;
+  font-style: normal;
 }

@@ -38,62 +38,81 @@ const ProductionPreview = memo(function ProductionPreview({
 }: {
   production: any;
 }) {
-  const { products } = production;
+  const { products, productBackground } = production;
 
   return (
-    <div className="min-h-[60vh] max-w-7xl mx-auto">
-      <h3 className="text-2xl font-bold mb-8 center-both text-orange-400">
-        <Home className="w-6 h-6 mr-3" />
-        Sản phẩm & Loại hình
-      </h3>
+    <div className="relative min-h-[60vh]">
+      <div className="absolute inset-0 z-0">
+        <Image
+          src={
+            productBackground
+              ? productBackground instanceof File
+                ? URL.createObjectURL(productBackground)
+                : productBackground.url
+              : '/placeholder.svg'
+          }
+          alt="Eco Retreat Background"
+          fill
+          className="object-cover object-center"
+          priority
+        />
+      </div>
+      <div className="absolute inset-0 z-10 backdrop-blur-md bg-white/50 dark:bg-transparent dark:backdrop-brightness-[40%]" />
 
-      <div className="flex items-center justify-center flex-wrap gap-8">
-        {products.length > 0 ? (
-          products.map((product: any, index: number) => (
-            <div
-              key={index}
-              className="relative overflow-hidden rounded-lg group shadow-lg min-w-[45%] max-w-[50%] max-h-[500px] flex-1"
-            >
+      <div className="max-w-6xl mx-auto relative py-8 z-20">
+        <h3 className="text-2xl font-bold mb-8 center-both text-orange-400">
+          <Home className="w-6 h-6 mr-3" />
+          Sản phẩm & Loại hình
+        </h3>
+
+        <div className="flex items-center justify-center flex-wrap gap-8">
+          {products.length > 0 ? (
+            products.map((product: any, index: number) => (
+              <div
+                key={index}
+                className="relative overflow-hidden rounded-lg group shadow-lg min-w-[45%] max-w-[50%] max-h-[500px] flex-1"
+              >
+                <div className="aspect-[4/3] relative">
+                  <Image
+                    src={
+                      product.image
+                        ? product.image instanceof File
+                          ? URL.createObjectURL(product.image)
+                          : product.image.url
+                        : '/placeholder.svg'
+                    }
+                    alt={product.name}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent"></div>
+                </div>
+
+                <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                  <h4 className="text-2xl font-bold mb-2 text-orange-300">
+                    {product.name}
+                  </h4>
+                  <div
+                    className="text-shadow-md"
+                    dangerouslySetInnerHTML={{ __html: product.description }}
+                  />
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="relative overflow-hidden rounded-lg group shadow-lg min-w-[45%] max-w-[50%] max-h-[500px] flex-1">
               <div className="aspect-[4/3] relative">
                 <Image
-                  src={
-                    product.image
-                      ? product.image instanceof File
-                        ? URL.createObjectURL(product.image)
-                        : product.image.url
-                      : '/placeholder.svg'
-                  }
-                  alt={product.name}
+                  src="/placeholder.svg"
+                  alt="placeholder"
                   fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  className="object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent"></div>
               </div>
-
-              <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                <h4 className="text-2xl font-bold mb-2 text-orange-300">
-                  {product.name}
-                </h4>
-                <div
-                  className="text-shadow-md"
-                  dangerouslySetInnerHTML={{ __html: product.description }}
-                />
-              </div>
             </div>
-          ))
-        ) : (
-          <div className="relative overflow-hidden rounded-lg group shadow-lg min-w-[45%] max-w-[50%] max-h-[500px] flex-1">
-            <div className="aspect-[4/3] relative">
-              <Image
-                src="/placeholder.svg"
-                alt="placeholder"
-                fill
-                className="object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent"></div>
-            </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );
@@ -391,6 +410,17 @@ export function ProductionTab({
               Xem trước:
             </Label>
             <ProductionPreview production={production} />
+          </div>
+
+          <div className="space-y-4">
+            <Label className="text-base font-semibold">Ảnh nền sản phẩm</Label>
+            <FileUpload
+              label="Ảnh nền cho phần sản phẩm"
+              value={production.productBackground}
+              onChange={(file) =>
+                updateProject('production', 'productBackground', file)
+              }
+            />
           </div>
 
           {/* Products List */}

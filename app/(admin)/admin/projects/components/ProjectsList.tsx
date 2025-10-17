@@ -60,8 +60,16 @@ export function ProjectsList({ onEditProject }: ProjectsListProps) {
   );
 
   // Modified getValue to use 'id' instead of 'key'
-  const getValue = (project: any, id: string) =>
-    project?.overview?.basicInfo?.find((item: any) => item.id === id)?.value;
+  const getValue = (project: any, id: string) => {
+    const item = project?.overview?.basicInfo?.find((it: any) => it.id === id);
+    if (!item) return '';
+
+    const { value, options } = item;
+    if (!options?.length) return value || '';
+
+    const found = options.find((opt: any) => opt.value === value);
+    return found ? found.label : value;
+  };
 
   const filteredProjects = projects.filter((project) => {
     // nếu chưa có overview.basicInfo → vẫn cho hiển thị
@@ -117,7 +125,6 @@ export function ProjectsList({ onEditProject }: ProjectsListProps) {
                 <TableRow>
                   <TableHead>Tên dự án</TableHead>
                   <TableHead>Loại hình</TableHead>
-                  {/* Changed from Danh mục to Loại hình */}
                   <TableHead>Địa chỉ</TableHead>
                   <TableHead>Chủ đầu tư</TableHead>
                   <TableHead className="text-center">Trạng thái</TableHead>
@@ -165,7 +172,7 @@ export function ProjectsList({ onEditProject }: ProjectsListProps) {
                             variant="secondary"
                             className="bg-blue-100 text-center text-blue-800"
                           >
-                            {projectType} {/* Display projectType */}
+                            {projectType}
                           </Badge>
                         </TableCell>
                         <TableCell>{address}</TableCell>

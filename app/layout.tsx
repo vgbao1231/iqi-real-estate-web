@@ -24,10 +24,6 @@ export default function RootLayout({
           content="uaG-e_NkOuXNQMqXLlZxz2-J7JsM3-1J_HbgdbAkzZU"
         />
         <link rel="icon" type="image/png" href="/logo-IQIVN.png" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap"
-          rel="stylesheet"
-        />
       </head>
       <body className={inter.className} suppressHydrationWarning>
         <Providers>

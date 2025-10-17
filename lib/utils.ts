@@ -66,7 +66,7 @@ export function formatViews(num: number) {
 
 export async function compressImage(file: File) {
   const options = {
-    maxSizeMB: 1, // target dưới 1MB
+    maxSizeMB: 10, // target dưới 1MB
     maxWidthOrHeight: 1920, // scale về chiều dài max 1920px
     useWebWorker: true,
   };

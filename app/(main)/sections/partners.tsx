@@ -6,12 +6,19 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
-import { partners } from '@/lib/partner-data';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { useGetAllPartnersQuery } from '@/features/partner/partnerApi';
 
 export default function Partners() {
+  const { data: partners = [] } = useGetAllPartnersQuery();
   const [showAllPartners, setShowAllPartners] = useState(false);
-  const commonPartners = Object.values(partners).flatMap((arr) =>
+  const groupedPartners = partners.reduce((acc, partner) => {
+    const category = partner.category;
+    acc[category] = acc[category] || []; // Khởi tạo mảng nếu chưa có
+    acc[category].push(partner);
+    return acc;
+  }, {});
+  const commonPartners = Object.values(groupedPartners).flatMap((arr) =>
     (arr as any[]).slice(0, 4)
   );
   const displayedPartners = showAllPartners
@@ -52,11 +59,11 @@ export default function Partners() {
               >
                 <div className="aspect-[2/1] w-full relative">
                   <Image
-                    src={partner.logo || '/placeholder-2.webp'}
+                    src={partner.image?.url || '/placeholder-2.webp'}
                     alt={partner.name}
                     fill
                     priority
-                    className="mx-auto transition-all duration-300 object-contain px-8"
+                    className="mx-auto transition-all duration-300 object-contain px-8 py-4"
                   />
                 </div>
                 <div className="text-center mt-2 text-sm font-medium text-muted-foreground group-hover:text-foreground transition-colors">
@@ -98,11 +105,7 @@ export default function Partners() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto mb-6">
             <div className="text-center">
               <div className="text-2xl font-bold text-orange-600">
-                {Object.values(partners).reduce(
-                  (sum, arr) => sum + arr.length,
-                  0
-                )}
-                +
+                {partners.length}+
               </div>
               <div className="text-sm text-muted-foreground">Đối tác</div>
             </div>
@@ -154,7 +157,7 @@ export default function Partners() {
                 <CardHeader className="flex flex-col items-center pb-2">
                   <div className="relative w-full h-64">
                     <Image
-                      src={selectedPartner.logo || '/placeholder-2.webp'}
+                      src={selectedPartner.image?.url || '/placeholder-2.webp'}
                       alt={selectedPartner.name}
                       fill
                       className="object-contain mb-4 px-12"

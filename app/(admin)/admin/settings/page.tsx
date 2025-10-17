@@ -2,7 +2,7 @@
 
 import type React from 'react';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -13,10 +13,18 @@ import {
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import { Camera, Save, Eye, EyeOff, Loader2, Check, X } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn, compressImage } from '@/lib/utils';
 import { toast } from 'react-toastify';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '@/store';
+import {
+  useChangePasswordMutation,
+  useUpdateProfileMutation,
+} from '@/features/auth/authApi';
+import { useUploadImageMutation } from '@/features/upload/uploadApi';
+import { setUser } from '@/features/auth/authSlice';
 
 interface FormData {
   name: string;
@@ -51,18 +59,34 @@ export default function ProfileSettings() {
   const [showPassword, setShowPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [avatarUrl, setAvatarUrl] = useState(
-    '/placeholder.svg?height=80&width=80'
-  );
+  const [avatarUrl, setAvatarUrl] = useState('/placeholder.svg');
+  const [updateProfile, { isLoading: isUpdatingProfile }] =
+    useUpdateProfileMutation();
+  const [changePassword, { isLoading: isChangingPassword }] =
+    useChangePasswordMutation();
+  const [uploadImage, { isLoading: isUploading }] = useUploadImageMutation();
+  const dispatch = useDispatch();
 
-  const [formData, setFormData] = useState<FormData>({
-    name: 'Nguyễn Văn A',
-    email: 'admin@batdongsan.vn',
-    phone: '0123456789',
+  const currentUser = useSelector((state: RootState) => state.auth.user);
+  const [formData, setFormData] = useState({
+    name: currentUser?.name || '',
+    email: currentUser?.email || '',
+    phone: currentUser?.phone || '',
+    image: currentUser?.image || null,
     currentPassword: '',
     newPassword: '',
     confirmPassword: '',
   });
+  useEffect(() => {
+    if (currentUser) {
+      setFormData((prev) => ({
+        ...prev,
+        name: currentUser.name || '',
+        email: currentUser.email || '',
+        phone: currentUser.phone || '',
+      }));
+    }
+  }, [currentUser]);
 
   const [errors, setErrors] = useState<FormErrors>({});
   const [passwordValidation, setPasswordValidation] =
@@ -170,44 +194,17 @@ export default function ProfileSettings() {
     }
   };
 
-  const handleAvatarChange = () => {
-    fileInputRef.current?.click();
+  const handleAvatarChange = (e: any) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setFormData({ ...formData, image: file });
+    }
   };
 
-  const handleFileChange = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
-    // Validate file type
-    if (!file.type.startsWith('image/')) {
-      toast.error('Vui lòng chọn file ảnh (JPG, PNG, GIF)');
-      return;
-    }
-
-    // Validate file size (2MB)
-    if (file.size > 2 * 1024 * 1024) {
-      toast.error('Kích thước file không được vượt quá 2MB');
-      return;
-    }
-
-    setIsUploadingAvatar(true);
-
-    try {
-      // Create preview URL
-      const previewUrl = URL.createObjectURL(file);
-
-      // Simulate upload API call
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-
-      setAvatarUrl(previewUrl);
-
-      toast.success('Cập nhật ảnh đại diện thành công');
-    } catch (error) {
-      toast.error('Không thể cập nhật ảnh đại diện');
-    } finally {
-      setIsUploadingAvatar(false);
+  const removeAvatar = () => {
+    setFormData({ ...formData, image: null });
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
     }
   };
 
@@ -217,16 +214,61 @@ export default function ProfileSettings() {
       return;
     }
 
+    const profileUpdateData = {
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone || undefined,
+      image: formData.image,
+    };
+
     setIsLoading(true);
 
     try {
-      // Logic dọn dẹp sau khi giả định API thành công
-      setFormData((prev) => ({
-        ...prev,
-        currentPassword: '',
-        newPassword: '',
-        confirmPassword: '',
-      }));
+      let uploadRes: { url: string; publicId: string } | null = null;
+      if (formData.image instanceof File) {
+        const compressedFile = await compressImage(formData.image);
+        uploadRes = await uploadImage({
+          file: compressedFile,
+          folder: 'users',
+        }).unwrap();
+        profileUpdateData.image = uploadRes;
+      }
+      const profileResult = await updateProfile(profileUpdateData).unwrap();
+
+      if (profileResult && profileResult.data) {
+        dispatch(setUser(profileResult.data));
+      }
+
+      const isPasswordChangeAttempt =
+        formData.currentPassword ||
+        formData.newPassword ||
+        formData.confirmPassword;
+      if (isPasswordChangeAttempt) {
+        const passwordData = {
+          currentPassword: formData.currentPassword,
+          newPassword: formData.newPassword,
+          confirmNewPassword: formData.confirmPassword,
+        };
+
+        await changePassword(passwordData).unwrap();
+
+        // Clear các trường mật khẩu
+        setFormData((prev) => ({
+          ...prev,
+          currentPassword: '',
+          newPassword: '',
+          confirmPassword: '',
+        }));
+
+        // Reset password validation
+        setPasswordValidation({
+          minLength: false,
+          hasUppercase: false,
+          hasLowercase: false,
+          hasNumber: false,
+        });
+        return;
+      }
 
       // Reset password validation
       setPasswordValidation({
@@ -235,8 +277,6 @@ export default function ProfileSettings() {
         hasLowercase: false,
         hasNumber: false,
       });
-
-      toast.success('Cập nhật thông tin thành công');
     } catch (error) {
       toast.error('Không thể cập nhật thông tin');
     } finally {
@@ -262,25 +302,23 @@ export default function ProfileSettings() {
               Cập nhật thông tin cá nhân của bạn
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-6">
+          <CardContent className="flex flex-row gap-12">
             {/* Avatar Section */}
-            <div className="flex items-center gap-4">
-              <Avatar className="h-20 w-20">
+            <div className="flex flex-col items-center gap-4">
+              <Avatar className="w-24 h-24 rounded-full overflow-hidden">
                 <AvatarImage
-                  src={avatarUrl || '/placeholder.svg'}
-                  alt="Avatar"
+                  src={
+                    formData.image instanceof File
+                      ? URL.createObjectURL(formData.image)
+                      : formData.image?.url || '/placeholder.svg'
+                  }
+                  className="w-full h-full object-cover"
+                  alt="User Avatar"
                 />
-                <AvatarFallback className="text-lg">
-                  {formData.name
-                    .split(' ')
-                    .map((n) => n[0])
-                    .join('')
-                    .toUpperCase()}
-                </AvatarFallback>
               </Avatar>
               <div>
                 <Button
-                  onClick={handleAvatarChange}
+                  onClick={() => fileInputRef.current?.click()}
                   variant="outline"
                   disabled={isUploadingAvatar}
                   className="flex items-center gap-2"
@@ -300,13 +338,13 @@ export default function ProfileSettings() {
                 ref={fileInputRef}
                 type="file"
                 accept="image/*"
-                onChange={handleFileChange}
+                onChange={handleAvatarChange}
                 className="hidden"
               />
             </div>
 
             {/* Form Fields */}
-            <div className="grid gap-4">
+            <div className="grid gap-4 flex-1">
               <div className="space-y-2">
                 <Label htmlFor="name">Họ và tên</Label>
                 <Input

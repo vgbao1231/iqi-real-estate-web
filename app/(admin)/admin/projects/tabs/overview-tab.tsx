@@ -112,6 +112,10 @@ const TwoColumnLayoutPreview = memo(function TwoColumnLayoutPreview({
         value = Number(value)?.toLocaleString();
       }
 
+      if (item.type === 'select') {
+        value = item.options.find((opt: any) => opt.value === value).label;
+      }
+
       // Custom logic using 'id'
       if (item.id === 'status') {
         // Use item.id === 'status'

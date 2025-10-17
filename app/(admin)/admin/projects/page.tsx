@@ -28,6 +28,7 @@ import {
   LayoutGrid,
   Milestone,
 } from 'lucide-react';
+import { PreviewDialog } from '@/app/(admin)/admin/projects/components/PreviewDialog';
 const arsenal = Arsenal({
   subsets: ['latin'],
   weight: ['400', '700'], // Chỉ định độ đậm
@@ -56,7 +57,7 @@ export default function Projects() {
           icon: FileText,
           component: (
             <IntroductionTab
-              introduction={project.introduction}
+              project={project}
               updateProject={updateProject}
               handleSave={handleSave}
             />
@@ -155,7 +156,7 @@ export default function Projects() {
           icon: Settings,
           component: (
             <OtherTab
-              other={project.other}
+              project={project}
               updateProject={updateProject}
               updateNestedProject={updateNestedProject}
               handleSave={handleSave}
@@ -190,6 +191,7 @@ export default function Projects() {
                 </p>
               </div>
             </div>
+            <PreviewDialog project={project} />
           </div>
         </div>
       </div>
@@ -203,7 +205,7 @@ export default function Projects() {
                 value={value}
                 className="flex items-center space-x-2"
               >
-                <Icon className="h-4 w-4" />
+                <Icon className="h-4 w-4 shrink-0" />
                 <span className="hidden sm:inline">{label}</span>
               </TabsTrigger>
             ))}

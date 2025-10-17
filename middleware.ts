@@ -11,7 +11,7 @@ export function middleware(request: NextRequest) {
   }
 
   if (pathname.startsWith('/login') && isLoggedIn) {
-    return NextResponse.redirect(new URL('/admin/dashboard', request.url));
+    return NextResponse.redirect(new URL('/admin/accounts', request.url));
   }
 
   return NextResponse.next();

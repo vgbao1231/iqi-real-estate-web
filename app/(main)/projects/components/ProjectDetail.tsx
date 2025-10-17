@@ -8,21 +8,19 @@ import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { useParams, usePathname } from 'next/navigation';
 import Introduction from '@/app/(main)/projects/components/sections/Introduction';
-import Agency from '@/app/(main)/projects/components/sections/Agency';
 import Amenity from '@/app/(main)/projects/components/sections/Amenity';
 import Cover from '@/app/(main)/projects/components/sections/Cover';
 import Overview from '@/app/(main)/projects/components/sections/Overview';
-import Policy from '@/app/(main)/projects/components/sections/Policy';
 import Production from '@/app/(main)/projects/components/sections/Production';
 import Siteplan from '@/app/(main)/projects/components/sections/Siteplan';
-import Timeline from '@/app/(main)/projects/components/sections/Timeline';
 import Location from '@/app/(main)/projects/components/sections/Location';
-import Contact from '@/app/(main)/projects/components/sections/Contact';
+// import Contact from '@/app/(main)/projects/components/sections/Contact';
 import { ChevronDown, Menu, X } from 'lucide-react';
 import Link from 'next/link';
-import { SectionBreak } from '@/app/(main)/projects/components/sections/SectionBreak';
 import { useGetPublicProjectByIdQuery } from '@/features/project/projectApi';
 import LoadingScreen from '@/components/common/loading-screen';
+import { mockProject } from '@/constants/mock-project';
+import Contact from '@/app/(main)/projects/components/sections/Contact';
 
 const arsenal = Arsenal({
   subsets: ['latin'],
@@ -31,21 +29,28 @@ const arsenal = Arsenal({
   display: 'swap',
 });
 
+//TODO: xóa mock data khi deploy production
 export default function ProjectDetail() {
   const { id } = useParams();
-  const { data: project } = useGetPublicProjectByIdQuery(id as string, {
-    skip: !id,
-  });
+  const { data: project = mockProject } = useGetPublicProjectByIdQuery(
+    id as string,
+    {
+      skip: !id,
+    }
+  );
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const handleLinkClick = (item: any) => {
     if (item.dropdown) {
       setIsDropdownOpen(!isDropdownOpen);
+    } else if (item.href) {
+      window.open(item.href, '_blank');
     } else {
       const section = document.getElementById(item.id);
       if (section) {
         section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        window.location.hash = item.id;
       }
       setIsMenuOpen(false); // Close menu after clicking a link
     }
@@ -54,11 +59,11 @@ export default function ProjectDetail() {
   /* ---------- Local state ---------- */
   const pathname = usePathname();
 
-  const sections = useMemo(() => {
+  const sections: any = useMemo(() => {
     if (!project) return [];
 
     // sections cơ bản theo thứ tự
-    const baseSections = [
+    return [
       {
         id: 'introduction',
         content: <Introduction data={project.introduction} />,
@@ -69,7 +74,6 @@ export default function ProjectDetail() {
         content: <Overview data={project.overview} />,
         label: 'Tổng quan',
       },
-      { id: 'contact1', content: <Contact data={project.contact} /> },
       {
         id: 'amenity',
         content: <Amenity data={project.amenity} />,
@@ -86,55 +90,18 @@ export default function ProjectDetail() {
         label: 'Mặt bằng',
       },
       {
+        id: '360-view',
+        href: project.siteplan.view360,
+        label: '360 View',
+      },
+      {
         id: 'production',
         content: <Production data={project.production} />,
         label: 'Sản phẩm',
       },
-      {
-        id: 'policy',
-        content: <Policy data={project.other.policy} />,
-        label: 'Chính sách',
-      },
-      {
-        id: 'timeline',
-        content: <Timeline data={project.timeline} />,
-        label: 'Tiến độ',
-      },
-      {
-        id: 'agency',
-        content: <Agency data={project.contact.agency} />,
-        label: 'Đại lý',
-      },
-      {
-        id: 'toolbar',
-        label: 'Công cụ',
-        dropdown: [
-          { href: project.siteplan.view360, label: '360 view' },
-          { href: `${pathname}/invitation`, label: 'Thiệp mời' },
-        ],
-      },
-      { id: 'contact2', content: <Contact data={project.contact} /> },
+      { id: 'contact', content: <Contact /> },
     ];
-
-    // map breakImages theo position
-    const breakMap: Record<string, any> = {};
-    project.other.breakImages.forEach((breakImg: any) => {
-      breakMap[breakImg.position] = breakImg;
-    });
-
-    // chèn SectionBreak nếu có breakMap tương ứng với section.id
-    const finalSections = baseSections.flatMap((section) => {
-      const result: any[] = [section];
-      if (section.id && breakMap[section.id]) {
-        result.push({
-          content: <SectionBreak data={breakMap[section.id].image} />,
-        });
-      }
-      return result;
-    });
-
-    return finalSections;
-  }, [project, pathname]);
+  }, [project]);
 
   if (!project)
     return <LoadingScreen loadingText="Đang tải thông tin chi tiết dự án" />;
@@ -177,12 +144,12 @@ export default function ProjectDetail() {
           {/* Desktop Navigation (Hidden on Mobile) */}
           <nav className="hidden items-center gap-2 md:flex">
             {sections.map(
-              (item) =>
+              (item: any) =>
                 item.label && (
                   <div className="relative group" key={item.id}>
                     <Button
                       variant="ghost"
-                      className="text-sm font-bold uppercase p-2 hover:bg-accent hover:text-accent-foreground lg:text-base group/menu"
+                      className="text-sm font-bold uppercase p-2 hover:bg-accent/20 hover:text-accent-foreground lg:text-base group/menu"
                       onClick={() => handleLinkClick(item)}
                     >
                       {item.label}
@@ -233,7 +200,7 @@ export default function ProjectDetail() {
         {isMenuOpen && (
           <nav className="absolute left-0 top-full flex w-full flex-col border-t bg-background p-4 shadow-lg md:hidden">
             {sections.map(
-              (item) =>
+              (item: any) =>
                 item.label && (
                   <div key={`mobile-${item.id}`}>
                     <Button
@@ -274,7 +241,7 @@ export default function ProjectDetail() {
       {/* Conditional sections                                                    */}
       {/* ----------------------------------------------------------------------- */}
       {sections.map(
-        (section, idx) =>
+        (section: any, idx: any) =>
           section.content && (
             <Fragment key={section.id || idx}>{section.content}</Fragment>
           )

@@ -81,25 +81,33 @@ export default function ResortProjectsPage() {
 
   // Filter logic
   const filteredProjects = useMemo(() => {
-    const getValue = (basicInfo: any, id: any) =>
-      basicInfo.find((item: any) => item.id === id)?.value;
+    const getValue = (project: any, id: string) => {
+      const item = project?.overview?.basicInfo?.find(
+        (it: any) => it.id === id
+      );
+      if (!item) return '';
+
+      const { value, options } = item;
+      if (!options?.length) return value || '';
+
+      const found = options.find((opt: any) => opt.value === value);
+      return found ? found.label : value;
+    };
 
     return projects.filter((project) => {
-      const basicInfo = project.overview.basicInfo;
+      const name = getValue(project, 'project_name') || '';
+      const address = getValue(project, 'address') || '';
+      const developer = getValue(project, 'developer') || '';
+      const city = getValue(project, 'city');
+      const district = getValue(project, 'district');
 
-      const name = getValue(basicInfo, 'project_name') || '';
-      const address = getValue(basicInfo, 'address') || '';
-      const developer = getValue(basicInfo, 'developer') || '';
-      const city = getValue(basicInfo, 'city');
-      const district = getValue(basicInfo, 'district');
+      const [minPrice, maxPrice] = getValue(project, 'price') || [];
+      const [minBedroom, maxBedroom] = getValue(project, 'bedrooms') || [];
+      const [minBathroom, maxBathroom] = getValue(project, 'bathrooms') || [];
+      const landArea = parseFloat(getValue(project, 'land_area')) || 0;
+      const projectType = getValue(project, 'project_type') || '';
 
-      const [minPrice, maxPrice] = getValue(basicInfo, 'price') || [];
-      const [minBedroom, maxBedroom] = getValue(basicInfo, 'bedrooms') || [];
-      const [minBathroom, maxBathroom] = getValue(basicInfo, 'bathrooms') || [];
-      const landArea = parseFloat(getValue(basicInfo, 'land_area')) || 0;
-      const projectType = getValue(basicInfo, 'project_type') || '';
-
-      const status = getValue(basicInfo, 'status') || '';
+      const status = getValue(project, 'status') || '';
 
       const matchesSearch =
         name.toLowerCase().includes(searchTerm.toLowerCase()) ||

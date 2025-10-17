@@ -3,13 +3,13 @@
 import type React from 'react';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { X, ImageIcon } from 'lucide-react';
+import { X, ImageIcon, ImagePlus } from 'lucide-react';
 import { memo } from 'react';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 
 interface FileUploadProps {
-  label: string;
+  label?: string;
   value: { url: string; publicId: string } | File | null;
   onChange: (file: File | null) => void;
   accept?: string;
@@ -50,9 +50,14 @@ export const FileUpload = memo(function FileUpload({
       : value?.url?.split('/').pop() || 'placeholder';
 
   return (
-    <div className={cn('space-y-2', className)}>
-      <Label>{label}</Label>
-      <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:border-gray-400 transition-colors">
+    <div className="space-y-2">
+      {label && <Label>{label}</Label>}
+      <div
+        className={cn(
+          'border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:border-gray-400 transition-colors',
+          className
+        )}
+      >
         {value ? (
           <div className="flex flex-col items-center space-y-2">
             {/* Check if it's an image type before rendering img tag */}
@@ -68,8 +73,6 @@ export const FileUpload = memo(function FileUpload({
                   alt="Preview"
                   width={0}
                   height={0}
-                  sizes="100vw"
-                  quality={40}
                   priority
                   className="max-h-32 w-auto h-auto max-w-full rounded-md object-contain"
                 />
@@ -82,10 +85,10 @@ export const FileUpload = memo(function FileUpload({
                 )}
               </div>
             )}
-            <div className="flex items-center justify-between w-full px-2">
+            <div className="flex items-center justify-between w-full px-2 text-muted-foreground">
               <div className="flex-grow flex-shrink min-w-0 flex items-center space-x-2">
                 <ImageIcon className="h-4 w-4 flex-none" />
-                <span className="text-sm text-gray-600 flex-grow flex-shrink min-w-0 truncate">
+                <span className="flex-grow flex-shrink min-w-0 truncate">
                   {fileName}
                 </span>
               </div>
@@ -109,14 +112,13 @@ export const FileUpload = memo(function FileUpload({
               accept={accept}
               onChange={handleFileChange}
             />
-            <div className="flex flex-col items-center space-y-2">
+            <div className="flex flex-col items-center space-y-2 text-muted-foreground">
               {/* <Upload className="h-8 w-8 text-gray-400" /> */}
-              <ImageIcon className="w-12 h-12 text-gray-400" />
-              {placeholder || (
-                <span className="text-sm text-gray-500">
-                  Tải lên {label.toLowerCase()}
-                </span>
-              )}
+              <ImagePlus className="w-12 h-12 text-gray-400" />
+              {placeholder ||
+                (label && (
+                  <span className="text-sm">Tải lên {label.toLowerCase()}</span>
+                ))}
             </div>
           </label>
         )}

@@ -13,11 +13,13 @@ interface RichTextEditorProps {
 }
 
 const FONT_SIZES = [
-  '12px',
   '14px',
   '16px',
   '18px',
+  '20px',
+  '22px',
   '24px',
+  '28px',
   '32px',
   '36px',
   '40px',
@@ -37,6 +39,7 @@ export const RichTextEditor = dynamic(
     if (Quill) {
       const Size: any = Quill.import('attributors/style/size');
       Size.whitelist = FONT_SIZES;
+      Size.default = '16px';
       Quill.register(Size, true);
 
       const Parchment = Quill.import('parchment');
@@ -62,12 +65,12 @@ export const RichTextEditor = dynamic(
         () => ({
           toolbar: {
             container: [
-              ['bold', 'italic', 'underline', 'strike'],
+              ['bold', 'italic', 'underline'],
               [{ list: 'bullet' }],
               [{ indent: '-1' }, { indent: '+1' }],
               [{ size: FONT_SIZES }],
               [{ lineheight: LINE_HEIGHTS }],
-              [{ color: [] }, { background: [] }],
+              [{ color: [] }],
               [{ font: [] }],
               [{ align: [] }],
               ['table-better'],

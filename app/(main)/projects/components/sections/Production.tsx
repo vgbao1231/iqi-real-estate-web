@@ -114,22 +114,31 @@ const Production = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
       </div>
 
       {/* Sub section 2 */}
-      <div className="relative md:min-h-screen w-full px-4 md:px-12 py-12 md:py-24 flex flex-col justify-center gap-8">
+      <div className="relative w-full px-4 py-12 md:p-12 flex flex-col justify-center gap-8">
         {/* Background image */}
-        <div className="absolute inset-0 z-0">
-          <Image
-            src={data.furnitureBackground?.url || '/placeholder.svg'}
-            alt="Eco Retreat Background"
-            fill
-            className="object-cover object-center"
-            priority
-          />
-        </div>
+        {data.products.map((item: any, index: any) => (
+          <div
+            key={index}
+            className={`absolute inset-0 z-0 transition-all duration-1000 ease-in-out ${
+              index === currentImageIndex
+                ? 'opacity-100 blur-0'
+                : 'opacity-0 blur-sm'
+            }`}
+          >
+            <Image
+              src={item.image?.url || '/placeholder.svg'}
+              alt={item.title}
+              fill
+              priority
+              className="object-cover"
+            />
+          </div>
+        ))}
         <div className="absolute inset-0 z-10 backdrop-blur-md bg-white/50 dark:bg-transparent dark:backdrop-brightness-[40%]" />
 
         {/* Content */}
         <div className="relative z-20 flex items-end w-full gap-4 overflow-x-visible">
-          {data.furnitures.length <= 3 ? (
+          {data.products.length <= 3 ? (
             <Gallery>
               <Carousel
                 className="w-full"
@@ -137,9 +146,9 @@ const Production = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
                 opts={{ loop: true, slidesToScroll: 1 }}
               >
                 <CarouselContent>
-                  {data.furnitures.map((item: any, idx: number) => (
+                  {data.products.map((item: any, idx: number) => (
                     <CarouselItem key={idx}>
-                      <h4 className="font-bold text-3xl mb-4">{item.title}</h4>
+                      <h4 className="font-bold text-3xl mb-4">{item.name}</h4>
                       <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -147,17 +156,18 @@ const Production = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
                         className="relative h-[80vh] w-full overflow-hidden"
                       >
                         <Item
-                          original={item.image || '/placeholder.svg'}
-                          thumbnail={item.image || '/placeholder.svg'}
-                          width="1920"
-                          height="1080"
+                          original={item.image?.url || '/placeholder.svg'}
+                          thumbnail={item.image?.url || '/placeholder.svg'}
+                          width="1600"
+                          height="1200"
+                          data-cropped="true"
                         >
                           {({ ref, open }) => (
                             <Image
                               ref={ref as any}
                               onClick={open}
                               src={item.image?.url || '/placeholder.svg'}
-                              alt={item.title || `Ảnh ${idx + 1}`}
+                              alt={item.name || `Ảnh ${idx + 1}`}
                               fill
                               priority
                               className="object-cover"
@@ -174,16 +184,14 @@ const Production = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
             <>
               <Gallery>
                 <Carousel
-                  className="w-1/2 shrink-0"
+                  className="w-full md:w-1/2 shrink-0"
                   setApi={setCarouselApi1}
                   opts={{ loop: true, slidesToScroll: 1 }}
                 >
                   <CarouselContent>
-                    {data.furnitures.map((item: any, idx: number) => (
+                    {data.products.map((item: any, idx: number) => (
                       <CarouselItem key={idx}>
-                        <h4 className="font-bold text-3xl mb-4">
-                          {item.title}
-                        </h4>
+                        <h4 className="font-bold text-3xl mb-4">{item.name}</h4>
                         <motion.div
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
@@ -191,17 +199,18 @@ const Production = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
                           className="relative h-[60vh] w-full overflow-hidden"
                         >
                           <Item
-                            original={item.image || '/placeholder.svg'} // ảnh gốc
-                            thumbnail={item.image || '/placeholder.svg'} // ảnh thumbnail
-                            width="1920"
-                            height="1080"
+                            original={item.image?.url || '/placeholder.svg'} // ảnh gốc
+                            thumbnail={item.image?.url || '/placeholder.svg'} // ảnh thumbnail
+                            width="1600"
+                            height="1200"
+                            data-cropped="true"
                           >
                             {({ ref, open }) => (
                               <Image
                                 ref={ref as any}
                                 onClick={open}
                                 src={item.image?.url || '/placeholder.svg'}
-                                alt={item.title || `Ảnh ${idx + 1}`}
+                                alt={item.name || `Ảnh ${idx + 1}`}
                                 fill
                                 priority
                                 className="object-cover"
@@ -215,7 +224,7 @@ const Production = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
 
                   {/* Dots */}
                   <div className="z-10 absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-3 md:hidden">
-                    {data.furnitures.map((_: any, i: any) => (
+                    {data.products.map((_: any, i: any) => (
                       <div
                         key={i}
                         className={cn(
@@ -235,11 +244,9 @@ const Production = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
                   opts={{ loop: true, slidesToScroll: 1 }}
                 >
                   <CarouselContent>
-                    {rotate(data.furnitures).map((item: any, idx: number) => (
+                    {rotate(data.products).map((item: any, idx: number) => (
                       <CarouselItem key={idx} className="pl-4 basis-[33.4%]">
-                        <h4 className="font-bold text-2xl mb-2">
-                          {item.title}
-                        </h4>
+                        <h4 className="font-bold text-2xl mb-2">{item.name}</h4>
                         <motion.div
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
@@ -247,10 +254,11 @@ const Production = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
                           className="relative h-[60vh] w-full overflow-hidden"
                         >
                           <Item
-                            original={item.image || '/placeholder.svg'} // ảnh gốc
-                            thumbnail={item.image || '/placeholder.svg'} // ảnh thumbnail
-                            width="1920"
-                            height="1080"
+                            original={item.image?.url || '/placeholder.svg'} // ảnh gốc
+                            thumbnail={item.image?.url || '/placeholder.svg'} // ảnh thumbnail
+                            width="1600"
+                            height="1200"
+                            data-cropped="true"
                           >
                             {({ ref, open }) => (
                               <Image
@@ -293,7 +301,7 @@ const Production = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
             <ArrowRight className="h-4 w-4" />
           </Button>
           <h4 className="font-bold text-2xl">
-            {currentImageIndex + 1}/{data.furnitures.length}
+            {currentImageIndex + 1}/{data.products.length}
           </h4>
         </div>
       </div>

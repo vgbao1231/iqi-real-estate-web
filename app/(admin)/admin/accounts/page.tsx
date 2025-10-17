@@ -428,7 +428,6 @@ function UserForm({ initialData = null, setIsDialogOpen }: any) {
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      const previewUrl = URL.createObjectURL(file);
       setFormData({ ...formData, image: file });
     }
   };

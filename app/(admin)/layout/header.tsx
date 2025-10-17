@@ -1,9 +1,8 @@
 'use client';
 
-import { Bell, LogOut, Menu } from 'lucide-react';
+import { LogOut, Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import LanguageSwitcher from '@/components/common/language-switcher';
-import { Badge } from '@/components/ui/badge';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useLogoutMutation } from '@/features/auth/authApi';
@@ -51,12 +50,12 @@ export default function Header({ setSidebarOpen }: any) {
         {/* Right side actions */}
         <div className="flex items-center space-x-4">
           {/* Notifications */}
-          <Button variant="ghost" size="sm" className="relative">
+          {/* <Button variant="ghost" size="sm" className="relative">
             <Bell className="w-5 h-5 text-foreground" />
             <Badge className="absolute -top-1 -right-1 w-5 h-5 p-0 center-both bg-red-600 text-white text-xs">
               3
             </Badge>
-          </Button>
+          </Button> */}
 
           {/* Language Switcher */}
           <LanguageSwitcher className="bg-card" />
@@ -65,7 +64,7 @@ export default function Header({ setSidebarOpen }: any) {
           <div className="flex items-center space-x-3">
             <div className="w-10 h-10 relative">
               <Image
-                src={me?.avatarUrl || '/placeholder.svg'}
+                src={me?.image?.url || '/placeholder.svg'}
                 alt="Avatar"
                 fill
                 className="object-cover rounded-full"

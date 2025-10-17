@@ -50,21 +50,14 @@ const Introduction = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
   return (
     <section ref={ref} id="introduction">
       {/* Sub section 1 */}
-      <div className="relative min-h-screen center-both">
-        {/* Background image */}
-        <Image
-          src={data.introductionBackground?.url || '/placeholder.svg'}
-          alt="Eco Retreat Background"
-          fill
-          className="object-cover object-center" // Changed to object-center for better mobile framing
-          priority
-        />
-        <div className="absolute inset-0 bg-black/30"></div>
-        {/* Optional overlay for better text readability */}
+      <div className="relative center-both bg-gradient-to-r from-orange-50 via-white to-green-50 py-20 px-4 md:px-8 lg:px-16 overflow-hidden">
+        <div className="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-accent/20 to-transparent rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-gradient-to-tl from-primary/20 to-transparent rounded-full blur-3xl translate-x-1/2 translate-y-1/2" />
+
         {/* Content */}
         <div className="relative z-20 flex w-full max-w-7xl flex-col items-center gap-8 px-4 py-8 md:flex-row md:px-8">
           {/* Left content */}
-          <div className="w-full space-y-4 text-white md:w-1/2">
+          <div className="w-full space-y-4 md:w-1/2">
             {/* Logo/title image - Responsive Height */}
 
             <div dangerouslySetInnerHTML={{ __html: data.introductionTitle }} />
@@ -83,7 +76,7 @@ const Introduction = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
               src={data.introductionImage?.url || '/placeholder.svg'}
               alt="Eco Retreat Hero"
               fill
-              className="rounded-lg object-cover shadow-2xl md:object-contain" // Use object-cover for mobile
+              className="rounded-lg object-cover md:object-contain"
               priority
             />
           </SlideIn>
@@ -91,7 +84,7 @@ const Introduction = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
       </div>
 
       {/* Sub section 2 */}
-      <div className="relative flex min-h-screen items-center justify-center">
+      <div className="relative py-12 md:py-20 flex items-center justify-center">
         {/* Background image */}
         <div className="absolute inset-0 z-0">
           <Image
@@ -107,7 +100,7 @@ const Introduction = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
           {/* Left content (Carousel) - Responsive Height */}
           <SlideIn
             direction="left"
-            className="relative h-[60vh] w-full md:h-[75vh] md:w-1/2"
+            className="relative h-[30vh] sm:h-[50vh] md:h-[75vh] w-full md:w-1/2 rounded-2xl overflow-hidden shadow-2xl ring-4 ring-orange-300/30"
           >
             <Carousel
               className="h-full w-full"

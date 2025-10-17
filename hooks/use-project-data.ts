@@ -1,7 +1,10 @@
 'use client';
 
-import { useGetAdminProjectByIdQuery } from '@/features/project/projectApi';
-import { setDeep } from '@/lib/utils';
+import {
+  useGetAdminProjectByIdQuery,
+  useUpdateProjectScalarDataMutation,
+} from '@/features/project/projectApi';
+import { compressImage, setDeep } from '@/lib/utils';
 import { skipToken } from '@reduxjs/toolkit/query';
 import { useCallback, useEffect, useState } from 'react';
 
@@ -30,6 +33,7 @@ export function useProjectData(id: string | null) {
   const { data: apiProject } = useGetAdminProjectByIdQuery(
     shouldSkip ? skipToken : id
   );
+  const [updateProjectScalarData] = useUpdateProjectScalarDataMutation();
 
   useEffect(() => {
     if (apiProject) {
@@ -42,16 +46,44 @@ export function useProjectData(id: string | null) {
   );
 
   const updateProject = useCallback(
-    (section: string, field: string, value: any) => {
+    // Nhận số lượng khóa tùy ý (tối thiểu 2: [key, value])
+    (...args: (string | any)[]) => {
+      // 1. Tách Giá trị mới và Đường dẫn Khóa
+      const value = args.pop(); // Giá trị mới
+      const pathParts: string[] = args.map(String); // Các khóa (ví dụ: ['overview', 'contact', 'phone'])
+
+      if (pathParts.length === 0) return; // Không có khóa nào để cập nhật
+
       setProject((prev) => {
         if (!prev) return prev;
-        return {
-          ...prev,
-          [section]: {
-            ...(prev[section as keyof typeof prev] as object),
-            [field]: value,
-          },
-        };
+
+        // 2. Clone và Cập nhật Bất biến
+        let newProject = { ...prev }; // Clone cấp độ đầu tiên (bất biến)
+        let current = newProject; // Con trỏ để di chuyển sâu hơn
+
+        for (let i = 0; i < pathParts.length; i++) {
+          const part = pathParts[i];
+
+          if (i === pathParts.length - 1) {
+            // Nếu là khóa cuối cùng (mục tiêu), gán giá trị
+            current[part] = value;
+            break;
+          }
+
+          // Nếu chưa phải khóa cuối cùng: Đảm bảo tính bất biến cho cấp độ tiếp theo
+          if (!current[part] || typeof current[part] !== 'object') {
+            // Nếu khóa không tồn tại hoặc không phải object, tạo object mới
+            current[part] = {};
+          } else {
+            // Nếu đã là object, tạo bản sao (clone) bất biến
+            current[part] = { ...current[part] };
+          }
+
+          // Di chuyển con trỏ xuống cấp độ tiếp theo
+          current = current[part];
+        }
+
+        return newProject;
       });
     },
     []
@@ -78,9 +110,10 @@ export function useProjectData(id: string | null) {
 
   const handleSave = async (
     updateProjectTab: any,
-    uploadFile: any, // mutation RTK Query upload
+    uploadFile: any,
     tab: string,
-    data: any
+    data: any,
+    scalarData?: any
   ) => {
     console.log('Saving data...', data);
     // Đệ quy tách file và data
@@ -140,10 +173,10 @@ export function useProjectData(id: string | null) {
       if (files.length > 0) {
         const results = await Promise.all(
           files.map(async ({ key, file }) => {
-            // const compressedFile = await compressImage(file);
+            const compressedFile = await compressImage(file);
             const res = await uploadFile({
-              // file: compressedFile,
-              file,
+              file: compressedFile,
+              // file,
               folder: 'projects',
             }).unwrap();
             return { key, url: res.url, publicId: res.publicId };
@@ -158,13 +191,25 @@ export function useProjectData(id: string | null) {
       // 2. Sau khi có hết URL → gọi updateProjectTab
       if (id === null) throw new Error('Project ID is required for update.');
 
-      console.log(jsonData);
+      // 3. GỌI API CẬP NHẬT SCALAR FIELDS (updateProject)
+      if (scalarData) {
+        console.log('Sending Scalar Data:', scalarData);
+        await updateProjectScalarData({
+          id,
+          body: scalarData, // Gửi các trường cấp cao (isFeatured, isExclusive,...)
+        }).unwrap();
+      }
 
-      await updateProjectTab({
-        id,
-        tab,
-        body: jsonData,
-      }).unwrap();
+      // 4. GỌI API CẬP NHẬT TAB (updateProjectTab)
+      const hasTabData = Object.keys(jsonData).length > 0;
+      if (hasTabData) {
+        console.log(`Sending Tab Data (${tab}):`, jsonData);
+        await updateProjectTab({
+          id,
+          tab,
+          body: jsonData, // Gửi dữ liệu tab đã sạch
+        }).unwrap();
+      }
     } catch (err) {
       console.error('❌ Lỗi update tab:', err);
     }

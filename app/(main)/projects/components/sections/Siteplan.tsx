@@ -72,12 +72,12 @@ const Siteplan = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: idx * 0.08 + 0.4 }}
-                        className="relative h-auto md:h-screen w-full overflow-hidden"
+                        className="relative h-full w-full overflow-hidden"
                       >
                         {/* PhotoSwipe Item */}
                         <Item
-                          original={img || '/placeholder.svg'} // ảnh gốc
-                          thumbnail={img || '/placeholder.svg'} // ảnh thumbnail
+                          original={img?.url || '/placeholder.svg'} // ảnh gốc
+                          thumbnail={img?.url || '/placeholder.svg'} // ảnh thumbnail
                           width="1920"
                           height="1080"
                         >
@@ -89,7 +89,7 @@ const Siteplan = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
                               alt={`Ảnh ${idx + 1}`}
                               width={1920}
                               height={1080}
-                              className="w-full h-auto"
+                              className="h-full w-full object-cover"
                               priority
                             />
                           )}
@@ -138,7 +138,7 @@ const Siteplan = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
         </Gallery>
 
         <div
-          className="absolute inset-x-0 bottom-0 h-60 md:h-80 overflow-hidden cursor-pointer group"
+          className="hidden md:block absolute inset-x-0 bottom-0 h-60 md:h-80 overflow-hidden cursor-pointer group"
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
