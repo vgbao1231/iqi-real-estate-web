@@ -17,7 +17,6 @@ import Location from '@/app/(main)/projects/components/sections/Location';
 // import Contact from '@/app/(main)/projects/components/sections/Contact';
 import { ChevronDown, Menu, X } from 'lucide-react';
 import Link from 'next/link';
-import { useGetPublicProjectByIdQuery } from '@/features/project/projectApi';
 import LoadingScreen from '@/components/common/loading-screen';
 import { mockProject } from '@/constants/mock-project';
 import Contact from '@/app/(main)/projects/components/sections/Contact';
@@ -32,12 +31,13 @@ const arsenal = Arsenal({
 //TODO: xóa mock data khi deploy production
 export default function ProjectDetail() {
   const { id } = useParams();
-  const { data: project = mockProject } = useGetPublicProjectByIdQuery(
-    id as string,
-    {
-      skip: !id,
-    }
-  );
+  // const { data: project = mockProject } = useGetPublicProjectByIdQuery(
+  //   id as string,
+  //   {
+  //     skip: !id,
+  //   }
+  // );
+  const project = mockProject;
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
