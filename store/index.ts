@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import cartReducer from '@/features/cart/cartSlice';
 import authReducer from '@/features/auth/authSlice';
 import enumReducer from '@/features/enum/enumSlice';
+import locationReducer from '@/features/location/locationSlice';
 import { baseApi } from '@/features/api/baseApi';
 
 export const store = configureStore({
@@ -9,6 +10,7 @@ export const store = configureStore({
     cart: cartReducer,
     auth: authReducer,
     enum: enumReducer,
+    location: locationReducer,
     [baseApi.reducerPath]: baseApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>

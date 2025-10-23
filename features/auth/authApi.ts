@@ -27,7 +27,6 @@ export const authApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [tagTypes.Auth],
     }),
-
     logout: builder.mutation<{ message: string }, void>({
       query: () => ({
         url: '/auth/logout',
@@ -59,6 +58,21 @@ export const authApi = baseApi.injectEndpoints({
         body,
       }),
     }),
+    sendOtp: builder.mutation<{ message: string }, any>({
+      query: (body) => ({
+        url: '/auth/otp/send',
+        method: 'POST',
+        body,
+      }),
+    }),
+
+    verifyOtp: builder.mutation<{ message: string }, any>({
+      query: (body) => ({
+        url: '/auth/otp/verify',
+        method: 'POST',
+        body,
+      }),
+    }),
   }),
 });
 
@@ -68,4 +82,6 @@ export const {
   useMeQuery,
   useUpdateProfileMutation,
   useChangePasswordMutation,
+  useSendOtpMutation,
+  useVerifyOtpMutation,
 } = authApi;

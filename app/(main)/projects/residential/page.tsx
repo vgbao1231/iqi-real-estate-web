@@ -24,10 +24,11 @@ import {
   projectTypes,
   statusOptions,
 } from '@/lib/project-data';
-import { useGetProvincesQuery } from '@/features/location/provincesApi';
 import { ProjectCard } from '@/app/(main)/projects/components/ProjectCard';
 import { useGetPublicProjectsQuery } from '@/features/project/projectApi';
 import { ProjectIntroSection } from '@/app/(main)/projects/components/ProjectIntroSection';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store';
 
 const bannerData = [
   {
@@ -80,32 +81,9 @@ export default function ResidentialProjectsPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
   const itemsPerPage = 6;
-  const { data = [] } = useGetProvincesQuery();
-
-  // Provinces and districts data
-  const provinces = [
-    { value: 'all', label: 'Tất cả thành phố' },
-    ...data.map((p: { name: string }) => ({
-      value: p.name,
-      label: p.name,
-    })),
-  ];
-
-  const districts = {
-    all: [{ value: 'all', label: 'Tất cả khu vực' }],
-    ...Object.fromEntries(
-      data.map((p: { name: string; districts: { name: string }[] }) => [
-        p.name,
-        [
-          { value: 'all', label: 'Tất cả quận/huyện' },
-          ...p.districts.map((d: { name: string }) => ({
-            value: d.name,
-            label: d.name,
-          })),
-        ],
-      ])
-    ),
-  };
+  const { provinces, districts } = useSelector(
+    (state: RootState) => state.location
+  );
 
   // Filter logic
   const filteredProjects = useMemo(() => {

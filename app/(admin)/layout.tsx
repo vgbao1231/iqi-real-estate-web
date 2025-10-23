@@ -12,7 +12,6 @@ import GoogleTranslateScript from '@/components/common/google-translate-script';
 import { useMeQuery } from '@/features/auth/authApi';
 import { useDispatch } from 'react-redux';
 import { clearUser, setUser } from '@/features/auth/authSlice';
-import { ToastContainer } from 'react-toastify';
 import ScrollToTopButton from '@/components/common/scroll-top';
 
 interface AdminLayoutProps {
@@ -38,7 +37,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     <ThemeProvider attribute="class" value={{ light: 'light' }}>
       <GoogleTranslateScript />
       <ScrollToTopButton />
-      <ToastContainer autoClose={3000} />
+
       <div className="min-h-screen bg-background light">
         {/* Sidebar */}
         <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />

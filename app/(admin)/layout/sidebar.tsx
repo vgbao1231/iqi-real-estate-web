@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import {
   Building,
+  Gift,
   Globe,
   Newspaper,
   Phone,
@@ -25,12 +26,6 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: any) {
       current: pathname.startsWith('/admin/accounts'),
     },
     {
-      name: 'Dự án',
-      href: '/admin/projects',
-      icon: Building,
-      current: pathname.startsWith('/admin/projects'),
-    },
-    {
       name: 'Đối tác',
       href: '/admin/partners',
       icon: Globe,
@@ -41,6 +36,12 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: any) {
       href: '/admin/articles',
       icon: Newspaper,
       current: pathname.startsWith('/admin/articles'),
+    },
+    {
+      name: 'Merchandise',
+      href: '/admin/merchandises',
+      icon: Gift,
+      current: pathname.startsWith('/admin/merchandises'),
     },
     {
       name: 'Liên hệ',

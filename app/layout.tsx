@@ -5,6 +5,8 @@ import 'leaflet/dist/leaflet.css';
 import Providers from './providers';
 import { siteMetadata } from '@/app/metadata';
 import { EnumLoader } from '@/components/common/enum-loader';
+import { LocationLoader } from '@/components/common/location-loader';
+import { ToastContainer } from 'react-toastify';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -26,8 +28,10 @@ export default function RootLayout({
         <link rel="icon" type="image/png" href="/logo-IQIVN.png" />
       </head>
       <body className={inter.className} suppressHydrationWarning>
+        <ToastContainer autoClose={3000} />
         <Providers>
           <EnumLoader />
+          <LocationLoader />
           {children}
         </Providers>
       </body>

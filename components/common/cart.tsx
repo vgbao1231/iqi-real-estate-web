@@ -149,7 +149,7 @@ export function Cart({ isDark }: any) {
                 className="w-full bg-orange-600 hover:bg-orange-700"
               >
                 <CheckCircle className="w-4 h-4 mr-2" />
-                Thanh toán
+                Đặt hàng
               </Button>
             </div>
           </>

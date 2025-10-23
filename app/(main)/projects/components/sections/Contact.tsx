@@ -84,7 +84,10 @@ export default function Contact() {
 
       <div className="relative z-20 center-both h-full container mx-auto p-6">
         {/* Left */}
-        <div className="flex w-full flex-col gap-2 md:w-1/2">
+        <SlideIn
+          direction="left"
+          className="flex w-full flex-col gap-2 md:w-1/2"
+        >
           <Image
             src="/logo-detail-light.png"
             alt="logo"
@@ -135,10 +138,11 @@ export default function Contact() {
           <div className="mt-auto pt-4 font-semibold opacity-90">
             Hotline 24/7: {contact.hotline}
           </div>
-        </div>
+        </SlideIn>
 
         {/* Right */}
-        <div
+        <SlideIn
+          direction="up"
           className={`bg-card backdrop-blur-sm rounded-lg p-4 shadow-lg w-full md:w-1/3`}
         >
           <div className="mb-4">
@@ -208,7 +212,7 @@ export default function Contact() {
               Gửi thông tin
             </Button>
           </form>
-        </div>
+        </SlideIn>
       </div>
     </section>
   );

@@ -9,7 +9,6 @@ import Link from 'next/link';
 
 export default function Article() {
   const { theme, setTheme } = useTheme();
-  console.log(theme);
 
   return (
     <section className="py-8 md:p-12">

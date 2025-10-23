@@ -413,6 +413,7 @@ export function PartnerFormDialog({
                     </Label>
                     <Input
                       id="agents"
+                      type="number"
                       className="col-span-3"
                       placeholder="Ví dụ: 40,000+"
                       value={formData.agentCount}
@@ -493,7 +494,7 @@ export function PartnerFormDialog({
                   </div>
                   {/* Benefits Section */}
                   <div className="grid grid-cols-4 items-center gap-4">
-                    <Label className="text-right">Thành tựu</Label>
+                    <Label className="text-right">Lợi ích</Label>
                     <div className="col-span-3">
                       <div className="flex flex-wrap gap-2">
                         {formData.benefits.map((benefit: any, index: any) => (

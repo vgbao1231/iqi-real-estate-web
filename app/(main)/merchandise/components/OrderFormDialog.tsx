@@ -7,13 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
+
 import {
   Dialog,
   DialogContent,
@@ -25,7 +19,14 @@ import {
 import { Separator } from '@/components/ui/separator';
 import { CheckCircle, User, Mail, Clock } from 'lucide-react';
 import { useOTP } from '@/hooks/use-otp';
-import { toast } from 'sonner';
+import {
+  useSendOtpMutation,
+  useVerifyOtpMutation,
+} from '@/features/auth/authApi';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store';
+import { Combobox } from '@/components/ui/combobox';
+import { toast } from 'react-toastify';
 
 interface OrderFormDialogProps {
   open: boolean;
@@ -48,48 +49,53 @@ export function OrderFormDialog({
     city: '',
     district: '',
     ward: '',
-    notes: '',
+    note: '',
     otp: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { provinces, districts } = useSelector(
+    (state: RootState) => state.location
+  );
+  const [sendOtp, { isLoading: isSendingOtp, isSuccess }] =
+    useSendOtpMutation();
+  const [verifyOtp, { isLoading: isVerifyingOtp }] = useVerifyOtpMutation();
 
-  const {
-    otpSent,
-    otpCountdown,
-    isVerifyingOtp,
-    sendOTP,
-    verifyOTP,
-    resetOTP,
-  } = useOTP();
+  const { otpCountdown, resetOTP } = useOTP();
 
   const getTotalPrice = () => {
     return cart.reduce((total, item) => total + item.price * item.quantity, 0);
   };
 
+  const handleSendOtp = async () => {
+    try {
+      await sendOtp({ email: orderForm.email });
+    } catch (e) {
+      console.error(e);
+      toast.error('Gửi OTP thất bại, vui lòng thử lại');
+    }
+  };
+
   const handleOrderSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    try {
+      await verifyOtp({
+        email: orderForm.email,
+        otp: orderForm.otp,
+      }).unwrap();
+    } catch (error) {
+      console.error('Lỗi xác thực OTP:', error);
+      return;
+    }
 
     if (cart.length === 0) {
       toast.error('Giỏ hàng trống');
       return;
     }
 
-    if (!otpSent) {
-      toast.error('Vui lòng gửi và xác thực OTP trước');
-      return;
-    }
-
-    // Verify OTP first
-    const otpValid = await verifyOTP(orderForm.email, orderForm.otp);
-    if (!otpValid) return;
-
     setIsSubmitting(true);
 
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-
-      // Here you would send the order to admin
       const orderData = {
         ...orderForm,
         items: cart,
@@ -100,25 +106,64 @@ export function OrderFormDialog({
 
       console.log('Order submitted:', orderData);
 
-      toast.success(
-        'Đặt hàng thành công! Chúng tôi sẽ liên hệ với bạn sớm nhất.'
-      );
+      const payload: any = {
+        fullName: orderData.fullName,
+        email: orderData.email,
+        phone: orderData.phone,
+        address: orderData.address,
+        note: orderData.note,
+        items: JSON.stringify(orderData.items || []),
+      };
 
-      // Reset form
-      setOrderForm({
-        fullName: '',
-        phone: '',
-        email: '',
-        address: '',
-        city: '',
-        district: '',
-        ward: '',
-        notes: '',
-        otp: '',
-      });
-      resetOTP();
-      onOrderSuccess();
-      onOpenChange(false);
+      const params = new URLSearchParams();
+      for (const key in payload) {
+        // Kiểm tra nếu giá trị không rỗng thì thêm vào params
+        if (payload[key]) {
+          params.append(key, payload[key]);
+        }
+      }
+
+      try {
+        const response = await fetch(
+          process.env.NEXT_PUBLIC_WEB_APP_URL as string,
+          {
+            method: 'POST',
+            body: params,
+          }
+        );
+
+        if (response.ok) {
+          const result = await response.json();
+          if (result.result === 'success') {
+            toast.success(
+              'Đặt hàng thành công! Chúng tôi sẽ liên hệ với bạn sớm nhất.'
+            );
+
+            // Reset form
+            setOrderForm({
+              fullName: '',
+              phone: '',
+              email: '',
+              address: '',
+              city: '',
+              district: '',
+              ward: '',
+              note: '',
+              otp: '',
+            });
+            resetOTP();
+            onOrderSuccess();
+            onOpenChange(false);
+          } else {
+            throw new Error(result.message || 'Lỗi từ Google Script.');
+          }
+        } else {
+          throw new Error('Kết nối máy chủ thất bại.');
+        }
+      } catch (error) {
+        console.error('Lỗi gửi form:', error);
+        alert('Đã xảy ra lỗi. Vui lòng kiểm tra console hoặc thử lại sau.');
+      }
     } catch (error) {
       toast.error('Có lỗi xảy ra, vui lòng thử lại');
     } finally {
@@ -186,6 +231,7 @@ export function OrderFormDialog({
               <div className="flex space-x-2">
                 <Input
                   type="email"
+                  name="email"
                   value={orderForm.email}
                   onChange={(e) =>
                     setOrderForm((prev: any) => ({
@@ -195,19 +241,19 @@ export function OrderFormDialog({
                   }
                   placeholder="Nhập email của bạn"
                   required
-                  disabled={otpSent}
+                  disabled={isSendingOtp}
                 />
                 <Button
                   type="button"
-                  onClick={() => sendOTP(orderForm.email)}
-                  disabled={!orderForm.email || otpSent}
+                  onClick={handleSendOtp}
+                  disabled={!orderForm.email || isSendingOtp}
                   variant="outline"
                 >
-                  {otpSent ? 'Đã gửi' : 'Gửi OTP'}
+                  {isSendingOtp ? 'Đang gửi' : 'Gửi OTP'}
                 </Button>
               </div>
 
-              {otpSent && (
+              {isSuccess && (
                 <div className="space-y-2">
                   <div className="flex space-x-2">
                     <Input
@@ -224,7 +270,7 @@ export function OrderFormDialog({
                     />
                     <Button
                       type="button"
-                      onClick={() => sendOTP(orderForm.email)}
+                      onClick={handleSendOtp}
                       disabled={otpCountdown > 0}
                       variant="ghost"
                       size="sm"
@@ -249,6 +295,40 @@ export function OrderFormDialog({
             </div>
           </div>
 
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <Label htmlFor="city">Tỉnh/Thành phố *</Label>
+              <Combobox
+                options={provinces}
+                value={orderForm.city}
+                onValueChange={(value: any) =>
+                  setOrderForm((prev: any) => ({ ...prev, city: value }))
+                }
+                placeholder="Chọn thành phố"
+                searchPlaceholder="Tìm thành phố..."
+                emptyText="Không tìm thấy thành phố"
+                className="bg-background border-border hover:bg-muted-card"
+              />
+            </div>
+            <div>
+              <Label htmlFor="district">Quận/Huyện *</Label>
+              <Combobox
+                options={
+                  districts[orderForm.city as keyof typeof districts] ||
+                  districts.all
+                }
+                value={orderForm.district}
+                onValueChange={(value: any) =>
+                  setOrderForm((prev: any) => ({ ...prev, district: value }))
+                }
+                placeholder="Chọn khu vực"
+                searchPlaceholder="Tìm quận/huyện..."
+                emptyText="Không tìm thấy khu vực"
+                className="bg-background border-border hover:bg-muted-card"
+              />
+            </div>
+          </div>
+
           <div>
             <Label htmlFor="address">Địa chỉ *</Label>
             <Input
@@ -265,66 +345,15 @@ export function OrderFormDialog({
             />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <Label htmlFor="city">Tỉnh/Thành phố *</Label>
-              <Select
-                value={orderForm.city}
-                onValueChange={(value) =>
-                  setOrderForm((prev: any) => ({ ...prev, city: value }))
-                }
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Chọn tỉnh/thành" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="ho-chi-minh">TP. Hồ Chí Minh</SelectItem>
-                  <SelectItem value="ha-noi">Hà Nội</SelectItem>
-                  <SelectItem value="da-nang">Đà Nẵng</SelectItem>
-                  <SelectItem value="can-tho">Cần Thơ</SelectItem>
-                  <SelectItem value="hai-phong">Hải Phòng</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div>
-              <Label htmlFor="district">Quận/Huyện *</Label>
-              <Input
-                id="district"
-                value={orderForm.district}
-                onChange={(e) =>
-                  setOrderForm((prev: any) => ({
-                    ...prev,
-                    district: e.target.value,
-                  }))
-                }
-                required
-              />
-            </div>
-            <div>
-              <Label htmlFor="ward">Phường/Xã *</Label>
-              <Input
-                id="ward"
-                value={orderForm.ward}
-                onChange={(e) =>
-                  setOrderForm((prev: any) => ({
-                    ...prev,
-                    ward: e.target.value,
-                  }))
-                }
-                required
-              />
-            </div>
-          </div>
-
           <div>
-            <Label htmlFor="notes">Ghi chú</Label>
+            <Label htmlFor="note">Ghi chú</Label>
             <Textarea
-              id="notes"
-              value={orderForm.notes}
+              id="note"
+              value={orderForm.note}
               onChange={(e) =>
                 setOrderForm((prev: any) => ({
                   ...prev,
-                  notes: e.target.value,
+                  note: e.target.value,
                 }))
               }
               placeholder="Ghi chú thêm về đơn hàng (tùy chọn)"
@@ -363,7 +392,7 @@ export function OrderFormDialog({
           </Button>
           <Button
             onClick={handleOrderSubmit}
-            disabled={isSubmitting || isVerifyingOtp || !otpSent}
+            disabled={isSubmitting || isVerifyingOtp || isSendingOtp}
             className="min-w-[120px] bg-orange-600 hover:bg-orange-700"
           >
             {isSubmitting ? (

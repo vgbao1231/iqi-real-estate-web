@@ -116,3 +116,9 @@ export const formatPriceRange = (
 
   return min === max ? min : `Từ ${min} - ${max}`;
 };
+
+export function formatNumberRoundedPlus(num: number) {
+  const roundedNum = Math.round(num / 100) * 100;
+  const formattedNum = roundedNum.toLocaleString('en-US');
+  return formattedNum + '+';
+}

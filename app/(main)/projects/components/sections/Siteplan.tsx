@@ -150,7 +150,7 @@ const Siteplan = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
             className={`z-30 absolute bottom-4 left-1/2 transform -translate-x-1/2 transition-all duration-500 ${isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
           >
             <button
-              onClick={() => router.push(`${pathname}/360-view`)}
+              onClick={() => window.open(data.view360, '_blank')}
               className="group/button flex flex-col items-center space-y-2 opacity-80 text-white transition-all duration-500 hover:scale-110"
             >
               <div className="relative">
