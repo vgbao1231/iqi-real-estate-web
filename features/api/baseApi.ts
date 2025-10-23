@@ -66,9 +66,14 @@ const baseQueryWithAuth: typeof rawBaseQuery = async (
 
   // Toast error từ backend nếu có
   if (result.error) {
-    const errMessage = (
-      result.error as { data?: { message?: string | string[] } }
-    )?.data?.message;
+    const errorStatus = (result.error as { status?: number | string }).status;
+
+    if (errorStatus === 404) {
+      console.warn(`Lỗi ${errorStatus}.`, result.error);
+      return result;
+    }
+
+    const errMessage = result.error.data?.message;
 
     if (errMessage) {
       if (Array.isArray(errMessage)) {
@@ -76,13 +81,8 @@ const baseQueryWithAuth: typeof rawBaseQuery = async (
       } else {
         toast.error(errMessage);
       }
-    } else if ('status' in result.error) {
-      console.error(
-        `Lỗi HTTP ${result.error.status} không có message chi tiết:`,
-        result.error
-      );
     } else {
-      console.error('Lỗi network không có message chi tiết:', result.error);
+      console.error('Lỗi hệ thống không có message chi tiết:', result.error);
     }
   }
 
