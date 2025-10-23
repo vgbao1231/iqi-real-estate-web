@@ -1,8 +1,7 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { useCart } from '@/hooks/use-cart';
-import { products } from '@/lib/product-data';
 import { ProductCard } from '@/app/(main)/merchandise/components/ProductCard';
 import { ProductDetailDialog } from '@/app/(main)/merchandise/components/ProductDetailDialog';
 import { OrderFormDialog } from '@/app/(main)/merchandise/components/OrderFormDialog';
@@ -13,14 +12,15 @@ import { Pagination } from '@/components/ui/pagination';
 import { Search, X } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { useGetAllMerchandiseQuery } from '@/features/merchandise/merchandiseApi';
 
 export default function MerchandisePage() {
+  const { data: products, isLoading } = useGetAllMerchandiseQuery();
   const [showOrderForm, setShowOrderForm] = useState(false);
   const [showProductDetail, setShowProductDetail] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<any | null>(null);
 
   const { items, addToCart, clearCart } = useCart();
-  const visibleProducts = useMemo(() => products.filter((p) => p.visible), []);
   const {
     searchQuery,
     setSearchQuery,
@@ -28,7 +28,7 @@ export default function MerchandisePage() {
     clearSearch,
     hasResults,
     resultCount,
-  } = useSearch(visibleProducts, ['name', 'description']);
+  } = useSearch(products ?? [], ['name', 'description']);
 
   const {
     currentPage,

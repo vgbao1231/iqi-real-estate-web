@@ -536,7 +536,9 @@ export default function ArticleManagementPage() {
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Chỉnh sửa bài viết</DialogTitle>
+            <DialogTitle>
+              {selectedArticle ? 'Chỉnh sửa bài viết' : 'Thêm bài viết mới'}
+            </DialogTitle>
           </DialogHeader>
           <ArticleForm
             initialData={selectedArticle}

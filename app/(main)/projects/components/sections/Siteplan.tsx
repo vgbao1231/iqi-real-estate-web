@@ -10,7 +10,6 @@ import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 import { Globe } from 'lucide-react';
 import Image from 'next/image';
-import { usePathname, useRouter } from 'next/navigation';
 import { Gallery, Item } from 'react-photoswipe-gallery';
 import 'photoswipe/style.css';
 
@@ -18,8 +17,6 @@ import { forwardRef, useEffect, useState } from 'react';
 
 const Siteplan = forwardRef<HTMLElement, { data: any }>(({ data }, ref) => {
   const [isHovered, setIsHovered] = useState(false);
-  const router = useRouter();
-  const pathname = usePathname();
   const [carouselApi, setCarouselApi] = useState<CarouselApi>();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 

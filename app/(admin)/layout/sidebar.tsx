@@ -38,7 +38,7 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: any) {
       current: pathname.startsWith('/admin/articles'),
     },
     {
-      name: 'Merchandise',
+      name: 'Sản phẩm',
       href: '/admin/merchandises',
       icon: Gift,
       current: pathname.startsWith('/admin/merchandises'),

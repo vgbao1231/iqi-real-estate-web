@@ -41,7 +41,7 @@ export function ProductCard({ product, onAddToCart, onViewDetail }: any) {
         <CardHeader className="p-0 relative">
           <div className="aspect-[4/3] overflow-hidden rounded-t-lg relative">
             <Image
-              src={product.images[0] || '/placeholder.svg'}
+              src={product.images[0]?.url || '/placeholder.svg'}
               alt={product.name}
               width={400}
               height={400}

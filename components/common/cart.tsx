@@ -65,7 +65,7 @@ export function Cart({ isDark }: any) {
                 <div key={item.id} className="p-3 border-b last:border-b-0">
                   <div className="flex items-start space-x-3">
                     <img
-                      src={item.images[0] || '/placeholder.svg'}
+                      src={item.images[0]?.url || '/placeholder.svg'}
                       alt={item.name}
                       className="w-12 h-12 object-cover rounded"
                     />

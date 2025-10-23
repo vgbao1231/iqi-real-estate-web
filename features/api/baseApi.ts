@@ -66,12 +66,23 @@ const baseQueryWithAuth: typeof rawBaseQuery = async (
 
   // Toast error từ backend nếu có
   if (result.error) {
-    const errMessage = result.error.data?.message || 'Lỗi hệ thống';
+    const errMessage = (
+      result.error as { data?: { message?: string | string[] } }
+    )?.data?.message;
 
-    if (Array.isArray(errMessage)) {
-      errMessage.forEach((msg) => toast.error(msg));
+    if (errMessage) {
+      if (Array.isArray(errMessage)) {
+        errMessage.forEach((msg) => toast.error(msg));
+      } else {
+        toast.error(errMessage);
+      }
+    } else if ('status' in result.error) {
+      console.error(
+        `Lỗi HTTP ${result.error.status} không có message chi tiết:`,
+        result.error
+      );
     } else {
-      toast.error(errMessage);
+      console.error('Lỗi network không có message chi tiết:', result.error);
     }
   }
 

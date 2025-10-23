@@ -10,7 +10,6 @@ import { Textarea } from '@/components/ui/textarea';
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
@@ -53,8 +52,9 @@ export default function MerchandisePage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
-  const [formDialogOpen, setFormDialogOpen] = useState(false);
-  const [editingItem, setEditingItem] = useState<Merchandise | null>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [selectedMerchandise, setSelectedMerchandise] =
+    useState<Merchandise | null>(null);
   const [deleteMerchandise] = useDeleteMerchandiseMutation();
 
   const filteredMerchandises = (merchandises ?? []).filter(
@@ -71,13 +71,13 @@ export default function MerchandisePage() {
   const totalPages = Math.ceil(filteredMerchandises.length / itemsPerPage);
 
   const handleOpenCreateDialog = () => {
-    setEditingItem(null);
-    setFormDialogOpen(true);
+    setSelectedMerchandise(null);
+    setIsDialogOpen(true);
   };
 
   const handleOpenEditDialog = (item: Merchandise) => {
-    setEditingItem(item);
-    setFormDialogOpen(true);
+    setSelectedMerchandise(item);
+    setIsDialogOpen(true);
   };
 
   const handleDelete = (id: string) => deleteMerchandise(id);
@@ -92,7 +92,7 @@ export default function MerchandisePage() {
               Merchandise
             </h1>
             <p className="text-gray-600 dark:text-gray-400 mt-1">
-              Quản lý hàng merchandise của IQI Vietnam
+              Quản lý sản phẩm của IQI Vietnam
             </p>
           </div>
           <Button
@@ -100,17 +100,27 @@ export default function MerchandisePage() {
             onClick={handleOpenCreateDialog}
           >
             <Plus className="w-4 h-4 mr-2" />
-            Thêm merchandise
+            Thêm sản phẩm
           </Button>
         </div>
       </FadeIn>
 
-      {/* Form Dialog */}
-      <MerchandiseFormDialog
-        open={formDialogOpen}
-        onOpenChange={setFormDialogOpen}
-        initialData={editingItem}
-      />
+      {/* Add/Edit Dialog */}
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>
+              {selectedMerchandise
+                ? 'Chỉnh sửa thông tin sản phẩm'
+                : 'Thêm sản phẩm mới'}
+            </DialogTitle>
+          </DialogHeader>
+          <MerchandiseFormDialog
+            initialData={selectedMerchandise}
+            setIsDialogOpen={setIsDialogOpen}
+          />
+        </DialogContent>
+      </Dialog>
 
       {/* Search */}
       <FadeIn delay={0.1}>
@@ -133,7 +143,7 @@ export default function MerchandisePage() {
         <Card>
           <CardHeader>
             <CardTitle>
-              Danh sách merchandise ({filteredMerchandises.length})
+              Danh sách sản phẩm ({filteredMerchandises.length})
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -194,7 +204,10 @@ export default function MerchandisePage() {
                           {item.description || '-'}
                         </td>
                         <td className="py-3 px-4 font-semibold text-orange-600">
-                          {item.price.toLocaleString('vi-VN')}đ
+                          {new Intl.NumberFormat('vi-VN', {
+                            style: 'currency',
+                            currency: 'VND',
+                          }).format(item.price)}
                         </td>
                         <td className="py-3 px-4 text-sm text-gray-600 dark:text-gray-400">
                           {item.createdAt}
@@ -315,45 +328,37 @@ export default function MerchandisePage() {
   );
 }
 
-function MerchandiseFormDialog({ open, onOpenChange, initialData }: any) {
+function MerchandiseFormDialog({ initialData, setIsDialogOpen }: any) {
+  initialData;
   const [formData, setFormData] = useState({
     name: initialData?.name ?? '',
     description: initialData?.description ?? '',
     price: initialData?.price ?? '',
     images: initialData?.images ?? '',
   });
+
+  console.log(formData.images);
+
   const [updateMerchandise, { isLoading: isUpdating }] =
     useUpdateMerchandiseMutation();
   const [createMerchandise, { isLoading: isCreating }] =
     useCreateMerchandiseMutation();
   const [uploadImage, { isLoading: isUploading }] = useUploadImageMutation();
 
-  const [imagePreview, setImagePreview] = useState<string[]>([]);
-
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.currentTarget.files;
 
     if (files) {
       Array.from(files).forEach((file) => {
-        if (file.size > 2 * 1024 * 1024) {
-          alert('File quá lớn. Tối đa 2MB.');
-          return;
-        }
-
-        const previewUrl = URL.createObjectURL(file);
-
         setFormData((prev) => ({
           ...prev,
           images: [...prev.images, file],
         }));
-
-        setImagePreview((prev) => [...prev, previewUrl]);
       });
     }
   };
 
   const handleRemoveImage = (index: number) => {
-    setImagePreview((prev) => prev.filter((_, i) => i !== index));
     setFormData((prev) => ({
       ...prev,
       images: prev.images.filter((_: any, i: any) => i !== index),
@@ -392,7 +397,7 @@ function MerchandiseFormDialog({ open, onOpenChange, initialData }: any) {
         await createMerchandise(payload).unwrap();
       }
 
-      onOpenChange(false);
+      setIsDialogOpen(false);
     } catch (error) {
       console.error(
         `Error ${initialData ? 'editing' : 'creating'} merchandise:`,
@@ -401,149 +406,144 @@ function MerchandiseFormDialog({ open, onOpenChange, initialData }: any) {
     }
   };
 
-  const isEditMode = !!initialData;
-
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-3xl">
-        <DialogHeader>
-          <DialogTitle>
-            {isEditMode ? 'Chỉnh sửa merchandise' : 'Thêm merchandise mới'}
-          </DialogTitle>
-          <DialogDescription>
-            {isEditMode
-              ? 'Cập nhật thông tin merchandise'
-              : 'Tạo sản phẩm merchandise mới'}
-          </DialogDescription>
-        </DialogHeader>
+    <div className="grid grid-cols-2 gap-6 max-h-[80vh] overflow-y-auto">
+      {/* Left: Image Upload */}
+      <div className="flex flex-col space-y-4">
+        <label className="text-sm font-semibold">Hình ảnh sản phẩm</label>
 
-        <div className="grid grid-cols-2 gap-6 max-h-[80vh] overflow-y-auto">
-          {/* Left: Image Upload */}
-          <div className="flex flex-col space-y-4">
-            <label className="text-sm font-semibold">Hình ảnh sản phẩm</label>
+        {/* Upload Area */}
+        <label className="w-full h-32 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600 flex items-center justify-center bg-gray-50 dark:bg-gray-800 cursor-pointer hover:border-orange-500 transition-colors">
+          <div className="flex flex-col items-center justify-center">
+            <ImageIcon className="w-8 h-8 text-gray-400 mb-2" />
+            <span className="text-sm text-gray-600 dark:text-gray-400">
+              Chọn ảnh
+            </span>
+          </div>
+          <input
+            type="file"
+            multiple
+            accept="image/*"
+            className="hidden"
+            onChange={handleImageUpload}
+          />
+        </label>
 
-            {/* Upload Area */}
-            <label className="w-full h-32 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600 flex items-center justify-center bg-gray-50 dark:bg-gray-800 cursor-pointer hover:border-orange-500 transition-colors">
-              <div className="flex flex-col items-center justify-center">
-                <ImageIcon className="w-8 h-8 text-gray-400 mb-2" />
-                <span className="text-sm text-gray-600 dark:text-gray-400">
-                  Chọn ảnh
-                </span>
-              </div>
-              <input
-                type="file"
-                multiple
-                accept="image/*"
-                className="hidden"
-                onChange={handleImageUpload}
-              />
-            </label>
+        <label className="text-xs text-gray-500">
+          Tối đa 2MB, định dạng JPG, PNG, WebP
+        </label>
 
-            <label className="text-xs text-gray-500">
-              Tối đa 2MB, định dạng JPG, PNG, WebP
-            </label>
-
-            {/* Image Grid */}
-            {imagePreview.length > 0 && (
-              <div className="space-y-2">
-                <p className="text-sm font-medium">
-                  Ảnh đã chọn ({imagePreview.length})
-                </p>
-                <div className="grid grid-cols-3 gap-3">
-                  {imagePreview.map((img, idx) => (
-                    <div
-                      key={idx}
-                      className="relative w-full aspect-square rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800"
-                    >
-                      <Image
-                        src={img || '/placeholder.svg'}
-                        alt={`Preview ${idx}`}
-                        fill
-                        className="object-cover"
-                      />
-                      <button
-                        onClick={() => handleRemoveImage(idx)}
-                        className="absolute top-1 right-1 bg-red-500 hover:bg-red-600 text-white rounded-full p-1 transition-colors"
-                      >
-                        <X className="w-3 h-3" />
-                      </button>
-                    </div>
-                  ))}
+        {/* Image Grid */}
+        {formData.images.length > 0 && (
+          <div className="space-y-2">
+            <p className="text-sm font-medium">
+              Ảnh đã chọn ({formData.images.length})
+            </p>
+            <div className="grid grid-cols-3 gap-3">
+              {formData.images.map((img: any, idx: any) => (
+                <div
+                  key={idx}
+                  className="relative w-full aspect-square rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800"
+                >
+                  <Image
+                    src={
+                      img
+                        ? img instanceof File
+                          ? URL.createObjectURL(img)
+                          : img.url
+                        : '/placeholder.svg'
+                    }
+                    alt={`Preview ${idx}`}
+                    fill
+                    className="object-cover"
+                  />
+                  <button
+                    onClick={() => handleRemoveImage(idx)}
+                    className="absolute top-1 right-1 bg-red-500 hover:bg-red-600 text-white rounded-full p-1 transition-colors"
+                  >
+                    <X className="w-3 h-3" />
+                  </button>
                 </div>
-              </div>
-            )}
-          </div>
-
-          {/* Right: Form */}
-          <div className="flex flex-col space-y-4">
-            <div>
-              <label className="text-sm font-semibold mb-2 block">
-                Tên sản phẩm *
-              </label>
-              <Input
-                placeholder="VD: IQI Vietnam Hoodie"
-                value={formData.name}
-                onChange={(e) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    name: e.target.value,
-                  }))
-                }
-              />
-            </div>
-
-            <div>
-              <label className="text-sm font-semibold mb-2 block">
-                Mô tả sản phẩm
-              </label>
-              <Textarea
-                placeholder="Mô tả chi tiết sản phẩm..."
-                value={formData.description}
-                onChange={(e) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    description: e.target.value,
-                  }))
-                }
-                rows={4}
-              />
-            </div>
-
-            <div>
-              <label className="text-sm font-semibold mb-2 block">
-                Giá sản phẩm (VNĐ) *
-              </label>
-              <Input
-                type="number"
-                placeholder="VD: 450000"
-                value={formData.price}
-                onChange={(e) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    price: e.target.value,
-                  }))
-                }
-              />
-            </div>
-
-            <div className="flex gap-2 pt-4">
-              <Button
-                variant="outline"
-                className="flex-1 bg-transparent"
-                onClick={() => onOpenChange(false)}
-              >
-                Hủy
-              </Button>
-              <Button
-                className="flex-1 bg-orange-600 hover:bg-orange-700"
-                onClick={handleSubmit}
-              >
-                {isEditMode ? 'Cập nhật' : 'Thêm mới'}
-              </Button>
+              ))}
             </div>
           </div>
+        )}
+      </div>
+
+      {/* Right: Form */}
+      <div className="flex flex-col space-y-4">
+        <div>
+          <label className="text-sm font-semibold mb-2 block">
+            Tên sản phẩm *
+          </label>
+          <Input
+            placeholder="VD: IQI Vietnam Hoodie"
+            value={formData.name}
+            onChange={(e) =>
+              setFormData((prev) => ({
+                ...prev,
+                name: e.target.value,
+              }))
+            }
+          />
         </div>
-      </DialogContent>
-    </Dialog>
+
+        <div>
+          <label className="text-sm font-semibold mb-2 block">
+            Mô tả sản phẩm
+          </label>
+          <Textarea
+            placeholder="Mô tả chi tiết sản phẩm..."
+            value={formData.description}
+            onChange={(e) =>
+              setFormData((prev) => ({
+                ...prev,
+                description: e.target.value,
+              }))
+            }
+            rows={4}
+          />
+        </div>
+
+        <div>
+          <label className="text-sm font-semibold mb-2 block">
+            Giá sản phẩm (VNĐ) *
+          </label>
+          <Input
+            type="number"
+            placeholder="VD: 450000"
+            value={formData.price}
+            onChange={(e) =>
+              setFormData((prev) => ({
+                ...prev,
+                price: e.target.value,
+              }))
+            }
+          />
+        </div>
+
+        <div className="flex gap-2 pt-4">
+          <Button
+            variant="outline"
+            className="flex-1 bg-transparent"
+            onClick={() => setIsDialogOpen(false)}
+          >
+            Hủy
+          </Button>
+          <Button
+            className="flex-1 bg-orange-600 hover:bg-orange-700"
+            onClick={handleSubmit}
+          >
+            {initialData
+              ? isUpdating || isUploading
+                ? 'Đang lưu'
+                : 'Lưu'
+              : isCreating || isUploading
+                ? 'Đang thêm'
+                : 'Thêm sản phẩm'}
+          </Button>
+        </div>
+      </div>
+    </div>
   );
 }

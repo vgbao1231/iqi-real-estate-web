@@ -122,8 +122,8 @@ export function ProductDetailDialog({
                         className="relative aspect-square w-full rounded-lg overflow-hidden"
                       >
                         <Item
-                          original={image || '/placeholder-2.webp'} // ảnh gốc
-                          thumbnail={image || '/placeholder-2.webp'} // ảnh thumbnail
+                          original={image?.url || '/placeholder-2.webp'} // ảnh gốc
+                          thumbnail={image?.url || '/placeholder-2.webp'} // ảnh thumbnail
                           width="1920"
                           height="1080"
                         >
@@ -131,7 +131,7 @@ export function ProductDetailDialog({
                             <Image
                               ref={ref as any}
                               onClick={open}
-                              src={image || '/placeholder-2.webp'}
+                              src={image?.url || '/placeholder-2.webp'}
                               alt={`Ảnh ${idx + 1}`}
                               fill
                               priority
@@ -173,7 +173,7 @@ export function ProductDetailDialog({
                     }`}
                   >
                     <img
-                      src={image || '/placeholder.svg'}
+                      src={image?.url || '/placeholder.svg'}
                       alt={`${product.name} ${index + 1}`}
                       className="w-full h-full object-cover"
                     />

@@ -351,7 +351,7 @@ export default function UserManagementPage() {
         )}
       </FadeIn>
 
-      {/* Edit Dialog */}
+      {/* Add/Edit Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="max-w-2xl">
           <DialogHeader>

@@ -23,9 +23,6 @@ import {
   useSendOtpMutation,
   useVerifyOtpMutation,
 } from '@/features/auth/authApi';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/store';
-import { Combobox } from '@/components/ui/combobox';
 import { toast } from 'react-toastify';
 
 interface OrderFormDialogProps {
@@ -53,9 +50,9 @@ export function OrderFormDialog({
     otp: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { provinces, districts } = useSelector(
-    (state: RootState) => state.location
-  );
+  // const { provinces, districts } = useSelector(
+  //   (state: RootState) => state.location
+  // );
   const [sendOtp, { isLoading: isSendingOtp, isSuccess }] =
     useSendOtpMutation();
   const [verifyOtp, { isLoading: isVerifyingOtp }] = useVerifyOtpMutation();
@@ -292,40 +289,6 @@ export function OrderFormDialog({
                   </p>
                 </div>
               )}
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <Label htmlFor="city">Tỉnh/Thành phố *</Label>
-              <Combobox
-                options={provinces}
-                value={orderForm.city}
-                onValueChange={(value: any) =>
-                  setOrderForm((prev: any) => ({ ...prev, city: value }))
-                }
-                placeholder="Chọn thành phố"
-                searchPlaceholder="Tìm thành phố..."
-                emptyText="Không tìm thấy thành phố"
-                className="bg-background border-border hover:bg-muted-card"
-              />
-            </div>
-            <div>
-              <Label htmlFor="district">Quận/Huyện *</Label>
-              <Combobox
-                options={
-                  districts[orderForm.city as keyof typeof districts] ||
-                  districts.all
-                }
-                value={orderForm.district}
-                onValueChange={(value: any) =>
-                  setOrderForm((prev: any) => ({ ...prev, district: value }))
-                }
-                placeholder="Chọn khu vực"
-                searchPlaceholder="Tìm quận/huyện..."
-                emptyText="Không tìm thấy khu vực"
-                className="bg-background border-border hover:bg-muted-card"
-              />
             </div>
           </div>
 
