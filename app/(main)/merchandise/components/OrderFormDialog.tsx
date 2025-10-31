@@ -101,7 +101,7 @@ export function OrderFormDialog({
         orderId: `IQI-${Date.now()}`,
       };
 
-      console.log('Order submitted:', orderData);
+      // console.log('Order submitted:', orderData);
 
       const payload: any = {
         fullName: orderData.fullName,
@@ -122,7 +122,7 @@ export function OrderFormDialog({
 
       try {
         const response = await fetch(
-          process.env.NEXT_PUBLIC_WEB_APP_URL as string,
+          process.env.NEXT_PUBLIC_WEB_APP_URL_ORDER as string,
           {
             method: 'POST',
             body: params,

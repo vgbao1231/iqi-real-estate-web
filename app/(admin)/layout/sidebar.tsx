@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import {
+  BriefcaseBusiness,
   Building,
   Gift,
   Globe,
@@ -42,6 +43,12 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: any) {
       href: '/admin/merchandises',
       icon: Gift,
       current: pathname.startsWith('/admin/merchandises'),
+    },
+    {
+      name: 'Tuyển dụng',
+      href: '/admin/jobs',
+      icon: BriefcaseBusiness,
+      current: pathname.startsWith('/admin/jobs'),
     },
     {
       name: 'Liên hệ',

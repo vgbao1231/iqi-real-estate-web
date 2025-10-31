@@ -75,7 +75,10 @@ export function Cart({ isDark }: any) {
                           {item.name}
                         </h4>
                         <p className="text-sm text-orange-600">
-                          {item.price.toLocaleString('vi-VN')}đ
+                          {new Intl.NumberFormat('vi-VN', {
+                            style: 'currency',
+                            currency: 'VND',
+                          }).format(item.price)}
                         </p>
                       </div>
                       <div className="flex items-center justify-between gap-2 mt-2">

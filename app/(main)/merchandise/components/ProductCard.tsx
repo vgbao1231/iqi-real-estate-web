@@ -64,7 +64,10 @@ export function ProductCard({ product, onAddToCart, onViewDetail }: any) {
           </p>
           <div className="mb-3">
             <span className="text-lg font-bold text-orange-500">
-              {product.price.toLocaleString('vi-VN')}đ
+              {new Intl.NumberFormat('vi-VN', {
+                style: 'currency',
+                currency: 'VND',
+              }).format(product.price)}
             </span>
           </div>
         </CardContent>

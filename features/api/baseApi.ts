@@ -103,6 +103,7 @@ export const tagTypes = {
   Article: 'Article',
   Contact: 'Contact',
   Merchandise: 'Merchandise',
+  Job: 'Job',
 } as const;
 
 export const baseApi = createApi({

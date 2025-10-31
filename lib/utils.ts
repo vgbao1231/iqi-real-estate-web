@@ -122,3 +122,17 @@ export function formatNumberRoundedPlus(num: number) {
   const formattedNum = roundedNum.toLocaleString('en-US');
   return formattedNum + '+';
 }
+
+export function formatVietnameseDateTime(isoString: string) {
+  const date = new Date(isoString);
+
+  return date.toLocaleString('vi-VN', {
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hourCycle: 'h23', // Đảm bảo dùng 24h
+  });
+}

@@ -201,7 +201,7 @@ export default function MerchandisePage() {
                           {item.name}
                         </td>
                         <td className="py-3 px-4 text-sm text-gray-600 dark:text-gray-400 max-w-xs truncate">
-                          {item.description || '-'}
+                          {item.description}
                         </td>
                         <td className="py-3 px-4 font-semibold text-orange-600">
                           {new Intl.NumberFormat('vi-VN', {
